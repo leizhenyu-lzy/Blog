@@ -55,7 +55,83 @@
 <br>
 <br>
 
- ## 02B. 基于Vivado的FPGA开发流程介绍
+ ## 02B. 基于Vivado的FPGA开发流程介绍（mux2为例）
+
+### ①创建工程
+
+1. 选择工程类型，这里选择RTL Project
+![](project_type.png)
+
+2. 选择Xilinx part/board
+![](choose_chip.png)
+
+### ②分析Mux2结构图:
+
+&emsp;&emsp;![](mux2_struct.png)
+
+### ③编写Verilog代码
+
+1. 任何Verilog代码以module开始，endmodule结束
+2. 具体代码如下
+
+```verilog
+//1950083 自动化 刘智宇
+//mux2 二选一多路选择器
+module mux2
+(
+    a,
+    b,
+    sel,
+    out
+);
+    input a;
+    input b;
+    input sel;
+    output out;
+    //上述为端口定义
+
+    //下面实现具体逻辑功能
+    assign out = (sel==1)?a:b;
+    //关键词：assign 表示后续是一段连续赋值语句
+
+endmodule
+```
+
+### ④进行Run Synthesis
+
+有多种方式
+
+1. 从FLOW
+
+![](run_synthesis01.png)
+
+2. 绿色小三角（上面是分析与综合，下面是布局布线）
+
+![](run_synthesis02.png)
+
+3. 使用快捷键**F11**
+
+可以在右上角查看运行状态
+
+![](status01.png)
+
+运行后可查看Report/Messages，如无问题即可进行后续步骤
+
+
+### ⑤至此为止，设计输入、分析综合部分已经完成，下面进行仿真
+
+1. 首先需要添加simulation sources
+   
+![](status01.png)
+
+2. 创建文件 mux2_tb (tb代表test bench)
+
+3. 编写testbench文件
+   1. testbench开头："`timescale 1ns/1ps"
+```verilog
+
+```
+
 
 
 
