@@ -239,6 +239,12 @@
 
       ![](/02B_pic/xilinx_part_result.jpg)
 
+8. 总结
+
+   1. 创建工程、写代码
+   2. 写testbench、仿真、分析
+   3. 下板验证
+
 
 
 <br>
