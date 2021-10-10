@@ -245,32 +245,234 @@
    2. 写testbench、仿真、分析
    3. 下板验证
 
+<br>
+<br>
 
+## 03. 组合逻辑38译码器实现与相关语法基础
+
+3-8译码器
+
+功&emsp;能：3个输入，8个输出。每个输出有且仅有一位为高电平，其余为低电平。
+
+结构图：
+
+![](03_pic/3-8_translate.png)
+
+### ①创建工程
+
+### ②设计定义
+
+### ③设计代码
+
+```verilog
+//decoder_3_8 三八译码器
+module decoder_3_8
+(
+    a,
+    b,
+    c,
+    out
+);
+
+    input a;
+    input b;
+    input c;
+    output reg [7:0] out;//[7:0]表示多位数据
+    //同时定义端口方向和类型
+
+    //以always块描述的信号赋值，被赋值对象必须定义为reg类型
+
+    //新语法always为系统保留关键词，表示一直关注
+    always@(a,b,c)begin//或者(*)//*代表通配符
+        case({a,b,c})//通过{}将a,b,c组合
+            3'b000:out=8'b0000_0001;
+            3'b001:out=8'b0000_0010;
+            3'b010:out=8'b0000_0100;
+            3'b011:out=8'b0000_1000;
+            3'b100:out=8'b0001_0000;
+            3'b101:out=8'b0010_0000;
+            3'b110:out=8'b0100_0000;
+            3'b111:out=8'b1000_0000;
+        endcase
+    end
+    //b:二进制 d:十进制 h:十六进制 o:八进制
+endmodule
+```
+
+### ④testbench代码
+
+```verilog
+`timescale 1ns/1ns
+
+module decoder_3_8_tb
+();
+
+    reg tb_a;
+    reg tb_b;
+    reg tb_c;
+    wire [7:0] tb_out;
+    
+    decoder_3_8 decoder_3_8_tb
+    (
+        .a(tb_a),
+        .b(tb_b),
+        .c(tb_c),
+        .out(tb_out)
+    );
+
+    initial begin
+        tb_a=0;tb_b=0;tb_c=0;
+        #200;
+        tb_a=0;tb_b=0;tb_c=1;
+        #200;
+        tb_a=0;tb_b=1;tb_c=0;
+        #200;
+        tb_a=0;tb_b=1;tb_c=1;
+        #200;
+        tb_a=1;tb_b=0;tb_c=0;
+        #200;
+        tb_a=1;tb_b=0;tb_c=1;
+        #200;
+        tb_a=1;tb_b=1;tb_c=0;
+        #200;
+        tb_a=1;tb_b=1;tb_c=1;
+        #200;
+        $stop;
+    end
+   
+endmodule
+```
+
+### ⑤编写完代码后应进行Run Synthesis，确认无误后进行Simulation
+
+![](03_pic/simulation_result01.png)
+
+### ⑥进行布局布线Run Implement
+
+### ⑦进行时序仿真
+
+![](03_pic/simulation_result02.png)
+
+### ⑧进行板级调试，分配引脚、电平标准等这里不再赘述
+
+### ⑨作业4-16译码器
+
+source file
+```verilog
+//decoder_4_16 4-16译码器
+module decoder_4_16 
+(
+    a,
+    b,
+    c,
+    d,
+    out
+);
+
+    input a,b,c,d;
+    output reg [15:0] out;
+
+    always@(a,b,c,d)begin
+        case({a,b,c,d})
+            4'b0000:out=16'b00000000_00000001;//0
+            4'b0001:out=16'b00000000_00000010;//1
+            4'b0010:out=16'b00000000_00000100;//2
+            4'b0011:out=16'b00000000_00001000;//3
+            4'b0100:out=16'b00000000_00010000;//4
+            4'b0101:out=16'b00000000_00100000;//5
+            4'b0110:out=16'b00000000_01000000;//6
+            4'b0111:out=16'b00000000_10000000;//7
+            4'b1000:out=16'b00000001_00000000;//8
+            4'b1001:out=16'b00000010_00000000;//9
+            4'b1010:out=16'b00000100_00000000;//10
+            4'b1011:out=16'b00001000_00000000;//11
+            4'b1100:out=16'b00010000_00000000;//12
+            4'b1101:out=16'b00100000_00000000;//13
+            4'b1110:out=16'b01000000_00000000;//14
+            4'b1111:out=16'b10000000_00000000;//15
+        endcase
+    end
+    
+endmodule
+```
+
+testbench file
+```verilog
+`timescale 1ns/1ns
+
+module decoder_4_16_tb
+();
+    reg a_tb,b_tb,c_tb,d_tb;
+    wire [15:0] out_tb;
+
+    decoder_4_16 decoder_4_16_tb
+    (
+        .a(a_tb),
+        .b(b_tb),
+        .c(c_tb),
+        .d(d_tb),
+        .out(out_tb)
+    );
+
+    initial begin
+        a_tb=0;b_tb=0;c_tb=0;d_tb=0;
+        #100;
+        a_tb=0;b_tb=0;c_tb=0;d_tb=1;
+        #100;
+        a_tb=0;b_tb=0;c_tb=1;d_tb=0;
+        #100;
+        a_tb=0;b_tb=0;c_tb=1;d_tb=1;
+        #100;
+        a_tb=0;b_tb=1;c_tb=0;d_tb=0;
+        #100;
+        a_tb=0;b_tb=1;c_tb=0;d_tb=1;
+        #100;
+        a_tb=0;b_tb=1;c_tb=1;d_tb=0;
+        #100;
+        a_tb=0;b_tb=1;c_tb=1;d_tb=1;
+        #100;
+        a_tb=1;b_tb=0;c_tb=0;d_tb=0;
+        #100;
+        a_tb=1;b_tb=0;c_tb=0;d_tb=1;
+        #100;
+        a_tb=1;b_tb=0;c_tb=1;d_tb=0;
+        #100;
+        a_tb=1;b_tb=0;c_tb=1;d_tb=1;
+        #100;
+        a_tb=1;b_tb=1;c_tb=0;d_tb=0;
+        #100;
+        a_tb=1;b_tb=1;c_tb=0;d_tb=1;
+        #100;
+        a_tb=1;b_tb=1;c_tb=1;d_tb=0;
+        #100;
+        a_tb=1;b_tb=1;c_tb=1;d_tb=1;
+        #100;
+    end
+endmodule
+```
+
+waveform results:
+![](03_pic/hw_simulation_result01.png)
 
 <br>
 <br>
 
-  ## 02. 通用的FPGA开发流程介绍
+## 02. 通用的FPGA开发流程介绍
 
 <br>
 <br>
 
-  ## 02. 通用的FPGA开发流程介绍
+## 02. 通用的FPGA开发流程介绍
 
 <br>
 <br>
 
-  ## 02. 通用的FPGA开发流程介绍
+## 02. 通用的FPGA开发流程介绍
 
 <br>
 <br>
 
-  ## 02. 通用的FPGA开发流程介绍
-
-<br>
-<br>
-
-  ## 02. 通用的FPGA开发流程介绍
+## 02. 通用的FPGA开发流程介绍
 
 <br>
 <br>
