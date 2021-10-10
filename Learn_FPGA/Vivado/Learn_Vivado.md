@@ -1,9 +1,21 @@
-# Learn Vivado
+# Learn FPGA
 # FPGA 设计思想与验证方法 —— 基于Xilinx Vivado
 
- [传送门：小梅哥Xilinx FPGA基础入门到项目应用培训教程](https://www.bilibili.com/video/BV1va411c7Dz)
 
- 本文档为该课程学习笔记
+
+## 一些传送门
+
+[传送门①：小梅哥爱漂流B站首页](https://space.bilibili.com/476579378)
+
+[传送门②：小梅哥Xilinx FPGA基础入门到项目应用培训教程](https://www.bilibili.com/video/BV1va411c7Dz)
+
+[传送门③：菜鸟教程 Verilog教程基础篇](https://www.runoob.com/w3cnote/verilog-tutorial.html)
+
+[传送门④：菜鸟教程 Verilog教程高级篇](https://www.runoob.com/w3cnote/verilog2-tutorial.html)
+
+<br>
+
+P.S. 本文档为该课程学习笔记，板子是学校发的。
 
 <br>
 
@@ -457,7 +469,13 @@ waveform results:
 <br>
 <br>
 
-## 02. 通用的FPGA开发流程介绍
+## 04. 时序逻辑计数器设计与相关语法
+
+核心元器件：触发器
+
+存储特性
+
+
 
 <br>
 <br>
