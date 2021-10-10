@@ -61,15 +61,15 @@
 
 1. 选择工程类型，这里选择RTL Project
    
-   ![](/02B_pic/project_type.png)
+   ![](02B_pic/project_type.png)
 
 2. 选择Xilinx part/board
    
-   ![](/02B_pic/choose_chip.png)
+   ![](02B_pic/choose_chip.png)
 
 ### ②分析Mux2结构图:
 
-   ![](/02B_pic/mux2_struct.png)
+   ![](02B_pic/mux2_struct.png)
 
 ### ③编写Verilog代码
 
@@ -104,21 +104,21 @@
 
 1. 从FLOW
 
-   ![](/02B_pic/run_synthesis01.png)
+   ![](02B_pic/run_synthesis01.png)
 
 2. 绿色小三角（上面是分析与综合，下面是布局布线）
 
-   ![](/02B_pic/run_synthesis02.png)
+   ![](02B_pic/run_synthesis02.png)
 
 3. 使用快捷键**F11**
 
 可以在右上角查看运行状态
 
-   ![](/02B_pic/status01.png)
+   ![](02B_pic/status01.png)
 
 也可以点击∑求和符号,查看过程
 
-   ![](/02B_pic/project_summary.png)
+   ![](02B_pic/project_summary.png)
 
 运行后可查看Report/Messages，如无问题即可进行后续步骤
 
@@ -127,7 +127,7 @@
 
 1. 首先需要添加simulation sources
    
-   ![](/02B_pic/status01.png)
+   ![](02B_pic/status01.png)
 
 2. 创建文件 mux2_tb (tb代表test bench)
 
@@ -187,31 +187,31 @@
       ```
 4. 进行仿真
 
-   ![](/02B_pic/run_simulation.png)
+   ![](02B_pic/run_simulation.png)
 
    1. 如果看不清楚可以选择Zoom Fit
    
-      ![](/02B_pic/zoom_fit.png)
+      ![](02B_pic/zoom_fit.png)
 
    2. 同时可以使用Run All查看完整（默认跑1000ns）
    
-      ![](/02B_pic/run_all.png)
+      ![](02B_pic/run_all.png)
 
    3. 结果如图
    
-      ![](/02B_pic/mux2_tb_result.png)
+      ![](02B_pic/mux2_tb_result.png)
 
 5. 布局布线
    
-   ![](/02B_pic/run_implement.png)
+   ![](02B_pic/run_implement.png)
 
 6. 时序仿真
    
-   ![](/02B_pic/timing_simulation.png)
+   ![](02B_pic/timing_simulation.png)
 
    1. 结果如图
 
-      ![](/02B_pic/timing_simulation_result.png)
+      ![](02B_pic/timing_simulation_result.png)
 
    2. 原因分析：信号有延迟，同时会有毛刺
 
@@ -219,25 +219,25 @@
    
    1. 修改标准电平、分配IO引脚，需要结合开发板原理图
    
-      ![](/02B_pic/IO_planning00.png)
+      ![](02B_pic/IO_planning00.png)
 
-      ![](/02B_pic/IO_planning01.png)
+      ![](02B_pic/IO_planning01.png)
    
    2. 生成Bitstream文件，下载到芯片
 
-      ![](/02B_pic/generate_bitstream.png)
+      ![](02B_pic/generate_bitstream.png)
 
    3. 连接开发板（先要将JTAG与电脑相连，并接上电源线）
 
-      ![](/02B_pic/auto_connect.png)
+      ![](02B_pic/auto_connect.png)
 
    4. 选中开发板，并点击Program Device即可开始下载
 
-      ![](/02B_pic/program_device.png)
+      ![](02B_pic/program_device.png)
 
    5. 实物图
 
-      ![](/02B_pic/xilinx_part_result.jpg)
+      ![](02B_pic/xilinx_part_result.jpg)
 
 8. 总结
 
