@@ -471,9 +471,110 @@ waveform results:
 
 ## 04. 时序逻辑计数器设计与相关语法
 
-核心元器件：触发器
+核心元器件：触发器（存储特性）
 
-存储特性
+计数器
+
+### 目标
+&emsp;&emsp;使得一个LED以一秒为周期闪烁，500ms亮，500ms灭。
+
+&emsp;&emsp;首先需要给LED一个输出信号。另外，开发板的时钟频率为50MHz，周期为20ns。所以计数器到25,000,000，表示500ms。而25,000,000需要25位二进制数才能表示。
+
+&emsp;&emsp;如图所示：
+
+![](04_pic/calculator.png)
+
+### 代码编写
+
+①模型文件
+```verilog
+//led_flash
+module led_flash
+(
+    Led,
+    Clk,
+    Reset_n//低电平复位
+);
+
+    input Clk;
+    input Reset_n;
+    output reg Led;
+
+    reg [24:0] counter;//25位
+
+    //posedge代表上升沿
+    //negedge代表下降沿
+    //<=是非阻塞赋值
+
+    //推荐分开写，有利于综合器分析，效果相同
+    //always块中的变量必须是reg类型
+    always@(posedge Clk or negedge Reset_n)
+    if(!Reset_n)
+        counter<=0;
+    else if(counter==25000000-1)//从24999999到0也要一个周期
+    //注意用begin-end将操作合在一起
+        counter<=0;
+    else
+        counter<=counter+1'd1;
+
+
+    always@(posedge Clk or negedge Reset_n)
+    if(!Reset_n)
+        Led<=0;
+    else if(counter==25000000-1)
+        Led<=!Led;
+
+endmodule
+```
+
+②testbench文件
+```verilog
+`timescale 1ns/1ns
+
+module led_flash_tb
+();
+    reg Clk;
+    reg Reset_n;
+    wire Led;
+
+    led_flash led_flash_tb
+    (
+        .Led(Led),
+        .Clk(Clk),
+        .Reset_n(Reset_n)//低电平复位
+    );
+
+    initial Clk=1;
+    always #10 Clk=~Clk;//按位取反
+                        //一个周期要取反两次，20ns
+
+    initial begin
+        Reset_n=0;
+        #201;//避开上升沿
+        Reset_n=1;
+        #1000000000;
+        $stop;
+    end
+    
+endmodule
+```
+
+### 结果
+
+![](04_pic/led_flash_result.png)
+
+&emsp;&emsp;其中不是整数是因为我的Reset_n信号在一开始延迟了201ns。
+
+### 小结
+
+&emsp;&emsp;时序逻辑与组合逻辑略有不同
+
+1. 建议分开写不同功能的器件分开写
+2. 对于计数器，n-1
+3. 在testbench中
+   1. 先初始化
+   2. 再always
+
 
 
 
