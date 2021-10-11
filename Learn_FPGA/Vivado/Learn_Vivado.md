@@ -547,7 +547,7 @@ module led_flash_tb
     initial Clk=1;
     always #10 Clk=~Clk;//按位取反
                         //一个周期要取反两次，20ns
-
+                        //模拟一个时钟周期
     initial begin
         Reset_n=0;
         #201;//避开上升沿
