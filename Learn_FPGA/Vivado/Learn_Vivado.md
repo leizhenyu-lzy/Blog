@@ -575,8 +575,259 @@ endmodule
    1. 先初始化
    2. 再always
 
+<br>
+<br>
+
+## 05A. Verilog基础语法与应用讲解——位操作
+
+### 目标
+
+&emsp;&emsp;计数器实验升级、设计让8个LED灯以每隔0.5s的速率循环闪烁，交替亮（跑马灯）。（三种方法）
+
+&emsp;&emsp;通过本课程引入一些Verilog实用语法。
+
+### 方法一：位操作
+
+P.S. 调试时可以适当将等待时间进行放缩，以方便调试，但烧录到板上时，应改回原来的时间常数，否则效果不同。
+
+①模型文件
+```verilog
+//horse_race_led
+module horse_race_led
+(
+    CLK,
+    Reset_n,
+    LED
+);
+    
+    input CLK;
+    input Reset_n;
+    output reg [7:0] LED;
+
+    reg [24:0]counter;
+
+    always@(posedge CLK or negedge Reset_n)
+    if(!Reset_n)//不要和下面的counter进行逻辑合并，即使操作相同
+        counter<=0;
+    //else if(counter<=24999999)
+    else if(counter==25'd24999)//缩小为了节约时间，时间运行时要改回上面的代码
+        counter<=0;
+    else
+        counter<=counter+1'b1;
+
+    //方法1：移位法
+    //0000_0001 0000_0010 ... 0100_0000 1000_0000
+    always@(posedge CLK or negedge Reset_n)
+    if(!Reset_n)
+        LED<=8'b0000_0001;
+    //else if(counter==25'd24999999)begin
+    else if(counter==25'd24999)begin
+        if(LED==8'b1000_0000)
+            LED<=8'b0000_0001;
+        else
+            LED<=LED<<1;
+    end
+        
+endmodule
+```
+
+②testbench文件
+```verilog
+`timescale 1ns/1ns
+
+module horse_race_led_tb();
+
+    reg CLK;
+    reg Reset_n;
+    wire [7:0]LED;
+
+    horse_race_led horse_race_led_tb
+    (
+        .CLK(CLK),
+        .Reset_n(Reset_n),
+        .LED(LED)
+    );
+
+    initial CLK=1;
+    always #10 CLK=~CLK;
+
+    initial begin
+        Reset_n=0;
+        #201;
+        Reset_n=1;
+        #20000000;//节约时间，缩小1000倍
+        $stop;
+    end
+endmodule
+```
+
+③结果图
+
+![](05A_pic/horse_race_led_result01.png)
 
 
+### 方法二：位拼接（环形移动）
+
+①模型文件
+```verilog
+//horse_race_led1
+module horse_race_led1
+(
+    CLK,
+    Reset_n,
+    LED
+);
+    
+    input CLK;
+    input Reset_n;
+    output reg [7:0] LED;
+
+    reg [24:0]counter;
+
+    always@(posedge CLK or negedge Reset_n)
+    if(!Reset_n)//不要和下面的counter进行逻辑合并，即使操作相同
+        counter<=0;
+    //else if(counter<=24999999)
+    else if(counter==25'd24999)//缩小为了节约时间，时间运行时要改回上面的代码
+        counter<=0;
+    else
+        counter<=counter+1'b1;
+
+    //方法2：位拼接
+    //0000_0001 0000_0010 ... 0100_0000 1000_0000
+    always@(posedge CLK or negedge Reset_n)
+    if(!Reset_n)
+        LED<=8'b0000_0001;
+    //else if(counter==25'd24999999)begin
+    else if(counter==25'd24999)begin
+        LED<={LED[6:0],LED[7]};//利用位拼接，将八个位构成环形，不常用
+    end
+        
+endmodule
+```
+
+②testbench文件
+```verilog
+`timescale 1ns/1ns
+
+module horse_race_led_tb();
+
+    reg CLK;
+    reg Reset_n;
+    wire [7:0]LED;
+
+    horse_race_led1 horse_race_led_tb
+    (
+        .CLK(CLK),
+        .Reset_n(Reset_n),
+        .LED(LED)
+    );
+
+    initial CLK=1;
+    always #10 CLK=~CLK;
+
+    initial begin
+        Reset_n=0;
+        #201;
+        Reset_n=1;
+        #20000000;//节约时间，缩小1000倍
+        $stop;
+    end
+endmodule
+```
+
+③结果图
+
+![](05A_pic/horse_race_led_result02.png)
+
+### 方法三：在模块中调用模块（例化）
+
+需要将一个模型文件手动添加到本项目中
+
+①模型文件
+
+```verilog
+//horse_race_led2
+module horse_race_led2
+(
+    CLK,
+    Reset_n,
+    LED
+);
+    
+    input CLK;
+    input Reset_n;
+    output [7:0] LED;
+
+    reg [24:0]counter;
+
+    always@(posedge CLK or negedge Reset_n)
+    if(!Reset_n)//不要和下面的counter进行逻辑合并，即使操作相同
+        counter<=0;
+    //else if(counter<=24999999)
+    else if(counter==25'd24999)//缩小为了节约时间，时间运行时要改回上面的代码
+        counter<=0;
+    else
+        counter<=counter+1'b1;
+
+    //方法3：模块中调用模块，例化3-8译码器
+    reg [2:0]counter2;
+    always@(posedge CLK or negedge Reset_n)
+    if(!Reset_n)
+        counter2<=0;
+    else if(counter==25'd24999)
+        counter2<=counter2+1'b1;//会自动溢出，记满清零
+
+    decoder_3_8 decoder_3_8
+    (
+        .a(counter2[2]),
+        .b(counter2[1]),
+        .c(counter2[0]),
+        .out(LED)//在底层模块已经定义为reg，在顶层模块就不能定义为reg
+    );
+        
+endmodule
+```
+
+②testbench文件
+
+```verilog
+`timescale 1ns/1ns
+
+module horse_race_led_tb();
+
+    reg CLK;
+    reg Reset_n;
+    wire [7:0]LED;
+
+    horse_race_led1 horse_race_led_tb
+    (
+        .CLK(CLK),
+        .Reset_n(Reset_n),
+        .LED(LED)
+    );
+
+    initial CLK=1;
+    always #10 CLK=~CLK;
+
+    initial begin
+        Reset_n=0;
+        #201;
+        Reset_n=1;
+        #20000000;//节约时间，缩小1000倍
+        $stop;
+    end
+endmodule
+```
+
+③结果图
+
+![](05A_pic/horse_race_led_result03.png)
+
+<br>
+<br>
+
+## 05B. Verilog基础语法与应用讲解——参数化设计
 
 <br>
 <br>
@@ -586,12 +837,42 @@ endmodule
 <br>
 <br>
 
-## 02. 通用的FPGA开发流程介绍
+ ## 02. 通用的FPGA开发流程介绍
 
 <br>
 <br>
 
-## 02. 通用的FPGA开发流程介绍
+ ## 02. 通用的FPGA开发流程介绍
+
+<br>
+<br>
+
+ ## 02. 通用的FPGA开发流程介绍
+
+<br>
+<br>
+
+ ## 02. 通用的FPGA开发流程介绍
+
+<br>
+<br>
+
+ ## 02. 通用的FPGA开发流程介绍
+
+<br>
+<br>
+
+ ## 02. 通用的FPGA开发流程介绍
+
+<br>
+<br>
+
+ ## 02. 通用的FPGA开发流程介绍
+
+<br>
+<br>
+
+ ## 02. 通用的FPGA开发流程介绍
 
 <br>
 <br>
