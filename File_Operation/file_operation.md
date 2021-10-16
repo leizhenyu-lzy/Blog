@@ -148,6 +148,7 @@
     1. ifstream无tellp
     2. ofstream无tellg
     3. fstream的tellp、tellg是同步移动的
+    4. 文件读写后，文件指针会自动后移(C/C++都是如此)
 
 3. 注意事项
    1. read/write虽然是内存首地址，实际编程中使用字符数组，不是字符串，不处理尾零
@@ -163,6 +164,62 @@
 ### 6.1 文件指针
 
 1. FILE *文件指针变量;
+2. FILE是系统定义的结构体
+3. C语言中文件操作的基本依据，所有针对文件的操作均需要依据该指针
+4. #include <stdio.h>
+5. VS2019认为不安全，需要加 #define _CRT_SECURE_NO_WARNINGS
+6. 文件读写后，文件指针会自动后移(C/C++都是如此)
+
+### 6.2 文件的打开和关闭
+
+1. 假设：FILE *fp; 定义一个文件指针
+2. 文件的打开
+    
+    FILE *fopen("文件名",打开方式);
+
+    打开失败返回NULL
+
+3. 基本打开方式
+   
+    r:只读&emsp;w:只写&emsp;a:追加&emsp;+:可读可写&emsp;b:二进制&emsp;t:文本方式
+
+    ![](pics/shenjian_ppt_005.png)
+
+4. 文件的关闭
+
+    fclose(文件指针);
+
+### 6.3 文本文件的读写
+
+1. 按字符读写文件按
+    1. 读：int fgetc(文件指针)
+
+        返回读到的字符的ASCII码（返回值同getchar）
+    
+    2. 写：int fputc(字符常量/字符变量 , 文件指针)
+
+        返回写入的字符的ASCII码（返回值同putchar）
+
+    3. **必须保证文件的打开方式符合要求**
+
+2. 判断文件是否到达尾部
+
+    int feof(文件指针)
+
+    若到达尾部，返回1，否则返回0
+
+3. 按格式读写文件
+    1. 读：int fscanf(文件指针 , 格式串 , 输入表列)
+        返回读取正确的数量（返回值同scanf）
+    2. 写：int fprintf(文件指针 , 格式串 , 输入表列)
+        返回输出字符的数量（返回值同scanf）
+    3. 格式串、输入/输出表列的使用同scanf/printf
+
+4. 用文件方式进行标准输入输出
+
+5. 用freopen重定向标准输入输出
+
+### 6.4 二进制文件的读写
 
 
 ## 七、C语言中实现与C++的字符串流相似的功能
@@ -428,11 +485,11 @@ while(cin)
 
 ## C++方式将输出放入文件
 
-1. 从键盘读取数据并输出到屏幕
+1. 读取数据并输出到屏幕
 
     ![](pics/shenjian_tutorial_005.png)
 
-2. 从键盘读取文件并输出到文件
+2. 读取文件并输出到文件
 
     ![](pics/shenjian_tutorial_006.png)
 
@@ -458,11 +515,11 @@ while(cin)
 
 ## C方式将输出放入文件
 
-1. 从键盘读取数据并输出到屏幕
+1. 读取数据并输出到屏幕
 
     ![](pics/shenjian_tutorial_012.png)
 
-2. 从键盘读取文件并输出到文件
+2. 读取数据并输出到文件
 
     ![](pics/shenjian_tutorial_013.png)
 
@@ -473,6 +530,11 @@ while(cin)
 
 
 
-# 传送门
+# 一些传送门
+
+[shenjianB站主页](https://space.bilibili.com/385714455)
 
 [一篇优质博客](https://blog.csdn.net/qianhen123/article/details/19088839)
+
+
+
