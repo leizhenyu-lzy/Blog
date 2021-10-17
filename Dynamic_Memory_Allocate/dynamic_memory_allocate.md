@@ -142,7 +142,7 @@ int main()
 ![](pics/intellisense_001.png)
 
 
-### C/C++语法
+### 3.3 C/C++语法
 
 1. 申请普通变量
 
@@ -369,7 +369,6 @@ int main()
 
 8. C++ 申请时自动确定类型
 
-
 9. 静态数据区、动态数据区、动态内存分配区（堆空间）的地址各不相同
 
     ```cpp
@@ -556,8 +555,11 @@ int main()
     ![](pics/code_result_003.png)
 
 14. 虽然申请的空间会在程序运行结束后，由操作系统进行回收，但这并不代表不需要手动释放空间。因为有的程序会持续运行，不会关闭；有的操作系统不会自动回收空间。
+    
 15. C申请空间时，只算总大小（简单变量、数组没有分别）。而C++对不同情况申请方法不同。
+    
 16. 用一个指针记住申请的首地址，方便释放
+    
 17. C/C++如果出现需要嵌套进行动态申请的情况，需要按从外到内的顺序进行申请，反序进行释放
     ```cpp
     #define _CRT_SECURE_NO_WARNINGS
@@ -616,12 +618,12 @@ int main()
     2. ptr必须是**malloc、calloc、realloc返回的指针**（否则会弹窗）
     ![](pics/error_002.png)
 
-    3. 如果ptr为NULL，等同于malloc
-    4. 如果ptr为NULL，newsize为0，则等同于**free**，并**返回NULL**
-    5. 新老空间可能重合，可能不重合，若不重合原空间所以内容会被复制到新空间，再释放原空间
-    6. 对申请到的空间不做初始化
-    7. 若申请不到，返回NULL，**此时已有指针ptr不释放**
-    8. 网上常见的**不正确**用法（传入参数和返回指针用同一个时，一旦申请失败，原内存就丢失了）
+    1. 如果ptr为NULL，等同于malloc
+    2. 如果ptr为NULL，newsize为0，则等同于**free**，并**返回NULL**
+    3. 新老空间可能重合，可能不重合，若不重合原空间所以内容会被复制到新空间，再释放原空间
+    4. 对申请到的空间不做初始化
+    5. 若申请不到，返回NULL，**此时已有指针ptr不释放**
+    6. 网上常见的**不正确**用法（传入参数和返回指针用同一个时，一旦申请失败，原内存就丢失了）
         ```c
         int main()
         {
@@ -663,7 +665,7 @@ int main()
 
         C6308	“realloc”可能返回 null 指针: 将 null 指针赋给“p”(后者将作为参数传递给“realloc”)将导致原始内存块泄漏。
     
-    9. C++中没有类似于realloc的renew，如果需要扩大、缩小原动态申请空间，要自己处理。
+    7. C++中没有类似于realloc的renew，如果需要扩大、缩小原动态申请空间，要自己处理。
 
         ```cpp
         int* renew(int* p,int oldsize,int newsize)
@@ -761,3 +763,202 @@ int main()
     
     ![](pics/code_result_005.png)
 
+### 3.4 链表参数传递
+
+实际上就是指针作为函数参数传递
+
+1. 例子
+   1. 结构体及常量定义
+        ```cpp
+        struct student 
+        {
+            string name;
+            int num;
+            char sex;
+            struct student *next;//指向结构体自身的指针(下个结点)
+        };
+
+        #define OK	1
+        #define ERROR	0
+        ```
+    2. 创建链表
+        ```cpp
+        int linklist_create(student *head)
+        {
+            student *p = NULL, *q = NULL;
+            int i;
+
+            for (i = 0; i < 5; i++) //5表示学生数量
+            {
+                if (i > 0)
+                    q = p;
+                p = new(nothrow) student; //思考：为什么不能用malloc
+                if (p == NULL)
+                    return ERROR;	//注:此处未释放之前的链表节点，就借助操作系统来释放（非标用法）
+                if (i == 0)
+                    head = p; //head指向第1个结点
+                else
+                    q->next = p;
+                cout << "请输入第" << i + 1 << "个人的基本信息" << endl;
+                cin >> p->name >> p->num >> p->sex; //键盘输入基本信息
+                p->next = NULL;
+            }
+            return OK;
+        }
+        ```
+    3. 输出链表
+        ```cpp
+        int linklist_traverse(student *head)
+        {
+            student *p;
+
+            p = head; //p复位，指向第1个结点
+            while (p != NULL) { //循环进行输出
+                cout << p->name << " " << p->num << " " << p->sex << endl;
+                p = p->next;
+            }
+            return OK;
+        }
+        ```
+    4. 释放链表
+        ```cpp
+        int linklist_destroy(student *head)
+        {
+            student *p, *q;
+
+            p = head; //p复位，指向第1个结点
+            while (p) {  //循环进行各结点释放
+                q = p->next;
+                delete p;
+                p = q;
+            }
+            return OK;
+        }
+        ```
+    5. 主函数
+        ```cpp
+        int main()
+        {
+            student *head = NULL;
+
+            if (linklist_create(head) == OK) {
+                linklist_traverse(head);
+                linklist_destroy(head);
+            }
+            else
+                cout << "LinkList Create failed." << endl;
+
+            return 0;
+        }
+        ```
+2. 分析
+    1. 错误分析
+
+        &emsp;&emsp;这有点类似于之前写过的交换两个数的函数。当我们将变量本身作为参数传递进交换函数中时，并没有起到交换作用。因为**函数是单向传值**。我们所进行交换的只是两个数的拷贝，实际这两个数并没有被交换。
+
+        &emsp;&emsp;但是如果我们将指针作为参数传入，则通过**间接访问的方式修改了二者的实际值**。本例也是一样，我们将指针变量传入，我们只是将指针所指向的位置进行保留，但是由于后续又进行了动态内存申请和**单向传值**的原因，只有形参指向了申请的空间，实参并没有指向申请的空间。所以虽然链表创建了，但是头指针却是形参的head。就像是下图所示。
+
+        ![](pics/linklist_as_function_para_001.png)
+        
+        &emsp;&emsp;所以，这又间接导致了链表的建立实际上是不成功的，所以遍历也无法正常进行，销毁自然也无法进行。另外程序存在内存丢失的情况，因为在建立链表的函数中，我们只是建立了链表并没有对其进行释放，所以会出现内存丢失的情况。
+
+    2. 正确写法
+
+        &emsp;&emsp;其实改动并不多，因为实际上遍历和销毁链表都可以维持原状。因为链表已经建立好了，需要delete的指针也已经确定，所以单项传值也不影响。唯一需要改动的就是创建链表的函数以及主函数中的少部分。我们需要传递指针的指针，也就是二维指针，进行间接访问。具体原理见下图。
+
+        ![](pics/linklist_as_function_para_002.png)
+
+        &emsp;&emsp;当然我们也可以使用引用的方式。
+
+3. 正确代码（二维指针）
+    ```cpp
+    int linklist_create(student** head);//注意：二维指针
+    int linklist_traverse(student* head);
+    int linklist_destroy(student* head);
+
+    int linklist_create(student** head)//注意：二维指针
+    {
+        student* p = NULL, * q = NULL;
+        int i;
+
+        for (i = 0; i < 5; i++) {
+            if (i > 0)
+                q = p;
+            p = new(nothrow) student; //思考：为什么不能用malloc
+            if (p == NULL)
+                return ERROR;	//注:此处未释放之前的链表节点，就借助操作系统来释放（非标用法）
+            if (i == 0)
+                *head = p; //head指向第1个结点//注意：这里要多加一个*
+            else
+                q->next = p;
+            cout << "请输入第" << i + 1 << "个人的基本信息" << endl;
+            cin >> p->name >> p->num >> p->sex; //键盘输入基本信息
+            p->next = NULL;
+        }
+        return OK;
+    }
+
+    int main()
+    {
+        student* head = NULL;
+
+        if (linklist_create(&head) == OK) 
+        {//注意：这里要多加一个&，取地址
+            linklist_traverse(head);
+            linklist_destroy(head);
+        }
+        else
+            cout << "LinkList Create failed." << endl;
+
+        return 0;
+    }
+    ```
+
+4. 正确代码（引用方式）
+    ```cpp
+    int linklist_create(student* (&head));//注意：指针的引用
+    int linklist_traverse(student* head);
+    int linklist_destroy(student* head);
+
+    int linklist_create(student* (&head))//注意：指针的引用
+    {
+        student* p = NULL, * q = NULL;
+        int i;
+
+        for (i = 0; i < 5; i++) {
+            if (i > 0)
+                q = p;
+            p = new(nothrow) student; //思考：为什么不能用malloc
+            if (p == NULL)
+                return ERROR;	//注:此处未释放之前的链表节点，就借助操作系统来释放（非标用法）
+            if (i == 0)
+                head = p; //head指向第1个结点//注意：这里不用加*
+            else
+                q->next = p;
+            cout << "请输入第" << i + 1 << "个人的基本信息" << endl;
+            cin >> p->name >> p->num >> p->sex; //键盘输入基本信息
+            p->next = NULL;
+        }
+        return OK;
+    }
+
+    int main()
+    {
+        student* head = NULL;
+
+        if (linklist_create(head) == OK) 
+        {//注意：这里不用加一个&
+            linklist_traverse(head);
+            linklist_destroy(head);
+        }
+        else
+            cout << "LinkList Create failed." << endl;
+
+        return 0;
+    }
+    ```
+
+
+# 传送门
+
+[优质博客：关于链表参数传递](https://blog.csdn.net/weixin_42073412/article/details/101289980)
