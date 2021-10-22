@@ -549,6 +549,41 @@ int main()
 
 &emsp;&emsp;对于成员，我们有两种方式，一是直接指向某一个类对象的某一个成员，另外一种是指向所有成员函数的某一个变量。值得注意的是，无论是哪一种都需要成员是**public**（类对象要保证public，结构体默认public）。
 
+```cpp
+class test
+{
+private:
+	int a = 5;
+public:
+	void output1()const
+	{
+		cout << "1"<< endl;
+	}
+	void output2()const
+	{
+		cout << "2" << endl;
+	}
+	
+};
+
+
+int main()
+{
+	test t;
+	void(test:: * fp[2])()const = { &test::output1,&test::output2 };
+	void(test:: * fp1)()const = &test::output1;
+	void(test:: * fp2)()const = &test::output2;
+
+	(t.*fp1)();
+	(t.*fp2)();
+	(t.*fp[0])();
+	(t.*fp[1])();
+
+	return 0;
+}
+```
+
+
 <br>
 <br>
 <br>

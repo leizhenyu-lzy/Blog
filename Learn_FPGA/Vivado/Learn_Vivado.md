@@ -1,8 +1,6 @@
 # Learn FPGA
 # FPGA 设计思想与验证方法 —— 基于Xilinx Vivado
 
-
-
 ## 一些传送门
 
 [传送门①：小梅哥爱漂流B站首页](https://space.bilibili.com/476579378)
@@ -516,7 +514,6 @@ module led_flash
         counter<=0;
     else
         counter<=counter+1'd1;
-
 
     always@(posedge Clk or negedge Reset_n)
     if(!Reset_n)
