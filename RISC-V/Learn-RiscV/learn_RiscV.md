@@ -2,6 +2,8 @@
 
 # 汇编语言入门（RISC-V）
 
+![](learn_compile/demonstrate001.png)
+
 ## Register Operands（操作对象）
 
 RISC-V 32*32bit register file(32bit for a "word")
@@ -74,7 +76,11 @@ RISC-V指令：Encoded as 32-bit instruction words,Small number of formats encod
 
 PC是程序计数器（是一个地址），通过该地址得到指令的值
 
-### SB-Type
+### SB-Type（分支指令）
+
+beq：分支相同则跳转
+
+bne：分支不同则跳转
 
 ![](learn_compile/if_else001.png)
 
@@ -96,11 +102,61 @@ bne s3,s4,12(12是计算subtr指令到当前指令的距离)
 
 ### 常数0-zero
 
+RISC-V中zero寄存器(x0)存储的永远是常数0
+
+![](learn_compile/zero001.png)
+
+最后一行jal：如果返回值为0，则跳转到LABEL；否则应先设置返回值
+
+### U-Type
+
+lui：load upper immediate(前面二十位为立即数，后面12位补0)
+
+![](learn_compile/utype001.png)
+
+### UJ-Type
+
+![](learn_compile/ujtype001.png)
+
+![](learn_compile/ujtype002.png)
+
+### 算术运算
+
+![](learn_compile/immediate_operate001.png)
+
+## 逻辑运算
+
+slli：shift left logical immediate
+
+新增加的位用0补齐
 
 
 
+# 大端序&小端序
 
+1、大端模式：高字节保存在内存的低地址
 
+2、小端模式：高字节保存在内存的高地址
+
+距离：var=0x11223344（高字节为0x11，低字节为0x44）
+
+大端模式
+
+|地址|数据|
+|---|---|
+|0x0004(高地址)|0x44|
+|0x0003|0x33|
+|0x0002|0x22|
+|0x0001|0x11|
+
+小端模式
+
+|地址|数据|
+|---|---|
+|0x0004(高地址)|0x11|
+|0x0003|0x22|
+|0x0002|0x33|
+|0x0001|0x44|
 
 <br>
 
