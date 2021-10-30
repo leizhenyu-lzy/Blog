@@ -1,11 +1,16 @@
 # Learn Risc-V
 
+RISC，即精简指令集处理器，是相对于X86这种CISC（复杂指令集处理器）来说的。RISC-V中的V是罗马数字，也即阿拉伯数字中的5，就是指第5代RISC。
+
+RISC-V是一种指令集架构，和ARM、MIPS这些是属于同一类东西。RISC-V诞生于2010年，最大的特点是开源，任何人都可以设计RISC-V架构的处理器并且不会有任何版权问题。
 
 # 传送门
 
 [遇庶邻疯UP主页（汇编语言入门）](https://space.bilibili.com/22230617)
 
 [RISC-V 常见指令](https://www.cnblogs.com/truelycloud/p/10807398.html)
+
+[从零开始写RISC-V处理器](https://liangkangnan.gitee.io/2020/04/29/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99RISC-V%E5%A4%84%E7%90%86%E5%99%A8/)
 
 
 
@@ -123,6 +128,10 @@ lui：load upper immediate(前面二十位为立即数，后面12位补0)
 
 ![](learn_compile/utype001.png)
 
+![](learn_compile/utype002.png)
+
+溢出
+
 ### UJ-Type
 
 jal：jump and link
@@ -150,9 +159,37 @@ PS:一般，跳转的目标往往使用汇编程序中的label，汇编器根据
 
 ## 逻辑运算
 
+### 向左位移
+
 slli：shift left logical immediate
 
-新增加的位用0补齐
+等同于×2的k次方
+
+![](learn_compile/logic_operate001.png)
+
+ 使用另一个寄存器里的值位移
+
+![](learn_compile/logic_operate002.png)
+
+### 向右位移
+
+srli：shift right logical immediate
+
+由于后面的位被舍弃，所以是向下取整
+
+srai：shift right arithmetic immediate
+
+![](learn_compile/logic_operate003.png)
+
+### 二进制逻辑运算
+
+and
+
+or
+
+nor nor自己可以将自身的0、1互换
+
+andi
 
 
 
