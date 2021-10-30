@@ -1,5 +1,14 @@
 # Learn Risc-V
 
+
+# 传送门
+
+[遇庶邻疯UP主页（汇编语言入门）](https://space.bilibili.com/22230617)
+
+[RISC-V 常见指令](https://www.cnblogs.com/truelycloud/p/10807398.html)
+
+
+
 # 汇编语言入门（RISC-V）
 
 ![](learn_compile/demonstrate001.png)
@@ -116,13 +125,28 @@ lui：load upper immediate(前面二十位为立即数，后面12位补0)
 
 ### UJ-Type
 
+jal：jump and link
+
+跳转并链接指令（jal）具有双重功能。若将下一条指令 PC + 4 的地址保存到目标寄存器中，通常是返回地址寄存器 ra（见图 2.4），便可以用它来实现过程调用。
+如果使用零寄存器（x0）替换 ra 作为目标寄存器，则可以实现无条件跳转，因为 x0 不能更改。
+
+使用20位立即数（有符号）作为偏移量（offset），该偏移量乘以2（后面会自动补零），然后与该指令的PC相加，生成得到最终的跳转目标地址。可以跳转到前后1MB的地址区间。将下一条指令PC（当前PC+4)的值，写入结果寄存器rd中。
+PS:一般，跳转的目标往往使用汇编程序中的label，汇编器根据label自动计算偏移量
+
+
 ![](learn_compile/ujtype001.png)
 
 ![](learn_compile/ujtype002.png)
 
+自动补一位0
+
+![](learn_compile/ujtype003.png)
+
 ### 算术运算
 
 ![](learn_compile/immediate_operate001.png)
+
+不能减一个具体数字
 
 ## 逻辑运算
 
@@ -471,9 +495,4 @@ x1==x2？PC<-target
 3. 与PC值相加
 
 
-
-
-# 传送门
-
-[遇庶邻疯UP主页（汇编语言入门）](https://space.bilibili.com/22230617)
 
