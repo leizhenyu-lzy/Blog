@@ -1,5 +1,4 @@
 # Learn FPGA
-# FPGA 设计思想与验证方法 —— 基于Xilinx Vivado
 
 ## 一些传送门
 
@@ -11,7 +10,10 @@
 
 [传送门④：菜鸟教程 Verilog教程高级篇](https://www.runoob.com/w3cnote/verilog2-tutorial.html)
 
+[教你写一个简单的CPU](https://www.bilibili.com/video/BV1pK4y1C7es)
 <br>
+
+# FPGA 设计思想与验证方法 —— 基于Xilinx Vivado
 
 P.S. 本文档为该课程学习笔记，板子是学校发的。
 
@@ -865,4 +867,12 @@ endmodule
 <br>
 <br>
 
+# 教你写一个简单的CPU
 
+## Lab1
+
+## Lab2
+
+## Lab3
+
+## Lab4
