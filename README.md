@@ -1,2 +1,2 @@
 # Blog
-Record What I Learned
+Record What We Learned
