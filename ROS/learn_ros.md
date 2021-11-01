@@ -2,6 +2,8 @@
 
 ![](Pics/turtle_pic001.png)
 
+[toc]
+
 ## 古月居ROS入门21讲
 
 ### 1.课程介绍
@@ -146,7 +148,7 @@ simultaneous localization and mapping
 
 回环检测（Loop Detection）
 
-认出曾今经过的地方->环，减少误差、矫正轨迹形状
+认出曾今经过的地方>>环，减少误差、矫正轨迹形状
 
 # Gazebo
 
@@ -154,5 +156,47 @@ simultaneous localization and mapping
 
 [ROS官网urdf相关](http://wiki.ros.org/urdf/Tutorials)
 
+## Beginner
 
+### 1.Overview and installation
+
+Typical uses of Gazebo include:
+
+1. testing robotics algorithms
+2. designing robots
+3. performing regression testing with realistic scenarios
+
+A few key features of Gazebo include:
+
+1. multiple physics engines
+2. a rich library of robot models and environments
+3. a wide variety of sensors
+4. convenient programmatic and graphical interfaces
+
+### 2. Understanding the GUI
+
+GUI
+
+1. Scene(where the simulated objects are animated)
+2. Panels(right and left)
+   1. left(world、insert、 layer)
+   2. right
+3. Toolbars
+   1. Upper Toolbar
+   ![](Pics/Gazebo/top-toolbar.png)
+   1. Bottom Toolbar
+   ![](Pics/Gazebo/bottom-toolbar.png)
+4. Mouse Controls
+![](Pics/Gazebo/mouse-controls.png)
+5. Menu
+
+### 3.Model Editor
+
+
+
+## 其他知识
+
+### 1.XML文件
+
+可扩展标记语言：Extensible Markup Language
 
