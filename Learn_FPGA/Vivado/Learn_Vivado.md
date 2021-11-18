@@ -869,6 +869,7 @@ endmodule
 
 # 教你写一个简单的CPU
 
+
 ## Lab1
 
 ## Lab2
@@ -876,3 +877,52 @@ endmodule
 ## Lab3
 
 ## Lab4
+
+
+
+# 其他
+
+## IP Catalog使用
+
+![](IP_Catalog/ip_catalog001.png)
+
+![](IP_Catalog/ip_catalog002.png)
+
+![](IP_Catalog/ip_catalog003.png)
+
+![](IP_Catalog/ip_catalog004.png)
+
+在IP Source里面的Instantiation Template中找到.veo文件。
+
+![](IP_Catalog/ip_catalog005.png)
+
+将其中要使用的部分复制到所需位置。
+
+![](IP_Catalog/ip_catalog006.png)
+
+### coe文件
+
+COE文件
+
+在某些IP核的配置中，需要使用COE（Coefficient）文件来传递参数。
+
+COE文件是一种ASCII文本文件，文件头部定义数据基数（Radix，理解为进制），可以时2、10或16。数据以向量的形式给出，每个向量以分号结尾。Vivado会解析COE文件格式，并在生成IP核时导出相关的MIF格式文件，用于行为级仿真。
+
+coe语法不区分关键词的大小写。
+
+最好将COE文件放在与使用此文件的IP核同目录下（即与XCI文件同目录），这样在使用Core Cotainer打包IP核时也会将COE文件打包到XCIX文件中。当替换COE文件时，必须要删掉旧的COE文件，否则也会传递到工程的综合过程中；需要注意，如果只是在磁盘上删掉了文件，而不是在工程中移除，会导致报告一个error。
+
+coe文件格式：
+
+```verilog
+memory_initialization_radix=2;
+memory_initialization_vector=
+00000000001000001000000110110011,
+01000000001000001000001000110011;
+```
+
+
+
+
+
+
