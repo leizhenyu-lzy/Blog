@@ -32,7 +32,7 @@
 
 广告点击
 
-![](Pics/P01toP10/P1_001.png)
+![](Pics/P01toP10/P01_001.png)
 
 
 <br>
@@ -47,15 +47,15 @@
 
 N维数组样例
 
-![](Pics/P01toP10/P4_001.png)
+![](Pics/P01toP10/P04_001.png)
 
-![](Pics/P01toP10/P4_002.png)
+![](Pics/P01toP10/P04_002.png)
 
-![](Pics/P01toP10/P4_003.png)
+![](Pics/P01toP10/P04_003.png)
 
 下图中，一列那里写错了，冒号和1位置反了
 
-![](Pics/P01toP10/P4_004.png)
+![](Pics/P01toP10/P04_004.png)
 
 ### 数据操作实现
 
@@ -73,13 +73,13 @@ N维数组样例
 
 链式法则
 
-![](Pics/P01toP10/P7_001.png)
+![](Pics/P01toP10/P07_001.png)
 
 自动求导
 
 神经网络层数多，难以手写求导
 
-![](Pics/P01toP10/P7_002.png)
+![](Pics/P01toP10/P07_002.png)
 
 
 计算图
@@ -104,24 +104,24 @@ Tensor 是这个包的核心类，如果将其属性 .requires_grad 设置为 Tr
 
 每个圈代表输入或者操作
 
-![](Pics/P01toP10/P7_003.png)
+![](Pics/P01toP10/P07_003.png)
 
-![](Pics/P01toP10/P7_004.png)
+![](Pics/P01toP10/P07_004.png)
 
 1. 显式构造 Tensorflow、MXNet
 2. 隐式构造 PyTorch、MXNet
 
 自动求导的两种模式
 
-![](Pics/P01toP10/P7_005.png)
+![](Pics/P01toP10/P07_005.png)
 
-![](Pics/P01toP10/P7_006.png)
+![](Pics/P01toP10/P07_006.png)
 
-![](Pics/P01toP10/P7_007.png)
+![](Pics/P01toP10/P07_007.png)
 
 反向时会使用前向时的中间结果
 
-![](Pics/P01toP10/P7_008.png)
+![](Pics/P01toP10/P07_008.png)
 
 内存复杂度使得深度神经网络会消耗大量GPU资源
 
@@ -145,43 +145,43 @@ Tensor 是这个包的核心类，如果将其属性 .requires_grad 设置为 Tr
 
 ### 线性回归
 
-![](Pics/P01toP10/P8_001.png)
+![](Pics/P01toP10/P08_001.png)
 
-![](Pics/P01toP10/P8_002.png)
+![](Pics/P01toP10/P08_002.png)
 
-![](Pics/P01toP10/P8_003.png)
+![](Pics/P01toP10/P08_003.png)
 
-![](Pics/P01toP10/P8_004.png)
+![](Pics/P01toP10/P08_004.png)
 
-![](Pics/P01toP10/P8_005.png)
+![](Pics/P01toP10/P08_005.png)
 
 二分之一方便求导
 
-![](Pics/P01toP10/P8_006.png)
+![](Pics/P01toP10/P08_006.png)
 
-![](Pics/P01toP10/P8_007.png)
+![](Pics/P01toP10/P08_007.png)
 
-![](Pics/P01toP10/P8_008.png)
+![](Pics/P01toP10/P08_008.png)
 
-![](Pics/P01toP10/P8_009.png)
+![](Pics/P01toP10/P08_009.png)
 
 ### 基础优化算法
 
 当模型没有显式解的时候
 
-![](Pics/P01toP10/P8_010.png)
+![](Pics/P01toP10/P08_010.png)
 
-![](Pics/P01toP10/P8_011.png)
+![](Pics/P01toP10/P08_011.png)
 
 学习率太大会震荡，太小计算梯度过于频繁浪费资源
 
-![](Pics/P01toP10/P8_012.png)
+![](Pics/P01toP10/P08_012.png)
 
 b大的时候比较精确，但是时间复杂度也会增加
 
-![](Pics/P01toP10/P8_013.png)
+![](Pics/P01toP10/P08_013.png)
 
-![](Pics/P01toP10/P8_014.png)
+![](Pics/P01toP10/P08_014.png)
 
 ### 线性回归从0开始实现
 
@@ -216,23 +216,43 @@ MNIST 手写数字识别（10类）
 
 ImageNet 自然物体分类（1000类）
 
-![](Pics/P01toP10/P9_001.png)
+![](Pics/P01toP10/P09_001.png)
 
-![](Pics/P01toP10/P9_002.png)
+![](Pics/P01toP10/P09_002.png)
 
-![](Pics/P01toP10/P9_003.png)
+![](Pics/P01toP10/P09_003.png)
 
-![](Pics/P01toP10/P9_004.png)
+![](Pics/P01toP10/P09_004.png)
 
 利用指数，使得所有都变为非负
 
-![](Pics/P01toP10/P9_005.png)
+![](Pics/P01toP10/P09_005.png)
 
 对真实的那一类别求softmax并进行对数操作
 
-![](Pics/P01toP10/P9_006.png)
+![](Pics/P01toP10/P09_006.png)
 
 ### 损失函数
+
+用于衡量预测值和真实值的区别
+
+![](Pics/P01toP10/P09_007.png)
+
+均方损失
+
+二分之一是为了求导数方便
+
+蓝色曲线：y=0，变化y'
+
+绿色曲线：自然函数（高斯分布）
+
+橙色曲线：损失函数梯度（过原点）
+
+![](Pics/P01toP10/P09_008.png)
+
+权重更新不会过大，同时0-1会有跃变，最后收敛可能会有问题
+
+![](Pics/P01toP10/P09_009.png)
 
 ### 图片分类数据集
 
@@ -242,5 +262,19 @@ ImageNet 自然物体分类（1000类）
 
 ### QA
 
+## 10 多层感知机
 
+![](Pics/P01toP10/P10_001.png)
+
+### 感知机
+
+![](Pics/P01toP10/P10_002.png)
+
+σ函数的输出未必是1和0
+
+### 多层感知机
+
+### 代码实现
+
+### QA
 
