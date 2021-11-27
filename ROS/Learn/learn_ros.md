@@ -20,9 +20,9 @@ ROS:robot operating system
 
 ## 6.ROS是什么
 
-![](Pics/Lesson6/ros_history001.png)
+![](Pics/GYH/Lesson6/ros_history001.png)
 
-![](Pics/Lesson6/what_is_ros001.png)
+![](Pics/GYH/Lesson6/what_is_ros001.png)
 
 **目的：提高机器人研发中的软件复用率**
 
@@ -59,7 +59,7 @@ ROS:robot operating system
 2. 跟踪和记录话题、服务信息，辅助节点相互查找、建立连接
 3. 提供参数服务器（全局对象字典），节点使用此服务存储和检索运行时的参数
 
-    ![](Pics/Lesson7/main_conception001.png)
+    ![](Pics/GYH/Lesson7/main_conception001.png)
 
 ②话题通信
 
@@ -75,7 +75,7 @@ ROS:robot operating system
 
 **不保证时效性，单向的，可能有阻塞**
 
-![](Pics/Lesson7/main_conception002.png)
+![](Pics/GYH/Lesson7/main_conception002.png)
 
 
 
@@ -86,11 +86,11 @@ ROS:robot operating system
 
 **双向的，可以得到回复，带有反馈机制，只有一个server**
 
-![](Pics/Lesson7/main_conception003.png)
+![](Pics/GYH/Lesson7/main_conception003.png)
 
 ④话题与服务的区别
 
-![](Pics/Lesson7/main_conception004.png)
+![](Pics/GYH/Lesson7/main_conception004.png)
 
 ⑤参数（Parameter）——全局共享字典
 
@@ -98,7 +98,7 @@ ROS:robot operating system
 2. 节点使用此服务来存储和检索运行时参数
 3. 适合存储静态、非二进制的配置参数，不适合存储动态配置的参数（若listener没有重新获取值，则不知道发生改变）
 
-![](Pics/Lesson7/main_conception005.png)
+![](Pics/GYH/Lesson7/main_conception005.png)
 
 ⑥文件系统
 
@@ -109,7 +109,7 @@ ROS:robot operating system
 3. 元功能包（Meta Package）
    1. 组织多个用于同一目的的功能包
 
-![](Pics/Lesson7/main_conception006.png)
+![](Pics/GYH/Lesson7/main_conception006.png)
 
 ## 8.ROS命令行工具的使用
 
@@ -538,27 +538,127 @@ rosparam dump params.yaml
 
 rosparam load params.yaml copy_turtle
 rosparam get /copy_turtle/turtlesim/background_b
-
+# 对应的是    命名空间     服务名称   参数名称
 ```
 
 ## 08 使用rqt_console和roslaunch
 
+### 使用rqt_console和rqt_logger_level
 
+会用到rqt和turtlesim这两个软件包
 
+```
+roscore
+rosrun rqt_console rqt_console
+rosrun rqt_logger_level rqt_logger_level
+```
 
+rqt_console连接到了ROS的日志框架，以显示节点的输出信息。
 
+rqt_logger_level允许我们在节点运行时改变输出信息的详细级别，包括Debug、Info、Warn和Error`。
 
+### 日志记录器级别
 
+日志级别的优先级按以下顺序排列：
+```
+Fatal （致命）
+Error （错误）
+Warn  （警告）
+Info  （信息）
+Debug （调试）
+```
+Fatal是最高优先级，Debug是最低优先级。
 
+通过设置日志级别，你可以获得所有优先级级别，或只是更高级别的消息。
 
+比如，将日志级别设为Warn时，你会得到Warn、Error和Fatal这三个等级的日志消息。
 
+### 使用roslaunch
 
+roslaunch可以用来启动定义在launch（启动）文件中的节点。
+
+```
+roslaunch [package] [filename.launch]
+```
+
+可能需要source一下
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+roscd beginner_tutorials
+
+mkdir launch
+cd launch
+```
+
+存放launch文件的目录不一定非要命名为launch，事实上都不用非得放在目录中，roslaunch命令会自动查找经过的包并检测可用的启动文件。
+
+然而，这种推荐的标准做法被认为是“最佳实践”。
+
+### launch文件
+
+拆解launch XML文件。
+
+首先用launch标签开头，以表明这是一个launch文件。
+
+使用roslaunch
 
 <br>
 
 <br>
 
 
+## 09 使用rosed在ROS中编辑文件
+
+### 使用rosed
+
+rosed是rosbash套件的一部分。利用它可以直接通过软件包名编辑包中的文件，而无需键入完整路径。
+
+```
+rosed [package_name] [filename]
+
+eg:rosed roscpp Logger.msg
+```
+
+## 10 创建ROS消息和服务
+
+### msg和srv介绍
+
+msg（消息）：msg文件就是文本文件，用于描述ROS消息的字段。它们用于为不同编程语言编写的消息生成源代码。
+
+srv（服务）：一个srv文件描述一个服务。它由两部分组成：请求（request）和响应（response）。
+
+msg文件存放在软件包的msg目录下，srv文件则存放在srv目录下。
+
+msg文件就是简单的文本文件，每行都有一个字段类型和字段名称。可以使用的类型为：
+
+1. int8, int16, int32, int64 (以及 uint*)
+2. float32, float64
+3. string
+4. time, duration
+5. 其他msg文件
+6. variable-length array[] 和 fixed-length array[C]
+
+ROS中还有一个特殊的数据类型：Header，它含有时间戳和ROS中广泛使用的坐标帧信息。在msg文件的第一行经常可以看到Header header。
+
+srv文件和msg文件一样，只是它们包含两个部分：请求和响应。这两部分用一条---线隔开。(分割线上面是请求，下面是响应)
+
+### 使用msg
+
+
+### 使用srv
+
+
+### msg和srv的一般步骤
+
+
+### 获取帮助
+
+
+<br>
+<br>
+<br>
 
 # TIPS
 
