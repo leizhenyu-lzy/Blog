@@ -229,6 +229,8 @@ __doapl<=>do assignment plus做赋值加法
 
 全局函数，没有this指针
 
+本质上，二元运算符都是两个参数，只不过如果写成成员函数会隐式含有一个this指针
+
 ### 临时变量
 
 ![](Houjie/houjie026.png)
