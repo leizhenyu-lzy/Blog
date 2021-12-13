@@ -1,5 +1,11 @@
 # C++异常处理
 
+## 传送门
+
+[C++异常处理（try catch）从入门到精通](http://c.biancheng.net/cplus/exception/)
+
+[C++异常处理（try catch throw）完全攻略](http://c.biancheng.net/view/422.html)//还没看
+
 ## 注意点
 
 ①**try和catch都是C++ 中的关键字，后跟语句块，不能省略{ }**
