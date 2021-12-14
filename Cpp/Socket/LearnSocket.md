@@ -212,5 +212,270 @@ LZY_NEED_TO_LEARN
 
 ## 08 Windows下的socket演示程序
 
+①服务器端代码 server.cpp：
+```cpp
+#include <stdio.h>
+#include <winsock2.h>
+#pragma comment (lib, "ws2_32.lib")  //加载 ws2_32.dll
+
+int main(){
+    //初始化 DLL
+    WSADATA wsaData;//WSAData 结构体
+    WSAStartup( MAKEWORD(2, 2), &wsaData);
+
+    //创建套接字
+    SOCKET servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+    //绑定套接字
+    struct sockaddr_in sockAddr;
+    memset(&sockAddr, 0, sizeof(sockAddr));  //每个字节都用0填充
+    sockAddr.sin_family = PF_INET;  //使用IPv4地址
+    sockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");  //具体的IP地址
+    sockAddr.sin_port = htons(1234);  //端口
+    bind(servSock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
+
+    //进入监听状态
+    listen(servSock, 20);
+
+    //接收客户端请求
+    SOCKADDR clntAddr;
+    int nSize = sizeof(SOCKADDR);
+    SOCKET clntSock = accept(servSock, (SOCKADDR*)&clntAddr, &nSize);
+
+    //向客户端发送数据
+    char *str = "Hello World!";
+    send(clntSock, str, strlen(str)+sizeof(char), NULL);
+
+    //关闭套接字
+    closesocket(clntSock);
+    closesocket(servSock);
+
+    //终止 DLL 的使用
+    WSACleanup();
+
+    return 0;
+}
+```
+
+②客户端代码 client.cpp：
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <WinSock2.h>
+#pragma comment(lib, "ws2_32.lib")  //加载 ws2_32.dll
+
+int main(){
+    //初始化DLL
+    WSADATA wsaData;
+    WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+    //创建套接字
+    SOCKET sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+    //向服务器发起请求
+    struct sockaddr_in sockAddr;
+    memset(&sockAddr, 0, sizeof(sockAddr));  //每个字节都用0填充
+    sockAddr.sin_family = PF_INET;
+    sockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    sockAddr.sin_port = htons(1234);
+    connect(sock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
+
+    //接收服务器传回的数据
+    char szBuffer[MAXBYTE] = {0};
+    recv(sock, szBuffer, MAXBYTE, NULL);
+
+    //输出接收到的数据
+    printf("Message form server: %s\n", szBuffer);
+
+    //关闭套接字
+    closesocket(sock);
+
+    //终止使用 DLL
+    WSACleanup();
+
+    system("pause");
+    return 0;
+}
+```
+
+```cpp
+将 server.cpp 和 client.cpp 分别编译为 server.exe 和 client.exe，先运行 server.exe，再运行 client.exe，输出结果为：
+Message form server: Hello World!
+```
+
+使用要点
+1. Windows 下的 socket 程序依赖 Winsock.dll 或 ws2_32.dll，必须提前加载。
+2. Linux 下使用 read() / write() 函数读写，而 Windows 下使用 recv() / send() 函数发送和接收。
+3. Linux 下使用 read() / write() 函数读写，而 Windows 下使用 recv() / send() 函数发送和接收。
+4. 关闭 socket 时，Linux 使用 close() 函数，而 Windows 使用 closesocket() 函数。
+
+
+## 09 Windows下使用WSAStartup()函数加载DLL
+
+WinSock（Windows Socket）编程依赖于系统提供的动态链接库(DLL)，有两个版本：
+1. 较早的DLL是 wsock32.dll，大小为 28KB，对应的头文件为 winsock1.h
+2. 最新的DLL是 ws2_32.dll，大小为 69KB，对应的头文件为 winsock2.h(几乎所有的 Windows 操作系统都已经支持 ws2_32.dll)
+
+使用 DLL 之前必须把 DLL 加载到当前程序，你可以在编译时加载，也可以在程序运行时加载
+
+这里使用#pragma命令，在编译时加载：
+
+```cpp
+#pragma comment (lib, "ws2_32.lib")
+```
+
+### WSAStartup()函数
+
+使用 DLL 之前，还需要调用 WSAStartup() 函数进行初始化，以指明 WinSock 规范的版本，它的原型为：
+
+```cpp
+int WSAStartup(WORD wVersionRequested, LPWSADATA lpWSAData);
+```
+
+**wVersionRequested 为 WinSock 规范的版本号**，低字节为主版本号，高字节为副版本号（修正版本号）；**lpWSAData 为指向 WSAData 结构体的指针**。
+
+WinSock 规范的最新版本号为 2.2，较早的有 2.1、2.0、1.1、1.0，ws2_32.dll 支持所有的规范，而 wsock32.dll 仅支持 1.0 和 1.1。
+
+wsock32.dll 已经能够很好的支持 TCP/IP 通信程序的开发，ws2_32.dll 主要增加了对其他协议的支持，不过建议使用最新的 2.2 版本。
+
+wVersionRequested 参数用来指明我们希望使用的版本号，它的类型为 WORD，等价于 unsigned short，是一个整数，所以需要用 MAKEWORD() **宏函数对版本号进行转换**。例如：
+
+```cpp
+MAKEWORD(1, 2);  //主版本号为1，副版本号为2，返回 0x0201
+MAKEWORD(2, 2);  //主版本号为2，副版本号为2，返回 0x0202
+```
+
+WSAStartup() 函数执行成功后，会将与 ws2_32.dll 有关的信息写入 WSAData 结构体变量。WSAData 的定义如下：
+
+```cpp
+typedef struct WSAData {
+    WORD           wVersion;  //ws2_32.dll 建议我们使用的版本号
+    WORD           wHighVersion;  //ws2_32.dll 支持的最高版本号
+    //一个以 null 结尾的字符串，用来说明 ws2_32.dll 的实现以及厂商信息
+    char           szDescription[WSADESCRIPTION_LEN+1];
+    //一个以 null 结尾的字符串，用来说明 ws2_32.dll 的状态以及配置信息
+    char           szSystemStatus[WSASYS_STATUS_LEN+1];
+    unsigned short iMaxSockets;  //2.0以后不再使用
+    unsigned short iMaxUdpDg;  //2.0以后不再使用
+    char FAR       *lpVendorInfo;  //2.0以后不再使用
+} WSADATA, *LPWSADATA;
+```
+
+最后3个成员已弃之不用，szDescription 和 szSystemStatus 包含的信息基本没有实用价值，读者只需关注前两个成员即可。请看下面的代码：
+
+```cpp
+#include <stdio.h>
+#include <winsock2.h>
+#pragma comment (lib, "ws2_32.lib")
+int main(){
+    WSADATA wsaData;
+    WSAStartup( MAKEWORD(2, 2), &wsaData);//&表示地址（指针）
+    printf("wVersion: %d.%d\n", LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion));
+    printf("wHighVersion: %d.%d\n", LOBYTE(wsaData.wHighVersion), HIBYTE(wsaData.wHighVersion));
+    printf("szDescription: %s\n", wsaData.szDescription);
+    printf("szSystemStatus: %s\n", wsaData.szSystemStatus);
+    return 0;
+}
+
+//运行结果：
+//wVersion: 2.2
+//wHighVersion: 2.2
+//szDescription: WinSock 2.0
+//szSystemStatus: Running
+```
+
+**综上所述：WinSock 编程的第一步就是加载 ws2_32.dll，然后调用 WSAStartup() 函数进行初始化，并指明要使用的版本号。**
+
+## 10 使用socket()函数创建套接字
+
+不管是 Windows 还是 Linux，都使用 socket() 函数来创建套接字。socket() 在两个平台下的参数是相同的，不同的是返回值。
+1. Linux 中的一切都是文件，每个文件都有一个整数类型的文件描述符；socket 也是一个文件，也有文件描述符。使用 socket() 函数创建套接字以后，返回值就是一个 int 类型的文件描述符。
+2. Windows 会区分 socket 和普通文件，它把 socket 当做一个网络连接来对待，调用 socket() 以后，返回值是 SOCKET 类型，用来表示一个套接字。
+
+### 在Windows下创建socket
+
+#### af
+
+af 为地址族（Address Family），也就是 IP 地址类型，常用的有 AF_INET 和 AF_INET6。
+
+AF 是"Address Family"的简写，INET是“Inetnet”的简写
+
+AF_INET 表示 IPv4 地址（**4字节**），例如 127.0.0.1
+
+AF_INET6 表示 IPv6 地址（**16字节**），例如 1030::C9B4:FF12:48AA:1A2B。
+
+**需要记住127.0.0.1，它是一个特殊IP地址，表示本机地址**
+
+也可以使用 PF 前缀，PF 是"Protocol Family"的简写，它和 AF 是一样的。例如，PF_INET 等价于 AF_INET，PF_INET6 等价于 AF_INET6。
+
+#### type
+
+type 为数据传输方式/套接字类型，常用的有 
+1. SOCK_STREAM（流格式套接字/面向连接的套接字） 
+2. SOCK_DGRAM（数据报套接字/无连接的套接字）
+
+#### protocol
+
+protocol 表示传输协议，常用的有 IPPROTO_TCP 和 IPPTOTO_UDP，分别表示 TCP 传输协议和 UDP 传输协议。
+
+为什么还需要第三个参数（已经有了地址类型和数据传输方式）？
+
+一般情况下有了 af 和 type 两个参数就可以创建套接字了，操作系统会自动推演出协议类型，除非遇到这样的情况：有两种不同的协议支持同一种地址类型和数据传输类型。如果我们不指明使用哪种协议，操作系统是没办法自动推演的。
+
+只有一种协议满足条件，可以将 protocol 的值设为 0，系统会自动推演出应该使用什么协议
+
+#### 示例
+
+Windows 下也使用 socket() 函数来创建套接字，原型为：
+
+```cpp
+SOCKET socket(int af, int type, int protocol);//上面的int返回类型是linux的使用方式
+```
+
+除了返回值类型和Linux的不同，其他都是相同的。**Windows 不把套接字作为普通文件对待**，而是**返回 SOCKET 类型的句柄**。
+
+```cpp
+SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);  //创建TCP套接字
+```
+
+### Linux下的socket()函数
+
+#### 示例
+
+```cpp
+//如果使用 SOCK_STREAM 传输数据，那么满足这两个条件的协议只有 TCP
+int tcp_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);  //IPPROTO_TCP表示TCP协议
+//如果使用 SOCK_DGRAM 传输方式，那么满足这两个条件的协议只有 UDP
+int udp_socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);  //IPPROTO_UDP表示UDP协议
+int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);  //创建TCP套接字
+int udp_socket = socket(AF_INET, SOCK_DGRAM, 0);  //创建UDP套接字
+```
+
+
+
+
+
+
+
+
+
+## 11 bind()和connect()函数
+
+## 12 listen()和accept()函数
+
+## 13 send()/recv()和write()/read()函数
+## 14 socket编程实现回声客户端
+## 15 如何让服务器端持续不断地监听客户端的请求？
+## 16 socket缓冲区以及阻塞模式
+## 17 TCP粘包问题（数据的无边界性）
+## 18 TCP数据报结构以及三次握手(图解)
+## 19 TCP数据的传输过程
+## 20 TCP四次握手断开连接（图解）
+## 21 如何优雅地断开TCP连接？
+## 22 socket编程实现文件传输功能
+## 23 网络数据传输时的大小端问题
+## 24 在socket编程中使用域名
+## 25 再谈UDP和TCP
+## 26 基于UDP的服务器端和客户端
 
 
