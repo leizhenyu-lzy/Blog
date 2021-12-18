@@ -1,8 +1,10 @@
 # Learn Python
 
-## 零碎知识点
+# 零碎知识点
 
-### 文件基本操作
+##
+
+## 文件基本操作
 
 为什么要用文件？
 
@@ -30,7 +32,7 @@ f.close()
 
 os:operate system
 
-#### os.walk
+### os.walk
 
 walk能够遍历文件夹中，所有文件、文件夹(深度优先遍历)
 
@@ -85,7 +87,7 @@ for root, dirs, files in os.walk(".", topdown=False):
 
 <br>
 
-#### 使用递归函数遍历目录d
+### 使用递归函数遍历目录
 
 ```python
 import os
@@ -105,7 +107,7 @@ def list_file_or_folder(path_name):
 
 <br>
 
-#### os.path
+### os.path
 
 [菜鸟教程  Python os.path()模块](https://www.runoob.com/python/python-os-path.html)
 
@@ -129,7 +131,7 @@ print( os.path.join('root','test','runoob.txt') )  # 将目录和文件名合成
 <br>
 <br>
 
-### 变量作用域
+## 变量作用域
 
 Python作用域共四种
 
@@ -161,7 +163,7 @@ print(s)
 ```
 原因：在函数中给变量赋值的时候，python会将其强行创建为局部变量
 
-### List
+## List
 
 ![](Pics/python_list001.png)
 
@@ -169,7 +171,7 @@ print(s)
 <br>
 <br>
 
-### Python Generator Yield
+## Python Generator Yield
 
 ```python
 # 使用python推导式
@@ -227,7 +229,24 @@ def gen_nums(nums):
 <br>
 <br>
 
-### 
+# 标准库
+
+## time
+
+[标准库time](https://www.bilibili.com/video/BV1GT4y1E725)
+
+time
+
+datatime
+
+calendar
+
+time模块中三种时间表示方法
+1. 时间戳（数字，浮点型，从1970.1.1零时到现在的时间差距，单位秒）
+2. 结构化时间对象（对象，属性和访问方法）
+3. 格式化时间字符串（字符串）
+
+
 
 
 

@@ -1,27 +1,190 @@
 # 模式识别
 
-## 00 Pre
+## 00 传送门 
+
+REMAIN
 
 ## 01 Introduction
 
-## 02 Bayesian
 
+
+## 02 Bayesian Decision Theory
+
+### Introduction
+
+Thomas Bayes --- Bayes Theorem
+
+
+
+### Bayesian Decision Theory
+
+### Discrimination Functions
+
+### The Normal Distribution
+
+
+
+<br>
+<br>
 
 ## 03 Parameter Estimation
 
+### Introduction
+
+### Maximum-Likelihood Estimation
+
+### Bayesian Estimation
 
 
-## 04 Non Parametric
+<br>
+<br>
 
+## 04 Non-Parametric Estimation and Nearest-Neighbor Classification
+
+### Introduction
+
+大多数模式识别方法都假设密度函数的形式已知
+
+Lazy Learning（Nonparametric Estimation）保留数据，想想KNN
+
+Eager Learning（Parametric Estimation）根据数据学习出参数
+
+非参数估计来源于非参数统计学
+
+两种方法：直方图，近邻搜索
+
+
+
+### Density Estimation
+
+### Parzen Windows
+
+### KNN Estimation
+
+### The Nearest-Neighbor Rule
+
+
+<br>
+<br>
 
 ## 05 Linear Classification
 
+[线性判别 --国防科技大学](https://www.bilibili.com/video/BV144411D74h?p=14)
 
-## 06 Feature Extraction
+<br>
+<br>
 
-### PCA 主成分分析
+## 06 Feature Selection and Feature Extraction
+
+### Portal
 
 [同济小旭学长讲PCA](https://www.bilibili.com/video/BV1E5411E71z)
+
+### Introduction
+
+know what features to select? (PCA LDA ICA Transforms)
+
+reduce misclassification error ---> better feature
+
+特征种类
+1. 统计特征
+2. 时域特征
+3. 几何特征
+4. 光谱特征
+
+Dimensionality Reduction 降维
+1. 大多数learning方法对于高维数据效率低
+2. 数据的本征维数可能很小（治病基因可能很短）
+3. 特征特征是confusable的
+4. 简化计算，简化特征空间结构（分界面结构简单）
+
+特征抽取和特征选择是DimensionalityReduction（降维）的两种方法，针对于the curse of dimensionality(维灾难)，都可以达到降维的目的。但是这两个有所不同。
+
+1. 特征抽取（Feature Extraction）:Creating a subset of new features by combinations of the existing features.也就是说，特征抽取后的新特征是原来特征的一个映射。
+
+2. 特征选择（Feature Selection）:choosing a subset of all the features(the ones more informative)。也就是说，特征选择后的特征是原来特征的一个子集。
+
+好的特征集合的条件：
+1. 具有很大的识别信息量（很好的可分性）
+2. 具有可靠性（模棱两可的似是而非的应该去掉）
+3. 具有尽可能强的独立性（重复的、相关性强的不会增加更大分类信息）
+4. 数量尽可能少，同时损失的信息量尽可能小（计算快）
+
+### Class Separability Criterion 类别可分性准则
+
+[特征提取 --武汉大学](https://www.bilibili.com/video/BV1U54y1i7dZ)
+
+[特征提取 --国防科技大学](https://www.bilibili.com/video/BV144411D74h?p=34)
+
+需要一个准则函数J(criterion function)，衡量不同特征及其组合的分类有效性，例如Minimum Error Rate(错误分类最小)
+
+理想准则：某组特征使得分类器错误概率最小。但是，在实际应用中，直接使用是非常困难的，此时还没有训练分类器；对不同特征，训练的分类器也不同；也不能保证分类器在训练后是最理想的。
+
+实际的类别可分性判据硬满足的条件（4个）：
+
+![](Pics/L06P022.png)
+
+可分性判据越大，误分率越小
+
+i、j代表类，Jij>0说明可分
+
+互相独立时，总贡献是每一个特征的贡献，具有可加性
+
+加入新特征，提高可分性（至少不降低）
+
+**不是所有可分性判据都能满足所有上述条件，选取最重要的**
+
+#### Based on Distance 距离度量
+
+![](Pics/L06P023.png)
+
+直接基于样本，不涉及分类器，所以应用广泛
+
+##### 距离函数
+
+![](Pics/L06P024.png)
+
+![](Pics/L06P025.png)
+
+#### 准则函数
+
+![](Pics/L06P026.png)
+
+tr是迹，即方阵的主对角线元素的总和
+
+Sw：within-class scatter matrix 类内散度矩阵 越小越好
+
+Sb：between-class scatter matrix 类间散度矩阵 越大越好
+
+#### 特征提取步骤
+
+![](Pics/L06P027.png)
+
+![](Pics/L06P028.png)
+
+#### Based on Probability 概率分布
+
+
+
+#### Base on Entropy Function 熵函数
+
+
+
+### Feature Extraction
+
+![](Pics/L06P020.png)
+
+是对于原来特征的一个低维**映射**，凝练出**新特征**
+
+![](Pics/L06P021.png)
+
+based on distance
+
+based on probability distance
+
+
+
+#### PCA 主成分分析
 
 用于数据降维
 
@@ -42,7 +205,7 @@
 
 操作步骤：
 1. 去中心化，将坐标原点放在数据中心
-2. 找坐标系，找到方差最大的方向
+2. 找新的坐标系，找到投影后方差最大的方向（因为去中心化，所以所有数据点到原点的距离为常数。由勾股定理，当点到投影平面的距离最短时，投影点到原点的距离平方最大，也就是方差最大。因为到投影平面的距离短，所以保留了数据信息）
 
 数据变换
 1. 数据线性变换
@@ -87,9 +250,226 @@ outsider将会对求解结果造成很大影响
 
 ![](Pics/L06P017.png)
 
+### Feature Selection
+
+![](Pics/L06P018.png)
+
+**从原始特征中选择**有代表性、分类性的特征，Dnew < Dorigin
+
+![](Pics/L06P019.png)
 
 
-## 07 Unsupervised Clustering
+<br>
+<br>
+
+## 07 Unsupervised Learning and Clustering
+
+### Portal
+
+[K-means Blog](https://zhuanlan.zhihu.com/p/78798251)
+
+[物以类聚的Kmeans](https://www.bilibili.com/video/BV1ei4y1V7hX)
+
+[什么是K-Means](https://www.bilibili.com/video/BV1mf4y1k7UC)
+
+### Introduction
+
+Supervised(Labeled Data)
+
+Unsupervised(Unlabeled Data)
+
+目标：
+1. Find the class label
+2. Find the number of classes directly from data
+
+评价指标：
+1. high **intra-class** similarity:cohesive within clusters
+   
+   高类间相似：**聚类内**的凝聚力
+
+2. low **inter-class** similarity:distinctive berween clusters
+   
+   低类阶级相似：**聚类间**的独特性
+
+    ![](Pics/L07P001.png)
+
+**聚类是主观的**
+
+**类的概念是模棱两可的**（可以有很多的聚类的方法，聚成不同的类）
+
+聚类算法
+1. 基于邻接度 contiguity
+2. 基于密度 density
+3. 基于欧式密度 Euclidean density
 
 
 
+Definition Distance Measures
+
+distance(dissimilarity)
+
+![](Pics/L07P002.png)
+
+1. 欧氏距离
+   
+   ![](Pics/L07P003.png)
+
+2. 三角距离
+   
+   ![](Pics/L07P004.png)
+
+
+
+应用
+1. 图像处理
+   1. 图片分组
+   2. Image Segmentation
+2. 网页
+   1. 用户分类
+3. 信息生物学
+   1. 蛋白质聚类
+
+
+### Probability Model-Based Clustering
+
+对于每个区域，概率密度都是单峰的(unimodal distribution)
+
+REMAIN
+
+### Dynamic Clustering
+
+基本方法
+1. K-means
+2. K-medoids
+3. Fuzzy c-means
+4. ISODATA
+
+#### K-means算法
+
+无监督聚类算法
+
+K代表类别数 cluster number
+
+不断迭代的算法
+
+收敛到一个局部最小值
+
+![](Pics/L07P005.png)
+
+Ck指的是每一个类别的中心
+
+![](Pics/L07P006.png)
+
+算法步骤：
+
+1. （随机）选择K个值，作为聚类的初始中心
+
+2. 对任意一个样本点，求其到K个聚类中心的距离，将样本点**归类到距离最小的中心的聚类**，如此迭代n次
+   
+   ![](Pics/L07P007.png)
+
+3. 每次迭代过程中，利用均值等方法**更新各个聚类的中心点(质心)**，假定找到的成员都是正确的
+
+4. 对K个聚类中心，利用2,3步迭代更新后，如果位置点变化很小(可以设置阈值)，则认为达到稳定状态，迭代结束，对不同的聚类块和聚类中心可选择不同的颜色标注
+
+优点：
+1. 原理比较简单，实现也是很容易，收敛速度快(not always) 
+2. 聚类效果较优。 
+3. 算法的可解释度比较强。 
+4. 主要需要调参的参数仅仅是簇数k。
+
+问题：
+1. 不同的初始中心点导致不同的聚类结果
+   1. 不使用随机，采用某些方法（选择距离聚类中心最远的点）
+   2. 解决方法：K-means++……
+2. 不同K的选择导致不同结果
+   1. 随着K增加，J(D)单调减小
+   2. 解决方法：手肘法、GapStatistic……
+      ![](Pics/L07P009.png)
+
+缺点：
+1. 需要预先设定K
+2. 初始点的选择对结果影响大
+3. 对于非凸的数据集比较难收敛 
+4. 如果各隐含类别的数据不平衡，比如各隐含类别的数据量严重失衡，或者各隐含类别的方差不同，则聚类效果不佳。
+5.  最终结果和初始点的选择有关，容易陷入局部最优
+6.  对噪音（noisy）和异常点（离群点outlier）比较的敏感
+
+### Hierarchical Clustering 分层聚类
+
+![](Pics/L07P010.png)
+
+hierarchical cluster
+1. 基于欧氏距离
+   1. agglomerative 聚合的
+   2. divisive 分裂的
+2. 基于概率
+
+#### hierarchical cluster Ⅰ
+
+partition data set sequentially
+
+tree of clusters
+
+![](Pics/L07P011.png)
+
+![](Pics/L07P012.png)
+
+##### Distance Measure
+1. singe link
+   两个聚类中最接近的两个元素之间的距离
+
+   ![](Pics/L07P013.png)
+
+2. complete link
+   两个聚类中最远的两个元素之间的距离
+
+   ![](Pics/L07P014.png)
+
+3. average link
+   两个聚类中任意的两个点之间的距离的平均值
+
+   ![](Pics/L07P015.png)
+
+不同link的不同聚类结果
+
+![](Pics/L07P016.png)
+
+##### agglomerative聚类步骤
+
+![](Pics/L07P020.png)
+
+##### 例子
+
+![](Pics/L07P017.png)
+
+![](Pics/L07P018.png)
+
+一遍遍的刷新矩阵，矩阵逐渐变小。直到最后2×2矩阵，不用写成1×1
+
+![](Pics/L07P019.png)
+
+汇合点所标记的只就是更新矩阵时找到的非零最小值
+
+##### 相关问题
+
+dendrogram n.系统树图
+
+![](Pics/L07P021.png)
+
+知道分为几类，就知道最终结果
+
+选择最长的lifetime，某次合并的Δ最大，表示将两个不同的类进行合并
+
+#### hierarchical cluster Ⅱ
+
+暂无
+
+#### 总结
+
+![](Pics/L07P022.png)
+
+<br>
+<br>
+
+## 08
