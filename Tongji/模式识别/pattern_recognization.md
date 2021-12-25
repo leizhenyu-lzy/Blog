@@ -6,7 +6,52 @@ REMAIN
 
 ## 01 Introduction
 
+### Introduction to Pattern Recognition
 
+To assign an object or event to one of a number of categories, based on features derived to emphasize commonalities.
+
+Pattern is a set of objects or phenomena or concepts where the elements of the set are similar to one another in certain ways/aspects.
+
+### Pattern Recognition Systems
+
+![](Pics/L01P001.png)
+
+模式识别步骤
+1. 预处理 Preprocessing
+   1. reduce influence of noise
+   2. restore the degraded data
+   3. standardize the feature(数模转换、二进制编码、滤波、transformation)
+2. 特征提取 Feature Extraction
+   1. 好的特征选取会对识别准确性带来很大提升
+3. 分类&决定 Classification and Decision
+   1. classifier design:分类规则通过训练样本学习
+   2. classification decision:用分类器对输入数据进行识别
+   3. Issue of generalization.泛化性
+
+### Pattern Classification Methods
+
+1. Supervised Learning
+   1. 两个阶段：training（工程师 learn） & recognizing（用户 use）
+2. Unsupervised Learning
+   1. 将数据进行聚类，寻找内在联系和结构
+   2. 不同的聚类方法将得到不同的clusters
+
+![](Pics/L01P002.png)
+
+![](Pics/L01P003.png)
+
+### Relative Mathematics Concepts
+
+#### probability distribution
+
+#### normal distribution
+
+![](Pics/L01P004.png)
+
+#### standard normal distribution
+
+<br>
+<br>
 
 ## 02 Bayesian Decision Theory
 
@@ -22,6 +67,16 @@ Thomas Bayes --- Bayes Theorem
 
 ### The Normal Distribution
 
+### Test
+
+损失函数未给出，按照0-1损失，用后验
+
+损失函数给出，提到的按提到的算，没提到的损失默认为0
+
+判别函数，贝叶斯判别函数
+
+正态分布是的正态分布，三种，随后一种简单分析
+
 
 
 <br>
@@ -35,6 +90,11 @@ Thomas Bayes --- Bayes Theorem
 
 ### Bayesian Estimation
 
+### Test
+
+贝叶斯参数估计了解一下
+
+极大似然估计要掌握
 
 <br>
 <br>
@@ -63,13 +123,77 @@ Eager Learning（Parametric Estimation）根据数据学习出参数
 
 ### The Nearest-Neighbor Rule
 
+### Test
+
+Parzen窗口和KNN估计要掌握
 
 <br>
 <br>
 
 ## 05 Linear Classification
 
-[线性判别 --国防科技大学](https://www.bilibili.com/video/BV144411D74h?p=14)
+### Portals
+
+
+### Introduction
+
+之前假设的是概率密度函数的参数形式已知，通过训练样本估计概率密度的参数值。
+
+现在假定判别函数的参数形式已知，通过训练的方法来估计判别函数的参数值
+
+![](Pics/L05P001.png)
+
+线性判别函数相对容易计算
+
+线性判别函数：x的各个分量的线性函数，或者是以x为自变量的某些函数的线性函数
+
+**寻找线性判别函数转换为极小化准则函数的问题**
+
+以分类为目的的准则函数可以是**样本风险、训练误差**
+
+### Linear Discriminant Functions
+
+![](Pics/L05P002.png)
+
+**令g(x)=0**即得到用于分类的判定面（超平面）
+
+![](Pics/L05P003.png)
+
+超平面上每一点满足该等式，代入任意两点，可得到$W$与超平面上任意向量正交。
+
+![](Pics/L05P004.png)
+
+$x_p$是$x$在超平面$H$上的正交投影，易得$g(x_p)=0$
+
+另外，$\frac{w_0}{||w||}$是原点到$H$的距离
+
+#### 多类别情况
+
+决策树
+
+### Fisher Linear Discrimination
+
+### Perceptron Criterion Function 感知器准则函数
+
+
+
+### Minimum Error Classification
+
+### Minimun Squared Error Procedures
+
+### Nonlinear Discriminant Functions
+
+### Test
+
+概念、算法多
+
+Fisher  感知器
+
+最小错误分类、最小平方错误分类 计算较复杂
+
+伪逆矩阵需要掌握
+
+非线性判别函数 看懂例题即可
 
 <br>
 <br>
@@ -216,19 +340,23 @@ based on probability distance
 
     ![](Pics/L06P004.png)
 
+白数据$D$，x与y不相关，且都符合标准正态分布。通过先拉伸后旋转变化得到$D'$，此时x与y相关
+
 ![](Pics/L06P005.png)
 
 ![](Pics/L06P006.png)
+
+现在我们已有的数据是$D'$，希望通过操作将已有数据还原成白数据
 
 ![](Pics/L06P007.png)
 
 问题转化为求R？
 
-协方差矩阵的特征向量就是R
+**协方差矩阵的单位特征向量就是R，特征值就是新数据的方差**
 
 ![](Pics/L06P008.png)
 
-对本例$\bar{x}、\bar{y}$均为0
+对本例$\bar{x}、\bar{y}$均为0，因为已经进行区中心化
 
 ![](Pics/L06P009.png)
 
@@ -236,11 +364,17 @@ based on probability distance
 
 ![](Pics/L06P011.png)
 
-![](Pics/L06P012.png)
+![](Pics/L06P01201.png)
+
+这里体现出了，协方差矩阵的特征向量拼接起来就是R。L其实就是特征值组成的向量
+
+![](Pics/L06P01202.png)
 
 ![](Pics/L06P013.png)
 
 ![](Pics/L06P014.png)
+
+选取几个最大特征值对应的特征向量，将数据**左乘**以这些特征向量所合成的矩阵的**转置**即进行了映射（投影）。
 
 ![](Pics/L06P015.png)
 
@@ -250,6 +384,21 @@ outsider将会对求解结果造成很大影响
 
 ![](Pics/L06P017.png)
 
+
+#### PCA步骤
+
+先对数据进行去中心化
+
+求得协方差矩阵
+
+先求出协方差矩阵的特征值，再求得对应的特征向量
+
+较大的特征值所对应的特征向量就是投影的方向
+
+对于高维数据，可能需要选取较多的特征向量，并合成矩阵转置后再右乘数据，进行降维
+
+![](Pics/L06P029.png)
+
 ### Feature Selection
 
 ![](Pics/L06P018.png)
@@ -258,9 +407,51 @@ outsider将会对求解结果造成很大影响
 
 ![](Pics/L06P019.png)
 
+#### 特征选择方法
+
+![](Pics/L06P030.png)
+
+1. 最优的 optimal
+   1. exhaustive search 穷举搜索
+   2. branch and bound search 分支限界搜索
+2. 次优的 suboptimal
+   1. Sequential Forward Search(SFS) 序列前向选择
+   2. Sequential Backward Search(SBS) 序列后向选择
+   3. Plus 1 take away r
+   4. Sequential Forward Floating Search(SFFS)
+   5. Sequential Backward Floating Search(SBFS)
+   6. Best Individual Features
+
+<br>
+
+穷举搜索会生成每一个可能的解，保证了最优性，所以效率低。
+
+分支界定法，搜索状态空间树，可以通过bound进行剪枝。并且有两个模块：
+1. 一个用于在搜索解空间时生成分支
+2. 另一个生成bound，即时剪断一些分支
+
+<br>
+
+SFS：特征子集X从空集开始，每次选择一个特征x加入特征子集X，使得特征函数J(X)最优。简单说就是，每次都选择一个使得评价函数的取值达到最优的特征加入，其实就是一种简单的贪心算法。
+
+SBS：从特征全集O开始，每次从特征集O中剔除一个特征x，使得剔除特征x后评价函数值达到最优。序列后向选择与序列前向选择正好相反，它的缺点是特征只能去除不能加入。
+
+SFS与SBS都属于贪心算法，容易陷入局部最优值。
+
+
 
 <br>
 <br>
+
+### Test
+
+类的可分离性
+
+PCA 协方差矩阵
+
+准则函数，题目会告诉选取哪一个
+
+模拟退火和遗传算法不考
 
 ## 07 Unsupervised Learning and Clustering
 
@@ -472,4 +663,18 @@ dendrogram n.系统树图
 <br>
 <br>
 
+### Test
+
+K均值
+
+分层聚类
+
+答题规范
+
 ## 08
+
+
+
+### Test
+
+三个网络
