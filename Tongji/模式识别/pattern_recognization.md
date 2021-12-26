@@ -59,9 +59,75 @@ Pattern is a set of objects or phenomena or concepts where the elements of the s
 
 Thomas Bayes --- Bayes Theorem
 
+A theory for how to make decision in the presence of uncertainty.
 
+三个重要概念：
+1. 先验概率：prior probability : $p(\omega_i)$，反映了实际物体没有出现之前，我们所拥有的对可能出现的物体的先验知识。
+2. 类条件概率：class-conditional probability density : $p(x|\omega_i)$，类别为$\omega$时，x的概率密度。
+3. 后验概率：posterior probability : $p(\omega_i|x)$，在观察到物体特征向量x后做出的决策。
+4. 变量说明：x是物体的特征向量，$\omega$是所有可能的类别
+
+贝叶斯公式：将先验概率转换为后验概率
+
+$p(\omega_i|x)=\frac{p(x|\omega_i) \times(\omega_i)}{p(x)}$
+
+$posterior=\frac{likelihood \times prior}{evidence}$
+
+可能需要配合全概率公式一起使用
+
+![](Pics/L02P001.png)
+
+![](Pics/L02P002.png)
+
+从比较简单的判决函数转用贝叶斯公式计算后验概率，再进行分类（对于当前观察到的x显然$p(x)$的值相同，与类别无关，约去）
+
+![](Pics/L02P003.png)
+
+特殊情况
+
+![](Pics/L02P012.png)
+
+按照贝叶斯公式计算后验概率后的错误分类概率
+
+![](Pics/L02P004.png)
+
+![](Pics/L02P005.png)
+
+贝叶斯决策实际上就是用后验概率来进行决策
 
 ### Bayesian Decision Theory
+
+![](Pics/L02P006.png)
+
+$\lambda$的用途：**在某个类别下做出某种决策的风险/损失**，记得是选使得R尽量小的决策。
+
+条件风险：出现某个特征向量的时候，做出某种决策的风险/损失。无论遇到何种情况的特征，我们都可以通过选择最小化条件风险的行为使得预期损失最小。
+
+![](Pics/L02P007.png)
+
+积分是在整个特征空间进行的。如果想要总风险最小，就是选用这样一个判决函数$a(x)$来指导我们进行行为的决策（选出进行哪个行为），使得$R(a_i(x)|x)$对每个x尽可能小。
+
+贝叶斯决策提供了一个总风险的优化过程。最小化后的总风险被称为贝叶斯风险$R^*$，它是可获得的最优的结果。
+
+**这里的$\lambda_{ij}=\lambda(a_i|\omega_j)$代表当实际类别为$\omega_j$被判为$\omega_i$的风险/损失。**
+
+![](Pics/L02P008.png)
+
+![](Pics/L02P009.png)
+
+通常这两个系数都是正的，因为一般来说，一次错误判断造成的损失比正确判决的大。
+
+进一步整理得到下图：
+
+![](Pics/L02P010.png)
+
+一步步推导回顾：
+
+![](Pics/L02P011.png)
+
+#### 特殊情况：0/1损失函数
+
+
 
 ### Discrimination Functions
 
