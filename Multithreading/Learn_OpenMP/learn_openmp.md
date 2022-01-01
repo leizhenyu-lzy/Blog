@@ -621,6 +621,8 @@ Moore's law
 
 **Parallelism is a subset of Concurrency, taking some of the concurrency and executing at the same time.**
 
+并行是并发的子集。
+
 ![](OpenmpPics/Intel004.png)
 
 ![](OpenmpPics/Intel005.png)
@@ -653,7 +655,7 @@ sequential parts of the program and parallel regions
 
 nest threads is valid
 
-
+Cache缓存的出现使得现在的CPU都不是绝对意义上的SMP。
 
 
 ```cpp
