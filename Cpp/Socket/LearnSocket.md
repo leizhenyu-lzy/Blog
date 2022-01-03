@@ -2,6 +2,8 @@
 
 ![](Pics/socket_icon.jpg)
 
+[toc]
+
 ## 00 传送门
 
 [socket编程入门](http://c.biancheng.net/socket/)
@@ -13,6 +15,44 @@
 deprecate vt. 不赞成, 反对
 
 
+函数原型：
+
+1. Windows
+   ```cpp
+   SOCKET socket(int af, int type, int protocol);
+   //创建一个socket：地址，传输方式，协议
+
+   int bind(SOCKET sock, const struct sockaddr *addr, int addrlen);
+   //自身socket，bind的自己的信息，bind的信息的大小
+   //addr自己写
+   int connect(SOCKET sock, const struct sockaddr *serv_addr, int addrlen);
+   //自身socket，connect的目的地信息，connectd信息的大小
+   //addr自己写
+
+   int listen(SOCKET sock, int backlog);
+   //需要进入监听状态的socket，请求队列的长度
+   SOCKET accept(SOCKET sock, struct sockaddr *addr, int *addrlen); 
+   //返回用于通信的socket：监听socket，客户端信息，信息大小
+   //addr由accept得到
+
+   int send(SOCKET sock, const char *buf, int len, int flags);
+   //自己是哪个socket，len是字节数
+   int recv(SOCKET sock, char *buf, int len, int flags);
+   //自己是哪个socket，len是字节数
+   ```
+2. Linux
+   ```cpp
+   int socket(int af, int type, int protocol);
+
+   int bind(int sock, struct sockaddr *addr, socklen_t addrlen);
+   int connect(int sock, struct sockaddr *serv_addr, socklen_t addrlen);
+
+   int listen(int sock, int backlog);
+   int accept(int sock, struct sockaddr *addr, socklen_t *addrlen);
+
+   ssize_t write(int fd, const void *buf, size_t nbytes);
+   ssize_t read(int fd, void *buf, size_t nbytes);
+   ```
 
 
 未学习内容标识：LZY_NEED_TO_LEARN
@@ -343,6 +383,10 @@ int WSAStartup(WORD wVersionRequested, LPWSADATA lpWSAData);
 
 **wVersionRequested 为 WinSock 规范的版本号**，低字节为主版本号，高字节为副版本号（修正版本号）；**lpWSAData 为指向 WSAData 结构体的指针**。
 
+**WSAStartup的第一个参数是请求的版本号，第二个参数是一个WSADATA结构，其内容由WSAStartup填写，这个结构中的wVersion和wHighVersion才是实际使用的WinSock的版本号，这个版本号可能与你请求的值不同。返回0表示初始化成功。**
+
+如果在WSAStartup函数第一个参数中设置的版本号不存在，那么会自动使用WinSock库中最低的版本1.1。
+
 WinSock 规范的最新版本号为 2.2，较早的有 2.1、2.0、1.1、1.0，ws2_32.dll 支持所有的规范，而 wsock32.dll 仅支持 1.0 和 1.1。
 
 wsock32.dll 已经能够很好的支持 TCP/IP 通信程序的开发，ws2_32.dll 主要增加了对其他协议的支持，不过建议使用最新的 2.2 版本。
@@ -399,8 +443,10 @@ int main(){
 1. 包含头文件，#include <winsock2.h>
 2. 加载DLL，#pragma comment (lib,"ws2_32.lib")
 3. 定义一个WSADATA对象
-4. 使用WSAStartup()函数对WSADATA对象进行初始化
-5. 在WSAStartup()中使用MAKEWORD()函数
+4. 使用WSAStartup(版本号,上一步创建的对象地址) 函数对WSADATA对象进行初始化
+5. 在WSAStartup()中使用MAKEWORD(a,b) 函数
+6. 关闭socket，closesocket(SOCKET) 函数
+7. 停止DLL使用，WSACleanup() 函数
 
 ## 10 使用socket()函数创建套接字
 
@@ -488,7 +534,10 @@ bind()函数原型
 int bind(int sock, struct sockaddr *addr, socklen_t addrlen);  //Linux
 int bind(SOCKET sock, const struct sockaddr *addr, int addrlen);  //Windows
 ```
-//sock 为 socket 文件描述符，addr 为 sockaddr 结构体变量的指针，addrlen 为 addr 变量的大小，可由 sizeof() 计算得出。
+
+绑定成功返回0，失败返回-1
+
+sock 为 socket 文件描述符，addr 为 sockaddr 结构体变量的指针，addrlen 为 addr 变量的大小，可由 sizeof() 计算得出。
 
 将创建的套接字与IP地址 127.0.0.1、端口 1234 绑定
 ```cpp
@@ -591,8 +640,9 @@ int connect(int sock, struct sockaddr *serv_addr, socklen_t addrlen);  //Linux
 int connect(SOCKET sock, const struct sockaddr *serv_addr, int addrlen);  //Windows
 ```
 
-各个参数的说明和 bind() 相同。
+连接成功返回0，连接失败返回-1
 
+各个参数的说明和 bind() 相同。
 
 <br>
 <br>
@@ -607,6 +657,8 @@ int connect(SOCKET sock, const struct sockaddr *serv_addr, int addrlen);  //Wind
 int listen(int sock, int backlog);  //Linux
 int listen(SOCKET sock, int backlog);  //Windows
 ```
+
+成功返回0，失败返回-1
 
 sock 为需要进入监听状态的套接字，backlog 为请求队列的最大长度。
 
@@ -633,7 +685,7 @@ SOCKET accept(SOCKET sock, struct sockaddr *addr, int *addrlen);  //Windows
 
 它的参数与 listen() 和 connect() 是相同的：sock 为服务器端套接字，addr 为 sockaddr_in 结构体变量，addrlen 为参数 addr 的长度，可由 sizeof() 求得。
 
-**accept() 返回一个新的套接字来和客户端通信**，**addr 保存了客户端的IP地址和端口号**，而 sock 是服务器端的套接字，大家注意区分。后面和客户端通信时，要使用这个新生成的套接字，而不是原来服务器端的套接字。
+**accept() 返回一个新的套接字来和客户端通信**，**addr 保存了客户端的IP地址和端口号**，而 **sock 是服务器端的套接字**，注意区分。后面和客户端通信时，要使用这个新生成的套接字，而不是原来服务器端的套接字。
 
 最后需要说明的是：**listen() 只是让套接字进入监听状态**，并**没有真正接收客户端请求**，listen() 后面的代码会继续执行，直到遇到 accept()。accept() 会阻塞程序执行（后面代码不能被执行），直到有新的请求到来。
 
@@ -669,6 +721,8 @@ int recv(SOCKET sock, char *buf, int len, int flags);
 <br>
 
 ## 14 socket编程实现回声客户端
+
+Server
 
 ```cpp
 #include <stdio.h>
@@ -714,6 +768,54 @@ int main(){
 }
 ```
 
+Client
+
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <WinSock2.h>
+#pragma comment(lib, "ws2_32.lib")  //加载 ws2_32.dll
+
+#define BUF_SIZE 100
+
+int main(){
+    //初始化DLL
+    WSADATA wsaData;
+    WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+    //创建套接字
+    SOCKET sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+    //向服务器发起请求
+    struct sockaddr_in sockAddr;
+    memset(&sockAddr, 0, sizeof(sockAddr));  //每个字节都用0填充
+    sockAddr.sin_family = PF_INET;
+    sockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    sockAddr.sin_port = htons(1234);
+    connect(sock, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR));
+    //获取用户输入的字符串并发送给服务器
+    char bufSend[BUF_SIZE] = {0};
+    printf("Input a string: ");
+    scanf("%s", bufSend);
+    send(sock, bufSend, strlen(bufSend), 0);
+    //接收服务器传回的数据
+    char bufRecv[BUF_SIZE] = {0};
+    recv(sock, bufRecv, BUF_SIZE, 0);
+
+    //输出接收到的数据
+    printf("Message form server: %s\n", bufRecv);
+
+    //关闭套接字
+    closesocket(sock);
+
+    //终止使用 DLL
+    WSACleanup();
+
+    system("pause");
+    return 0;
+}
+```
+
 <br>
 <br>
 
@@ -726,7 +828,7 @@ int main(){
 while(1) 让代码进入死循环，除非用户关闭程序，否则服务器端会一直监听客户端的请求。客户端也是一样，会不断向服务器发起连接。
 
 需要注意的是：
-server 中调用 closesocket() 不仅会**关闭服务器端的 socket**，还会**通知客户端连接已断开**。
+**server 中调用 closesocket()** 不仅会**关闭服务器端的 socket**，还会**通知客户端连接已断开**。
 **客户端也会清理 socket 相关资源**，所以 **client.cpp 中需要将 socket() 放在 while 循环内部**。
 因为每次请求完毕都会清理 socket，下次发起请求时需要重新创建。
 
@@ -837,11 +939,11 @@ int main(){
 
 **每个 socket 被创建后，都会分配两个缓冲区，输入缓冲区和输出缓冲区。**
 
-write()/send() 并不立即向网络中传输数据，而是先将数据写入缓冲区中，再由TCP协议将数据从缓冲区发送到目标机器。一旦将数据写入到缓冲区，函数就可以成功返回，不管它们有没有到达目标机器，也不管它们何时被发送到网络，这些都是TCP协议负责的事情。
+**write()/send() 并不立即向网络中传输数据，而是先将数据写入缓冲区中，再由TCP协议将数据从缓冲区发送到目标机器**。一旦将数据写入到缓冲区，函数就可以成功返回，不管它们有没有到达目标机器，也不管它们何时被发送到网络，这些都是TCP协议负责的事情。
 
 TCP协议独立于 write()/send() 函数，数据有可能刚被写入缓冲区就发送到网络，也可能在缓冲区中不断积压，多次写入的数据被一次性发送到网络，这取决于当时的网络情况、当前线程是否空闲等诸多因素，不由程序员控制。
 
-read()/recv() 函数也是如此，也从输入缓冲区中读取数据，而不是直接从网络中读取。
+**read()/recv() 函数也是如此，也从输入缓冲区中读取数据，而不是直接从网络中读取。**
 
 ![](Pics/socket_buffer.jpg)
 
@@ -886,6 +988,10 @@ printf("Buffer length: %d\n", optVal);
 <br>
 
 ## 17 TCP粘包问题(数据的无边界性)
+
+**上节我们讲到了socket缓冲区和数据的传递过程，可以看到数据的接收和发送是无关的，read()/recv() 函数不管数据发送了多少次，都会尽可能多的接收数据。也就是说，read()/recv() 和 write()/send() 的执行次数可能不同。**
+
+**数据的“粘包”问题，客户端发送的多个数据包被当做一个数据包接收。也称数据的无边界性，read()/recv() 函数不知道数据包的开始或结束标志（实际上也没有任何开始或结束标志），只把它们当做连续的数据流来处理。**
 
 <br>
 <br>
@@ -935,5 +1041,9 @@ printf("Buffer length: %d\n", optVal);
 <br>
 <br>
 
+## 99 小知识
 
+127.0.0.1 ：全世界的电脑人手一个。代表自己，用于自我冥想。
+
+192.168.x.x ，10.x.x.x ，172.16.x.x -172.31.x.x ：这些地址可以自由有序使用，但不能随便乱使用。在家庭、公司、机构为单位的网络里，要保证地址的唯一性。
 

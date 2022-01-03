@@ -643,6 +643,27 @@ Shared Memory Computer:any computer composed of multiple processing elements tha
 
 things will interleave
 
+Cache缓存的出现使得现在的CPU都不是绝对意义上的SMP。
+
+![](OpenmpPics/Intel011.png)
+
+一个进程内含了多个线程，每一个线程都拥有自己的一块stack、Program Pointer、寄存器。这些线程共享text、data、heap region，这使得线程间通信十分方便。
+
+线程数可以超过电脑核数。
+
+OpenMP is a multi-threading, shared address model.
+
+Threads communicate by sharing variables.(heap)
+
+这些数据的共享可能是不安全的。
+
+Prevent race condition.(the program's outcome changes as the threads are scheduled differently)
+
+To control race conditions, use synchronization to protect data conflicts.(to have organized and disciplined access to share data) 
+
+Synchronization is expensive. Change how data is accessed to minimize the need for synchronization.
+(意思是同步等待？)
+
 <br>
 
 Fork-Join Parallelism
@@ -655,13 +676,198 @@ sequential parts of the program and parallel regions
 
 nest threads is valid
 
-Cache缓存的出现使得现在的CPU都不是绝对意义上的SMP。
-
 
 ```cpp
-omp_set_num_threads(number);
-number=omp_get_thread_num();
+omp_set_num_threads(int);
+
+int=omp_get_thread_num();
+
+double omp_get_wtime();
 ```
+
+**再omp的语段内定义（分配）的变量在线程的栈空间，是thread私有的。而在外分配的变量在堆空间，是线程可以共享的。**
 
 ![](OpenmpPics/Intel010.png)
 
+计算$\pi$
+
+```cpp
+//串行
+static long num_steps = 100000;
+double step;
+int main()
+{
+	int i = 0;
+	double x = 0, pi = 0, sum = 0;
+	step = 1.0 / num_steps;
+	for (i = 0; i < num_steps; i++)
+	{
+		x = (i + 0.5) * step;
+		sum += 4.0 / (1.0 + x * x);
+	}
+	pi = step * sum;
+	cout << "pi: " << pi << endl;
+	return 0;
+}
+```
+
+the SPMD algorithm strategy
+
+```cpp
+const int num_threads = 20;//我希望申请到的线程数量
+	const long num_steps = 100000;
+	int realthreads = 0;//系统实际分配给我的数量，不会大于我希望申请到的，但是有可能小于
+	double pi = 0.0;
+	double part_sum[num_threads] = { 0.0,0.0 };
+	double step = 1.0 / num_steps;
+	double start_time = omp_get_wtime();
+#pragma omp parallel num_threads(num_threads)
+	{
+		int id, nthrds;
+		double x = 0.0;
+		id = omp_get_thread_num();
+		nthrds = omp_get_num_threads();
+		if (id == 0)
+			realthreads = nthrds;
+		for (int i = 0; i < num_steps; i += nthrds)
+		{
+			x = (i + 0.5) * step;
+			part_sum[id] += 4.0 / (1 + x * x) * step;
+		}
+	}
+
+	for (int i = 0; i < realthreads; i++)
+		pi += part_sum[i];
+	cout << "PI: " << pi << endl;
+	double end_time = omp_get_wtime();
+	cout << "Time: " << end_time - start_time << endl;
+```
+
+对于单线程来说，使用OpenMP会略微慢一些。
+
+False sharing
+
+![](OpenmpPics/Intel012.png)
+
+如果公用一个cache，将会拖慢速度。
+
+
+Barrier
+
+Mutual Exclusion-->critical construct -->critical section
+
+不应该让critical中的程序过多，否则又变为串行，牺牲了性能
+
+atomic --> shortcut to critical, certain constructs in hardware supported in hardware, doing quick update of values in memory.
+
+critical is more general, but if doing simple update(binop=、x++、++x、--x、x--)use atomic faster.
+
+```cpp
+	const int NumThreads = 8;//我希望申请到的线程数量
+	const long NumSteps = 100000;
+	int realthreads = 0;//系统实际分配给我的数量，不会大于我希望申请到的，但是有可能小于
+	double pi = 0.0;
+	double step = 1.0 / NumSteps;
+	double start_time = omp_get_wtime();
+#pragma omp parallel num_threads(NumThreads)
+	{
+		int id, nthrds;
+		double sum = 0.0;
+		double x = 0.0;
+		id = omp_get_thread_num();
+		nthrds = omp_get_num_threads();
+		if (id == 0)
+			realthreads = nthrds;
+		for (int i = 0; i < NumSteps; i += realthreads)
+		{
+			x = (i + 0.5) * step;
+			sum += 4.0 / (1 + x * x) * step;
+		}
+#pragma omp atomic
+		pi += sum;
+	}
+
+	cout << "PI: " << pi << endl;
+```
+
+**最好不要在thread中的for循环中使用critical来传递数据给共享的变量，这样会拖慢速度。可以在线程中创建一个sum用来临时存放。**
+
+
+WorkSharing
+1. loop Construct
+2. section Construct
+3. single Construct
+4. task Construct
+
+Loop Worksharing Construct(for loop)
+```cpp
+#pragma omp for schedule
+//schedule 告诉编译器如何将for进行划分
+```
+
+![](OpenmpPics/Intel013.png)
+
+loop independence
+
+Reduction
+
+```cpp
+reduction(op:list);
+```
+
+**A local copy of each list variable is made and initialized depending on the "op". When the work is done, local copies are reduced into a single value and combined with the original global value.**
+
+
+通过for和reduction重新计算$\pi$的程序
+
+```cpp
+const long NumSteps = 100000;
+	double step = 1.0 / NumSteps;
+	double pi = 0.0; 
+	double sum = 0.0;
+
+#pragma omp parallel for reduction(+:pi) num_threads(10)
+	for (int i = 0; i < NumSteps; i++)
+	{
+		double x = (i + 0.5) * step;
+		pi += 4.0 / (1.0 + x * x);
+	}
+	pi *= step;
+	cout << pi << endl;
+```
+
+Barrier & Nowait
+
+```cpp
+#pragma omp barrier
+
+#pragma omp for nowait
+```
+
+Master & Single
+```cpp
+#pragma omp master//如果让其他线程等待需要barrier
+
+#pragma omp single//含有隐含barrier，可以加nowait
+```
+
+Sections & Section
+
+一个thread执行一个Section
+
+
+
+Lock
+
+```cpp
+omp_init_lock();//initialize the lock variable
+omp_set_lock();//grab a lock of mine
+omp_unset_lock();//done with the lock, someone else can grab the lock
+omp_destroy_lock();//free up the space 
+omp_test_lock();//whether the lock is available
+```
+
+
+
+
+Shared Private
