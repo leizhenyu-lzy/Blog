@@ -1049,7 +1049,46 @@ Swap（如果被上锁就一直交换，两个true交换，一直循环等待）
 
 ![](Pics/process023.png)
 
-### 09、
+### 09 线程
+
+### 王道考研线程
+
+[](https://www.bilibili.com/video/BV1YE411D7nH?p=12)
+
+#### 线程概念和多线程模型
+
+![](Pics/thread000.png)
+
+![](Pics/thread001.png)
+
+![](Pics/thread002.png)
+
+线程可以理解为轻量级的进程
+
+![](Pics/thread003.png)
+
+![](Pics/thread004.png)
+
+线程间切换开销小于进程间开销
+
+![](Pics/thread005.png)
+
+**线程的实现方式**
+
+![](Pics/thread006.png)
+
+![](Pics/thread007.png)
+
+![](Pics/thread008.png)
+
+**多线程模型**
+
+![](Pics/thread009.png)
+
+![](Pics/thread010.png)
+
+![](Pics/thread011.png)
+
 
 
 ### 10
