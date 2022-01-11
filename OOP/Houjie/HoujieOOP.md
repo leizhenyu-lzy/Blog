@@ -276,7 +276,7 @@ cout的数据类型是ostream
 <br>
 <br>
 
-## 07.拷贝构造，拷贝复制，析构
+## 07.拷贝构造，拷贝赋值，析构
 
 class with pointer member
 
