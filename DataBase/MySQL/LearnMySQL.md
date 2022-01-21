@@ -6,13 +6,15 @@
 
 ## Portals
 
-[尚硅谷 MySQL数据库](https://www.bilibili.com/video/BV1iq4y1u7vj)
+[宋红康 MySQL数据库](https://www.bilibili.com/video/BV1iq4y1u7vj)
 
 current
 
 ## 数据库概述与MySQL
 
 ### 数据库简介
+
+由瑞典 MySQL AB 公司创立
 
 **为什么使用数据库**
 1. 持久化 persistence 将数据存储到硬盘加以“固化”
@@ -240,6 +242,7 @@ show variables like 'collation_%';
 drop databases [dbname]
 删除数据库
 ```
+
 ### 图形化管理工具
 
 1. Workbench
@@ -261,11 +264,61 @@ ALTER USER 'root'@'locolhost' IDENTIFIED WITH mysql_native_password BY '[yourpas
 FLUSH PRIVILEGES;
 ```
 
+### 其他内容
 
+**无论是命令行还是GUI都是通过网络的方式访问数据库。（客户端访问服务器）**
+
+如果需要修改字符集可以通过alter语句
+
+```
+alter table [tablename] charset [aim_charset];  
+alter database [dbname] charset [aim_charset];  
+例子：utf8
+```
 
 ## SQL之select使用
 
+### SQL概述
 
+**SQL背景知识**
+
+结构化查询语言 Structured Query Language
+
+不同数据库生产厂商都支持SQL语言，但都有特定内容。
+
+![](Pics/Fundamental/fund_sql021.png)
+
+SQL是一门ANSI的标准计算机语言，用来访问和操作数据库系统。SQL语句用于取回和更新数据库中的数据。
+
+不幸地是，存在着很多不同版本的SQL语言，但是为了与ANSI标准相兼容，它们必须以相似的方式共同地来支持一些主要的关键词（比如SELECT、UPDATE、DELETE、INSERT、WHERE等等）。
+
+**SQL分类**
+
+1. **DDL** 数据定义语言（对数据库结构进行操作） （**用于定义不同的数据库、表、视图、索引等数据库对象，还可以用来创建、删除、修改数据库和数据表的结构**）
+   1. CREATE(table view index)从无到有创建
+   2. ALTER 修改
+   3. DROP 删除
+   4. RENAME 重命名
+   5. TRUNCATE 清空 表的数据，但表的结构还在
+2. **DML** 数据操作语言（针对一条条记录） 使用频率最高 （**用于增删改查，添加、删除、更新、查询数据库记录，并检测数据完整性**）
+   1. INSERT 添加一条记录
+   2. DELETE 删除一条记录
+   3. UPDATE 修改
+   4. SELECT 查询 （数据查询 DQL） （重中之重）
+3. **DCL** 数据控制语言 控制操作 （**用于定义数据库、表、字段、用户权限、安全级别**）
+   1. COMMIT 提交（事务控制 TCL）
+   2. ROLLBACK 回滚（事务控制 TCL）
+   3. SAVEPOINT 设置保存点
+   4. GRANT 赋予权限
+   5. REVOKE 回收权限
+
+### SQL的语言规范
+
+### 基本的SELECT语句
+
+### 显示表结构
+
+### 过滤数据
 
 ## DDL、DML、DCL使用
 
