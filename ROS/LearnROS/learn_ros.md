@@ -2,6 +2,8 @@
 
 ![](Pics/Others/turtle_pic001.png)
 
+[toc]
+
 # 古月居ROS入门21讲
 
 ## 1.课程介绍
@@ -691,106 +693,23 @@ NanoRobot参数
     rosdistro：kinetic
     rosversion：1.12.14
 
+## 关键文件位置
+
+~/.bashrc
+
+~/catkin_ws/devel/setup.bash
+
+可执行文件在 ~/catkin_ws/devel/lib/[package]/[xxxx]
+
+## 
+
 # SLAM
 
-simultaneous localization and mapping
-
-定位&地图构建
-
-深度信息（激光雷达、相机）
-
-回环检测（Loop Detection）
-
-认出曾今经过的地方>>环，减少误差、矫正轨迹形状
-
-# Gazebo
-
-[gazebo官网教程](http://gazebosim.org/tutorials)
-
-[ROS官网urdf相关](http://wiki.ros.org/urdf/Tutorials)
-
-
-## 01 Overview and installation
-
-Typical uses of Gazebo include:
-
-1. testing robotics algorithms
-2. designing robots
-3. performing regression testing with realistic scenarios
-
-A few key features of Gazebo include:
-
-1. multiple physics engines
-2. a rich library of robot models and environments
-3. a wide variety of sensors
-4. convenient programmatic and graphical interfaces
-
-## 02 Understanding the GUI
-
-GUI
-
-1. Scene(where the simulated objects are animated)
-2. Panels(right and left)
-   1. left(world、insert、 layer)
-   2. right
-3. Toolbars
-   1. Upper Toolbar
-   ![](Pics/Gazebo/top-toolbar.png)
-   1. Bottom Toolbar
-   ![](Pics/Gazebo/bottom-toolbar.png)
-4. Mouse Controls
-![](Pics/Gazebo/mouse-controls.png)
-5. Menu
-
-## 03 Model Editor
-
-To enter the Model Editor, click on Edit in the menu bar and select Model Editor. Or, use the hotkeys, Ctrl+M. 
-
-一旦进入模型编辑器，物理和模拟就会暂停
-
-左面板有两个选项
-1. 插入
-   1. Simple Shapes
-   2. Custom Shapes 该Add按钮允许您从模型中的链接导入自定义网格。它目前支持 COLLADA (.dae)、3D Systems (.stl)、Wavefront (.obj) 和 W3C SVG (.svg) 文件。
-   3. Model Database
-2. 模型
-   1. 模型选项卡允许您设置正在构建的模型的名称和基本参数。它显示模型中的链接、关节、嵌套模型和插件的列表。可以使用Link Inspector修改参数。
-
-
-进入Model Eidtor编辑模型
-
-通过Scale Mode粗调大小
-
-![](Pics/Gazebo/scale_tool.png)
-
-通过Link Inspector调整位置和角度，细调大小
-
-注意，视觉大小和碰撞体积可能都需要修改
-
-利用Create Joint创建链接，对于不同种类的链接选择不同链接方式
-
-![](Pics/Gazebo/joint_tool.png)
-
-注意转轴的设置以及位置对齐设置等等
-
-可能会用到Model Plugin Inspector
-
-![](Pics/Gazebo/model-plugin.png)
-
-<br>
-<br>
-
-
-## URDF
-
-The Unified Robotic Description Format (URDF)
 
 
 
+# 其他知识
 
-## 其他知识
-
-### 1.XML文件
+## 1.XML文件
 
 可扩展标记语言：Extensible Markup Language
-
