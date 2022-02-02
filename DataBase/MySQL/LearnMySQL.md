@@ -441,11 +441,14 @@ Key刻画约束
 
 只想查询满足某些条件的数据（过滤）
 
-WHERE
+**WHERE一定要写在FROM后面，且必须挨在一起**
 
 ```sql
 SELECT 列名1 FROM 表名 WHERE 列名2=xxx;
 ```
+
+windows中大小写不敏感，列名表名大小写无所谓。如果WHERE中查询字符串最哈保证大小写和表中的符合（mysql不严谨导致大小写都无所谓）
+
 ## DDL、DML、DCL使用
 
 ## 其他数据库对象
