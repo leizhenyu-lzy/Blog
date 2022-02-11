@@ -1,0 +1,3 @@
+PROJECT(TestCMakeCPP)
+
+ADD_SUBDIRECTORY(src bin)
