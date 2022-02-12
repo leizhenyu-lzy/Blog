@@ -98,31 +98,7 @@ To enter the Model Editor, click on Edit in the menu bar and select Model Editor
 
 The Unified Robotic Description Format (URDF)
 
-## XML Specification
-
-### robot 标注机器人描述文件
-
-### link 描述机器人部件
-
-inertial(关系)
-
-visual(视觉)
-
-collision(碰撞)
-
-### joint 描述机器人关节
-
-type（关节运动方式）
-1. revolute：有限位的转动
-2. continuous：连续转动
-3. prismatic：滑动
-4. fixed：固定
-5. floating：6自由度
-6. planar：平面中移动
-
-child
-
-parent
+详见LearnURDF文件夹
 
 ## 检查工具
 
