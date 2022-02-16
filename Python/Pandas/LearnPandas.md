@@ -4,6 +4,238 @@
 
 [toc]
 
+# Portals
+
+[莫烦Python Pandas教程](https://www.bilibili.com/video/BV1Ex411L7oT)
+
+[菜鸟教程 Pands](https://www.runoob.com/pandas/pandas-tutorial.html)
+
+# 莫烦Python
+
+## 常见用法
+
+不需要括号，因为这是属性
+```python
+df.dtypes  # 查看每一列的数据类型
+
+df.index  # 行标
+
+df.columns  # 列表
+
+df.values  # 值
+
+df.describe()  # 一些描述
+
+df.T  # 转置
+
+df.sort_index(axis=[num], ascending=False)  # 根据索引的大小对整个DataFrame进行重排
+# num==0 对index排序
+# num==1 对columns排序
+# ascending==True升序 ==False降序
+
+df.sort_values(xxx)  # 根据某一列的值进行排序
+```
+
+## 选择数据
+
+### .loc 标签
+
+```python
+x = [[1,2,3,4],
+     [5,6,7,8],
+     [9,10,11,12],
+     [13,14,15,16],
+     [17,18,1,20],]
+
+df = pd.DataFrame(x, index=['_0','_1','_2','_3','_4'],columns=['|0','|1','|2','|3'])
+print(df)
+"""
+    |0  |1  |2  |3
+_0   1   2   3   4
+_1   5   6   7   8
+_2   9  10  11  12
+_3  13  14  15  16
+_4  17  18   1  20
+"""
+print(df[1:2])
+"""
+    |0  |1  |2  |3
+_1   5   6   7   8
+"""
+print(df[['|2','|3']])
+"""
+    |2  |3
+_0   3   4
+_1   7   8
+_2  11  12
+_3  15  16
+_4   1  20
+"""
+print(df.loc[:, ['|1', '|2']])
+"""
+    |1  |2
+_0   2   3
+_1   6   7
+_2  10  11
+_3  14  15
+_4  18   1
+"""
+print(df.loc[['_0', '_1'], ['|1', '|2']])
+"""
+    |1  |2
+_0   2   3
+_1   6   7
+"""
+```
+### .iloc 坐标
+```python
+# 切片
+print(df.iloc[3:4, 1:3])
+"""
+    |1  |2
+_3  14  15
+"""
+print(df.iloc[3:, 1:3])
+"""
+    |1  |2
+_3  14  15
+_4  18   1
+"""
+# 不连续切片
+print(df.iloc[[0, 2, 4], [1, 1, 2]])
+"""
+    |1  |1  |2
+_0   2   2   3
+_2  10  10  11
+_4  18  18   1
+"""
+```
+
+### .ix
+
+```python
+# 不推荐使用
+```
+
+### Boolean indexing 布尔
+
+```python
+print(df[df >= 8])
+"""
+      |0    |1    |2    |3
+_0   NaN   NaN   NaN   NaN
+_1   NaN   NaN   NaN   8.0
+_2   9.0  10.0  11.0  12.0
+_3  13.0  14.0  15.0  16.0
+_4  17.0  18.0   NaN  20.0
+"""
+print(df[df.iloc[1:3] > 9])
+"""
+    |0    |1    |2    |3
+_0 NaN   NaN   NaN   NaN
+_1 NaN   NaN   NaN   NaN
+_2 NaN  10.0  11.0  12.0
+_3 NaN   NaN   NaN   NaN
+_4 NaN   NaN   NaN   NaN
+"""
+print(df[df.iloc[0:3,1:3] > 9])
+"""
+    |0    |1    |2  |3
+_0 NaN   NaN   NaN NaN
+_1 NaN   NaN   NaN NaN
+_2 NaN  10.0  11.0 NaN
+_3 NaN   NaN   NaN NaN
+_4 NaN   NaN   NaN NaN
+"""
+```
+
+## pandas设置值
+
+利用上面的选择数据方法然后赋值即可
+1. iloc
+2. loc
+
+```python
+df.iloc[[1, 4], [2, 3]] = 999
+print(df)
+"""
+    |0  |1   |2   |3
+_0   1   2    3    4
+_1   5   6  999  999
+_2   9  10   11   12
+_3  13  14   15   16
+_4  17  18  999  999
+"""
+
+df.loc['_0'] = np.nan  # 行(会被覆盖)
+df['|0'] = 2  # 列
+df.loc[:, '|2'] = 3  # 列
+print(df)
+"""
+    |0    |1  |2    |3
+_0   2   NaN   3   NaN
+_1   2   6.0   3   8.0
+_2   2  10.0   3  12.0
+_3   2  14.0   3  16.0
+_4   2  18.0   3  20.0
+"""
+
+df = pd.DataFrame(x, index=['A','B','C','D','E'],columns=['A','B','C','D'])
+print(df)
+"""
+    A   B   C   D
+A   1   2   3   4
+B   5   6   7   8
+C   9  10  11  12
+D  13  14  15  16
+E  17  18   1  20
+"""
+df.B[df.A>8]=0
+print(df)
+"""
+    A  B   C   D
+A   1  2   3   4
+B   5  6   7   8
+C   9  0  11  12
+D  13  0  15  16
+E  17  0   1  20
+"""
+```
+
+
+## 合并concat
+
+```python
+df1 = pd.DataFrame(np.ones((3, 4)) * 1, columns=['a', 'b', 'c', 'd'])
+df2 = pd.DataFrame(np.ones((3, 4)) * 2, columns=['a', 'b', 'c', 'd'])
+df3 = pd.DataFrame(np.ones((3, 4)) * 3, columns=['a', 'b', 'c', 'd'])
+
+df = pd.concat(objs=[df1, df2, df3], axis=0, ignore_index=True)
+# axis=0是竖着叠在一起，axis=1是横着拼在一起
+# ignore_index是否忽略index重新从0赋值
+
+print(df)
+
+"""
+     a    b    c    d
+0  1.0  1.0  1.0  1.0
+1  1.0  1.0  1.0  1.0
+2  1.0  1.0  1.0  1.0
+3  2.0  2.0  2.0  2.0
+4  2.0  2.0  2.0  2.0
+5  2.0  2.0  2.0  2.0
+6  3.0  3.0  3.0  3.0
+7  3.0  3.0  3.0  3.0
+8  3.0  3.0  3.0  3.0
+"""
+```
+
+
+
+
+
+
+
 
 
 # 菜鸟教程
@@ -249,6 +481,8 @@ r3  NaN  NaN
 """
 ```
 
+选择数据后面有详细范例
+
 **返回指定行的数据**
 
 Pandas 可以使用 loc 属性返回指定行的数据，如果没有设置索引，第一行索引为 0，第二行索引为 1，以此类推
@@ -341,6 +575,7 @@ print(df[["mango", "pear"]])
 2    390     3
 """
 ```
+
 
 ## 04 Pandas读取保存csv、txt文件
 

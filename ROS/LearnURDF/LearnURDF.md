@@ -2,7 +2,30 @@
 
 [toc]
 
+# Portals
+
+[古月居 一起从零手写URDF模型](https://class.guyuehome.com/detail/p_5e1eea4fe1e5c_Igm126Xn/6)
+
+[古月居 Github 手写URDF](https://github.com/guyuehome/ros_basic_tutorials/tree/dfb8afac81929040ea659a40c03d1d41f2897b5f/handwriting_urdf)
+
+
+[ROS Wiki urdf](http://wiki.ros.org/urdf)
+
+[ROS Wiki urdf tutorial](http://wiki.ros.org/urdf/Tutorials)
+
+[ROS Wiki xacro](http://wiki.ros.org/xacro)
+
+
+
 # XML Specitications
+
+URDF：Unified Robot Description Format，统一机器人描述格式
+
+URDF可以描述机器人本身和环境
+
+![](Pics/gyh01.png)
+
+![](Pics/gyh02.png)
 
 ## robot
 
@@ -10,11 +33,19 @@ Describes all properties of a robot.
 
 The root element in a robot description file must be a robot, with all other elements must be encapsulated(囊括) within.
 
+完整机器人模型的最顶层标签
+
+link和joint标签都必须包括在其中
+
 ### Elements
 
-link
+**link：自身不能动的连杆，想要运动必须使用关节进行连接，关节运动带动**
 
-joint
+**joint：连接两个连杆，自身有运动属性**
+
+**joint里的origin，只管各个link的各自坐标系之间的关系**
+
+**link里的origin，只管自己的visual/collision/inertial和自身的坐标系的关系**
 
 transmission
 
@@ -65,6 +96,16 @@ Describes the kinematic(运动学) and dynamic properties of a link.
    </collision>
  </link>
 ```
+
+![](Pics/gyh03.png)
+
+visual是必须的,通过mesh标签连接了一个stl文件\<mesh filename="xxx.stl"/>
+
+origin:与坐标变换相关（描述紫色在黑色坐标系的位置关系）
+1. xyz：描述林肯相对于当前坐标系的平移变化
+2. rpy：roll/pitch/yaw（围绕xyz轴的旋转弧度，单位为弧度）
+
+
 
 ### Attributes
 
@@ -128,15 +169,31 @@ Describes the kinematic and dynamic properties of a joint.
  </joint>
 ```
 
+![](Pics/gyh04.png)
+
+每一个link产生一个坐标系
+
+joint将各个link的坐标系建立连接，描述坐标系的位置运动关系，同时描述了运动类型
+
+包含名字和类型
+
+每一个joint只能连接两个link，parent和child
+
+origin描述link2相对于link1的运动（两个link的相对关系）
+
+axis描述旋转轴（都是0-1，表示的是权重）
+
+limit表示限位，也可以指定速度的限制
+
 ### Attributes
 
 **name**
 
 **type**
-1. revolute：   与continuous的运动方式是一样的，但有严格的最大最小值限制。
-2. continuous： 绕axis轴旋转，没有最大最小值限制
-3. prismatic:   表示沿着轴运动（滑动）而非旋转，只可以一维运动。
-4. fixed：      不能运动
+1. revolute：   与continuous的运动方式是一样的，但有严格的最大最小值限制。（机械臂）
+2. continuous： 绕axis轴旋转，没有最大最小值限制。（轮胎）
+3. prismatic:   表示沿着轴运动（滑动）而非旋转，只可以一维运动（直线电机）。
+4. fixed：      不能运动。（没有相对运动，螺丝、胶固定）
 5. floating：   表示可以任意6自由度运动
 6. planar：     表示可以在与轴垂直的平面上运动（二维）。
 
@@ -209,4 +266,3 @@ The Unified Robot Description Format (URDF) is an XML specification to describe 
   <joint>  ....  </joint>
 </robot>
 ```
-

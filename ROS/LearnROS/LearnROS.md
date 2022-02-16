@@ -4,23 +4,25 @@
 
 [toc]
 
-# 古月居ROS入门21讲
+# 古月居
 
-## 1.课程介绍
+## 古月居ROS入门21讲
+
+### 1.课程介绍
 
 ROS:robot operating system
 
 通信机制、开发工具、应用功能、生态系统
 
-## 2.Linux系统介绍及安装
+### 2.Linux系统介绍及安装
 
-## 3.Linux系统基础操作
+### 3.Linux系统基础操作
 
-## 4.C++/Python极简基础
+### 4.C++/Python极简基础
 
-## 5.安装ROS系统
+### 5.安装ROS系统
 
-## 6.ROS是什么
+### 6.ROS是什么
 
 ![](Pics/GYH/Lesson6/ros_history001.png)
 
@@ -45,7 +47,7 @@ ROS:robot operating system
    2. 软件源（Repository）
    3. ROS Wiki
 
-## 7.ROS中的核心概念
+### 7.ROS中的核心概念
 
 ①节点与节点管理器
 
@@ -113,8 +115,219 @@ ROS:robot operating system
 
 ![](Pics/GYH/Lesson7/main_conception006.png)
 
-## 8.ROS命令行工具的使用
+### 8.ROS命令行工具的使用
 
+## 从零手写URDF模型（古月）
+
+[古月居 一起从零手写URDF模型](https://class.guyuehome.com/detail/p_5e1eea4fe1e5c_Igm126Xn/6)
+
+[古月居 Github 手写URDF](https://github.com/guyuehome/ros_basic_tutorials/tree/dfb8afac81929040ea659a40c03d1d41f2897b5f/handwriting_urdf)
+
+```
+# 我是创建了一个名为GYH的文件夹用于存放古月居的各个工程
+# 创建功能包，并指定依赖
+catkin_create_pkg mbot_description urdf xacro
+
+# 回到~/catkin_ws
+catkin_make
+
+# 回到创建包的目录
+mkdir urdf  # 存放urdf模型文件
+mkdir meshes  # 存放建模软件的模型
+mkdir launch  ## 存放launch文件
+mkdir conifg  ## 存放rviz等软件的相关配置
+```
+
+创建文件:mbot_with_laser.urdf
+```xml
+<?xml version="1.0" ?>
+<robot name="mbot">
+
+    <!-- 定义各个材料和颜色，完全是通过color进行定义的与material名称无关 -->
+    <!-- a代表透明度 -->
+    <material name="Black">
+        <color rgba="0 0 0 1"/>
+    </material>
+    <material name="White">
+        <color rgba="1 1 1 0.95"/>
+    </material>
+    <material name="Blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+    <material name="Yellow">
+        <color rgba="1 0.4 0 1"/>
+    </material>
+    
+    <!-- /////////底盘的连杆///////// -->
+    <link name = "base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.16" radius="0.20"/>
+                <!-- 圆柱体 -->
+            </geometry>
+            <material name="Yellow"/>
+            <!-- 前面有事先定义好的变量，只需通过名称进行调用 -->
+        </visual>
+    </link>
+
+    <!-- /////////wheel///////// -->
+    <link name="left_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
+            <geometry>
+                <!-- 圆柱体中心点默认和坐标系中心点相同，偏移和旋转通过link自身的origin指定 -->
+                <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            <material name="White"/>
+        </visual>
+    </link>
+
+    
+    <joint name="left_wheel_joint" type="continuous">
+        <origin xyz="0 0.19 -0.05" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="left_wheel_link"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="right_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
+            <!-- 沿着x轴旋转1.5707就是pi/2，从水平的圆柱体变为立起来的轮子 -->
+            <geometry>
+                <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            <material name="White"/>
+        </visual>
+    </link>
+
+    <joint name="right_wheel_joint" type="continuous">
+        <origin xyz="0 -0.19 -0.05" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="right_wheel_link"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <!-- /////////支撑轮caster///////// -->
+
+    <link name="front_caster_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+            <material name="Black"/>
+        </visual>
+    </link>
+
+    <joint name="front_caster_joint" type="fixed">
+        <origin xyz="0.18 0 -0.095" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="front_caster_link"/>
+    </joint>
+
+    <link name="back_caster_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+            <material name="Black"/>
+        </visual>
+    </link>
+
+    <joint name="back_caster_joint" type="fixed">
+        <origin xyz="-0.18 0 -0.095" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="back_caster_link"/>
+    </joint>
+
+    
+    <!-- /////////Laser///////// -->
+    <link name="laser_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.05" radius="0.05"/>
+            </geometry>
+            <material name="Black"/>
+        </visual>
+    </link>
+
+    <joint name="laser_joint" type="fixed">
+        <origion xyz="0 0 0.105" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="laser_link"/>
+    </joint>
+
+
+</robot>
+```
+
+创建文件：display_mbot_with_laser_urdf.launch
+```xml
+<launch>
+    <!-- 设置机器人模型路径 -->
+    <param name="robot_description" textfile="$(find mbot_description)/urdf/mbot_with_laser.urdf"/>
+    <!-- param标签描述参数，参数会保存在rosmaster中 -->
+    <!-- 机器人模型存放路径，去寻找机器人模型 -->
+
+    <!-- 设置GUI参数，显示关节控制插件 -->
+    <!-- <param name="use_gui" value="true"/> -->
+    <!-- joint_state_publisher的小功能，可以通过这个界面调整各个关节的值 -->
+    <!-- 要不要启动这个插件 -->
+
+    <!-- 运行joint_state_publisher节点，发布机器人关节状态（值（轮子、机械臂）） -->
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+    <!-- pkg    功能包名字 -->
+    <!-- name   节点名字 -->
+    <!-- type   可执行文件名 -->
+    <!-- output  -->
+
+    <!-- 运行robot_state_publisher节点，发布tf（上面是关节状态、这个机器人状态（订阅joint_state_publisher，更新tf树）） -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- 运行rviz可视化界面 -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mbot_description)/config/mbot_with_laser_urdf.rviz" required="true"/>
+</launch>
+```
+
+```
+# 回到catkin_ws工作空间下
+catkin_make
+source ~/.bashrc
+```
+
+```
+# 安装一个软件包
+# sudo apt-get install joint-state-publisher-gui 
+
+roslaunch mbot_description display_mbot_urdf.launch 
+# 打开rviz,add RobotModel，会出现一个Status:Error，原因是没有一个从base_link到map的变化。
+# map是rviz默认设置的坐标系
+# 将rviz左侧Display的Global Options中的Fixed Frame从map修改为base_link（可能需要手动输入，对应于我们自己的urdf中的base_link）每一个link都会创建一个同名坐标系
+# 随后模型显示正常
+# 将rviz的配置保存到config目录下
+# 可以add tf并取消勾选robot model对tf树进行查看
+# 坐标原点之间有连接向量，包含平移和旋转信息（origin）
+# 使用urdf_to_graphiz [xxx.urdf]  # 对urdf文件进行检查，生成树状图
+# 或者使用check_urdf [xxx.urdf] 对urdf进行简单的查看）
+```
+
+mbot
+
+![](Pics/GYH/HandwritingURDF/handwriting01.png)
+
+marm
+
+![](Pics/GYH/HandwritingURDF/handwriting02.png)
+
+TF中的几个变量
+1. position位置（当前link坐标系相对于全局坐标系）
+2. orientation姿态（当前link坐标系相对于全局坐标系）
+3. relative position相对位置（当前link坐标系相对于parent坐标系）
+4. relative orientation相对姿态（当前link坐标系相对于parent坐标系）
 
 
 
@@ -124,6 +337,177 @@ ROS:robot operating system
 
 
 
+## 在Gazebo中实现移动机器人仿真（古月）
+
+[古月居 在Gazebo中实现移动机器人仿真（古月）](https://class.guyuehome.com/detail/p_5eb2366befe4a_E4rbNmXt/6)
+
+### 优化物理仿真模型
+
+**xacro简介**
+
+进行仿真的步骤
+1. 使用xacro文件优化URDF模型（xacro文件添加新特性）
+2. 完善机器人模型的物理仿真属性
+3. 在机器人模型中添加控制器插件
+
+URDF建模存在问题
+1. 模型冗长，重复内容过多
+   1. 相同轮子要写两次
+2. 参数修改麻烦，不便于二次开发
+3. 没有参数计算功能
+   1. 底盘和轮子之间的位置需要人进行计算，以hardcode方式写入
+
+xacro模型文件
+1. 精简模型代码
+   1. 创建宏定义
+   2. 文件包含
+2. 提供可编程接口
+   1. 产量
+   2. 变量
+   3. 数学计算
+   4. 条件语句
+
+![](Pics/GYH/Gazebo/xacro01.png)
+
+![](Pics/GYH/Gazebo/xacro02.png)
+
+![](Pics/GYH/Gazebo/xacro03.png)
+
+![](Pics/GYH/Gazebo/xacro04.png)
+
+```xml
+<!-- 常量定义  -->
+<xacro:property name="M_PI" value="3.14159" />
+
+<!-- 常量使用  -->
+<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+<!-- 美元符号$进行调用  -->
+<!-- 大括号内可以进行一些数学计算（注意，所有数学运算都会先被转为浮点数进行，以保证运算精度）  -->
+
+<!-- 宏定义，通过输入参数设定位置  -->
+<xacro:macro name="xxx" params="x1 x2 x3">
+   .....
+   <!-- 里面调用参数的时候也需要使用${}符号  -->
+</xacro:macro>
+
+<!-- 文件包含后可以其内容进行调用  -->
+
+```
+
+**ros_control模块介绍**
+
+![](Pics/GYH/Gazebo/ros_control01.png)
+
+解决上层应用和仿真的中间件
+
+上层应用的指令转换为仿真机器人的执行器的指令
+
+![](Pics/GYH/Gazebo/ros_control02.png)
+
+两个部分
+1. controller（包含算法）
+2. RobotHW（硬件抽象，统一硬件的接口）
+
+![](Pics/GYH/Gazebo/ros_control03.png)
+
+controller manager管理各种控制器，连接到Hardware Interface
+
+可以选择hardware或者simulation
+
+![](Pics/GYH/Gazebo/ros_control04.png)
+
+主要提供四种控制器
+1. 状态控制器
+2. 力控制器
+3. 位置控制器
+4. 速度控制器
+
+**为link添加惯性参数和碰撞属性**
+
+![](Pics/GYH/Gazebo/gazebo01.png)
+
+collision
+
+inertial
+
+**为link添加Gazebo标签（主要是颜色材料，也有其他描述）**
+
+![](Pics/GYH/Gazebo/gazebo02.png)
+
+颜色等在rviz可能可以显示但在Gazebo中无法显示
+
+base_footprint：在模型中单独创建的坐标系，表示机器人底盘映射到地面的地面坐标系
+
+base_footprint关闭重力
+
+**为joint添加传动装置**
+
+![](Pics/GYH/Gazebo/gazebo03.png)
+
+建模时也需要添加传动装置（电机），创建transmission标签
+
+Attributes
+1. 添加name属性，指明是为哪个joint进行配置
+
+Elements
+1. type:类型（eg: tansmission_interface/SimpleTransmission）（固定格式）
+2. joint:（neme="xxx"，指明为哪个joint添加，需要与写好的joint名称一致）
+   1. hardwareInterface:硬件接口（eg: hardware_interface/VelocityJointInterface）
+3. actuator:
+   1. hardwareInterface:同上
+   2. mechanicalReduction:减速比
+
+**添加gazebo控制器插件**
+
+![](Pics/GYH/Gazebo/gazebo04.png)
+
+gazebo标签中添加一个plugin标签
+1. name：控制器名称（可以自定义）
+2. filename：调用哪一个控制器插件
+
+differential_drive_controller 差速控制器插件
+
+几个关键的插件配置参数
+1. robotNamespace:"/"代表全局空间（如果设置，后续参数将会将该命名空间作为前缀防止冲突）
+2. left/rightJoint:知名控制的左轮和右轮
+3. wheelSeparation:用于差速模型计算
+4. wheelDiameter:
+5. commandTopic:
+6. odometryFrame:通过仿真里程计得到机器人位置，通过odom话题发布。通过订阅odom得到机器人实际位置
+
+**在Gazebo中加载机器人模型**
+
+![](Pics/GYH/Gazebo/gazebo05.png)
+
+加载机器人模型描述参数，ros提供一个xacro包，其中xacro解析器用于解析xacro模型文件。
+
+第一个红框，通过robot_descripction参数，保存机器人具体模型内容
+
+第二个红框，使用到了spawn_model，调用robot_description中的内容，并加载到gazebo中。-urdf表示模型通过urdf格式进行描述
+
+
+
+
+
+
+### 创建物理仿真环境
+
+
+
+### 传感器仿真及应用
+
+
+
+
+
+
+
+
+<br>
+
+<br>
+
+<br>
 
 # ROS Wiki
 
@@ -797,5 +1181,6 @@ NanoRobot参数
 ~/catkin_ws/devel/setup.bash
 
 可执行文件在 ~/catkin_ws/devel/lib/[package]/[xxxx]
+
 
 

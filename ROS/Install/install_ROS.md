@@ -48,12 +48,20 @@ sudo reboot
 
 ## vscode
 
-如果是直接在应用商店下载，则无法输入中文
+如果是直接在应用商店下载，则无法输入中文，从官网下载即可
 
 ![](Pics/vscode001.png)
 
 
-##
+## 
 
 sudo apt-get install ros-kinetic-teleop-twist-keyboard
+
+# 双系统
+
+# 额外要安装的package
+
+roslaunch mbot_description display_mbot_urdf.launch 
+
+
 

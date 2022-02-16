@@ -1,4 +1,6 @@
-# OS
+# os
+
+[toc]
 
 ## os标准库的主要功能
 1. 系统相关变量和操作
@@ -100,3 +102,12 @@ print(os.path.getsize(file))  # 得到文件大小
 
 不推荐，有其他的标准库支持的更好
 
+## os.walk
+
+```python
+
+for in os.walk("path"):
+    
+
+
+```

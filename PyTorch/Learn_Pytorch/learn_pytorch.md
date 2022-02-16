@@ -6,6 +6,8 @@
 
 [PyTorch深度学习快速入门教程 -- 小土堆](https://www.bilibili.com/video/BV1hE411t7RN) 
 
+[《PyTorch深度学习实践》完结合集 -- 刘二大人](https://www.bilibili.com/video/BV1Y7411d7Ys)
+
 # PyTorch深度学习快速入门教程 -- 小土堆
 
 ## 00 Python两大法宝函数
@@ -55,6 +57,13 @@ help(Dataset)
 为网络提供不同的数据形式
 
 ## Dataset类代码实战
+
+Dataset是一个抽象类，需要定义一个类去继承。需要实现几个相应的方法
+1. __init__()
+2. __getitem__():魔法函数，方便通过下标获得数据
+3. __len__():魔法函数，方便len()
+
+DataLoader可以直接实例化
 
 ```python
 import torch
@@ -357,7 +366,7 @@ batch_sampler (Sampler or Iterable, optional)
 num_workers (int, optional)
     how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process.
     (default: 0)
-    多进程，设置子进程数量（0表示只有主进程）
+    多进程，设置子进程数量（0表示只有主进程）读数据的时候
 
 collate_fn (callable, optional)
     merges a list of samples to form a mini-batch of Tensor(s).
@@ -834,6 +843,7 @@ class Test(nn.Module):
         
     def forward(self, x):
         return self.model1(x)
+
 
 
 test = Test()
