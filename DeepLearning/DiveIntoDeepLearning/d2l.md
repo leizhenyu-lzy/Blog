@@ -284,7 +284,9 @@ $\gamma 不是方差，\sigma 才是方差。\gamma 和 \beta 是可以学习的
 
 ## 29 ResNet（残差网络）
 
+[残差网络 ResNet【动手学深度学习v2】](https://www.bilibili.com/video/BV1bV41177ap)
 
+[残差网络（ResNet）d2l](https://zh-v2.d2l.ai/chapter_convolutional-modern/resnet.html)
 
 ## 48 全连接卷积神经网络
 
