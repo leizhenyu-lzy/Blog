@@ -1176,7 +1176,22 @@ print(vgg16_true)
 
 （现在似乎可以不用重新定义这个类了，可能是版本问题？）
 
+
+
 ```python
+# 方式1
+
+torch.save(net, "path")  # 保存网络模型结构和参数
+
+net = torch.load("path")
+
+# 方式2
+
+torch.save(net.state_dict(), "path")  # 保存模型参数
+
+# 先创建一个实例
+
+net.load_state_dict(torch.load("path"))
 
 ```
 
