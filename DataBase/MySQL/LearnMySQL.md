@@ -568,7 +568,37 @@ order by department_id desc , salary asc;
 
 **分页**
 
+查询返回记录太多，查看不方便。实现分页查询
 
+limit实现分页
+
+```sql
+SELECT xxx
+FROM xxx
+LIMIT 偏移量,条目数;  -- 偏移量=0的时候可以省略
+
+-- 公式：LIMIT (pageNO-1)*pageSize, pageSize;  // No从1开始
+-- 公式：LIMIT pageNO*pageSize, pageSize;  // No从0开始
+```
+
+声明顺序：where...order by...limit(不是实际执行顺序)
+
+mysql8.0新特性支持将逗号用OFFSET关键字进行替代（注意偏移量和条目数的位置也进行了调换）
+
+约束返回结果的数量可以减少数据表的网络传输量，提升查询效率。
+
+
+```sql
+// 查询邮箱中包含e的员工信息，并按邮箱的字节数降序，再按部门号升序
+use atguigudb;
+
+select employee_id ,email ,department_id 
+from employees
+where email like '%e%'  -- regexp '[e]'
+order by length(email) desc, department_id asc;
+```
+
+p25
 
 ## DDL、DML、DCL使用
 
