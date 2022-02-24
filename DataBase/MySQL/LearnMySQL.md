@@ -534,11 +534,39 @@ and的优先级高于or
 
 越下面优先级越高
 
+### 排序与分页
 
+**排序**
 
-p21
+默认顺序是数据添加的顺序
 
+使用**ORDER BY**对查询到的数据进行排序，需要指明是升序还是降序（默认升序）。（在order by xxx 之后加）
+1. 升序：ASC（ascend）
+2. 降序：DESC（descend）（和describe的desc相同）
 
+可以使用列的别名进行排序，但是**不能在where中使用列的别名**。如果同时出现where和order by，where应该在前。
+
+另外order by的排序字段并不一定是select中的查询字段。
+
+真实的执行流程是先from，再where，接着select，最后order by。（这也解释了为什么where不能用别名）
+
+**二级排序**
+
+排列后，有相同的情况，需要再次进行排序。
+
+```sql
+select employee_id , salary , department_id 
+from employees 
+order by department_id desc , salary asc;
+
+select employee_id , salary , ifnull(department_id,-1) 
+from employees 
+order by department_id desc , salary asc;
+```
+
+再多级类似，再后面添加逗号，标签，升降序即可。
+
+**分页**
 
 
 
