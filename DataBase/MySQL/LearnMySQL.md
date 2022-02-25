@@ -598,17 +598,59 @@ where email like '%e%'  -- regexp '[e]'
 order by length(email) desc, department_id asc;
 ```
 
-p25
+### 多表查询
 
-## DDL、DML、DCL使用
+将需要多个sql语句合成一个。减少网络传输量。
 
-## 其他数据库对象
+将数据拆分为多个表可以减少io，减少内存开销，增加并发性（否则一个人在查询时，其他人无法查询）。
 
-## MySQL8.0其他新特性
+**笛卡尔积的错误**
 
-## MySQL
+```sql
+SELECT last_name, department_name
+FROM employees, departments;
+-- 这是错误的，每个员工都与每个部门进行了匹配
+-- 出现笛卡尔积（交叉连接），将所有的可能都列了出来
 
-## 索引及调优 
+SELECT last_name, department_name
+FROM employees CROSS join departments;
+-- 和上面的方式相同
+```
 
-##
+错误出现的条件：
+1. 省略多个表的连接条件
+2. 连接条件无效
+3. 所有表的所有行连接
+
+为了避免笛卡尔积，可以在where中加入有效的连接条件
+
+如果显示ambiguous，需要通过加.的方式显式指明。如果单独纯在可以不指明。从sql优化的角度，建议多表查询都指明所在的表。（省去数据库服务器的查询）
+
+**可以给表起别名**
+
+在from中起别名，在select和where中使用（而且必须要用别名（原名被覆盖了））。
+
+
+**正确的多表查询**
+需要加上连接条件
+
+```sql
+SELECT last_name, department_name
+FROM employees CROSS join departments
+WHERE employees.department_id = departments.department_id;
+
+-- 缺少一种情况，department_id为NULL的情况
+```
+
+```sql
+SELECT employees.employee_id, departments.department_id, locations.location_id, locations.city
+FROM employees, departments, locations
+WHERE employees.department_id = departments.department_id AND departments.location_id = locations.location_id
+ORDER BY employees.employee_id ASC;
+```
+**如果有n个表实现多表的查询，至少需要n-1个连接条件**，否则一定会出现笛卡尔积的错误
+
+p27
+
+### 子查询
 
