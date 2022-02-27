@@ -8,6 +8,10 @@
 
 [宋红康 MySQL数据库](https://www.bilibili.com/video/BV1iq4y1u7vj)
 
+[Python + MySQL](https://www.bilibili.com/video/av807094101)
+
+# 宋红康 MySQL数据库
+
 ## 数据库概述与MySQL
 
 ### 数据库简介
@@ -650,7 +654,251 @@ ORDER BY employees.employee_id ASC;
 ```
 **如果有n个表实现多表的查询，至少需要n-1个连接条件**，否则一定会出现笛卡尔积的错误
 
-p27
+**多表查询的分类**
+
+角度
+1. 等值连接&非等值连接
+   ```sql
+   -- 非等值连接
+   SELECT e.last_name, e.salary, jg.grade_level
+   FROM employees e, job_grades jg
+   WHERE e.salary BETWEEN jg.lowest_sal AND jg.highest_sal;
+   ```
+2. 自连接（自我引用）&非自连接
+   ```sql
+   -- 自连接
+   SELECT emp.employee_id, emp.last_name, mgr.employee_id, mgr.last_name
+   FROM employees emp, employees mgr  -- 注意这里创建了一个“副本”
+   WHERE emp.`manager_id` = mgr.`employee_id`;
+   -- 注意少了一条记录，老板本人没有manager_id
+   ```
+3. 内连接&外连接
+   1. 内连接：只是将满足条件的数据查询出来。（结果集中不包含一个表与另一个表不匹配的行）
+   2. 外连接：结果集中除了包含一个表与另一个表匹配的行之外，还查询到了不匹配的行
+      1. 左外连接（返回了左表不满足条件的行）
+      2. 右外连接（返回了右表不满足条件的行）
+      3. 满外连接
+   3. 常用的sql标准实现内连接、外连接（最主要）
+      1. sql-92
+         1. 内连接见上
+         2. 使用(+)实现外连接（在where中较短的表的后面加上括号和加号）。**但是mysql不支持这种外连接写法**（Oracle支持）
+      2. sql-99
+         1. 使用join...on的方式实现多表查询，也能解决外连接，内连接也可以（join 表 on 连接条件，可以一连串）
+         2. inner join表示内连接（inner可以省略）
+         3. outer join表示外连接（left outer join, right outer join）（写了left、right后outer可以省略）
+         4. full join表示满外连接（但**mysql不支持**）
+      ```sql
+      -- 内连接
+      SELECT e.last_name, d.department_name
+      FROM employees e JOIN departments d
+      ON e.department_id = d.department_id;
+
+      SELECT e.last_name, d.department_name, l.city
+      FROM employees e JOIN departments d
+      ON e.department_id = d.department_id
+      JOIN locations l
+      ON d.location_id = l.location_id;
+
+      -- 外连接
+      -- 查询所有的员工的last_name,department_name信息（所有指明了是外连接）
+      SELECT e1.employee_id, e1.last_name, e2.employee_id, e2.last_name
+      FROM employees e1 LEFT OUTER JOIN employees e2
+      ON e1.manager_id = e2.employee_id;
+
+      SELECT e1.employee_id, e1.last_name, e2.employee_id, e2.last_name
+      FROM employees e2 RIGHT OUTER JOIN employees e1
+      ON e1.manager_id = e2.employee_id; 
+
+      ```
+
+**union的使用**
+
+利用UNION关键字，可以给出多条SELECT语句，并将他们的结果组成单个结果集。合并时，两个表对应的**列数和数据类型必须相同**，并且**相互对应**。各个SELECT语句使用UNION或UNION ALL关键字分割。（**只有一个分号**）
+
+![](Pics/Fundamental/fund_sql032.png)
+
+UNION ALL多了一套公共的部分。但因为不用检查重复所以效率更高，需要的资源更少（尽量使用union all）。
+
+**7种sql joins的实现**
+
+![](Pics/Fundamental/fund_sql031.png)
+
+1. 中图：内连接
+   ```sql
+   SELECT e.employee_id, d.department_id
+   FROM employees e
+   JOIN departments d
+   ON e.department_id = d.department_id;
+   ```
+2. 左上图：左外连接
+   ```sql
+   SELECT e.employee_id, d.department_id
+   FROM employees e
+   LEFT OUTER JOIN departments d
+   ON e.department_id = d.department_id;
+   ```
+3. 右上图：右外连接
+   ```sql
+   SELECT e.employee_id, d.department_name
+   FROM employees e
+   RIGHT OUTER JOIN departments d
+   ON e.department_id = d.department_id;
+   ```
+4. 左中图：中间部分不要。再通过B<=>NULL挖掉
+   ```sql
+   SELECT e.employee_id, d.department_name
+   FROM employees e
+   LEFT OUTER JOIN departments d
+   ON e.department_id = d.department_id
+   WHERE d.department_id <=> NULL;
+   ```
+5. 右中图：和左中图类似
+   ```sql
+   SELECT e.employee_id, d.department_name
+   FROM employees e
+   RIGHT OUTER JOIN departments d
+   ON e.department_id = d.department_id
+   WHERE e.department_id <=> NULL;
+   ```
+6. 左下图：满外连接
+   ```sql
+   -- 方式1：左上图union all右中图
+   SELECT e.employee_id, d.department_id
+   FROM employees e
+   LEFT OUTER JOIN departments d
+   ON e.department_id = d.department_id
+   UNION ALL 
+   SELECT e.employee_id, d.department_name
+   FROM employees e
+   RIGHT OUTER JOIN departments d
+   ON e.department_id = d.department_id
+   WHERE e.department_id <=> NULL;
+   -- 方式2：左中图union all右上图
+   ```
+7. 右下图：
+   ```sql
+   -- 左中图和右中图union all
+   SELECT e.employee_id, d.department_name
+   FROM employees e
+   LEFT OUTER JOIN departments d
+   ON e.department_id = d.department_id
+   WHERE d.department_id <=> NULL
+   UNION ALL 
+   SELECT e.employee_id, d.department_name
+   FROM employees e
+   RIGHT OUTER JOIN departments d
+   ON e.department_id = d.department_id
+   WHERE e.department_id <=> NULL;
+   ```
+
+### sql-99语法新特性
+
+**自然连接NATURAL JOIN**
+
+```sql
+SELECT e.employee_id, e.last_name, d.department_name
+FROM employees e
+NATURAL JOIN departments d;
+```
+
+自动查询两张连接表中**所有相同的字段**，然后进行等值连接。但不够灵活。
+
+**USING的使用**
+```sql
+SELECT e.employee_id, e.last_name, d.department_name
+FROM employees e
+JOIN departments d
+USING (department_id);
+```
+不适用于自连接
+
+替换等值连接条件（如果两个表的字段名相同），**需要加括号**
+
+**小结**
+表连接的约束条件有3种：
+1. WHERE：适用于所有关联查询。
+2. ON：只能和JOIN一起使用，只能写关联条件。虽然关联条件可以并到WHERE种和其他条件一起写，但分开写可读性更好。
+3. USING：只能和JOIN一起使用，而且要求两个关联字段在关联表种名称一致，而且只能表示关联字段值相等。
+
+多个join嵌套效率低。
+
+**课后练习**
+```sql
+# 显式所有员工的姓名、部门号、部门名称
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e
+LEFT OUTER JOIN departments d
+USING (department_id);
+
+# 查询90号部门员工的job_id和city
+SELECT e.job_id, l.city
+FROM employees e
+JOIN departments d
+USING (department_id)
+JOIN locations l
+ON l.location_id = d.location_id
+WHERE d.department_id = 90;
+
+# 选择所有有奖金的员工的last_name,department_name,location_id,city
+SELECT e.last_name, d.department_name, d.location_id, l.city
+FROM employees e
+LEFT OUTER JOIN departments d
+ON e.department_id = d.department_id
+LEFT OUTER JOIN locations l  -- 注意两个地方都需要外连接。相当于三条腿，一条长，要补两次短
+ON d.location_id = l.location_id
+WHERE e.commission_pct IS NOT NULL;
+
+# 选择city在Toronto工作的员工的last_name,job_id,department_id,department_name
+SELECT e.last_name, e.job_id, e.department_id, d.department_name
+FROM employees e
+JOIN departments d
+USING (department_id)
+JOIN locations l
+USING (location_id)
+WHERE l.city = 'Toronto';
+
+# 查询员工所在的部门名称、部门地址、姓名、工作、工资，其中员工所在部门为executive
+SELECT d.department_name, l.street_address, e.last_name, j.job_title, e.salary
+FROM employees e
+JOIN departments d
+USING (department_id)
+JOIN locations l
+ON d.location_id = l.location_id
+JOIN jobs j
+ON e.job_id = j.job_id
+WHERE d.department_name = 'Executive';  -- 没有考虑其他地区有部门，但是没有员工的情况
+
+# 选择指定员工的姓名、员工号、及其管理者的姓名、员工号
+SELECT e.last_name "employees", e.employee_id "Emp", m.last_name "managers", m.employee_id "Mgr"
+FROM employees e
+LEFT OUTER JOIN employees m 
+ON e.manager_id = m.employee_id;
+
+# 查询哪些部门没有员工
+SELECT d.department_name
+FROM employees e
+RIGHT OUTER JOIN departments d
+USING (department_id)
+WHERE e.department_id IS NULL;
+
+# 查询部门名为Sales或IT的员工信息
+SELECT e.employee_id, e.last_name, d.department_name
+FROM employees e
+JOIN departments d
+USING (department_id)
+WHERE d.department_name IN ('Sales', 'IT');  -- 也可以用or
+```
+
+p32
 
 ### 子查询
+
+
+# Python + MySQL
+
+## 安装pymysql
+
+需要安装pymysql十分方便：pip install pymysql
+
+
 
