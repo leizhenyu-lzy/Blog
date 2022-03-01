@@ -10,6 +10,8 @@
 
 [Python + MySQL](https://www.bilibili.com/video/av807094101)
 
+[MySQL创建用户与授权](https://www.cnblogs.com/zhongyehai/p/10695659.html)
+
 # 宋红康 MySQL数据库
 
 ## 数据库概述与MySQL
@@ -889,7 +891,37 @@ USING (department_id)
 WHERE d.department_name IN ('Sales', 'IT');  -- 也可以用or
 ```
 
-p32
+### 函数
+
+提高代码效率，提高可维护性，提高用户对数据的管理效率。
+
+内置函数，自定义函数
+
+不同DBMS的函数之间差异很大，所以用SQL函数的代码移植性差。
+
+**mysql内置函数及其分类**
+实现功能角度：
+1. 数值函数
+2. 字符串函数
+3. 日期和时间函数
+4. 流程控制函数
+5. 加密与解密函数
+
+函数行数
+1. 单行函数（SISO）
+   1. 可以嵌套
+   2. 参数可以是一列或者一个值
+2. 聚合函数（也叫多行函数）（MISO）
+
+**单行函数**
+
+[p33](https://www.bilibili.com/video/BV1iq4y1u7vj?p=33&spm_id_from=pageDriver)
+
+**聚合函数**
+
+```sql
+
+```
 
 ### 子查询
 
@@ -900,5 +932,38 @@ p32
 
 需要安装pymysql十分方便：pip install pymysql
 
+```python
+import pymysql
 
+db = pymysql.connect(host="localhost", port=3306, user="root", password="xxxx", database="atguigudb")
+cursor = db.cursor()
+cursor.execute("select * from employees;")
+datas = cursor.fetchall()
+for data in datas:
+   print(data)
+db.close()
+```
 
+# MySQL创建用户与授权
+
+## 创建用户
+
+```sql
+create user 'jetson'@'%' identified by 'Lzy010409';
+-- 命令:CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+-- username：你将创建的用户名
+-- host：指定该用户在哪个主机上可以登陆，如果是本地用户可用localhost，如果想让该用户可以从任意远程主机登陆，可以使用通配符%
+-- password：该用户的登陆密码，密码可以为空，如果为空则该用户可以不需要密码登陆服务器
+```
+
+## 授权
+
+```sql
+grant all on drowsydrivingdetect.* to 'jetson'@'%';
+GRANT privileges ON databasename.tablename TO 'username'@'host';
+-- privileges：用户的操作权限，如SELECT，INSERT，UPDATE等，如果要授予所的权限则使用ALL
+-- databasename：数据库名
+-- tablename：表名，如果要授予该用户对所有数据库和表的相应操作权限则可用*表示，如*.*
+-- 注意:用以上命令授权的用户不能给其它用户授权，如果想让该用户可以授权，用以下命令:
+GRANT privileges ON databasename.tablename TO 'username'@'host' WITH GRANT OPTION;
+```
