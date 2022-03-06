@@ -915,7 +915,49 @@ WHERE d.department_name IN ('Sales', 'IT');  -- 也可以用or
 
 **单行函数**
 
-[p33](https://www.bilibili.com/video/BV1iq4y1u7vj?p=33&spm_id_from=pageDriver)
+基本函数
+
+![](Pics/Fundamental/fund_sql033.png)
+
+三角函数
+
+![](Pics/Fundamental/fund_sql034.png)
+
+![](Pics/Fundamental/fund_sql035.png)
+
+```sql
+SELECT sin(pi()/2) FROM DUAL;
+```
+
+指数和对数
+
+![](Pics/Fundamental/fund_sql036.png)
+
+进制转换
+
+![](Pics/Fundamental/fund_sql037.png)
+
+**字符串函数**
+
+注意：**MySQL中，字符串位置从1开始**
+
+![](Pics/Fundamental/fund_sql038.png)
+
+![](Pics/Fundamental/fund_sql039.png)
+
+![](Pics/Fundamental/fund_sql040.png)
+
+
+
+![](Pics/Fundamental/fund_sql041.png)
+
+length与字符集有关，6是因为utf8中一个汉字三个字节。
+
+**日期和时间函数**
+
+
+
+
 
 **聚合函数**
 

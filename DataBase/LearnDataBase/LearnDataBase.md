@@ -53,6 +53,8 @@
 
 实体之间的联系：1对1、1对多、多对多
 
+**独立存在的是实体、不可再分的是属性**
+
 ## 七、数据库设计(p205)
 
 ### 7.1 数据库设计概述
@@ -102,7 +104,17 @@ E-R模型表示概念模型
 4. 易于更改
 5. 易于转化为关系、网状、层次等各种数据模型（比数据模型更抽象、更独立于机器）
 
-### E-R模型
+**7.3.2 E-R模型**
+
+![](Pics/database001.png)
+
+![](Pics/database002.png)
+
+![](Pics/database003.png)
+
+实体-联系方法：Entity-Relationship Approach
+
+E-R diagram
 
 主要概念
 1. 实体
@@ -112,12 +124,60 @@ E-R模型表示概念模型
    2. 1对n：班级学生
    3. m对n：学生选课
 
-实体-联系方法：Entity-Relationship Approach
+**联系的度**：参与联系的实体型的数目。（二元、三元、N元联系）
 
-E-R diagram
+实体型：矩形
+属性：椭圆形
+联系：菱形（**联系也可以有属性**）
 
-![](Pics/database001.png)
 
-![](Pics/database002.png)
 
-![](Pics/database003.png)
+**ER模型转换成数据表**
+
+![](Pics/database004.png)
+
+![](Pics/database005.png)
+
+![](Pics/database006.png)
+
+转换原则：
+1. 一个实体通常转换为一个**数据表**
+2. 一个多对多的关系，通常也转换成一个数据表
+3. 1对1和1对多的关系往往通过**表的外键**来表达
+4. 数据转换为表的**字段**
+5. **先考虑强实体**，不依赖于别人
+
+**强实体**
+
+![](Pics/database008.png)
+
+![](Pics/database009.png)
+
+**弱实体**
+
+![](Pics/database010.png)
+
+![](Pics/database011.png)
+
+![](Pics/database013.png)
+
+![](Pics/database014.png)
+
+![](Pics/database015.png)
+
+订单详情表用于体现多对多联系
+
+![](Pics/database012.png)
+
+![](Pics/database016.png)
+
+
+
+
+
+
+
+
+![](Pics/database007.png)
+
+
