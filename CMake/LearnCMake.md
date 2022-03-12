@@ -2,6 +2,101 @@
 
 [toc]
 
+
+## Portals
+
+### 视频
+
+[从零开始详细介绍CMake](https://www.bilibili.com/video/BV1vR4y1u77h)
+
+[CMake简明教程以及现代CMake](https://www.bilibili.com/video/BV1A7411f7jT)
+
+[基于VSCode和CMake实现C/C++开发](https://www.bilibili.com/video/BV1fy4y1b7TC)
+
+### 博客
+
+[CMake进阶之初识CMake](https://blog.csdn.net/ztemt_sw2/article/details/81355096)
+
+[CMake进阶之CMake原理与关键概念](https://blog.csdn.net/ztemt_sw2/article/details/81384538)
+
+
+# CMake进阶之初识CMake
+
+**CMake的历史**
+
+CMake最初是ITK项目的一部分，ITK项目始于1999年，由美国麦迪逊国家实验室赞助。ITK项目规模比较庞大，并且需要在多个平台上运行，同时还依赖于其他一些软件库。为了满足软件的构建需求，需要一个功能足够强大同时又简单易用的构建工具，于是ITK项目的开发者设计出了CMake来满足需求。
+
+
+
+
+**跨平台：一份make可以支持多个平台。**
+
+让make的编写对特定的平台透明：开发者只需要按照CMake的语法写make，不需要考虑具体平台，最终由CMake为我们生成原生的构建工具（比如Windows上的visual studio，Mac上的XCode，unix/linux的make）所需要的构建文件。
+
+
+
+# CMake进阶之CMake原理与关键概念
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# CMake简明教程以及现代CMake
+
+[CMake简明教程以及现代CMake](https://www.bilibili.com/video/BV1A7411f7jT)
+
+```cmake
+
+cmake_minimum_required(VERSION xxx)
+
+project(project_name)
+
+include(xxxx.cmake)  # 添加配置文件
+
+add_subdirectory(xxx)  # 添加子文件夹，这个子文件夹中也需要拥有CMakeLists.txt文件
+```
+
+一个project可以有多个target，每个target对应一个源文件或cpp
+
+现代cmake不建议在add_executable、add_library直接添加源文件
+
+```cmake
+target_sources(
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+```
+
+```cmake
+target_include_directories(
+INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+```
+
+```cmake
+target_link_libraries()
+```
+
+**REMIAN没看完**
+
+# 从零开始详细介绍CMake
+
+[从零开始详细介绍CMake](https://www.bilibili.com/video/BV1vR4y1u77h)
+
 ## 说明
 
 通过编译CMakeLists.txt

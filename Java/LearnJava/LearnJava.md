@@ -6,6 +6,8 @@
 
 [Java 基础到高级 - 宋红康](https://www.bilibili.com/video/av48370019)
 
+[狂神说 JavaSE阶段回顾总结](https://www.bilibili.com/video/BV1MJ411v7tJ)
+
 # Java 基础到高级 - 宋红康
 
 Java基础是学习JavaEE、大数据、Android开发的基石
@@ -226,14 +228,92 @@ java中的每个**变量必须先声明并且赋值后使用**，需要明确具
 
    ![](Pics/fundamental/fund021.png)
 
+   **REMAIN P62-P91**
+
 **运算符**
 
+1. 算数运算符
+
+   比较特殊的是：加号（+）还可以用作字符串连接
+
+   和C++相同：++和--也分前后
+
+   整除运算符结果的符号和被除数相同
+
+2. 位运算符
+
+   ![](Pics/fundamental/fund021.png)
+
+3. 逻辑运算符
+
+   ![](Pics/fundamental/fund023.png)
+
+4. 三元运算符
+
+   ![](Pics/fundamental/fund024.png)
+
+5. 运算符的优先级
+
+   ![](Pics/fundamental/fund025.png)
+
 **程序流程控制**
+1. 顺序结构
+2. 分支结构（和C/C++一样）
+   1. if -- else if -- else
+   2. switch--case（case后面的常量可以是字符串等）
+3. 循环结构（和C/C++一样）
+   1. for
+   2. while
+   3. do-while
+   4. break：默认跳出最近一层循环
+   5. continue：默认跳过最近一层循环的一次
+   6. 带标签的break、continue
+      1. 在循环前加上一个标签：**[label]:**
+      2. break、continue后添加该标签，**break [label]; continue [label];**
+
+p123
 
 
+### Scanner
 
-P62
+从键盘获取不同类型的变量：需要使用Scanner类
 
+具体实现步骤：
+1. 导包：**import java.util.Scanner;**（注意分号）
+2. Scanner的实例化：**Scanner scan = new Scanner(System.in);**
+3. 调用Scanner类的相关方法，获取指定类型的变量。
+4. 对于char型变量，scanner没有提供相关的方法。只能用next获取字符串（再使用方法xxx.charAt(index),index从0开始）。
+5. Scanner只需要实例化一次。**和C++的cin不同，java需要根据相应的方法，输入指定类型的值**。输入类型不匹配会报异常（InputMisMatchException），导致程序终止。
+
+
+### 数组
+
+数组本身是**引用数据类型**，而数组中的元素可以是任何数据类型，包括基本数据类型和引用数据类型。
+
+数组长度一旦确定就不能修改。
+
+创建数组会在内存开辟一块**连续的空间**，而**数组名**中引用的是这块连续空间的**首地址**。
+
+可以通过索引（下标）的方式调用指定位置的元素。
+
+数组的初始化
+1. 静态初始化：数组的初始化和数组元素的幅值操作同时进行
+   ```java
+   int[] array = new int[]{0,1,2,3};
+   ```
+2. 动态初始化：数组的初始化和数组元素的幅值操作分开进行
+   ```java
+   int[] array = new int[4]{};
+   ```
+3. **注意**
+   1. 前面的中括号一定为空
+   2. 使用静态初始化就不要在第二个中括号内填数字
+   3. 使用动态初始化就不要在大括号内填数字
+   4. 前后指明的数组元素类型也必须一致
+
+**length**属性：获取数组长度
+
+数组有默认初始化值
 
 
 
@@ -254,6 +334,10 @@ P62
 
 
 P43
+
+
+
+# 狂神说 JavaSE阶段回顾总结
 
 
 # 其他相关知识
