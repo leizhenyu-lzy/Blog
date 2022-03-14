@@ -454,23 +454,334 @@ java都是值传递
 
 ![](Pics/kuang/kuang008.png)
 
+省略号，三个点
+
 **只能指定一个可变参数**
 
 **必须是最后一个参数**
 
 用起来类似于数组
 
-### 递归
+```java
+public class VarLenParameter
+{
+    public static void main(String[] args)
+    {
+        varlen(11,22,33);
+        varlen(new int[]{1,2,3});
+    }
 
-## 初始化及内存分析
+    public static void varlen(int ...l)
+    {
+        int x = l.length;
+        for(int i=0;i<x;i++)
+        {
+            System.out.println(l[i]);
+        }
+    }
+}
+```
 
-## 二维数组
+### 静态&非静态
+
+1. 静态方法
+   1. 可以直接调用
+2. 非静态方法
+   1. 需要实例化:[class_name] [object_name] = new [class_name]();
+   2. 通过成员调用方法
+
+
+```java
+public class test1
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test1_main");
+        test2.print2();
+        test3 t3 = new test3();
+        t3.print3();
+    }
+}
+```
+静态方法，无需创建对象即可调用函数
+```java
+public class test2
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test2_main");
+    }
+    public static void print2()
+    {
+        System.out.println("test2");
+    }
+}
+```
+非静态方法，需要创建实例才能调用函数
+```java
+public class test3
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test3_main");
+    }
+    public void print3()
+    {
+        System.out.println("test3");
+    }
+}
+```
+
+上述三个文件可以写在同一个类中（后两个的public去掉即可），也可以分开为3个类（同一个包下）。
+
+```java
+public class test1
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test1_main");
+        test2.print2();
+        test3 t3 = new test3();
+        t3.print3();
+    }
+}
+
+class test2
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test2_main");
+    }
+    public static void print2()
+    {
+        System.out.println("test2");
+    }
+}
+
+class test3
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test3_main");
+    }
+    public void print3()
+    {
+        System.out.println("test3");
+    }
+}
+```
+
+静态方法和类一起加载
+
+非静态方法要等类实例化后才加载
+
+```java
+public class test1
+{
+    public static void main(String[] args)
+    {
+        System.out.println("test1_main");
+        test2.print2();
+        test3 t3 = new test3();
+        t3.print3();
+    }
+
+    public static void main1()
+    {
+        main2();//报错
+        main3();
+    }
+
+    public void main2()
+    {
+        main1();
+        main3();
+    }
+
+    public static void main3()
+    {
+        main1();
+        main2();//报错
+    }
+}
+```
+
+![](Pics/kuang/kuang017.png)
+
+
+## 数组
+
+![](Pics/kuang/kuang009.png)
+
+![](Pics/kuang/kuang011.png)
+
+数组名字在栈中（未new的时候）
+
+![](Pics/kuang/kuang012.png)
+
+### 数组的初始化及内存分析
+
+![](Pics/kuang/kuang010.png)
+
+静态初始化：创建+赋值
+
+动态初始化：创建（包含默认初始化）
+
+**for-each循环**
+
+简便的for循环，称之为for-each循环，不使用下标变量就可以顺序地遍历整个数组
+
+但是，当需要以其他顺序遍历数组或改变数组中地元素时，还是必须使用下标变量。
+
+```java
+for (int i : array)
+        {
+            System.out.println(i);
+        }
+```
+
+### 多维数组
+
+![](Pics/kuang/kuang013.png)
+
+```java
+public class MultiDimArray
+{
+    public static void main(String[] args)
+    {
+        int[][] array = new int[][]{{1,2,3},{3,4,5,6}};
+        System.out.println("rows: "+array.length);
+        System.out.println("cols: "+array[0].length);
+
+        System.out.println("遍历");
+        for(int i=0;i<array.length;i++)
+        {
+            for(int j=0;j<array[i].length;j++)
+            {
+                System.out.print(array[i][j]+"  ");
+            }
+            System.out.println("");
+        }
+    }
+}
+
+// rows: 2
+// cols: 3
+// 遍历
+// 1  2  3  
+// 3  4  5  6  
+```
+
+输出数组的时候需要自己遍历
+
+### Arrays类
+
+![](Pics/kuang/kuang014.png)
+
+常见方法
+1. binarySearch: 使用二分法查找元素在数组中的索引位置
+   **数组一定是排好序的，否则会出错**
+   **若数据重复，则输出按照二分查找，最先找到的那个元素的下标**
+   ```java
+   public static void main(String[] args)
+   {
+       int[] t1 = new int[]{7,3,3,5,234,-12};
+       Arrays.sort(t1);
+       System.out.println(Arrays.toString(t1));
+       //[-12, 3, 3, 5, 7, 234]
+       int pos_no = Arrays.binarySearch(t1,0);
+       int pos_yes = Arrays.binarySearch(t1,3);
+       System.out.println(pos_no);//-2
+       System.out.println(pos_yes);//2
+   }
+   ```
+2. copyOf&copyOfRange: 截取数组
+   ```java
+   public static void main(String[] args)
+   {
+       int[] t1 = new int[]{7,3,3,5,234,-12};
+       int[] t2 = Arrays.copyOf(t1,3);
+       int[] t3 = Arrays.copyOfRange(t1,1,4);
+       String str1 = Arrays.toString(t1);//[7, 3, 3, 5, 234, -12]
+       String str2 = Arrays.toString(t2);//[7, 3, 3]
+       String str3 = Arrays.toString(t3);//[3, 3, 5]
+       System.out.println(str1+"\n"+str2+"\n"+str3);
+   }
+   ```
+3. equals
+   ```java
+   public static void main(String[] args)
+   {
+      int[] t1 = new int[]{7,3,5,234,-12};
+      int[] t2 = new int[]{7,3,5,234,-12};
+      boolean result_array_equals = Arrays.equals(t1,t2);
+      boolean result_equals = t1.equals(t2);
+      System.out.println("arrays_equals   : "+result_array_equals);
+      System.out.println("equals          : "+result_equals);//比较的是两个对象的地址，不是里面的数
+      //arrays_equals   : true
+      //equals          : false
+   }
+   ```
+4. fill: 填充数组
+   ```java
+   public static void main(String[] args)
+   {
+       int[] test = new int[10];
+       Arrays.fill(test, 123);
+       for (int i : test)
+       {
+           System.out.println(i);
+       }
+   }
+   ```
+5. hashCode
+6. parallelPrefix
+7. parallelSetAll
+8.  parallelSort
+9.  setAll
+10. sort: 将数组进行升序排序
+    ```java
+    public static void main(String[] args)
+    {
+        int[] test = new int[]{7,3,5,234,-12,0,77,21,34,1};
+        Arrays.sort(test);
+        for (int i : test)
+        {
+            System.out.println(i);
+        }
+    }
+    ```
+11. spliterator
+12. stream
+13. toString: 将数组按照默认格式输出为字符串
+    ```java
+    public static void main(String[] args)
+    {
+        int[] test = new int[]{7,3,5,234,-12};
+        String str = Arrays.toString(test);
+        System.out.println(str);
+    }
+    ```
 
 ## 面向对象
 
+![](Pics/kuang/kuang015.png)
+
+![](Pics/kuang/kuang016.png)
+
+类是一种抽象的数据类型，对一类事物的整体描述、定义，不是具体的事物
+
+对象是抽象概念的具体实例
+
 ### 类和对象的创建
 
+![](Pics/kuang/kuang018.png)
+
+一个项目应该只有一个main方法。
+
 ### 构造器
+
+
 
 ### 创建对象内存分析
 
