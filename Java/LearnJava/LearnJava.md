@@ -8,6 +8,8 @@
 
 [狂神说 JavaSE阶段回顾总结](https://www.bilibili.com/video/BV1MJ411v7tJ)
 
+[狂神说 Java零基础学习视频](https://www.bilibili.com/video/BV12J41137hu)
+
 # Java 基础到高级 - 宋红康
 
 Java基础是学习JavaEE、大数据、Android开发的基石
@@ -336,9 +338,186 @@ p123
 P43
 
 
+# 狂神说 Java零基础学习视频
+
+## Java特性和优势
+
+1. 面向对象
+2. 可移植性（跨平台）
+3. 高性能
+4. 分布式
+5. 动态性（反射机制）
+6. 多线程
+7. 安全性
+8. 健壮性
+
+## 包机制
+
+为了更好的组织类，提供包机制，用于区别类名的命名空间
+
+仍然需要尽量保证类名不重复，否则从其他包导入同名类的时候还是会冲突会冲突。
+
+**本质就是文件夹**，一般使用公司域名倒置作为包名
+
+语法格式：
+```java
+package pkg1[.pkg2[.pkg3]];
+//在.java文件的第一行，不能去掉
+```
+
+为了使用某一个包的成员，需要在Java程序中明确导入该包。
+```java
+import package1[.package2[.package3]].(classname|*);
+//*表示导入所有
+```
+
+## Scanner
+
+Java工具类
+
+java.util.Scanner是Java5新特征
+
+获取用户输入
+
+常用方法
+```java
+hasNext();
+hasNextLine();
+next();
+nextLine();
+```
+
+```java
+scanner.close();
+```
+用完关闭，节省资源。
+
+**next&nextLine区别**
+
+![](Pics/kuang/kuang001.png)
+
+```java
+public static void main(String[] args)
+    {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("input");
+
+        if(scan.hasNextInt())
+        {
+            int i = scan.nextInt();System.out.println(i);
+        }
+        else
+            System.out.println("no int");
+
+        if(scan.hasNextFloat())
+        {
+            float f = scan.nextFloat();System.out.println(f);
+        }
+        else
+            System.out.println("no float");
+
+        scan.close();
+    }
+```
+
+![](Pics/kuang/kuang002.png)
+
+似乎和C/C++处理方式不同
+
+直接检查对不对，不对直接跳过，缓冲区保留。
+
+## 方法
+
+![](Pics/kuang/kuang003.png)
+
+原子性
+
+加static方便调用
+
+### 方法的定义及调用
+
+![](Pics/kuang/kuang004.png)
+
+![](Pics/kuang/kuang005.png)
+
+java都是值传递
+
+### 方法重载
+
+![](Pics/kuang/kuang006.png)
+
+### 命令行传递参数
+
+![](Pics/kuang/kuang007.png)
+
+### 可变参数
+
+![](Pics/kuang/kuang008.png)
+
+**只能指定一个可变参数**
+
+**必须是最后一个参数**
+
+用起来类似于数组
+
+### 递归
+
+## 初始化及内存分析
+
+## 二维数组
+
+## 面向对象
+
+### 类和对象的创建
+
+### 构造器
+
+### 创建对象内存分析
+
+### 封装
+
+### 继承
+
+### Super
+
+### 方法重写
+
+### 多态
+
+### instance of和类型转换
+
+### static
+
+### 抽象类
+
+### 接口的定义与实现
+
+### N种内部类
+
+### Error和Exception
+
+### 捕获和抛出异常
+
+### 自定义异常
+
 
 # 狂神说 JavaSE阶段回顾总结
 
+1. 基础
+   1. Java诞生
+   2. JDK、JRE
+   3. javac、java
+   4. 编译性、解释型语言
+
+# IDEA配置
+
+## IDEA优化
+
+[IDEA的常见的设置和优化(功能)](https://blog.csdn.net/zeal9s/article/details/83544074)
+
+## 大括号自动换行
+
+![](Pics/idea/idea001.png)
 
 # 其他相关知识
 

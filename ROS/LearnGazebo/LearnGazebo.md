@@ -12,6 +12,30 @@
 
 [冰达机器人](https://www.bilibili.com/video/BV143411C75B)
 
+# 实践总结
+
+## 插入模型文件的路径
+
+```
+~/.gazebo/gui.ini
+```
+
+![](Pics/Gazebo/practice001.png)
+
+![](Pics/Gazebo/practice002.png)
+
+
+## Solidworks模型文件导入
+
+支持stl格式文件
+
+**调整尺寸（stl中的单位和gazebo中不一致，需要将stl尺寸缩小为原来的1/1000倍）**
+
+**注意windows不区分大小写，所以文件后缀为.STL，而gazebo在model editor里导入文件的时候只能发现.stl，所以记得改成小写。**
+
+模型保存时会自动根据模型名称创建文件夹，所以自己不必创建。
+
+
 # 官网教程
 
 ## 01 Overview and installation
