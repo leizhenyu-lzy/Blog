@@ -442,6 +442,8 @@ public static void main(String[] args)
 
 java都是值传递
 
+**引用数据类型传入方法进行修改会保留修改**
+
 ### 方法重载
 
 ![](Pics/kuang/kuang006.png)
@@ -773,6 +775,18 @@ public class MultiDimArray
 
 对象是抽象概念的具体实例
 
+**对象的引用**
+
+引用类型（与基本类型相对）
+
+对象通过引用来操作（变量名在栈中，实际存储在堆中（地址））
+
+**属性**
+
+字段 field
+
+成员变量
+
 ### 类和对象的创建
 
 ![](Pics/kuang/kuang018.png)
@@ -781,44 +795,374 @@ public class MultiDimArray
 
 ### 构造器
 
+一个类即使是空的也会存在一个默认的构造器
 
+可以自己显式定义构造器
+
+**构造器用于初始化值**
+
+**必须和类名相同，没用返回值**
+
+**new关键字，本质是在调用构造器**
+
+**如果定义了有参构造，就必须自己显示定义无参构造**
+
+idea中使用**alt+insert**快捷键创建构造函数
 
 ### 创建对象内存分析
 
+**堆**
+变量名/引用
+
+**栈**
+对象存储，使用方法的时候会调用方法区
+
+**方法区**
+包含静态方法区，所有类的成员都可以调用
+包含各种方法
+包含类（字段和方法）
+
 ### 封装
+
+![](Pics/kuang/kuang019.png)
+
+优点：
+1. 提高程序安全性
+2. 隐藏代码实现细节
+3. 统一接口，规范
+4. 提高系统可维护性
 
 ### 继承
 
-### Super
+![](Pics/kuang/kuang020.png)
 
-### 方法重写
+将父类进行细分
+
+子类、派生类
+
+子类继承父类就会拥有父类的全部方法（public修饰符的）
+
+**在java中所有类都默认继承Object类**（可以不用显式写明extends Object）
+
+idea中**Ctrl+h**快捷键看继承关系
+
+#### Super
+
+super，输出父类的方法或属性，和this相对
+
+super代表父类对象的引用
+
+**private私有的内容无法被继承**
+
+**子类的构造会调用父类的构造**
+```java
+super();//调用父类构造器，必须要在子类的最上方，可以不显式写出
+```
+
+子类和父类的属性和方法可以重名
+
+父类的protected可以使子类通过super方法访问到（private不行）
+
+**若父类没有无参构造，子类也不能用无参构造函数，只能显式调用有参构造函数**
+
+子类的属性和父类重复，则默认使用子类的（也可也this、super指定）。如果父类有子类没有的，也可以不用显式指定，可以直接使用。
+
+#### 方法重写
+
+**前提：继承关系、子类重写父类的方法、方法名相同、参数列表相同**
+
+修饰符可以扩大但不能缩小 : public > protected > default > private
+
+抛出的异常：范围可以被缩小单不能被扩大。（小异常）
+
+不等于重载，之和非静态有关
+
+IDEA会有图标提示
+
+![](Pics/kuang/kuang021.png)
+
+使用子类的构造器构造父类对象
+
+**重写针对方法，和属性无关**
+
+**父类的引用指向子类的对象**（new xxx是对象，[father]xxx是引用）
+
+**静态方法和非静态方法不同**
+
+静态方法：可以用子类的构造器构造父类
+
+动态方法：子类可以重写父类的方法
+
+
+**为什么需要重写**
+1. 子类不一定需要、满足父类的功能。
+
 
 ### 多态
 
-### instance of和类型转换
+多态也是针对方法
 
-### static
+![](Pics/kuang/kuang022.png)
+
+**一个类的实际对象的类型是确定的，但是可以指向该类型的引用类型不确定（父类的引用指向子类）**
+
+**对象能执行哪些方法主要看创建对象时，等号左边的类型**
+
+**子类可以调用自己的方法以及继承的父类的方法**
+
+**父类只能调用自己的方法但是不能调用子类独有的方法（除非进行强制类型转换），虽然可以指向子类**
+
+**一定有继承关系才能进行类型转换，否则会报异常（ClassCastException）**
+
+存在条件：
+1. 继承关系
+2. 方法重写
+   1. static方法属于类，不属于实例，不能被重写
+   2. final不能重写
+   3. private不能重写
+3. 父类引用指向子类：father f = new son();
+
+### instanceof
+
+引用类型之间的
+
+判断对象的类型
+
+```java
+[variable_name] instanceof [typename];
+```
+
+```java
+public static void main(String[] args)
+{
+    //test2是子类,test3是父类
+    test2 t22 = new test2();
+    test3 t32 = new test2();
+    test3 t33 = new test3();
+    System.out.println(t22 instanceof test2);//true
+    System.out.println(t32 instanceof test2);//true
+    System.out.println(t33 instanceof test2);//false
+    System.out.println(t22 instanceof test3);//true
+    System.out.println(t32 instanceof test3);//true
+    System.out.println(t33 instanceof test3);//true
+    System.out.println(t22 instanceof Object);//true
+    System.out.println(t32 instanceof Object);//true
+    System.out.println(t33 instanceof Object);//true
+    Object to2 = new test2();
+    System.out.println(to2 instanceof Object);//true
+    System.out.println(to2 instanceof test2);//true
+    System.out.println(to2 instanceof test3);//true
+    Object to3 = new test3();
+    System.out.println(to3 instanceof Object);//true
+    System.out.println(to3 instanceof test2);//false
+    System.out.println(to3 instanceof test3);//true
+}
+```
+X指向的类型是不是Y类型或者其子类型
+
+```java
+X instanceof Y;
+```
+
+**完全没有继承关系的不能使用instanceof**
+
+### 类型转换
+
+基本类型转换，高转低需要强制类型转换，低转高不用
+
+父类代表高、子类代表低
+
+**丢失内容方面和基本类型恰好相反（基本类型高转低丢失截断、面向对象低转高丢失方法）**
+
+```java
+father f = new son();//低转高，不需要强制类型转换
+```
+
+高转低需要强制类型转换才能使用子类的方法
+
+子类转换为父类可能会丢失一些自己本来的方法
+
+**方便方法的调用**
+
+### static详解
+
+静态变量可以直接使用类名访问，被该类所有对象共享。
+
+非静态变量只能使用成员名访问。
+
+静态方法可以不定义对象就直接使用（和类一块加载）。
+
+静态导入包
+
+### 代码块
+
+static代码块：**static {}**，只会在第一次执行
+
+匿名代码块：**{}**，可以用于赋初值
+
+创建类的对象的顺序**静态代码块->匿名代码块->构造方法**
 
 ### 抽象类
 
-### 接口的定义与实现
+![](Pics/kuang/kuang023.png)
+
+abstract
+
+```java
+public abstract void t1();
+```
+
+```java
+@Override
+public void t1()
+{
+
+}
+```
+
+包含抽象方法，只有方法名字，没有具体实现。需要子类去实现。
+
+继承
+
+**若子类没实现，则子类也必须为抽象类**
+
+类只能单继承
+
+接口可以多继承
+
+**不能new抽象类**
+
+**有抽象方法一定是抽象类**
+
+### 接口
+
+**interface**
+
+![](Pics/kuang/kuang024.png)
+
+专业的约束
+
+面向接口编程
+
+约束和实现分离
+
+接口中的所有定义都是抽象的 public abstract，可以不用写这些关键字
+
+**接口都需要有实现类，implements**，必须要重写接口中的方法
+
+可以利用接口实现多继承
+
+```java
+public interface test1
+{
+    void t1();
+}
+```
+
+```java
+public interface test3
+{
+    void t3();
+}
+```
+
+```java
+public class test2 implements test1,test3
+{
+    @Override
+    public void t1()
+    {
+        System.out.println("haha1");
+    }
+
+    @Override
+    public void t3()
+    {
+        System.out.println("haha3");
+    }
+}
+```
+
+接口里定义的属性是常量，public static final
+
+**接口不能被实例化，也没有构造方法**
 
 ### N种内部类
 
+一个.java文件只能有一个public类，可以有多个普通class
+
+![](Pics/kuang/kuang025.png)
+
+**成员内部类**
+
+![](Pics/kuang/kuang033.png)
+
+成员内部类可以获得外部类的私有属性
+
+**静态内部类**
+
+比内部类多一个static
+
+只能访问外部类的static（从什么时候加载来考虑）
+
+**局部内部类**
+
+在方法内，和局部变量类似
+
+**匿名内部类**
+
+不用将实例保存在变量中
+
+## 异常
+
+![](Pics/kuang/kuang026.png)
+
+![](Pics/kuang/kuang027.png)
+
 ### Error和Exception
+
+![](Pics/kuang/kuang028.png)
+
+error一般难以预见，exception可以预见
+
+Throwable的子类
+
+Error
+1. VirtualMachine
+2. AWT(GUI)
+
+Exception
+1. IO
+2. Runtime
+
+异常必须要处理，否则可能编译不通过
 
 ### 捕获和抛出异常
 
+![](Pics/kuang/kuang029.png)
+
+![](Pics/kuang/kuang030.png)
+
+五个关键字
+1. try
+2. catch：捕获
+3. finally：无论是否有异常都会操作（可以不用）
+4. throw：抛出
+5. throws：在方法上抛出，传递给其他地方处理
+
+异常被捕获被处理，程序就不至于被终止
+
+如果尝试catch却没有捕获到，则也会先执行finally再抛出异常，程序报错
+
+一个try可以跟多个catch，捕获到对应类型的异常就结束，后续的catch不会被执行，所以应该将大异常放在下面
+
+可能一个方法无法处理这个异常，可以主动进行抛出，避免执行
+
 ### 自定义异常
 
+![](Pics/kuang/kuang031.png)
 
-# 狂神说 JavaSE阶段回顾总结
-
-1. 基础
-   1. Java诞生
-   2. JDK、JRE
-   3. javac、java
-   4. 编译性、解释型语言
+![](Pics/kuang/kuang032.png)
 
 # IDEA配置
 

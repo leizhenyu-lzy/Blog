@@ -6,6 +6,8 @@
 
 ## Portals
 
+[狂神说 MySQL](https://www.bilibili.com/video/BV1NJ411J79W)
+
 [宋红康 MySQL数据库](https://www.bilibili.com/video/BV1iq4y1u7vj)
 
 [Python + MySQL](https://www.bilibili.com/video/av807094101)
