@@ -12,7 +12,7 @@
 
 # 安装与配置
 
-最好不要下载太高版本的maven否则编译可能不支持
+最好不要下载太高版本的maven否则编译可能不支持（这里使用3.6.3）
 
 [IDEA各版本对Maven版本兼容问题汇总](https://libin9ioak.blog.csdn.net/article/details/117571120)
 
@@ -30,7 +30,13 @@
 
 ![](Pics/maven002.png)
 
-添加bin目录到环境变量中
+**环境变量配置如下**
+
+![](Pics/maven010.png)
+
+**PATH**中配置的环境变量：
+
+![](Pics/maven011.png)
 
 在命令行中输入
 ```
@@ -41,13 +47,15 @@ mvn -v
 
 ![](Pics/maven003.png)
 
-也可以创建一个MAVEN_HOME的环境变量。
+**配置本地仓库**
 
-在conf目录中的setting.xml配置本地仓库
+在conf目录中的setting.xml
 
 ![](Pics/maven004.png)
 
-配置阿里云镜像加速
+以后可以直接放在apache-maven中。
+
+**配置阿里云镜像加速**
 
 [阿里云云效 maven](https://developer.aliyun.com/mvn/guide)
 
@@ -110,8 +118,14 @@ IDEA默认内容
 ```
 ![](Pics/maven007.png)
 
-# Maven零基础入门
 
-自动化构建工具
+# Maven
 
+JavaWeb开发中，需要使用大量的jar包需要导入。需要一个方法自动导入和配置。
+
+**Maven项目架构管理工具**
+
+**核心思想：约定大于配置**（有约束，不能违反）
+
+maven规定如何编写java代码，必须按照规范。
 
