@@ -72,7 +72,7 @@ mvn -v
 </mirror>
 ```
 
-配置jdk版本
+**配置jdk版本**
 
 ![](Pics/maven006.png)
 
