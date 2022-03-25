@@ -138,6 +138,12 @@ pom.xml，额外多一个父工程
 </dependencies>
 ```
 
+文件下载位置
+![](Pics/atguigu/springboot013.png)
+
+全部的依赖
+![](Pics/atguigu/springboot016.png)
+
 **代码部分**
 
 似乎一定要创建一个软件包，否则会报错
@@ -237,11 +243,121 @@ UNKNOWN:似乎需要取消勾选配置文件才行。
 ![](Pics/atguigu/springboot012.png)
 
 
-**测试仅需运行main方法**
+**流程总结：**
+1. 创建maven项目
+2. 引入依赖
+3. 编写主程序引导SpringBoot（MainApplication）固定写法
+4. 编写业务逻辑（无需过多配置）
+5. 测试仅需运行main方法
+6. 简化配置，编写application.properties
+7. 简化部署，使用插件即可打包无需安装其他环境。将项目打成jar包，直接在目标服务器运行即可。
 
-**简化配置application.properties**
 
-**简化部署，使用插件即可打包**
+#### SpringBoot2依赖管理机制
+
+**自动版本仲裁**
+
+导入一个\<parent\>父项，一个starter-web \<dependency\>。其他导包问题无需关心。
+
+父项进行依赖管理，子项只需继承即可。
+
+*按住CTRL+鼠标左键，点击artifactId即可查看相关依赖*
+
+两层父项目
+
+![](Pics/atguigu/springboot014.png)
+
+![](Pics/atguigu/springboot015.png)
+
+spring-boot-dependencies-2.6.4.pom文件中声明了很多常用的jar包的依赖（控制了，一般就是当前springboot支持的版本）。里面写明了版本号，所以子项中添加依赖dependency可以不用写版本号。**自动版本仲裁**
+
+如果开发中，需要使用其他版本的依赖，需要在pom.xml写一个properties，里面写明依赖的版本（即先查看spring-boot-dependencies底层规定版本，如果要修改则在当前项目重写配置）。（利用**maven的就近优先原则**）
+
+```xml
+<properties>
+    <mysql.version>5.1.43</mysql.version>
+</properties>
+```
+
+如果引入的jar包不在声明的范围内，无法进行版本仲裁，需要自己写版本号。
+
+
+**Starter 场景启动器**
+
+[Spring 官方Starters说明](https://docs.spring.io/spring-boot/docs/2.6.4/reference/htmlsingle/#using.build-systems.starters)
+
+Starters are a set of convenient dependency descriptors(描述符) that you can include in your application.
+
+引入一个starter就把一个完整的开发场景引入，包括所有的依赖。
+
+All official starters follow a similar naming pattern; ==spring-boot-starter-*==, where * is a particular type of application. 
+
+要引入starter，这个场景的所有常规需要的依赖我们都自动引入。**maven的依赖传递原则**。
+
+也有第三方场景，可以自己创建
+
+a third-party starter project called thirdpartyproject would typically be named thirdpartyproject-spring-boot-starter
+
+
+**全部的依赖**
+![](Pics/atguigu/springboot016.png)
+
+其中最基本的就是spring-boot-starter，每一个其他场景都依赖它\<dependency\>（核心依赖）
+
+
+#### SpringBoot2自动配置机制
+
+自动配置Tomcat
+1. 引入Tomcat依赖（starter中引入）
+2. 配置Tomcat
+
+自动配置SpringMVC
+1. 引入SpringMVC全套组件（starter-web中引入）
+2. 配置SpringMVC常用组件、功能
+
+配置好Web常用功能
+1. DispatcherServlet
+2. 字符编码拦截器(characterEncodingFilter，解决中文乱码问题)
+3. viewResolver(视图解析器)）
+4. 。。。。。
+
+配置默认包结构
+1. **主程序所在的包及其下面所有的子包里面的组件都会被默认扫描**
+2. 无需自己配置包扫描
+3. 若想改变包扫描：@SpringBootApplication(scanBasePackages="[package]")
+   1. 如果重新指定记得Controller需要放在[package]中，不能并列
+      ![](Pics/atguigu/springboot017.png)
+      图中Controller文件夹和MyMainApplication文件是并列的，指定[package]时，最多写到Controller文件夹，如果写其子文件夹则无法扫描到。
+   2. @SpringBootApplication相当于一个合成注解，可以将其展开为其他注解，并修改ComponentScan即可。**SpringBootApplication默认扫描到主程序所在的包**
+      ```java
+      @SpringBootConfiguration
+      @EnableAutoConfiguration
+      @ComponentScan([可以进行修改])
+      ```
+
+各种配置拥有默认值
+1. 默认配置最终都是**映射到某个类上**
+2. 配置文件的值最终会**绑定每个类上**，这个类会在容器中创建对象
+3. 在application.properties中进行配置
+   ![](Pics/atguigu/springboot018.png)
+
+按需加载所有的自动配置项
+1. 非常多的场景（starter），不会将所有场景都引入
+2. 引入了哪些场景这个场景的自动配置才会开启
+3. SpringBoot所有的自动配置功能都在 spring-boot-autoconfigure 包里面（**==自动配置也是按需加载==**）
+   1. spring-boot-starter-web依赖spring-boot-starter
+   2. spring-boot-starter中包含了spring-boot-autoconfigure（自动配置不一定全部生效，导入相应的场景才会生效）
+      ![](Pics/atguigu/springboot019.png)
+
+
+P08
+
+
+
+
+
+
+
 
 ### 核心功能
 
