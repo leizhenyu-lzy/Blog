@@ -250,6 +250,7 @@ Output
    1. No pull-up and no pull-down
    2. Pull-up
    3. Pull-down（Open Drain时没有该选项）（开漏输出只有低电平和高阻态，高电平需要自己外接上拉电路）
+   4. P.S.：在1处的保护二极管也有上下拉电阻，上下拉可以改变电流：上拉时，输出电流和上拉电阻上的电流一同向外流出，提高了电流驱动能力。下拉时，输出电流还有一部分会流入下拉电阻中，降低了电流驱动能力。一般output就no pull即可。
 4. Maximum output speed
    1. Low
    2. Medium
