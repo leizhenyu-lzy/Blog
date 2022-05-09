@@ -238,3 +238,6 @@ i的作用，可以看到投影球面一边沿着i轴正方向扩展，一边绕
 ![](Pics/quaternion029.png)
 ![](Pics/quaternion030.png)
 
+因为基本够用了所以网页后面有一些内容没有继续深入了解。
+
+**感谢 Ben Eater**
