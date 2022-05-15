@@ -71,6 +71,16 @@ plot_point(P,'*') % P是一个二维列向量，*是标记样式
 
 可以看出T3和T3x是一样的，主要SE2的se要大写
 
+SE应该是special euclidean的意思special euclidean group
+
+![](Pics/2DGeometry003.png)
+
+
+
+## 3D Geometry
+
+https://robotacademy.net.au/masterclass/3d-geometry/?lesson=94
+
 
 # 机器视觉与控制 MATLAB算法基础
 
