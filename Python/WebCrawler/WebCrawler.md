@@ -32,6 +32,44 @@ User-agent: Wandoujia Spider
 Disallow: /
 ```
 
+**requests**
+```python
+import requests
+url = 'xxxx'
+headers = 'xxxx'
+response = requests.get(url, headers = xxxx )
+response.text
+response
+```
+
+**edge浏览器控制台**
+![](Pics/webcrawler001.png)
+
+**HTML标签属性**
+
+**BeautifulSoup**
+soup = BeautifulSoup(html_text, 'html.parser')
+soup.title.text
+
+**解析列表**
+![](Pics/webcrawler002.png)
+![](Pics/webcrawler003.png)
+
+
+使用find_all方法或者find方法
+find_all的结果为一个数组
+find可以级联
+.get('xxx')获取属性
+
+p15
+
+
+
+
+
+
+
+
 
 ```python
 import requests
@@ -91,4 +129,28 @@ url2 = 'https://www.bilibili.com/video/av85054372'
 with open('temp.html', 'w', newline='') as f:
 	f.write(requests.get(url2).text)
 
+```
+
+
+
+
+
+
+
+
+
+
+```python
+from matplotlib import pyplot as plt
+
+# 为了在Jupyter Notebook中显示图片的必须配置项
+%matplotlib inline
+
+# 用兼容字体解决中文显示为方格的问题
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['font.serif'] = ['SimHei']
+plt.rcParams['font.family'] = 'sans-serif'
+
+# 解决保存图像是负号'-'显示为方块的问题
+plt.rcParams['axes.unicode_minus'] = False
 ```

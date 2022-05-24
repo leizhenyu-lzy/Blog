@@ -1,50 +1,75 @@
-# 路径规划
-
-[toc]
+# 机器人轨迹规划
 
 ## Portals
 
-[古月居-黎万洪-基于栅格地图的机器人路径规划算法指南](https://class.guyuehome.com/detail/v_6099f8b4e4b0adb2d8630857/3)
-
-[github 课程源码](https://github.com/guyuehome/guyueclass/tree/main/robotics/path_planning)
-
-# 基于栅格地图的机器人路径规划算法指南
-
-![](Pics/pathplan001.png)
-
-## 01 利用Matlab快速绘制栅格地图
-
-![](Pics/pathplan002.png)
-
-![](Pics/pathplan003.png)
-
-![](Pics/pathplan004.png)
-
-## 02 Dijkstra算法
-
-[最短路径查找—Dijkstra算法](https://www.bilibili.com/video/BV1zz4y1m7Nq)
-
-![](Pics/pathplan005.png)
-
-![](Pics/pathplan006.png)
-
-![](Pics/pathplan007.png)
-
-## 03 Floyd算法
-
-所有顶点对
+[艾若机器人 轨迹规划](https://www.bilibili.com/video/BV1yT4y1T7Eb)
 
 
+# 艾若机器人 轨迹规划
 
-## 04 RRT算法
+## 01 轨迹规划导论
 
-## 05 A*算法
+![](Pics/IronRobot/pathplanning001.png)
 
-## 06 D*算法
+轨迹规划：路径规划+轨迹优化(直线转为平滑曲线)
 
-## 07 LPA*算法
+![](Pics/IronRobot/pathplanning003.png)
 
-## 08 D* Lite算法
+**构型空间 Configuration Space**
+1. 膨胀障碍物（使得机器人无法通行）
+2. 将机器人视为质点
+
+
+## 02 Dijkstra
+
+![](Pics/IronRobot/pathplanning002.png)
+
+可以这样去想，每次收录距离初始点s的最近的节点p，因为通过其他open list节点q再到p的路径长度显然会更大（初始点到q的距离已经大于到p）。
+
+
+## 03 A*
+
+Dijkstra收录的冗余节点过多，所有比最终路径短的节点都进行了遍历。
+
+![](Pics/IronRobot/pathplanning004.png)
+
+使用A*，添加启发式函数，减少冗余部分
+
+![](Pics/IronRobot/pathplanning005.png)
+
+代码框架类似
+
+![](Pics/IronRobot/pathplanning006.png)
+
+加入启发式函数后，需要添加条件才能保证最优路径。
+
+
+
+
+## 04 RRT
+
+## 05 RRT*
+
+## 06 Informed RRT*
+
+## 07 遗传算法
+
+## 08 蚁群算法
+
+## 09 路径规划算法总结
+
+## 10 多项式曲线
+
+## 11 贝塞尔曲线
+
+## 12 最小化snap
+
+## 13 轨迹长度
+
+## 14 软约束
+
+## 15 硬约束
+
 
 
 
