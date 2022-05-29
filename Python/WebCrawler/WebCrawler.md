@@ -154,3 +154,34 @@ plt.rcParams['font.family'] = 'sans-serif'
 # 解决保存图像是负号'-'显示为方块的问题
 plt.rcParams['axes.unicode_minus'] = False
 ```
+
+
+
+
+
+
+
+
+
+# 问题解决
+
+## 中文乱码问题
+
+[Python 爬虫遇到中文乱码](https://blog.csdn.net/weixin_42750611/article/details/122394100)
+
+**方法1**
+通过.text方法获取到的源码，之后进行打印输出的话，确实是会存在乱码的。考虑将请求变为.content，得到的内容就是正常的。
+
+```python
+soup = BeautifulSoup(response.text, 'html.parser') 
+# 改为
+soup = BeautifulSoup(response.content, 'html.parser') 
+```
+
+**方法2**
+手动指定网页编码
+
+```python
+response.encoding = response.apparent_encoding
+```
+
