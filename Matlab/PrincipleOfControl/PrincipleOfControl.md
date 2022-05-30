@@ -268,6 +268,45 @@ https://ww2.mathworks.cn/help/control/linear-algebra-for-control-design.html?s_t
 # 非线性控制
 
 
+## 相平面法
+
+### ode45
+
+[ode45 Matlab官网](https://ww2.mathworks.cn/help/releases/R2020b/matlab/ref/ode45.html)
+
+ode45 是一个通用型 ODE 求解器，是您解算大多数问题时的首选。但是，对于刚性问题或需要较高准确性的问题，其他 ODE 求解器可能更适合。
+
+![](Pics/ode01.png)
+
+```matlab
+[t,y] = ode45(odefun,tspan,y0)
+
+% odefun是要求解的函数
+% tspan 表示时间的跨度，tspan = [t0 tf]
+% y0则便是要求解y的初值
+```
+
+```matlab
+% Test.m文件
+function sys = Test(t,x)
+print('fuck')
+sys = [x(2);-x(2)-abs(x(1))];
+
+% 命令行
+>> [t,x]=ode45('Test',[0,10],[-5;10]);
+>> plot(x(:,1),x(:,2))
+```
+
+![](Pics/result09.png)
+
+
+### Simulink
+
+
+
+## 描述函数法
+
+
 ```matlab
 % input
 
@@ -276,3 +315,10 @@ https://ww2.mathworks.cn/help/control/linear-algebra-for-control-design.html?s_t
 ```
 
 D:\Project\Blog\Matlab\PrincipleOfControl\Pics
+
+
+# Simulink小技巧
+
+## 反转原件
+
+![](Pics/simulink01.png)
