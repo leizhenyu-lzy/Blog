@@ -6,6 +6,10 @@
 
 [小蜜蜂 基于STM32CubeMX的嵌入式开发](https://www.bilibili.com/video/BV1m7411H7oT)
 
+[洋桃电子 STM32物联网入门30步](https://www.bilibili.com/video/BV1jP4y1E7TJ)
+
+[]()
+
 [野火 STM32F103教学](https://www.bilibili.com/video/BV1yW411Y7Gw)
 
 [MDK5 Software Packs](https://www.keil.com/dd2/pack/)
@@ -932,3 +936,7 @@ ADC：analog to digital，模拟数字转换器
 
 ## 12 课程小结
 
+
+# 洋桃电子 STM32物联网入门30步
+
+## CubeIDE安装
