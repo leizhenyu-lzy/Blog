@@ -6,9 +6,9 @@
 
 [小蜜蜂 基于STM32CubeMX的嵌入式开发](https://www.bilibili.com/video/BV1m7411H7oT)
 
-[洋桃电子 STM32物联网入门30步](https://www.bilibili.com/video/BV1jP4y1E7TJ)
+[洋桃电子 STM32入门100步](https://www.bilibili.com/video/BV1MW411q7Jn)
 
-[]()
+[洋桃电子 STM32物联网入门30步](https://www.bilibili.com/video/BV1jP4y1E7TJ)
 
 [野火 STM32F103教学](https://www.bilibili.com/video/BV1yW411Y7Gw)
 
@@ -893,6 +893,106 @@ ADC：analog to digital，模拟数字转换器
 
 ### TIM
 
+定时器功能：定时、输出比较、输入捕获、互补输出
+
+定时器分类：
+1. 基本定时器只有定时功能
+2. 通用定时器只没有互补输出功能
+3. 高级定时器具有全部功能
+
+![](Pics/Fire/fire111.png)
+
+*黄色箭头为产生定时器中断的位置*
+
+STM32H723系列定时器资源：==可以在参考手册中查看==
+
+![](Pics/Fire/fire102.png)
+
+
+
+#### 基本定时器
+
+只能向上计数
+
+没有外部GPIO，是内部资源，只能用于定时
+
+![](Pics/Fire/fire103.png)
+
+框图：
+1. 时钟源：来自RCC的TIMx_CLK
+2. 控制器：用于控制定时器的复位、使能、计数、触发DAC
+3. 时基单元（最主要部分）
+   1. 包括：预分频器PSC、计数器CNT、自动重装载寄存器ARR
+
+
+![](Pics/Fire/fire104.png)
+
+==计算计数器时钟时，注意要加1（公式如上图）==（个人认为可以理解为间隔数）。得到计数器时钟后，驱动计数器。
+
+16位，最多支持到65535。
+
+自动重装载寄存器ARR限制了能够计数到的最大数值，实际上计数的量是[0,ARR]，共ARR+1个计数器时钟周期。
+
+**影子寄存器**（上上图中自动重装载寄存器以及预分频器后的阴影）
+
+![](Pics/Fire/fire105.png)
+
+也就是使用影子寄存器后，新值只会在本次计数完毕，下次重新计数时被采用。
+
+
+
+#### 高级定时器&通用定时器
+
+可以在==数据手册中的引脚定义中查看==
+
+有外部GPIO
+
+功能：定时、输出比较（PWM）、输入捕获、互补输出（高级定时器独有）
+
+STM32H723系列高级定时器说明：
+
+![](Pics/Fire/fire106.png)
+
+![](Pics/Fire/fire107.png)
+
+**高级定时器功能框图讲解**
+
+![](Pics/Fire/fire108.png)
+
+说明：
+1. 时钟源
+   1. 内部时钟源 CK_INT（RCC_TIMx_CLK）
+   2. 外部时钟模式 1：外部输入引脚 TIx（x=1,2,3,4）（较少使用，感觉是④部分的）
+   3. 外部时钟模式 2：外部触发输入 ETR（①部分的）
+   4. 内部触发输入(ITRx)
+2. 控制器
+3. 时基（比基本定时器多一个重复计数器）
+4. 输入捕获（输入通道：TI1、2、3、4）
+   1. 对输入信号的上升沿、下降沿、双边沿进行捕获。常用于测量输入信号的脉宽、PWM输入信号的频率、占空比。
+   2. 原理：捕获到信号跳变的时候，把计数器CNT的值锁存到捕获寄存器CCR中，将前后两次捕获到的CCR寄存器中的值相减，即可算出脉宽及频率。
+   3. 输入滤波器和边沿检测器，抗高频干扰
+5. 输出比较
+6. 断路功能
+
+
+#### CubeMX&CubeIDE
+
+查看==数据手册==中的引脚定义可以知道引脚对应的定时器以及通道。
+
+![](Pics/Fire/fire113.png)
+
+配置CubeIDE
+
+![](Pics/Fire/fire109.png)
+
+STM32的PWM有两种模式（可以在参考手册中查看）
+
+![](Pics/Fire/fire110.png)
+
+**STM32H723系列定时器时钟**
+
+![](Pics/Fire/fire112.png)
+
 ### SDIO
 
 
@@ -936,7 +1036,173 @@ ADC：analog to digital，模拟数字转换器
 
 ## 12 课程小结
 
+# 洋桃电子 STM32入门100步
+
+## 005 时钟、复位、电源管理
+
+查看==STM32H723数据手册==封面可得：
+
+![](Pics/YoungTalk/youngtalk006.png)
+
+上电（POR）/断电（PDR）复位、可编程电压监测（PVD）
+
+![](Pics/YoungTalk/youngtalk007.png)
+
+高速时钟都是供给系统时钟，低速供给RTC（实时时钟）
+
+**CubeMX中的RCC选择**
+
+![](Pics/YoungTalk/youngtalk008.png)
+
+旁路时钟源是指具有独立输出时钟脉冲的外围电路，一般指有源晶振。
+
+晶体与陶瓷振荡器是指无源石英晶体原件或无源RC振荡器，不能像有源晶振一样直接输出频率脉冲，只能被动连接在单片机上，组成单片机的时钟外围电路。
+
+**CubeMX中的RTC选择**
+
+![](Pics/YoungTalk/youngtalk009.png)
+
+**CubeMX中的时钟树选择**
+
+![](Pics/YoungTalk/youngtalk010.png)
+
+分频器、倍频器
+
+
+## 007 DMA和IO端口
+
+可以将ADC数据直接放入RAM中，方便读取和操作。无需cpu帮助存储、传输数据。
+
+黑线为传统数据传输方式。
+
+![](Pics/YoungTalk/youngtalk011.png)
+
+GPIO
+
+![](Pics/YoungTalk/youngtalk012.png)
+
+
+## 079 外部中断原理与驱动
+
+![](Pics/YoungTalk/youngtalk030.png)
+
+中断的对象是**内核**，让内核停止当前任务，执行中断任务，完毕后再执行原任务。
+
+**外部I/O中断**---**外部中断/事件控制器（EXTI）**
+
+外部I/O可由上沿、下沿、高低电平的三种方式触发。
+1. 下降沿
+2. 上升沿
+3. 高低电平（不考虑边沿、只考虑电平状态）
+
+![](Pics/YoungTalk/youngtalk031.png)
+
+可以选择事件/中断触发。
+
+
+
+
+
+## 082--085 舵机原理与驱动&定时器PWM原理
+
+![](Pics/YoungTalk/youngtalk013.png)
+
+![](Pics/YoungTalk/youngtalk014.png)
+
+0.5-2.5ms对应0~180°。
+
+![](Pics/YoungTalk/youngtalk015.png)
+
+PWM：脉冲宽度调制（占空比）（pulse width modulation）
+
+**可以由STM32中的定时器产生**
+
+![](Pics/YoungTalk/youngtalk016.png)
+
+![](Pics/YoungTalk/youngtalk017.png)
+
+![](Pics/YoungTalk/youngtalk018.png)
+
+CCRx决定高低电平的比例
+
 
 # 洋桃电子 STM32物联网入门30步
 
-## CubeIDE安装
+## 01-05 CubeIDE & CubeMX
+
+### 通用设置
+
+![](Pics/YoungTalk/youngtalk001.png)
+
+第一项文件体积小。第二项文件体积大，编译慢。第三项折中。
+
+![](Pics/YoungTalk/youngtalk002.png)
+
+![](Pics/YoungTalk/youngtalk003.png)
+
+![](Pics/YoungTalk/youngtalk004.png)
+
+![](Pics/YoungTalk/youngtalk005.png)
+
+### GPIO
+
+![](Pics/YoungTalk/youngtalk019.png)
+
+端口输出电平：端口在上电时的初始电平。
+
+端口模式：不设置输入输出，只设置模式。
+
+端口上下拉：端口内部要不要加上下拉电阻。
+
+最大输出速度：通信时可以选择高速。
+
+用户标注：可用于代码编写，替代端口原名称。
+
+
+### 工程的编译与下载
+
+**生成代码，编译设置，工程编译**
+
+**将图形化界面设置转化为程序代码**
+
+![](Pics/YoungTalk/youngtalk020.png)
+
+**编译设置**
+
+![](Pics/YoungTalk/youngtalk021.png)
+
+![](Pics/YoungTalk/youngtalk022.png)
+
+![](Pics/YoungTalk/youngtalk027.png)
+
+![](Pics/YoungTalk/youngtalk028.png)
+
+**程序下载**
+
+CUBEIDE仿真器下载（需要ST-LINK）
+
+首先需要设置JTAG（在SYS中选择）
+
+![](Pics/YoungTalk/youngtalk026.png)
+
+其次需要进行仿真器设置
+
+![](Pics/YoungTalk/youngtalk025.png)
+
+![](Pics/YoungTalk/youngtalk023.png)
+
+程序下载
+
+![](Pics/YoungTalk/youngtalk029.png)
+
+可能会弹出仿真器在线升级窗口
+
+![](Pics/YoungTalk/youngtalk024.png)
+
+
+## 06
+
+
+## 17 外部中断与定时器
+
+

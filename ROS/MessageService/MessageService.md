@@ -14,7 +14,7 @@ VScode
 1. C/C++
 2. Python
 3. ROS(Microsoft)
-4. CMake Tools
+4. CMake Tools(Microsoft)
 
 
 ## 创建功能包
@@ -34,7 +34,7 @@ catkin_create_pkg [pkg_name] [dependencies(optional)]
 
 脚本说明：解释器&编码
 ```python
-#!/usr/bin/python2 
+#!/usr/bin/python3 
 # -*- coding: utf-8 -*-
 ```
 解释器查看方式
@@ -46,12 +46,18 @@ sys.executable
 
 #### 发布
 
+node是执行单元，完成具体功能
+
+
+
+
 ```python
 import rospy
 from std_msgs.msg import String
 
 def talker():
     pub = rospy.Publisher('chatter', String, queue_size=10)
+    # 创建发布器
     # 'chatter'是要发布到的话题
     # Sting是message的类型
     # queue_size是消息队列长度
