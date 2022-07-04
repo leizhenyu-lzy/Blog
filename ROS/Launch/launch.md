@@ -431,3 +431,33 @@ node的三个属性分别为
 另外node标签内也可以用过arg设置节点参数值。
 
 如果node标签有children标签，就需要显式标签来定义。即末尾为/node>
+
+
+
+
+
+## launch文件
+
+[ROS Wiki roslaunch](http://wiki.ros.org/roslaunch/XML)
+
+[launch文件的来龙去脉](https://www.cnblogs.com/fuzhuoxin/p/12588402.html)
+
+roslaunch [pkg_name] [xxx.launch]
+
+```xml
+<launch>
+    <node pkg="[pkg_name]" type="filename" name="[node_name](可以重新指定节点名称)" output="screen"/>
+    <!-- type是可执行文件名称，对于C++只需写可执行文件名称（无后缀），对于Python写xxx.py -->
+    <!-- name可以对节点名称进行重命名 -->
+    <!-- 如果不写output可以不将信息输出在terminal output可以是log或screen-->
+    <!-- 都要加上双引号 -->
+    <!-- 可以同时启动多个节点,在launch中多写几个node即可 -->
+</launch>
+```
+
+launch文件也可以递归调用其他launch文件
+```xml
+<launch>
+    <include file="$(find [pkg_name]/launch/xxx.launch)"/>
+</launch>
+```
