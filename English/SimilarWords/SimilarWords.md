@@ -22,6 +22,21 @@
 ## communism capitalism
 
 
+
+
+
+
+## component constituent element ingredient division portion
+
+**component**----指一个整体的组成部分。
+**constituent**----n. 选民;成分, 构成部分, 要素; a.组成的；构成的----常可与component换用，指某一整体不可少的部分或成分。
+**element**: 指一个整体必不可少或固有的部分，强调一个复杂整体中最基本、最简单的元件、元素或成分等。
+**ingredient**: 普通用词，含义笼统。既可指混在一起而本身没有变化的物质，如配料，又可指与别的物质混在一起，发生了变化的成分。
+
+
+
+
+
 ## epidemic pandemic pestilence
 **epidemic**----adj. 流行的；传染性的；n. 流行病；传染病；风尚等的流行----epidemic situation疫情/prevention防疫/disease流行病
 
