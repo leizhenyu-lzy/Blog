@@ -29,6 +29,12 @@ Project
 
 ![](Pics/Learn/learn002.png)
 
+
+![](Pics/Learn/learn009.png)
+
+![](Pics/Learn/learn010.png)
+
+
 ## ConstraintLayout：在图形化下设计UI界面
 
 
@@ -218,7 +224,158 @@ public class MainActivity extends AppCompatActivity
 
 ![](Pics/Learn/learn011.png)
 
-## Screen Orientation 屏幕方向与状态保存
+## Screen Orientation 屏幕方向旋转&数据保存
+
+记得打开设备的自动旋转
+
+### 锁定旋转
+
+若想要锁定屏幕方向，可以在Manifest.xml中的activity添加一行即可
+
+![](Pics/Learn/learn012.png)
+
+
+### 处理旋转
+
+如果需要对不同手机方向都分别进行处理，则可以新增layout。
+
+![](Pics/Learn/learn013.png)
+
+在res中的layout中可以看到。
+
+![](Pics/Learn/learn014.png)
+
+
+**另外在进行手机处理旋转时，会回调onDestroy**。所以需要对数据提前进行保存，否则数据随着屏幕翻转而不复存在。
+
+可以利用**Bundle savedInstanceState**。可以在onCreate方法中看到。
+
+![](Pics/Learn/learn015.png)
+
+Bundle是key-value数据结构
+
+```java
+TextView textView;
+
+@Override
+protected void onCreate(Bundle savedInstanceState)
+{
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    if(savedInstanceState!=null)  // 先要判断非空
+    {
+        String s = savedInstanceState.getString("MYKEY");
+        textView.setText(s);
+    }
+}
+
+@Override
+protected void onSaveInstanceState(@NonNull Bundle outState)
+{
+    super.onSaveInstanceState(outState);
+    outState.putString("MYKEY", textView.getText().toString());
+}
+```
+
+重写onSaveInstanceState方法，注意有重载，不要用错了。
+
+在onCreate时候进行存储数据的获取。
+
+并不是永久保存。
+
+### onSaveInstanceState解释
+
+[Android onSaveInstanceState()和onRestoreInstanceState()调用](https://blog.csdn.net/fenggering/article/details/53907654)
+
+Android系统的回收机制会在未经用户主动操作的情况下销毁activity，而为了避免系统回收activity导致数据丢失，Android为我们提供了onSaveInstanceState(Bundle outState)和onRestoreInstanceState(Bundle savedInstanceState)用于保存和恢复数据。
+
+当activity有可能被系统回收的情况下，而且是在onStop()之前。注意是有可能，如果是已经确定会被销毁，比如用户按下了==返回键==（左边三角），或者调用了finish()方法销毁activity，则onSaveInstanceState不会被调用。或者也可以说，此方法只有在activity被异常终止的情况下会被调用。
+
+onSaveInstanceState(Bundle outState)会在以下情况被调用：
+1. 当用户按下==HOME键==时。（中间圆形）
+2. 从最近应用中选择运行其他的程序时。
+3. 按下电源按键（关闭屏幕显示）时。
+4. 从当前activity启动一个新的activity时。
+5. **屏幕方向切换时**(无论竖屏切横屏还是横屏切竖屏都会调用)。
+
+
+## ViewModel 从MVC到MVVM
+
+[Android官网 Jetpack](https://developer.android.google.cn/jetpack/)
+
+属于Jetpack的一个类。
+
+![](Pics/Learn/learn016.png)
+
+独立于Android底层API。
+
+![](Pics/Learn/learn017.png)
+
+使用ViewModel管理的数据，在屏幕旋转或切换语言时，不会丢失。
+
+LiveData实现数据刷新。
+
+自己创建ViewModel用于管理数据。
+
+![](Pics/Learn/learn018.png)
+
+```java
+// ViewModel中引入
+
+package com.lzy.viewmodel;
+
+import androidx.lifecycle.ViewModel;
+
+public class MyViewModel extends ViewModel
+{
+    public int number = 0;
+}
+
+// MainActivity中引入
+import androidx.lifecycle.ViewModelProvider;
+```
+
+## LiveData 感知数据的变化 & 自动刷新
+
+在底层数据库更改时通知视图。
+
+简化Controller。
+
+
+
+![](Pics/Learn/learn019.png)
+
+
+
+
+![](Pics/Learn/learn020.png)
+
+
+
+
+
+## Navigation 组件
+
+页面间的切换
+
+实现Navigation的四个内容
+1. NavHost：容器&控制器，存放页面
+2. Fragment：碎片化，分割大屏幕。fragment栈
+3. NavController：控制导航逻辑（action），定义切换路线
+4. NavGraph：
+
+
+![](Pics/Learn/learn021.png)
+
+![](Pics/Learn/learn022.png)
+
+
+为了方便后续操作和布局，添加Constraint Layout
+
+![](Pics/Learn/learn023.png)
+
+
 
 
 

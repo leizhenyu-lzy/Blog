@@ -10,6 +10,10 @@
 
 [廖雪峰 Git教程](https://www.liaoxuefeng.com/wiki/896043488029600)
 
+[尚硅谷 Git入门到精通](https://www.bilibili.com/video/BV1vy4y1s7k6)
+
+[猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/)
+
 # 廖雪峰
 
 ## Git 简介
@@ -96,15 +100,18 @@ git config --global user.name "[user_name]"
 git config --global user.email "[user_email]"
 ```
 
-安装时记得先卸载（包括清理环境变量）
+环境变量自动配置了
+
+安装时记得先卸载（包括清理旧的环境变量）
 
 ## Git的工作原理
 
 Git的3个本地工作区域+1个远程仓库：
 1. 工作目录(Working Directory)：存放项目代码的地方
 2. 暂存区(Stage/Index)：暂存区，用于临时存放改动（只是一个文件，保存即将提交的文件列表信息）
-3. 资源库(Repository/Git Directory)：安全存放数据的位置，这里面有提交到所有版本的数据
-4. 远程Git仓库(Remote Directory)：远程仓库，托管代码的服务器，用于远程数据交换
+3. 资源库(Repository/Git Directory)：安全存放数据的位置，这里面有提交到所有版本的数据。HEAD指向最新存放入仓库的版本
+4. 
+5. 远程Git仓库(Remote Directory)：远程仓库，托管代码的服务器，用于远程数据交换
 
 ![](Pics/git_command.png)
 
@@ -124,12 +131,13 @@ Git的3个本地工作区域+1个远程仓库：
 
 git创建目录方式：
 ```
-初始化仓库
+初始化仓库（出现.git隐藏文件）
 git init
 
 
 克隆仓库
 git clone [url]
+
 
 撤销所有本地修改
 git reset --hard
@@ -137,11 +145,99 @@ git reset --hard
 
 ## Git的基本操作命令
 
+**文件4种状态**
+
+Untracked：未跟踪。没有加入到git库种，不参与版本控制。通过git add 变为Staged状态。
+
+Unmodify：文件已入库，未修改，即版本库种文件快照内容与文件夹中的完全一致。两种去处：①被修改变为Modified状态；②git rm拜纳姆Untracked状态。
+
+Modified：文件已修改。两个去处：①git add进入staged状态；②git checkout则丢弃修改，返回unmodify状态。
+
+Staged：暂存状态。git commit命令将修改同步到库中，使得库文件和本地文件抑制。
+
+
+
+```
+
+查看文件状态
+git status [filename]
+
+查看所有文件状态
+git status
+
+添加所有文件到暂存区
+git add .
+
+提交暂存区内容到本地仓库  -m 表示提交信息
+git commit -m ""
+注意这里要不要使用中文引号，否则没用
+```
+
+
+**忽略文件**
+
+.gitignore
+
+文件指明忽略哪些文件
+
+使用#进行注释
+
+可以使用Linux通配符
+
+```
+*.txt       忽略所有.txt结尾的文件
+
+!lib.txt    感叹号表示例外
+
+/temp       匹配项目根目录
+
+build/      忽略build下的所有文件
+
+doc/*.txt   忽略文件夹中的某个文件
+```
+
+
+
+
+
 ## 配置SSH公钥及创建远程仓库
+
+免密登录
+
+注意可能之前配置了Clash代理，所以上传时需要打开Clash（Gitee和Github）
+
+
+
 
 ## IDEA集成Git
 
 
 ## Git中分支说明
 
+
+
+
+
 ## Git后续操作说明
+
+
+
+
+# 报错及解决
+
+## 
+
+```
+error: failed to push some refs to ‘xxx’
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. Check out this branch and integrate the remote changes
+hint: (e.g. ‘git pull …’) before pushing again.
+hint: See the ‘Note about fast-forwards’ in ‘git push --help’ for details.
+```
+
+git pull --rebase origin master
+
+git push -u origin master
+
+
+[git push 的 -u 参数含义](https://blog.csdn.net/Lakers2015/article/details/111318801)
