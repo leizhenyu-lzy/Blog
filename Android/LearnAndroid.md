@@ -6,6 +6,12 @@
 
 [Android Studio 官网下载](https://developer.android.google.cn/studio)
 
+[Android开发从入门到精通 --- 传感器](https://www.bilibili.com/video/BV1jW411375J?p=176)
+
+
+
+
+
 
 
 # B站 Android开发教程
@@ -374,6 +380,81 @@ import androidx.lifecycle.ViewModelProvider;
 为了方便后续操作和布局，添加Constraint Layout
 
 ![](Pics/Learn/learn023.png)
+
+
+
+
+
+
+
+
+
+
+
+# B站 Android开发从入门到精通
+
+## 文件存储
+
+通过Java的IO流读取磁盘文件
+
+输入流 ：文件到App ：openFileInput()
+输出流 ：App到文件 ：openFileOutput()
+
+**文件存储方式**
+1. 内部存储（≠内存）
+   1. 默认只能被创建它的应用访问
+   2. 应用卸载后，内部存储中的文件也被删除
+   3. 内部存储空间耗尽，手机无法使用
+2. 外部存储（≠SD卡）
+   1. 将手机连接电脑，能被识别到的就是外部存储
+
+
+
+
+**内部存储路径示例**
+
+eg:/data/data/com.lzy.file/files/memo
+
+![](Pics/Sensor/sensor005.png)
+
+**内部存储**
+
+![](Pics/Sensor/sensor006.png)
+
+openFileOutput
+
+
+**外部存储**
+
+File对象
+
+```java
+file = new File(Environment.getExternalStorageDirectory(),"text.txt");
+```
+
+manifest中添加权限
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+```
+
+
+## 传感器
+
+![](Pics/Sensor/sensor002.png)
+
+**开发步骤**
+
+![](Pics/Sensor/sensor003.png)
+
+### 方向传感器
+
+原有Orientation已经deprecated。
+
+![](Pics/Sensor/sensor004.png)
+
+
+
 
 
 
