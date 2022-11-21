@@ -972,6 +972,8 @@ length与字符集有关，6是因为utf8中一个汉字三个字节。
 
 # Python + MySQL
 
+[Python + MySQL 0基础从入门到精通](https://www.bilibili.com/video/BV1B34y1R7in)
+
 ## 安装pymysql
 
 需要安装pymysql十分方便：pip install pymysql
@@ -987,6 +989,55 @@ for data in datas:
    print(data)
 db.close()
 ```
+
+## 数据表操作
+
+1. 创建
+![](Pics/WithPython/withpython01.png)
+
+2. 修改
+![](Pics/WithPython/withpython02.png)
+![](Pics/WithPython/withpython03.png)
+
+3. 查看描述
+```sql
+desc [表名];
+```
+
+## 常见列类型
+
+1. 整型
+![](Pics/WithPython/withpython04.png)
+![](Pics/WithPython/withpython05.png)
+如果值非法，则会报错(严格模型)
+![](Pics/WithPython/withpython06.png)
+
+
+2. 小数
+![](Pics/WithPython/withpython07.png)
+小数部分位数不对，四舍五入。整数部分超出，报错。
+![](Pics/WithPython/withpython08.png)
+float double 不如 decimal 常用
+
+
+3. 字符串
+![](Pics/WithPython/withpython09.png)
+char定长（存储上固定长度，最多255个字符），varchar变长（按真实数据长度存储，最多65535）
+
+
+4. 时间
+![](Pics/WithPython/withpython10.png)
+datetime用的较多
+timestamp类型与时区设置有关（数据当成所在时区的时间，转为UTC时间并存储至MySQL，查询时再转换为当前所在时间）
+![](Pics/WithPython/withpython11.png)
+system_time_zone:系统时区，在MySQL启动时会检查当前系统的时区并根据系统时区设置全局参数system_time_zone的值（CST，china standard time）
+time_zone:用来设置每个连接会话的时区，默认为system时，使用全局参数system_time_zone的值（system指向CST）
+![](Pics/WithPython/withpython12.png)
+
+
+5. 其他
+![](Pics/WithPython/withpython13.png)
+P13
 
 # MySQL创建用户与授权
 
