@@ -88,25 +88,25 @@ void quickSort(int array[], int left, int right)
     quickSort(array, pointerR + 1, right);
 }
 
-int main()
-{
-    const unsigned long N = (unsigned long)1e5;
-    int array[N] = {};
-    //int* array = new(nothrow) int[N];
-    int n = 0;
-
-    cin >> n;
-    for (int i = 0; i < n; i++)
-        cin >> array[i];
-
-    quickSortClassic(array, 0, n - 1);
-
-    selfTest(array, 0, n - 1);
-
-    for (int i = 0; i < n; i++)
-        cout << array[i] << " ";
-
-    return 0;
-}
+//int main()
+//{
+//    const unsigned long N = (unsigned long)1e5;
+//    int array[N] = {};
+//    //int* array = new(nothrow) int[N];
+//    int n = 0;
+//
+//    cin >> n;
+//    for (int i = 0; i < n; i++)
+//        cin >> array[i];
+//
+//    quickSortClassic(array, 0, n - 1);
+//
+//    selfTest(array, 0, n - 1);
+//
+//    for (int i = 0; i < n; i++)
+//        cout << array[i] << " ";
+//
+//    return 0;
+//}
 
 
