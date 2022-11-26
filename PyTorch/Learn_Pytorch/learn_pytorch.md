@@ -460,6 +460,8 @@ writer.close()
 
 [PyTorch官网 TORCH.NN](https://pytorch.org/docs/stable/nn.html)
 
+[开源动图](https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md)
+
 **Containers**
 
 给神经网络定义骨架
