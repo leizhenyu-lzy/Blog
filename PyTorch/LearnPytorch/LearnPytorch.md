@@ -13,7 +13,7 @@
 ## 00 Python两大法宝函数
 
 **dir()**
-
+展示
 
 ```python
 print(dir(torch))

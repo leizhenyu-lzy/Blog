@@ -1,6 +1,15 @@
-# os
+# OS
 
 [toc]
+
+# Portals
+
+[Python基础之标准库os](https://www.bilibili.com/video/BV11A411e7oG/)
+
+[]()
+
+
+# Python基础之标准库os
 
 ## os标准库的主要功能
 1. 系统相关变量和操作
@@ -30,12 +39,28 @@ print(os.getcwd())  # 当前目录所在位置 D:\Project\Blog\Python\LearnOS
 os.remove([filepath])  # 删除文件 
 ```
 
+```python
+# 绝对路径 __file__代表当前文件
+dir1=os.path.dirname(__file__)  # d:\Project\Blog\Python\OS
+print(dir1)
+# 绝对路径
+dir2=os.getcwd()  # d:\Project\Blog\Python\OS
+print(dir2)
+
+file1 = open('LearnOS.md', encoding='utf8')
+content1 = file1.read()
+print(content1)
+file2 = open(r'D:\Project\Blog\Python\OS\LearnOS.md',encoding='utf8')
+content2 = file2.read()
+print(content2)
+```
+
 **子模块os.path**
 
 **分离文件和路径**
 ```python
 file = os.getcwd()+"/LearnOS.md"  # 注意要加上分隔符
-print(os.path.split(file))  # 进行切分('D:\\Project\\Blog\\Python', 'LearnOSLearnOS.md')
+print(os.path.split(file))  # 进行切分('D:\\Project\\Blog\\Python', 'LearnOS.md')
 
 a, b = os.path.split(file)
 print(a)  # D:\Project\Blog\Python\LearnOS
@@ -60,7 +85,7 @@ print(os.path.isabs(file2))  # True
 print(os.path.isabs(file3))  # False
 print(os.path.isabs(file4))  # True
 print(os.path.isabs(file5))  # False
-# 有./和什么都没用都不会被认为是角度路径
+# 有./和什么都没用都不会被认为是绝对路径
 
 print("判断是否为文件")
 print(os.path.isfile(file1))  # True
@@ -106,7 +131,8 @@ print(os.path.getsize(file))  # 得到文件大小
 
 ```python
 
-for in os.walk("path"):
+for roots,dirs,files in os.walk("."):
+    print(roots,dirs,files)
     
 
 
