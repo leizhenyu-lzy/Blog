@@ -9,10 +9,9 @@ ADAS：
 简单：驾驶更便捷
 低成本：车速控制，车道规划
 
-输入（感知算法、融合） 决策 输出（声音、视觉、振动、车辆控制）
+输入（感知算法、融合） 决策   输出（声音、视觉、振动、车辆控制）
 
 Time  Quality  Cost
-
 
 
 车道偏离报警(Lane Departure Warning, LDW)
@@ -24,7 +23,12 @@ Time  Quality  Cost
 
 
 
+过曝、欠曝，逆光
+合适
+特斯拉纯视觉方案
+通用性：图森
 
+乘用车、商用车  nRnV多传感器融合方案
 
 1-10
 https://mp.weixin.qq.com/s?__biz=MzU2NjU3OTc5NA==&mid=2247541068&idx=1&sn=d8b579d259e3a352d2c7f5175f8c56d2&chksm=fca82671cbdfaf6773d7ea69cd1cf7c8a2b52268f2b8155369496691e7162790b9e4fa9bc784&scene=21#wechat_redirect
