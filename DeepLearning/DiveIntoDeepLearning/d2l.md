@@ -24,6 +24,47 @@ N维数组是机器学习和神经网络的主要数据结构
 
 
 
+## 07 自动求导
+
+![](Pics/L07P01.png)
+
+![](Pics/L07P02.png)
+
+![](Pics/L07P03.png)
+
+做矩阵乘法，权重为列向量，右乘数据
+
+![](Pics/L07P04.png)
+
+![](Pics/L07P05.png)
+
+![](Pics/L07P06.png)
+
+![](Pics/L07P07.png)
+
+反向时会使用前向时的中间结果
+
+![](Pics/L07P08.png)
+
+![](Pics/L07P09.png)
+
+内存复杂度使得深度神经网络会消耗大量GPU资源
+
+
+## 【补】矩阵求导
+
+Mathematics for Machine Learning书籍下载地址：https://mml-book.github.io/
+
+矩阵求导简介：https://zhuanlan.zhihu.com/p/137702347
+
+矩阵求导的本质：eg：A对B求导，矩阵A中的每一个元素对矩阵B中的每一个元素求导
+|A|B|求导后元素个数|
+|-|-|-------------|
+|1×1|1×1|1×1|
+|1×p|1×n|p×n|
+|q×p|m×n|p×q×m×n|
+
+
 ## 10 多层感知机
 
 **感知机**
@@ -157,6 +198,35 @@ Multi Layer Perceptron
 ![](Pics/L12P04.png)
 
 ![](Pics/L12P05.png)
+
+## 13 丢弃法
+
+![](Pics/L13P01.png)
+
+![](Pics/L13P02.png)
+
+用这个扰动可以保证期望不变
+
+![](Pics/L13P03.png)
+
+dropout类似于正则项，只在训练中使用。预测、推理时无需使用。
+
+![](Pics/L13P04.png)
+
+![](Pics/L13P05.png)
+
+## 14 数值稳定性 + 模型初始化和激活函数
+
+![](Pics/L14P01.png)
+
+t是层数，y是损失函数与各层的函数的复合
+
+向量关于向量的导数是矩阵
+
+**梯度爆炸**，**梯度消失**
+
+
+
 
 ## 19 卷积层
 
