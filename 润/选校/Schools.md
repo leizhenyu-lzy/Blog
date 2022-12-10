@@ -57,6 +57,9 @@
 ### CMU
 1. msin
 2. sesv
+3. mits 
+   1. [offer多多  Masters of Information Technology Strategy](https://offer.1point3acres.com/program/cmu-master-of-information-technology-strategy-113)
+   2. [一亩三分地 CMU MITS项目](https://blog.1point3acres.com/cmu-coding-engineer-job/)
 
 ### UCLA
 1, meng
@@ -96,6 +99,8 @@
 
 ### NorthEast
 1. CS General
+
+[凭啥！东北大学CS专业牛到amazon为其专设岗位？](https://blog.1point3acres.com/northeastern-align-masters-of-science-in-computer-science-amazon/)
 
 ### GaTech
 1. cse
