@@ -292,6 +292,12 @@ alter database [dbname] charset [aim_charset];
 
 结构化查询语言 Structured Query Language
 
+专为数据库建立的操作命令集
+
+关系型数据库（可以用表格表达），非关系型数据库（redis，hbase）
+
+sql只能对关系型数据库进行查询
+
 不同数据库生产厂商都支持SQL语言，但都有特定内容。
 
 ![](Pics/Fundamental/fund_sql021.png)
