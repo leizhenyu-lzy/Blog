@@ -4,7 +4,13 @@ import os
 import MyTrackBarToolFunctions as tbtf
 
 def myHoughLineDetection(imagePath):
-
+    r"""
+    FunctionName    :   
+    FunctionDescribe:   
+    InputParameter  :   ①
+    OutputParameter :   ①
+    Specification   :   
+    """
     pass
 
 
