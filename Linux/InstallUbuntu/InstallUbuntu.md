@@ -42,7 +42,13 @@ sudo apt remove libreoffice-common
 (base) lzy@legion:/tmp$ sudo gedit /usr/share/applications/meshlab.desktop
 ```
 
+## miniconda
+[关于conda环境的配置，看这一篇就够了](https://www.bilibili.com/read/cv8956636)
+[使用Miniconda管理隔离虚拟Python环境](https://www.bilibili.com/video/BV1Mv411x775)
+输入 conda config 就会自动在用户目录下生成 .condarc 文件
 
 
+## 微信
 
+[deepin-wine 微信](https://www.bilibili.com/video/BV1Vb4y1r79y)
 
