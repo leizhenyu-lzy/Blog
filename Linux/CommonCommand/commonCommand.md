@@ -49,6 +49,9 @@ unalias
 
 ![](Pics/alias01.png)
 
+alias fileExplorer="nautilus"
+
+bash文件夹界面
 
 ## 文件权限
 ![](Pics/fileProperty01.png)
