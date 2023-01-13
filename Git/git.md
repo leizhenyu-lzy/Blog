@@ -92,7 +92,7 @@ git config -l
 查看系统配置的信息
 git config --system --list
 
-查看用户配置的信息（用户名和邮箱） 必须配置 向git服务器
+查看用户配置的信息（用户名和邮箱） 必须配置 向git服务器说明你是谁
 git config --global --list
 
 git config --global user.name "[user_name]"
@@ -154,8 +154,6 @@ Unmodify：文件已入库，未修改，即版本库种文件快照内容与文
 Modified：文件已修改。两个去处：①git add进入staged状态；②git checkout则丢弃修改，返回unmodify状态。
 
 Staged：暂存状态。git commit命令将修改同步到库中，使得库文件和本地文件抑制。
-
-
 
 ```
 
