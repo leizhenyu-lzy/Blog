@@ -206,9 +206,14 @@ python3-pip
 meshlab
 gthumb
 timeshift备份 [Timeshift 系统备份和还原](https://blog.csdn.net/zjy1175044232/article/details/124248454)  [Timeshift 官网](https://linuxmasterclub.com/timeshift/)
+
 fcitx
 1. sudo apt-get install fcitx-bin
 2. sudo apt-get install fcitx-table 
+
+新立得包管理 sudo apt install -y synaptic
+net-tools 用于ifconfig
+tree
 
 **其他**
 VLC
