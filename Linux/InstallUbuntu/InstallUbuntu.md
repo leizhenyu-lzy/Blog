@@ -45,17 +45,30 @@ sudo apt remove thunderbird*
 sudo apt remove firefox*
 sudo apt remove libreoffice-common
 sudo apt remove libreoffice*
+sudo apt remove rhythmbox*
 ```
+感觉22.04的libreoffice还行，就没卸载
+
 卸载相关小游戏
 
 # 后续安装
+
+## 终端补全忽略大小写
+```bash
+# 在/etc/inputrc中添加使全局所有用户生效
+echo 'set completion-ignore-case on' >> /etc/inputrc
+
+# 对于个别用户，则可以在用户home目录下添加
+echo 'set completion-ignore-case on' >> ~/.inputrc
+```
+
 
 ## 输入法
 [在Ubuntu20.04中安装中文输入法](https://zhuanlan.zhihu.com/p/529892064)
 
 凑活用ibus也行
 
-对于sougou，需要先安装发财系统
+对于sougou，需要先安装系统fcitx
 
 ## 显卡驱动
 [NVIDIA CUDA Toolkit Release Notes　官网](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
@@ -69,7 +82,7 @@ sudo apt remove libreoffice*
 ![](Pics/gpuDriver03.png)
 
 因为pytorch我会安装最新的11.7，所以这里选择了470 
-P.S.本来想选择510但是直接不允许我下载，遂放弃
+P.S.本来想选择510但是直接不允许我下载，遂放弃，这个方法不一定行
 
 [NVIDIA显卡的Ubuntu驱动程序安装方法](https://www.bilibili.com/video/BV1wY411p7mU/)
 
@@ -78,9 +91,59 @@ P.S.本来想选择510但是直接不允许我下载，遂放弃
 
 ### 雷蛇需要额外操作
 
-选用了22.04
+**最终解决方案 driver+cuda+cudnn**
 
-最终方法：命令行直接　sudo apt install nvidia-driver-470，装完后重启
+[安装显卡驱动、CUDA、cuDNN及其简单介绍](https://www.bilibili.com/video/BV16Y411M7SC)
+[Ubuntu安装CUDA+cuDNN](https://blog.chintsan.com/archives/561)
+
+选用了22.04，对应的ROS2版本为Humble[ROS2官网 查看支持版本](https://www.ros.org/reps/rep-2000.html#rolling-ridley-june-2020-ongoing)
+
+最终方法：命令行直接　sudo apt install nvidia-driver-470，装完后重启，nvidia-smi显示cuda为11.4　　**至此driver安装完成**
+
+由于需要装pytorch1.13，所以需要更新为11.7
+
+[CUDA Toolkit 11.7 Downloads](https://developer.nvidia.com/cuda-11-7-0-download-archive)
+
+按照官网下面的命令运行即可运行，安装后重启
+```
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/cuda-repo-ubuntu2204-11-7-local_11.7.0-515.43.04-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2204-11-7-local_11.7.0-515.43.04-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2204-11-7-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda
+```
+
+打开后，nvidia-smi发现把我之前的470更新为515.65.01，看看后续能不能正常使用
+
+![](Pics/razer01.jpg)
+
+进入cuda安装路径中的bin目录，执行./nvcc -V，进行查看，当然也可以nvidia-smi
+
+![](Pics/cuda01.png)
+
+如果想要在任何路径下的终端使用nvcc -v命令，则需在~/.bashrc中加入两行
+```
+export PATH=/usr/local/cuda-11.7/bin:${PATH}
+export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64:${LD_LIBRARY_PATH}
+```
+
+然后新开一个终端，输入nvcc -V即可看到相同结果　**至此cuda安装完成**
+
+对于cudnn安装，直接官网下载安装包，随后sudo dpkg -i xxx即可
+
+安装pytorch直接pip3安装也行，记得添加豆瓣镜像　-i https://pypi.douban.com/simple/
+
+```python
+# 使用 PyTorch 查看 CUDA 和 cuDNN 版本
+import torch
+print(torch.__version__)
+print(torch.version.cuda)
+print(torch.backends.cudnn.version())
+```
+![](Pics/pytorch01.jpg)
+
 
 **启动时**
 进入启动项时，选中第一行Ubuntu，按[e]，编辑启动项参数
@@ -89,10 +152,8 @@ P.S.本来想选择510但是直接不允许我下载，遂放弃
 
 ![](Pics/blacklist01.png)
 
-输入ctrl+x，保存并启动
+输入ctrl+x，保存并启动，进入系统后，修改黑名单
 
-**进入系统后**
-修改黑名单
 sudo gedit /etc/modprobe.d/blacklist.conf
 
 末尾添加
@@ -119,8 +180,6 @@ sudo update-initramfs -u
 (base) lzy@legion:/tmp$ sudo gedit /usr/share/applications/meshlab.desktop
 ```
 
-
-
 ## 软件列表
 
 ### 软件包
@@ -132,17 +191,30 @@ drawio
 dbeaver
 wps
 eudic 欧陆词典
+每日英语听力
 baidu net disk
 linux qq
 Feishu
 netease cloud music
 tencent meeting
 sunlogin client
+sougou input method [Ubuntu搜狗输入法安装指南](https://shurufa.sogou.com/linux/guide)
 
 **apt install**
 git
+python3-pip
 meshlab
+gthumb
+timeshift备份 [Timeshift 系统备份和还原](https://blog.csdn.net/zjy1175044232/article/details/124248454)  [Timeshift 官网](https://linuxmasterclub.com/timeshift/)
+fcitx
+1. sudo apt-get install fcitx-bin
+2. sudo apt-get install fcitx-table 
 
+**其他**
+VLC
+gthumb
+clash
+暴力猴+Bilibili插件[强大的哔哩哔哩增强脚本](https://github.com/the1812/Bilibili-Evolved)
 
 ## ROS
 鱼香ROS一键安装指令
