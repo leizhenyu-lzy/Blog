@@ -34,7 +34,7 @@ Codename:	focal
 ```
 
 ## 查看文件
-![](Pics/file02.png)
+![](./Pics/file02.png)
 
 
 ## 复制、删除、移动
