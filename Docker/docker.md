@@ -279,7 +279,7 @@ Password store initialized for 74E5BC6AE075CBAD894702F5EA07F3126F3A3F12
 
 ### 设置 Docker 镜像加速源
 在 setting 中的 Docker Engine 添加一行(注意逗号)
-```"registry-mirrors": ["https://registry.docker-cn.com"],```
+```"registry-mirrors": ["https://registry.docker-cn.com", https://docker.mirrors.ustc.edu.cn],```
 可以添加多个，在中括号中逗号分开即可
 
 ![](Pics/docker003.png)
