@@ -234,8 +234,10 @@ hint: See the ‘Note about fast-forwards’ in ‘git push --help’ for detail
 ```
 
 git pull --rebase origin master
+该命令的意思是把远程库中的更新合并到（pull=fetch+merge）本地库中，–-rebase的作用是取消掉本地库中刚刚的commit，并把他们接到更新后的版本库之中。出现如下图执行pull执行成功后，可以成功执行git push
 
 git push -u origin master
+
 
 
 [git push 的 -u 参数含义](https://blog.csdn.net/Lakers2015/article/details/111318801)
