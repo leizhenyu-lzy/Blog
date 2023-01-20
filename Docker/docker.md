@@ -12,7 +12,7 @@
 
 [B站 Docker 1小时快速上手教程](https://docker.easydoc.net/doc/81170005/cCewZWoN/lTKfePfP)
 
-[Docker 快速入门](https://docker.easydoc.net/doc/81170005/cCewZWoN/lTKfePfP)
+[Docker 快速入门 在线文档](https://docker.easydoc.net/doc/81170005/cCewZWoN/lTKfePfP)
 
 
 
@@ -279,8 +279,84 @@ Password store initialized for 74E5BC6AE075CBAD894702F5EA07F3126F3A3F12
 
 ### 设置 Docker 镜像加速源
 在 setting 中的 Docker Engine 添加一行(注意逗号)
-```"registry-mirrors": ["https://registry.docker-cn.com", https://docker.mirrors.ustc.edu.cn],```
+```shell
+"registry-mirrors": ["https://registry.docker-cn.com", https://docker.mirrors.ustc.edu.cn],
+```
 可以添加多个，在中括号中逗号分开即可
 
 ![](Pics/docker003.png)
 
+
+
+## Docker 快速安装软件
+
+[docker run 官网](https://docs.docker.com/engine/reference/commandline/run/)
+
+**直接安装的缺点**
+1. 安装麻烦，可能有各种依赖，运行报错。例如：WordPress，ElasticSearch，Redis，ELK
+2. 可能对 Windows 并不友好，运行有各种兼容问题，软件只支持 Linux 上跑
+3. 不方便安装多版本软件，不能共存
+4. 电脑安装了一堆软件，拖慢电脑速度
+5. 不同系统和硬件，安装方式不一样
+
+**Docker 安装的优点**
+1. 一个命令就可以安装好，快速方便
+2. 有大量的镜像，可直接使用
+3. 没有系统兼容问题，Linux 专享软件也照样跑
+4. 支持软件多版本共存
+5. 用完就丢，不拖慢电脑速度
+6. 不同系统和硬件，只要安装好 Docker 其他都一样了，一个命令搞定所有
+
+```docker
+docker run -d -p 6379:6379 --name redis redis:latest
+# -d 表示在后台运行
+# -p 表示端口暴露 6379(宿主机端口)：6379(docker端口)
+# --name redis 命名
+# redis:latest 安装版本
+
+lzy@Razer:~$ docker run -d -p 6379:6379 --name redis redis:latest
+Unable to find image 'redis:latest' locally
+latest: Pulling from library/redis
+8740c948ffd4: Already exists 
+a2271c958e57: Already exists 
+495af11a3eac: Already exists 
+18b045ddb54d: Pull complete 
+f49c2d6d086c: Pull complete 
+14ed0c386119: Pull complete 
+Digest: sha256:325d5a448d8f6c1d30a0a0fb26090343279d4cf23258b26b1745862f332e9479
+Status: Downloaded newer image for redis:latest
+f5fc14404f3b77263de25e7a70b72eb8985857aaea88e4da264484acbf492c1b
+```
+
+在 Docker Desktop 中查看
+
+Images
+![](Pics/docker004.png)
+
+Containers
+![](Pics/docker005.png)
+
+## 制作自己的镜像
+
+**编写 Dockerfile**
+```docker
+FROM node:11
+MAINTAINER easydoc.net
+
+# 复制代码
+ADD . /app
+
+# 设置容器启动后的默认运行目录
+WORKDIR /app
+
+# 运行命令，安装依赖
+# RUN 命令可以有多个，但是可以用 && 连接多个命令来减少层级。
+# 例如 RUN npm install && cd /app && mkdir logs
+RUN npm install --registry=https://registry.npm.taobao.org
+
+# CMD 指令只能一个，是容器启动后执行的命令，算是程序的入口。
+# 如果还需要运行其他命令可以用 && 连接，也可以写成一个shell脚本去执行。
+# 例如 CMD cd /app && ./start.sh
+CMD node app.js
+
+```
