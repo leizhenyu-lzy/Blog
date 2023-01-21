@@ -68,7 +68,18 @@ echo 'set completion-ignore-case on' >> ~/.inputrc
 
 凑活用ibus也行
 
-对于sougou，需要先安装系统fcitx
+对于sougou，需要先安装系统fcitx，按照官网教程一步步来即可
+
+[搜狗输入法linux 官方安装指南](https://shurufa.sogou.com/linux/guide)
+
+
+## 快捷键设置
+
+![](Pics/shortCut01.png)
+![](Pics/shortCut02.png)
+![](Pics/shortCut03.png)
+
+
 
 ## 显卡驱动
 [NVIDIA CUDA Toolkit Release Notes　官网](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
@@ -205,6 +216,7 @@ git
 python3-pip
 meshlab
 gthumb
+flameshot (截图软件，可以添加快捷键)
 timeshift备份 [Timeshift 系统备份和还原](https://blog.csdn.net/zjy1175044232/article/details/124248454)  [Timeshift 官网](https://linuxmasterclub.com/timeshift/)
 
 fcitx

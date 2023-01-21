@@ -111,3 +111,10 @@ cat ~/.bashrc
 ![](Pics/envs04.png)
 
 ![](Pics/envs05.png)
+
+
+## bash 快捷键
+
+ctrl+w 删除命令行终端某个命令字段
+
+ctrl+shift+N
