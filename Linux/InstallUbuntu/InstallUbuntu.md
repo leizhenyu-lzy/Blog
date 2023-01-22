@@ -73,6 +73,10 @@ echo 'set completion-ignore-case on' >> ~/.inputrc
 
 [搜狗输入法linux 官方安装指南](https://shurufa.sogou.com/linux/guide)
 
+sudo apt-get install fcitx-bin
+sudo apt-get install fcitx-table 
+
+没事多重启就行
 
 ## 快捷键设置
 
