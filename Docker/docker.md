@@ -51,6 +51,11 @@ Docker 是一个应用打包、分发、部署的工具
 
 ## Docker 安装
 
+
+官网说 Docker Desktop 捆绑了 Docker Engine 所以直接安装 Docker Desktop 即可
+
+如果仅希望安装 Engine 可以按照下面的步骤， 如果想要安装 Desktop ，则执行完**Install using the repository**后即可跳转到 Desktop 安装部分
+
 ### Install Docker Engine on Ubuntu
 [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 

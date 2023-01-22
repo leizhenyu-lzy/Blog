@@ -295,5 +295,9 @@ wget http://fishros.com/install -O fishros && . fishros
 
 [deepin-wine 微信](https://www.bilibili.com/video/BV1Vb4y1r79y)
 
-
-
+```
+官网：https://deepin-wine.i-m.dev/
+首次使用需要添加仓库： wget -O- https://deepin-wine.i-m.dev/setup.sh | sh
+而后使用： apt install ... 安装对应软件包
+应用图标需要注销重登录后才会出现
+```
