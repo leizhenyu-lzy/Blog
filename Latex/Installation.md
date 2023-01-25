@@ -96,14 +96,18 @@ Compiled with pplib version v2.05 less toxic i hope
 Compiled with fontconfig version 2.13.0; using 2.13.1
 ```
 
-**安装 VSCode 插件 LaTeX Workshop**
+**安装 VSCode 插件 LaTeX Workshop**(以及 Chinese (Simplified) (简体中文) Language Pack for Visual Studio Code)
 
 在 **~/.config/Code/User/settings.json** 中加入配置信息（不包含外部 pdf 查看器设置）
+
+也可以 **F1 或 Ctrl+Shift+P** 选择 **User Settings** 打开该文件
+
+![](Pics/install04.png)
 
 ```json
     // LaTeX Workshop Settings
     // 什么时候自动进行代码的编译 有三个选项
-    // 1. onFileChange：在检测任何依赖项中的文件更改(甚至被其他应用程序修改)时构建项目，即当检测到代码被更改时就自动编译tex文件
+    // 1. onFileChange：在检测任何依赖项中的文件更改(甚至被其他应用程序修改)时构建项目，即检测到代码被更改时就自动编译tex文件
     // 2. onSave : 当代码被保存时自动编译文件
     // 3. never: 从不自动编译，即需编写者手动编译文档
     "latex-workshop.latex.autoBuild.run": "never",
@@ -111,7 +115,8 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
     "latex-workshop.showContextMenu": true,
     // 拓展能够从使用的宏包中自动提取命令和环境，从而补全正在编写的代码
     "latex-workshop.intellisense.package.enabled": true,
-    // 后两行设置当文档编译错误时是否弹出显示出错和警告的弹窗。因为这些错误和警告信息能够从终端中获取，且弹窗弹出比较烦人，故而笔者设置均设置为false
+    // 后两行设置当文档编译错误时是否弹出显示出错和警告的弹窗
+    // 因为这些错误和警告信息能够从终端中获取，且弹窗弹出比较烦人，故而笔者设置均设置为false
     "latex-workshop.message.error.show": false,
     "latex-workshop.message.warning.show": false,
     // 设置什么时候对上文设置的辅助文件进行清除
@@ -132,7 +137,8 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
     // 定义在下文 recipes 编译链中被使用的编译命令，此处为默认配置，不需要进行更改
     // 其中的name为这些命令的标签，用作下文 recipes 的引用， 而command为在该拓展中的编译方式
     // 可以更改的代码为，将编译方式: pdflatex 、 xelatex 和 latexmk 中的%DOCFILE更改为%DOC
-    // %DOCFILE表明编译器访问没有扩展名的根文件名，而%DOC表明编译器访问的是没有扩展名的根文件完整路径，意味着，使用%DOCFILE可以将文件所在路径设置为中文
+    // %DOCFILE表明编译器访问没有扩展名的根文件名，而%DOC表明编译器访问的是没有扩展名的根文件完整路径
+    // 意味着，使用%DOCFILE可以将文件所在路径设置为中文
     "latex-workshop.latex.tools": [
         {
             "name": "xelatex",
@@ -163,7 +169,8 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
             ]
         }
     ],
-    // 对编译链进行定义，其中name是标签，也就是出现在工具栏中的链名称；tool是name标签所对应的编译顺序，其内部编译命令来自上文latex-workshop.latex.recipes中内容
+    // 对编译链进行定义，其中name是标签，也就是出现在工具栏中的链名称
+    // tool是name标签所对应的编译顺序，其内部编译命令来自latex-workshop.latex.recipes中内容
     "latex-workshop.latex.recipes": [
         {
             "name": "xelatex",
@@ -204,3 +211,8 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
         "*.fdb_latexmk"
     ],
 ```
+
+完成后，能够在 vscode 编译器中能够看到的编译顺序
+
+![](Pics/install03.png)
+
