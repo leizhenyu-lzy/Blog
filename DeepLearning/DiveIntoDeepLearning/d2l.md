@@ -671,7 +671,27 @@ Input每一个元素与Kernel按元素相乘，暂存在对应位置(间距为st
 
 ![](Pics/L47P02.png)
 
+![](Pics/L47P03.png)
 
+可以通过填充以及核矩阵翻转来等效转置卷积
+
+![](Pics/L47P04.png)
+
+转置卷积和卷积是逆运算，所以padding越大，最后的尺寸越小
+
+![](Pics/L47P05.png)
+
+[卷积与转置卷积 公式推导](https://zhuanlan.zhihu.com/p/95554961)
+
+![](Pics/L47P06.png)
+
+![](Pics/L47P07.png)
+
+![](Pics/L47P08.png)
+
+![](Pics/L47P09.png)
+
+![](Pics/L4710.png)
 
 ## 48 全连接卷积神经网络
 
