@@ -4,14 +4,22 @@
 
 [【清北托福备考慕课】2023-24新版: 考托人手必备](https://www.bilibili.com/video/BV1LW411v7Z6)
 
-# 读
+![](Pics/toefl01.png)
+
+可能双加试
+
+# 阅读
+
+屏读耐力
+
+屏读适应问题
+
+![](Pics/reading001.png)
+
+![](Pics/reading002.png)
 
 
-
-
-
-
-# 听
+# 听力
 
 ![](Pics/listen001.png)
 
@@ -46,9 +54,25 @@ conversation一开始可能是开场白，和内容无关
 
 ![](Pics/listen008.png)
 
+![](Pics/listen009.png)
+
+![](Pics/listen010.png)
+
+![](Pics/listen011.png)
+
+![](Pics/listen012.png)
+
+![](Pics/listen013.png)
+
+![](Pics/listen015.png)
+
+# 口语
+
+10分钟休息
+
+![](Pics/speaking001.png)
 
 
-# 说
 
 
 
@@ -56,8 +80,6 @@ conversation一开始可能是开场白，和内容无关
 
 
 
-
-
-# 写
+# 写作
 
 
