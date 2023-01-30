@@ -254,12 +254,14 @@ netease cloud music
 tencent meeting
 sunlogin client
 sougou input method [Ubuntu搜狗输入法安装指南](https://shurufa.sogou.com/linux/guide)
+blender
 
 **apt install**
 git
 python3-pip
 meshlab
 gthumb
+kirta (P图)
 flameshot (截图软件，可以添加快捷键)
 timeshift备份 [Timeshift 系统备份和还原](https://blog.csdn.net/zjy1175044232/article/details/124248454)  [Timeshift 官网](https://linuxmasterclub.com/timeshift/)
 
