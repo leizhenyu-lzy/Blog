@@ -128,15 +128,65 @@ conversation一开始可能是开场白，和内容无关
 
 ![](Pics/speaking001.png)
 
-独立任务是根据提问，个性化的答题反馈
+独立任务是根据提问，个性化的答题反馈。理由充分即可，没有标准答案
 
+有准备时间和回答时间
 
+综合任务 Task2 是校园类话题。先是一段文字背景，随后文字消失，出现一段对话。回答主角观点(支持或反对)并复述。
 
+综合任务 Task3 是学术类话题。先是一段文字，说明学科的定义和梗概，随后文字消失，出现一段讲座听力。复述教授的细化解释。
 
+综合任务 Task4 没有文字直接听力讲座，两分钟左右。复述归纳讲座内容。
 
+**口语中，听力也是重点**，所以也应该作笔记
 
+![](Pics/speaking002.png)
 
+发音表达要清晰，同时尽量避免出错
 
+![](Pics/speaking003.png)
+
+![](Pics/speaking004.png)
+
+![](Pics/speaking005.png)
+
+[推荐视频](https://www.bilibili.com/video/BV1pp411f7Qr/)
+
+![](Pics/speaking006.png)
+
+榨干真题
+
+TED，美剧，语伴等等
+
+![](Pics/speaking007.png)
+
+![](Pics/speaking008.png)
+
+![](Pics/speaking009.png)
+
+![](Pics/speaking010.png)
+
+![](Pics/speaking011.png)
+
+![](Pics/speaking012.png)
+
+![](Pics/speaking013.png)
+
+![](Pics/speaking014.png)
+
+可以对比说明，显得思考完整
+
+![](Pics/speaking015.png)
+
+![](Pics/speaking016.png)
+
+![](Pics/speaking017.png)
+
+![](Pics/speaking018.png)
+
+![](Pics/speaking019.png)
+
+![](Pics/speaking020.png)
 
 # 写作
 
