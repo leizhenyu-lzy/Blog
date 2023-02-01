@@ -172,11 +172,15 @@ TED，美剧，语伴等等
 
 ![](Pics/speaking013.png)
 
+时间、地点、任务、起因、经过、结果
+
 ![](Pics/speaking014.png)
 
-可以对比说明，显得思考完整
+可以对比说明(赞一个、贬一个)，显得思考完整
 
 ![](Pics/speaking015.png)
+
+加一些逻辑信号词
 
 ![](Pics/speaking016.png)
 
@@ -187,6 +191,34 @@ TED，美剧，语伴等等
 ![](Pics/speaking019.png)
 
 ![](Pics/speaking020.png)
+
+一般情况，对话内容会**反对**公告内容
+
+![](Pics/speaking021.png)
+
+![](Pics/speaking022.png)
+
+![](Pics/speaking023.png)
+
+注意时态问题
+
+![](Pics/speaking024.png)
+
+![](Pics/speaking025.png)
+
+文字中的例子可以不重点关注，**讲座中的例子要关注**，讲座也会复述一下文字中的内容
+
+如果有自问自答，要重点关注
+
+![](Pics/speaking026.png)
+
+![](Pics/speaking027.png)
+
+![](Pics/speaking028.png)
+
+![](Pics/speaking029.png)
+
+![](Pics/speaking030.png)
 
 # 写作
 
