@@ -220,6 +220,32 @@ TED，美剧，语伴等等
 
 ![](Pics/speaking030.png)
 
+可以通过复述之前的听力内容来训练和提升
+
+一开始一定会说明主题，后续支撑的例子需要关注
+
+![](Pics/speaking031.png)
+
+![](Pics/speaking032.png)
+
+![](Pics/speaking033.png)
+
+![](Pics/speaking034.png)
+
+![](Pics/speaking035.png)
+
+![](Pics/speaking036.png)
+
+![](Pics/speaking037.png)
+
+![](Pics/speaking038.png)
+
+![](Pics/speaking039.png)
+
+![](Pics/speaking040.png)
+
+
+
 # 写作
 
 
