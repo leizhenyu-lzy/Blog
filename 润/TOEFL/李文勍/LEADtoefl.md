@@ -244,8 +244,50 @@ TED，美剧，语伴等等
 
 ![](Pics/speaking040.png)
 
-
+![](Pics/speaking041.png)
 
 # 写作
+
+人工智能判分
+
+[托福写作机器批改中的人工智能应用](https://zhuanlan.zhihu.com/p/129001134)
+
+[7天精通语法句型】托福雅思造句无忧！](https://www.bilibili.com/video/BV13J411Y7vy/)
+
+![](Pics/writing001.png)
+
+综合写作：读+听+写，有调节音量
+
+独立写作：命题作文形式
+
+
+![](Pics/writing002.png)
+
+这个小短文之后还会出现，先3min阅读时间，用于带入，没有听力重要
+
+随后短文消失，开始听力。教授可以赞成或反对，关注为什么支持、反对(大概率是反对)，需要记笔记
+
+![](Pics/writing003.png)
+
+没有 spell check ，不要有拼写错误
+
+![](Pics/writing004.png)
+
+![](Pics/writing005.png)
+
+注意书面用语
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
