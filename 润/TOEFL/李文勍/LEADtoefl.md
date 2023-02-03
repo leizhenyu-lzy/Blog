@@ -277,16 +277,159 @@ TED，美剧，语伴等等
 
 注意书面用语
 
+![](Pics/writing006.png)
 
+![](Pics/writing007.png)
 
+注意修饰可数名词、不可数名词的搭配
 
+![](Pics/writing008.png)
 
+[同义词在线词典](https://www.synonym.com/)
 
+[英英解释词典](www.vocabulary.com/dictionary)
 
+表达观点要言简意赅，举例论证需要详细一点
 
+![](Pics/writing009.png)
 
+![](Pics/writing010.png)
 
+![](Pics/writing011.png)
 
+![](Pics/writing012.png)
+
+![](Pics/writing013.png)
+
+![](Pics/writing014.png)
+
+![](Pics/writing015.png)
+
+![](Pics/writing016.png)
+
+![](Pics/writing017.png)
+
+![](Pics/writing018.png)
+
+![](Pics/writing019.png)
+
+![](Pics/writing020.png)
+
+![](Pics/writing021.png)
+
+![](Pics/writing022.png)
+
+转述他人的话语时，用逗号隔开，加上引号，最后的句号也在引号内，一般不用冒号。
+
+![](Pics/writing023.png)
+
+靠积累
+
+![](Pics/writing024.png)
+
+![](Pics/writing025.png)
+
+![](Pics/writing026.png)
+
+![](Pics/writing027.png)
+
+![](Pics/writing028.png)
+
+需要举大量的例子，一定要切题
+
+![](Pics/writing029.png)
+
+![](Pics/writing030.png)
+
+![](Pics/writing031.png)
+
+![](Pics/writing032.png)
+
+![](Pics/writing033.png)
+
+![](Pics/writing034.png)
+
+![](Pics/writing035.png)
+
+![](Pics/writing036.png)
+
+![](Pics/writing037.png)
+
+![](Pics/writing038.png)
+
+![](Pics/writing039.png)
+
+建议390+，字数
+
+![](Pics/writing040.png)
+
+![](Pics/writing041.png)
+
+![](Pics/writing042.png)
+
+![](Pics/writing043.png)
+
+**不写标题，顶格写，段与段空一行**
+
+![](Pics/writing044.png)
+
+![](Pics/writing045.png)
+
+![](Pics/writing046.png)
+
+![](Pics/writing047.png)
+
+![](Pics/writing048.png)
+
+![](Pics/writing049.png)
+
+![](Pics/writing050.png)
+
+![](Pics/writing051.png)
+
+综合写作注意记笔记，建议200+
+
+![](Pics/writing052.png)
+
+![](Pics/writing053.png)
+
+![](Pics/writing054.png)
+
+![](Pics/writing055.png)
+
+需要作转述，不要照抄
+
+![](Pics/writing056.png)
+
+![](Pics/writing057.png)
+
+![](Pics/writing058.png)
+
+![](Pics/writing059.png)
+
+![](Pics/writing060.png)
+
+![](Pics/writing061.png)
+
+![](Pics/writing062.png)
+
+建议不要复议，可能人工批改降分
+
+![](Pics/writing063.png)
+
+篇首背景导入不要单独一段，表明立场也放在第一段中
+
+![](Pics/writing064.png)
+
+![](Pics/writing065.png)
+
+![](Pics/writing066.png)
+
+![](Pics/writing067.png)
+
+![](Pics/writing068.png)
+
+![](Pics/writing069.png)
 
 
 
