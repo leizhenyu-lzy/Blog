@@ -245,7 +245,7 @@ vscode
 drawio
 dbeaver
 wps
-eudic 欧陆词典
+eudic 欧陆词典  (22.04欧路词典暂时打不开，使用goldendict替换，和欧路一样支持第三方词典)
 每日英语听力
 baidu net disk
 linux qq
@@ -272,6 +272,10 @@ fcitx
 新立得包管理 sudo apt install -y synaptic
 net-tools 用于ifconfig
 tree
+goldendict [GoldenDict安装介绍](https://www.bilibili.com/video/BV1L3411j7iP/)
+
+
+
 
 **其他**
 VLC

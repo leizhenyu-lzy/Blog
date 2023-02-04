@@ -26,6 +26,8 @@ N维数组是机器学习和神经网络的主要数据结构
 
 ## 07 自动求导
 
+### 李沐
+
 ![](Pics/L07P01.png)
 
 ![](Pics/L07P02.png)
@@ -50,12 +52,85 @@ N维数组是机器学习和神经网络的主要数据结构
 
 内存复杂度使得深度神经网络会消耗大量GPU资源
 
+### PyTorch Autograd Explained - In-depth Tutorial
 
-## 【补】矩阵求导
+[PyTorch Autograd Explained - In-depth Tutorial](https://www.youtube.com/watch?v=MswxJw-8PvE)
 
-Mathematics for Machine Learning书籍下载地址：https://mml-book.github.io/
+[PyTorch Autograd Drawio](https://app.diagrams.net/#G1bq3akhmA5DGRCiFYJfNPSn7il2wvCkEY)
 
-矩阵求导简介：https://zhuanlan.zhihu.com/p/137702347
+如果所有输入的 requires_grad 都为 False，最终结果的 requires_grad 也将为 False 同时 is_leaf 也为 True ，反向图也不会被创建
+
+![](OtherLecturePics/autoGrad001.png)
+
+![](OtherLecturePics/autoGrad002.png)
+
+
+[How do computational graphs and autograd in PyTorch work](https://www.youtube.com/watch?v=dEnUP6_kpeo)
+
+正向传播计算数值
+
+![](OtherLecturePics/autoGrad003.png)
+
+反向传播利用这些数值进行计算 L.backward() 进行反向传播
+
+![](OtherLecturePics/autoGrad004.png)
+
+[What is Automatic Differentiation?](https://www.youtube.com/watch?v=wG_nF1awSSY)
+
+![](OtherLecturePics/autoGrad006.png)
+
+![](OtherLecturePics/autoGrad005.png)
+
+Finite Differences 会有精度问题，随着 step size 的减小，近似程度会更好，但由浮点数产生的误差会开始增加
+
+![](OtherLecturePics/autoGrad007.png)
+
+![](OtherLecturePics/autoGrad008.png)
+
+![](OtherLecturePics/autoGrad009.png)
+
+![](OtherLecturePics/autoGrad010.png)
+
+![](OtherLecturePics/autoGrad011.png)
+
+符号求导可以保证精度，但是会引入其他问题，例如: expression swell 表达式膨胀 问题
+
+![](OtherLecturePics/autoGrad012.png)
+
+![](OtherLecturePics/autoGrad013.png)
+
+![](OtherLecturePics/autoGrad014.png)
+
+随着神经网络的加深， Symbolic Differentiation 更加难以被应用，而且需要 closed-form expressions，也就是用条件、循环、递归等结构搭建
+
+![](OtherLecturePics/autoGrad015.png)
+
+![](OtherLecturePics/autoGrad016.png)
+
+a&b 作为中间变量，可以简化流程，但是会降低效率
+
+![](OtherLecturePics/autoGrad017.png)
+
+最终，我们是在 原始运算符 上进行微分操作
+
+而链式法则 chain rule 可以让我们将这些运算符组合起来
+
+Auto diff 有两种模式， Forward & Reverse
+
+Forward Mode 概念上更加简单，它在计算时，加入每一个中间变量
+
+![](OtherLecturePics/autoGrad018.png)
+
+![](OtherLecturePics/autoGrad019.png)
+
+![](OtherLecturePics/autoGrad020.png)
+
+
+### 矩阵求导
+
+[Mathematics for Machine Learning书籍下载地址](https://mml-book.github.io/)
+
+[矩阵求导简介](https://zhuanlan.zhihu.com/p/137702347)
 
 矩阵求导的本质：eg：A对B求导，矩阵A中的每一个元素对矩阵B中的每一个元素求导
 |A|B|求导后元素个数|
