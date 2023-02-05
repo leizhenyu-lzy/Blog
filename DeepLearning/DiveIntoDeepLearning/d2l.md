@@ -117,13 +117,28 @@ a&b 作为中间变量，可以简化流程，但是会降低效率
 
 Auto diff 有两种模式， Forward & Reverse
 
-Forward Mode 概念上更加简单，它在计算时，加入每一个中间变量
+Forward Mode 概念上更加简单，它在计算时，加入每一个中间变量，及其导数 (derivatives = tangents)
+
+f 是双输入、单输出
 
 ![](OtherLecturePics/autoGrad018.png)
 
 ![](OtherLecturePics/autoGrad019.png)
 
+Primals 和 Tangents 两者用一个元组表示 
+
 ![](OtherLecturePics/autoGrad020.png)
+
+对于多输出(f1,f2) 情况， Forward Mode 也能应对，对于同一个输入(x1)，不同输出(f1、f2)也可以在一次前向中完成
+
+但对于另一个输入(x2)，需要重新计算一遍上述过程
+
+![](OtherLecturePics/autoGrad021.png)
+
+用 Jacob 矩阵进行表示的话，从n维到m维的映射函数所对应的 Jacob 矩阵形状为 m行n列(m为因变量数量，n为自变量数量)，所以当输入(n)相对于输出(m)较少时，forward mode 较为理想 (每个输入变量对于各个输出的导数对应Jacob矩阵的一列)
+
+![](OtherLecturePics/autoGrad022.png)
+
 
 
 ### 矩阵求导
