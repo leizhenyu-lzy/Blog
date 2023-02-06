@@ -64,6 +64,8 @@ N维数组是机器学习和神经网络的主要数据结构
 
 ![](OtherLecturePics/autoGrad002.png)
 
+[PyTorch Hooks Explained - In-depth Tutorial](https://www.youtube.com/watch?v=syLFCVYua6Q)
+
 
 [How do computational graphs and autograd in PyTorch work](https://www.youtube.com/watch?v=dEnUP6_kpeo)
 
@@ -141,6 +143,10 @@ Primals 和 Tangents 两者用一个元组表示
 
 
 
+[Automatic Differentiation -- University of British Columbia](https://www.youtube.com/watch?v=ZGSUrfJcXmA)
+
+
+
 ### 矩阵求导
 
 [Mathematics for Machine Learning书籍下载地址](https://mml-book.github.io/)
@@ -153,6 +159,18 @@ Primals 和 Tangents 两者用一个元组表示
 |1×1|1×1|1×1|
 |1×p|1×n|p×n|
 |q×p|m×n|p×q×m×n|
+
+
+[DR_CAN【矩阵的导数运算】1_标量向量方程对向量求导_分母布局_分子布局](https://www.bilibili.com/video/BV1av4y1b7MM/)
+
+**标量对向量的导数**
+
+![](OtherLecturePics/matGrad001.png)
+
+![](OtherLecturePics/matGrad002.png)
+
+
+
 
 
 ## 10 多层感知机
