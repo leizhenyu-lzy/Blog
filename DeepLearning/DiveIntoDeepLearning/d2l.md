@@ -169,7 +169,13 @@ Primals 和 Tangents 两者用一个元组表示
 
 ![](OtherLecturePics/matGrad002.png)
 
+**向量对向量的导数**
 
+![](OtherLecturePics/matGrad003.png)
+
+![](OtherLecturePics/matGrad004.png)
+
+这里使用分母布局所以得到的结果是$A^T$，如果使用分子布局则结果不同为$A$，所以推导时需要统一方式
 
 
 
