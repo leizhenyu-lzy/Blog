@@ -149,6 +149,8 @@ Primals 和 Tangents 两者用一个元组表示
 
 ### 矩阵求导
 
+[矩阵微积分 维基百科](https://zh.wikipedia.org/zh-cn/%E7%9F%A9%E9%98%B5%E5%BE%AE%E7%A7%AF%E5%88%86)
+
 [Mathematics for Machine Learning书籍下载地址](https://mml-book.github.io/)
 
 [矩阵求导简介](https://zhuanlan.zhihu.com/p/137702347)
@@ -176,6 +178,12 @@ Primals 和 Tangents 两者用一个元组表示
 ![](OtherLecturePics/matGrad004.png)
 
 这里使用分母布局所以得到的结果是$A^T$，如果使用分子布局则结果不同为$A$，所以推导时需要统一方式
+
+![](OtherLecturePics/matGrad005.png)
+
+![](OtherLecturePics/matGrad006.png)
+
+上面的结果同样是使用分母布局，如果使用分子布局得到的结果是当前结果的整个的转置
 
 
 
