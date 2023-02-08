@@ -149,7 +149,13 @@ Primals 和 Tangents 两者用一个元组表示
 
 ### 矩阵求导
 
-[矩阵微积分 维基百科](https://zh.wikipedia.org/zh-cn/%E7%9F%A9%E9%98%B5%E5%BE%AE%E7%A7%AF%E5%88%86)
+[维基百科 矩阵微积分 (不全)](https://zh.wikipedia.org/zh-cn/%E7%9F%A9%E9%98%B5%E5%BE%AE%E7%A7%AF%E5%88%86)
+
+[Wikipedia Matrix Calculus (全)](https://en.wikipedia.org/wiki/Matrix_calculus#Layout_conventions)
+
+![](OtherLecturePics/matGrad008.png)
+
+[Matrix Calculus 在线计算器](https://www.matrixcalculus.org/matrixCalculus)
 
 [Mathematics for Machine Learning书籍下载地址](https://mml-book.github.io/)
 
