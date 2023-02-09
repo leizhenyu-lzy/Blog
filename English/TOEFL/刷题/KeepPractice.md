@@ -50,6 +50,27 @@
 **写作:**
 
 
+## Official 03
+
+**阅读:** 于2023-02-0x完成 
+1. Passage1(文化艺术): Architecture 20min30s **13/14** **错:14**
+2. Passage2(文化艺术): The Origins of Theater 22min **8/14** **错:1,2,8,10,13,14**
+3. Passage3(自然科学): Timberline Vegetation on Mountains 21min44s **12/14** **错:9,14**
+
+**听力:** 于2023-02-0x完成并搞懂
+1. Set1(校园生活): Student & Registrar 41s **5/5**
+2. Set2(生命科学): Environmental Science 1min32s **5/6** **错:6**
+3. Set3(文化艺术): Botany Class 1min42s **6/6** **第4、5题有蒙的成分**
+4. Set4(校园生活): Studying To Be English Teachers 1min1s **5/5** **第2题有蒙的成分**
+5. Set5(社会科学): Ethical Theory 2min35s **5/5** **第2、3题有蒙的成分**
+6. Set6(自然科学): Biology Class 1min47s **6/6** **第4、3题有蒙的成分**
+
+![](Pics/official02listening.png)
+
+**口语:**
+**写作:**
+
+
 
 ## 2023-0x-xx
 
