@@ -342,4 +342,63 @@ GXN1eh9FbDiX1ACdd7XKMV7hL7x0ClBJLUJ-zFfKofjaj2yxE53xauIfkqZ8FoLpcZ0Ux6McTyNmODDS
 sudo cp ~/.config/bcompare/BC4Key.txt /etc/
 ```
 
+## linux Matlab
 
+[Matlab R2021b v9.11 for Linux 中文授权激活版](https://www.jb51.net/softs/792028.html)
+
+[百度网盘 安装包+Crack链接 免解压](https://pan.baidu.com/s/1FW9--qZeE6Pgb-UrzPe9lg?pwd=fdfz) 
+
+下载后首先点击 .iso 文件进行挂载，可以查看到如下结果
+
+![](Pics/matlab01.png)
+
+[Ubuntu: the sudo ./install does not work for Matlab](https://www.mathworks.com/matlabcentral/answers/1459909-installer-hang-when-installing-matlab-r2021b-as-root-on-ubuntu-20-04#comment_1759029)
+
+挂载后在终端输入如下命令，对于 ubuntu 22.04 有效
+
+```shell
+xhost +SI:localuser:root
+```
+
+安装程序可以访问互联网
+
+最好加上 sudo ，否则后续安装可能选择位置受限
+
+```shell
+lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install 
+```
+
+在右上角的**高级选项(Advanced Options)**中选择设置模式**我有文件安装密钥(I have a File Installation Key)**
+
+![](Pics/matlab02.png)
+
+在输入框中输入
+
+```
+62551-02011-26857-57509-64399-54230-13279-37181-62117-65158-40352-64197-45508-24369-45954-39446-39538-16936-10698-58393-44718-32560-10501-40058-34454
+```
+
+选择 .lic 文件
+
+![](Pics/matlab03.png)
+
+如果之前没有sudo，这里就不能使用默认位置
+
+![](Pics/matlab04.png)
+
+随后的组件选择可以不用都勾选
+
+![](Pics/matlab05.png)
+
+![](Pics/matlab06.png)
+
+
+安装完成后从文件夹中复制文件 **libmwlmgrimpl.so** 文件
+到 ALREADY EXISTING FOLDER "xxx\bin\glnxa64\matlab_startup_plugins\lmgrimpl"
+覆盖现有文件
+
+可以使用 命令行 + sudo cp 来移动
+
+```shell
+ sudo cp /home/lzy/Downloads/MatlabR2021bLinux/libmwlmgrimpl.so /usr/local/MATLAB/R2021b/bin/glnxa64/matlab_startup_plugins/lmgrimpl/
+```
