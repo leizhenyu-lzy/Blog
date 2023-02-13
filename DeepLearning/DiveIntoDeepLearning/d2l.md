@@ -158,7 +158,7 @@ Primals 和 Tangents 两者用一个元组表示
 [Matrix Calculus 在线计算器](https://www.matrixcalculus.org/matrixCalculus)
 
 [Mathematics for Machine Learning书籍下载地址](https://mml-book.github.io/)
-
+git a
 [矩阵求导简介](https://zhuanlan.zhihu.com/p/137702347)
 
 矩阵求导的本质：eg：A对B求导，矩阵A中的每一个元素对矩阵B中的每一个元素求导
