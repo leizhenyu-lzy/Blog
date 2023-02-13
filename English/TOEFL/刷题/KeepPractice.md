@@ -66,10 +66,30 @@
 5. Set5(文化艺术): Ethical TheoryArt History 1min55s **4/5** **错:3 整体没大懂(主要有一些名称词汇)**
 6. Set6(自然科学): Astronomy Class 2min **6/6**
 
-![](Pics/official02listening.png)
+**口语:**
+**写作:**
+
+
+
+
+## Official 04
+
+**阅读:** 于2023-02-0x完成 
+1. Passage1(生命科学): Deer Populations 26min22s **9/14** **错:7,8,9,13,14** 没仔细做
+2. Passage2(自然科学): Depletion of the Ogallala Aquifer 20min **13/14** **错:13**
+3. Passage3(自然科学): Timberline Vegetation on Mountains 22min29s **10/14** **错:3,7,13,14**
+
+**听力:** 于2023-02-12完成并搞懂
+1. Set1(校园生活): Student & Librarian 2min10s **3/5** **错:2,5** 这篇就nm离谱
+2. [Set2(生命科学)](https://toefl.kmf.com/listening/result/167629726141598557/114m3j): Biology Class 2min19s **6/6** **基本都有赌的成分**
+3. Set3(): Film History 1min53s **6/6** **第2题有蒙的成分**
+4. Set4(): Archaeology Project 53s **4/5** **错:1**
+5. Set5(): Ethical TheoryArt History 1min55s **4/5** **错:3 整体没大懂(主要有一些名称词汇)**
+6. Set6(): Astronomy Class 2min **6/6**
 
 **口语:**
 **写作:**
+
 
 
 
