@@ -400,8 +400,23 @@ lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install
 可以使用 命令行 + sudo cp 来移动
 
 ```shell
- sudo cp /home/lzy/Downloads/MatlabR2021bLinux/libmwlmgrimpl.so /usr/local/MATLAB/R2021b/bin/glnxa64/matlab_startup_plugins/lmgrimpl/
+sudo cp /home/lzy/Downloads/MatlabR2021bLinux/libmwlmgrimpl.so /usr/local/MATLAB/R2021b/bin/glnxa64/matlab_startup_plugins/lmgrimpl/
 ```
 
 [Failed to load module "canberra-gtk-module"](https://blog.csdn.net/a970973835/article/details/110422343)
 
+```shell
+sudo ln -s /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so /usr/lib/libcanberra-gtk-module.so
+```
+
+```
+[Desktop Entry]
+Name=Matlab
+Comment=MATLAB R2021b
+Type=Application
+Icon=/usr/share/pixmaps/matlab.png
+Exec=/usr/local/MATLAB/R2021b/bin/matlab -desktop
+Terminal=false
+StartupNotify=true
+Categories=Application;Development;
+```
