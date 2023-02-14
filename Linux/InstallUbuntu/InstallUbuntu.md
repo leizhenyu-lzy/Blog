@@ -402,3 +402,6 @@ lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install
 ```shell
  sudo cp /home/lzy/Downloads/MatlabR2021bLinux/libmwlmgrimpl.so /usr/local/MATLAB/R2021b/bin/glnxa64/matlab_startup_plugins/lmgrimpl/
 ```
+
+[Failed to load module "canberra-gtk-module"](https://blog.csdn.net/a970973835/article/details/110422343)
+
