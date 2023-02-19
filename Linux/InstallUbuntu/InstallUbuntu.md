@@ -409,6 +409,10 @@ sudo cp /home/lzy/Downloads/MatlabR2021bLinux/libmwlmgrimpl.so /usr/local/MATLAB
 sudo ln -s /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so /usr/lib/libcanberra-gtk-module.so
 ```
 
+创建快捷方式 matlab.desktop
+
+![](Pics/matlab.png)
+
 ```
 [Desktop Entry]
 Name=Matlab
