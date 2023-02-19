@@ -1,0 +1,19 @@
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is 'test.blg'
+[40] biber:340> INFO - === 日 2月 19, 2023, 17:06:37
+[48] Biber.pm:418> INFO - Reading 'test.bcf'
+[88] Biber.pm:972> INFO - Found 3 citekeys in bib section 0
+[96] Biber.pm:4383> INFO - Processing section 0
+[102] Biber.pm:4574> INFO - Looking for bibtex file 'books.bib' for section 0
+[103] bibtex.pm:1713> INFO - LaTeX decoding ...
+[104] bibtex.pm:1518> INFO - Found BibTeX data source 'books.bib'
+[116] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[116] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[116] Biber.pm:4203> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[116] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[116] bbl.pm:654> INFO - Writing 'test.bbl' with encoding 'UTF-8'
+[116] bbl.pm:757> INFO - Output to test.bbl
+[116] Biber.pm:130> WARN - I didn't find a database entry for 'mittelbach2004' (section 0)
+[116] Biber.pm:130> WARN - I didn't find a database entry for '__nodate' (section 0)
+[116] Biber.pm:130> WARN - I didn't find a database entry for '6-1' (section 0)
+[116] Biber.pm:132> INFO - WARNINGS: 3

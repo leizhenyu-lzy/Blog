@@ -1,0 +1,98 @@
+% \documentclass[options]{article}
+% \usepackage{caption}
+% \usepackage{graphicx}
+% \usepackage[UTF8]{ctex}
+
+% \title{Intro to \LaTeX}
+% \author{LZY}
+% \date{\today}
+% \usepackage[options]{lipsum}
+
+
+% \begin{document}
+%     \maketitle
+
+%     \begin{abstract}
+% 	    \lipsum[2]
+%     \end{abstract}
+
+%     \tableofcontents
+
+%     \section{Section 1}
+%         {\Large HaHaHaHa}\\
+%         {\Huge 我是shabi}
+%         \\
+
+%         \begin{figure}[!p]
+%             \centering
+%             \caption{This is icon 这是一个图标}
+%             \label{fig_sim}
+%             \includegraphics[width=3in]{icon.png}
+%         \end{figure}
+
+
+%     \section{Section 2}
+
+%     This is figure \ref{fig_sim}
+% \end{document}
+
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[UTF8]{ctex}
+\usepackage{lipsum}
+% \usepackage{biblatex}
+% \addbibresource{books.bib}
+
+
+\title{Test}
+\author{智宇 刘}
+\date{February 2023}
+
+\begin{document}
+
+    \maketitle
+
+    \tableofcontents
+
+\section{Introduction}
+
+\lipsum[1]
+
+\section{Methodology}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width = 3in]{icon.png}
+    \caption{\LaTeX}
+    \label{icon}
+\end{figure}
+
+\section{Conclusion}
+
+This is \ref{icon}
+
+中文OK吗？
+
+\section{Formula}
+
+\begin{equation}\label{eqat}
+    abc \times \frac{123}{3456^{123}}
+    \\\
+    \sum_{123}^{456}
+\end{equation}
+
+This is \ref{eqat}
+
+% \section{Reference}
+
+% 无格式化引用 \cite{mittelbach2004}
+
+% 带方括号引用 \parencite{__nodate}
+
+% 上标引用 \supercite{6-1}
+
+% \printbibliography
+
+\end{document}
+

@@ -11,6 +11,8 @@
 
 [Visual Studio Code (vscode)配置LaTeX](https://zhuanlan.zhihu.com/p/166523064)
 
+[LaTeX 第二课：小试牛刀](https://zhuanlan.zhihu.com/p/24101761)
+
 下**载texlive镜像(推荐清华源)**
 
 [清华镜像站 TeX Live](https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)
@@ -167,6 +169,13 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
             "args": [
                 "%DOCFILE%"
             ]
+        },
+        {
+            "name": "biber",
+            "command": "biber",
+            "args": [
+                "%DOCFILE%"
+            ]
         }
     ],
     // 对编译链进行定义，其中name是标签，也就是出现在工具栏中的链名称
@@ -182,6 +191,15 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
             "name": "pdflatex",
             "tools": [
                 "pdflatex"
+            ]
+        },
+        {
+            "name": "xe->biber->xe->xe",
+            "tools": [
+                "xelatex",
+                "biber",
+                "xelatex",
+                "xelatex"
             ]
         },
         {
@@ -213,6 +231,10 @@ Compiled with fontconfig version 2.13.0; using 2.13.1
 ```
 
 完成后，能够在 vscode 编译器中能够看到的编译顺序
+
+**试了很久感觉bibtex 不行 所以改用biber**
+
+[Biber工具](https://blog.csdn.net/m0_55746113/article/details/122872210)
 
 ![](Pics/install03.png)
 
