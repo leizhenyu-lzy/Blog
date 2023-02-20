@@ -13,6 +13,7 @@
 
 [基于VSCode和CMake实现C/C++开发](https://www.bilibili.com/video/BV1fy4y1b7TC)
 
+[现代CMake高级教程 双笙子佯谬](https://www.bilibili.com/video/BV16P4y1g7MH/)
 ### 博客
 
 [CMake进阶之初识CMake](https://blog.csdn.net/ztemt_sw2/article/details/81355096)
