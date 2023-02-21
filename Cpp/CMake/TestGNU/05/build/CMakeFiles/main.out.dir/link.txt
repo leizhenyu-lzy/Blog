@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/main.out.dir/main.cpp.o -o main.out  -Wl,-rpath,/home/lzy/Project/Blog/Cpp/CMake/TestGNU/05/build libhelloSO.so 

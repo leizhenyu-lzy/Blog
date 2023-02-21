@@ -3,9 +3,9 @@
 [toc]
 
 
-## Portals
+# Portals
 
-### 视频
+## 视频
 
 [从零开始详细介绍CMake](https://www.bilibili.com/video/BV1vR4y1u77h)
 
@@ -13,12 +13,204 @@
 
 [基于VSCode和CMake实现C/C++开发](https://www.bilibili.com/video/BV1fy4y1b7TC)
 
+
+[学C++从CMake学起 双笙子佯谬](https://www.bilibili.com/video/BV1fa411r7zp/)
+
 [现代CMake高级教程 双笙子佯谬](https://www.bilibili.com/video/BV16P4y1g7MH/)
-### 博客
+
+
+## 博客
 
 [CMake进阶之初识CMake](https://blog.csdn.net/ztemt_sw2/article/details/81355096)
 
 [CMake进阶之CMake原理与关键概念](https://blog.csdn.net/ztemt_sw2/article/details/81384538)
+
+## 其他
+
+[Conan Center 官网](https://conan.io/center/)
+
+[Conan Center B站](https://www.bilibili.com/video/BV1wL411u74B/)
+
+
+
+# 学C++从CMake学起 双笙子佯谬
+
+**01**
+
+![](Pics/cmake001.png)
+
+GNU LLVM MSVC
+
+```cpp
+// main.cpp
+#include <iostream>
+using namespace std;
+int main()
+{
+    cout<<"HelloWorld"<<endl;
+    return 0;
+}
+
+// g++ main.cpp -o hello.out
+// ./hello.out 
+```
+
+**02**
+```cpp
+// hello.cpp
+#include <iostream>
+using namespace std;
+void hello()
+{
+    cout<<"hello hello"<<endl;
+    return;
+}
+
+// main.cpp
+#include "hello.cpp"
+int main()
+{
+    hello();
+    return 0;
+}
+
+// g++ main.cpp -o main.out  // 不需要再链接 hello.cpp 否则提示重定义
+// ./main.out
+```
+
+![](Pics/cmake002.png)
+
+```cpp
+// hello.cpp
+#include <iostream>
+using namespace std;
+void hello()
+{
+    cout<<"hello hello"<<endl;
+    return;
+}
+
+// main.cpp
+#include <iostream>
+using namespace std;
+void hello();
+int main()
+{
+    hello();
+    return 0;
+}
+
+// -c 表示暂时编译，不是可执行文件。这样可以分离编译
+// g++ -c hello.cpp -o hello.o
+// g++ -c main.cpp -o main.o
+// g++  main.o hello.o -o main.out
+// ./main.out
+
+// 也可以
+// ./maincpp.out 
+```
+
+**03 Makefile**
+
+![](Pics/cmake003.png)
+
+```cpp
+// hello.cpp
+#include <iostream>
+using namespace std;
+void hello()
+{
+    cout<<"hello hello"<<endl;
+    return;
+}
+
+// main.cpp
+#include <iostream>
+using namespace std;
+void hello();
+int main()
+{
+    hello();
+    return 0;
+}
+
+// Makefile 反映了相互依赖关系，且如果只是改动了一个文件，其他文件不会重新编译
+hello.out: hello.o main.o
+	g++ hello.o main.o -o hello.out
+hello.o  : hello.cpp
+	g++ -c hello.cpp -o hello.o
+main.o   : main.cpp
+	g++ -c main.cpp -o main.o
+
+// make
+// ./main.out
+```
+
+
+**04 CMake**
+
+![](Pics/cmake004.png)
+
+![](Pics/cmake005.png)
+
+```cpp
+// main.cpp 和原来一样
+
+// hello.cpp 和原来一样
+
+// CMakeLists.txt
+cmake_minimum_required(VERSION 3.12)
+project(hellocmake LANGUAGES CXX)
+add_executable(main.out main.cpp hello.cpp)
+
+// cmake -B build  // 输出 make 文件的目录
+// cd build
+// make  // ./build 中有 Makefile
+// ./main.out
+```
+
+**05**
+![](Pics/cmake006.png)
+
+lib 静态库 .a 类似于 .o 编译后，删了 .o main.out 仍能使用
+dll 动态库 .so 节省空间和内存 编译后，删了 .o main.out 不能使用
+
+引用 dll 也需要有一个配套的 lib， lib 里存放有用的**插桩**函数
+
+![](Pics/cmake007.png)
+
+```cpp
+// main.cpp 和原来一样
+
+// hello.cpp 和原来一样
+
+// CMakeLists.txt
+cmake_minimum_required(VERSION 3.12)
+project(hellocmake LANGUAGES CXX)
+
+add_library(helloA STATIC hello.cpp)  # 静态库 .a
+add_library(helloSO SHARED hello.cpp)  # 动态库 .so
+
+add_executable(main.out main.cpp)
+target_link_libraries(main.out PUBLIC helloA)  # 用 .so 也行
+
+// cmake -B build  // 输出 make 文件的目录
+// cd build
+// make  // ./build 中有 Makefile
+// ./main.out
+// ldd main.out 可以查看链接信息
+```
+
+![](Pics/cmake008.png)
+
+![](Pics/cmake009.png)
+
+![](Pics/cmake010.png)
+
+hello.cpp 最好也写上 #include<hello.h>
+
+
+
 
 
 # CMake进阶之初识CMake
@@ -216,3 +408,12 @@ EXCLUDE_FROM_ALL函数将写的目录从编译中排除
 在工程目录中的CMakeLists.txt写入ADD_SUBDIRECTORY(src bin)，在src的CMakeLists.txt中写入生成可执行文件的语句
 
 在那里进行cmake的二进制bin目录就在哪里
+
+
+
+
+
+# Conan Center
+
+
+

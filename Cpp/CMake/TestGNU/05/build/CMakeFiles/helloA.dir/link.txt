@@ -1,0 +1,2 @@
+/usr/bin/ar qc libhelloA.a CMakeFiles/helloA.dir/hello.cpp.o
+/usr/bin/ranlib libhelloA.a
