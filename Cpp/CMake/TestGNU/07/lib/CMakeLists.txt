@@ -1,0 +1,1 @@
+add_library(hellolibSO SHARED hello.cpp)

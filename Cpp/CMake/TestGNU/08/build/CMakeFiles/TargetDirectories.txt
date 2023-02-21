@@ -1,0 +1,6 @@
+/home/lzy/Project/Blog/Cpp/CMake/TestGNU/08/build/CMakeFiles/main.out.dir
+/home/lzy/Project/Blog/Cpp/CMake/TestGNU/08/build/CMakeFiles/edit_cache.dir
+/home/lzy/Project/Blog/Cpp/CMake/TestGNU/08/build/CMakeFiles/rebuild_cache.dir
+/home/lzy/Project/Blog/Cpp/CMake/TestGNU/08/build/lib/CMakeFiles/hellolibSO.dir
+/home/lzy/Project/Blog/Cpp/CMake/TestGNU/08/build/lib/CMakeFiles/edit_cache.dir
+/home/lzy/Project/Blog/Cpp/CMake/TestGNU/08/build/lib/CMakeFiles/rebuild_cache.dir

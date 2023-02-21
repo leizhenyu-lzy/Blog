@@ -13,10 +13,11 @@
 
 [基于VSCode和CMake实现C/C++开发](https://www.bilibili.com/video/BV1fy4y1b7TC)
 
-
 [学C++从CMake学起 双笙子佯谬](https://www.bilibili.com/video/BV1fa411r7zp/)
 
 [现代CMake高级教程 双笙子佯谬](https://www.bilibili.com/video/BV16P4y1g7MH/)
+
+[现代CMake模块化项目管理指南 双笙子佯谬](https://www.bilibili.com/video/BV1V84y117YU/)
 
 
 ## 博客
@@ -42,6 +43,7 @@
 GNU LLVM MSVC
 
 ```cpp
+// 01
 // main.cpp
 #include <iostream>
 using namespace std;
@@ -57,6 +59,7 @@ int main()
 
 **02**
 ```cpp
+// 02
 // hello.cpp
 #include <iostream>
 using namespace std;
@@ -81,6 +84,7 @@ int main()
 ![](Pics/cmake002.png)
 
 ```cpp
+// 02
 // hello.cpp
 #include <iostream>
 using namespace std;
@@ -115,6 +119,7 @@ int main()
 ![](Pics/cmake003.png)
 
 ```cpp
+// 03
 // hello.cpp
 #include <iostream>
 using namespace std;
@@ -154,6 +159,7 @@ main.o   : main.cpp
 ![](Pics/cmake005.png)
 
 ```cpp
+// 04
 // main.cpp 和原来一样
 
 // hello.cpp 和原来一样
@@ -169,7 +175,7 @@ add_executable(main.out main.cpp hello.cpp)
 // ./main.out
 ```
 
-**05**
+**05 动态库&静态库**
 ![](Pics/cmake006.png)
 
 lib 静态库 .a 类似于 .o 编译后，删了 .o main.out 仍能使用
@@ -180,6 +186,7 @@ dll 动态库 .so 节省空间和内存 编译后，删了 .o main.out 不能使
 ![](Pics/cmake007.png)
 
 ```cpp
+// 05
 // main.cpp 和原来一样
 
 // hello.cpp 和原来一样
@@ -201,17 +208,179 @@ target_link_libraries(main.out PUBLIC helloA)  # 用 .so 也行
 // ldd main.out 可以查看链接信息
 ```
 
+**06 声明**
+
 ![](Pics/cmake008.png)
+
+**07 头文件**
 
 ![](Pics/cmake009.png)
 
 ![](Pics/cmake010.png)
 
-hello.cpp 最好也写上 #include<hello.h>
+hello.cpp 最好也写上 #include <hello.h>
+
+![](Pics/cmake011.png)
+
+![](Pics/cmake012.png)
+
+![](Pics/cmake013.png)
+
+**08 子模块**
+
+![](Pics/cmake014.png)
+
+下面这样写需要对 main.cpp 中 include 的头文件进行改写
+
+```cpp
+// 06
+// main.cpp
+#include "lib/hello.h"
+#include <iostream>
+using namespace std;
+int main()
+{
+    hello();
+    return 0;
+}
+// CMakeLists.txt
+cmake_minimum_required(VERSION 3.22)
+project(hellosub LANGUAGES CXX)
+add_subdirectory(lib)
+add_executable(main.out main.cpp)
+target_link_libraries(main.out PUBLIC hellolibSO)
+
+// lib/hello.h
+#pragma once
+void hello();
+// lib/hello.cpp
+#include "hello.h"
+#include <iostream>
+using namespace std;
+void hello()
+{
+    cout << "hello cmake sub" << endl;
+}
+// lib/CMakeLists.txt
+add_library(hellolibSO SHARED hello.cpp)
+
+// cmake -B build  // 输出 make 文件的目录
+// cd build
+// make  // ./build 中有 Makefile
+// ./main.out
+// ldd main.out 可以查看链接信息
+```
+
+![](Pics/cmake015.png)
 
 
+这样在 main 中可以使用尖括号，但是在 CMakeLists.txt 中会有重复
+
+```cpp
+// 07
+// main.cpp
+#include <hello.h>
+#include <iostream>
+using namespace std;
+int main()
+{
+    hello();
+    return 0;
+}
+// CMakeLists.txt
+cmake_minimum_required(VERSION 3.22)
+project(hellosub LANGUAGES CXX)
+add_subdirectory(lib)
+add_executable(main.out main.cpp)
+target_link_libraries(main.out PUBLIC hellolibSO)
+target_include_directories(main.out PUBLIC lib)
+
+// lib/hello.h
+#pragma once
+void hello();
+// lib/hello.cpp
+#include "hello.h"
+#include <iostream>
+using namespace std;
+void hello()
+{
+    cout << "hello cmake sub" << endl;
+}
+// lib/CMakeLists.txt
+add_library(hellolibSO SHARED hello.cpp)
+
+// cmake -B build  // 输出 make 文件的目录
+// cd build
+// make  // ./build 中有 Makefile
+// ./main.out
+// ldd main.out 可以查看链接信息
+```
+
+![](Pics/cmake016.png)
+
+```cpp
+// 08
+// main.cpp
+#include <hello.h>
+#include <iostream>
+using namespace std;
+int main()
+{
+    hello();
+    return 0;
+}
+// CMakeLists.txt
+cmake_minimum_required(VERSION 3.22)
+project(hellosub LANGUAGES CXX)
+add_subdirectory(lib)
+add_executable(main.out main.cpp)
+target_link_libraries(main.out PUBLIC hellolibSO)
+
+// lib/hello.h
+#pragma once
+void hello();
+// lib/hello.cpp
+#include "hello.h"
+#include <iostream>
+using namespace std;
+void hello()
+{
+    cout << "hello cmake sub" << endl;
+}
+// lib/CMakeLists.txt
+add_library(hellolibSO SHARED hello.cpp)
+target_include_directories(hellolibSO PUBLIC .)
+
+// cmake -B build  // 输出 make 文件的目录
+// cd build
+// make  // ./build 中有 Makefile
+// ./main.out
+// ldd main.out 可以查看链接信息
+```
+
+![](Pics/cmake017.png)
+
+**09 第三方库**
+
+![](Pics/cmake018.png)
+
+![](Pics/cmake019.png)
+
+![](Pics/cmake020.png)
+
+![](Pics/cmake021.png)
+
+**感谢小彭老师**
+
+![](Pics/cmake022.png)
 
 
+# 现代CMake高级教程 双笙子佯谬
+
+![](Pics/cmake023.png)
+
+cmake -B build 会自动创建 build 目录以及 Makefile等
+cmake --build build --parallel 4 会自动调用 build 中的 make
 
 # CMake进阶之初识CMake
 
