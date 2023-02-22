@@ -283,6 +283,7 @@ gthumb
 clash
 暴力猴+Bilibili插件[强大的哔哩哔哩增强脚本](https://github.com/the1812/Bilibili-Evolved)
 beyondcompare
+xdm(idm替代)[xdm官网](https://xtremedownloadmanager.com/)[xdm插件安装教程](https://microsoftedge.microsoft.com/addons/search/xdm-browser-monitor)
 
 ## ROS
 鱼香ROS一键安装指令
