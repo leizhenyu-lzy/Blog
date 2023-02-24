@@ -347,28 +347,6 @@ Multi Layer Perceptron
 ![](Pics/L12P04.png)
 
 ![](Pics/L12P05.png)
-
-## 补:贝叶斯公式
-
-**贝叶斯公式** : $P(B|A) = \frac{P(A|B) \cdot P(B)}{P(A)}$
-
-[贝叶斯公式 张颢](https://www.bilibili.com/video/BV19V411o7Pu/)
-
-刻画学习过程
-1. A代表数据
-2. B代表认知
-3. $P(A)$ 常数
-4. $P(B)$ 代表初始的认知(**先验**)
-5. $P(A|B)$ 在有初始认知的情况下数据的规律(**似然**)，学习的过程是主观的、有选择性的，"戴着有色眼镜"学习
-6. $P(B|A)$ 代表获取数据后的认知(**后验**)
-
-一些假设
-1. 若$P(A|B) = P(A)$，则表示用绝对客观的眼光看数据(隔岸观火，听讲座)，则学不进去，没有收获，最终得到的结果仍为$P(B)$，即仍为初始认知
-2. 教师的作用也在于$P(A|B)$，让数据与初始认知尽量match和融合，我自己理解是相当于提升学生的接受度，以形成进一步的后验认识。可能有积极作用，也可能有消极作用
-3. 所以 "教" 和 "学" 都依赖于似然的设计
-4. 机器学习训练就是在设计似然
-
-
 ## 补:正则化 regularization
 
 直观理解，人工在原点处添加了人工势阱
@@ -423,9 +401,13 @@ Multi Layer Perceptron
 
 L1正则是先验为拉普拉斯分布式的情况
 
+[拉普拉斯分布](https://en.wikipedia.org/wiki/Laplace_distribution)的概率密度函数 $P(x;\mu,\lambda) = \frac{1}{2\lambda}e^{-\frac{|x-\mu|}{\lambda}}$
+
 ![](OtherLecturePics/regularization09.png)
 
 L2正则是先验为高斯分布式的情况
+
+[高斯分布](https://en.wikipedia.org/wiki/Normal_distribution)的概率密度函数 $f(x;\mu,\sigma) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$
 
 ![](OtherLecturePics/regularization10.png)
 
