@@ -366,6 +366,7 @@ Multi Layer Perceptron
 
 [为什么L1和L2正则化可防止过拟合](https://zhuanlan.zhihu.com/p/85630046)
 [数学工具-正则项](https://www.citisy.site/posts/35241.html)
+[L1正则先验是Laplace分布，L2正则先验分布是高斯分布](https://zhuanlan.zhihu.com/p/344592019)
 
 [正则化是什么？ bilibili](https://www.bilibili.com/video/BV1wM411J7kE/)
 
