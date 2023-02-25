@@ -1,13 +1,16 @@
-# SVD 奇异值分解
+# 奇异值分解 SVD Singular Value Decomposition
 
-Singular Value Decomposition
+[toc]
 
-## 00 Portal
+## Portal
 
-[什么是奇异值分解SVD](https://www.bilibili.com/video/BV16A411T7zX)
+[奇异值分解求解线性方程组](https://zhuanlan.zhihu.com/p/588365100)
 
-## 同济小旭学长
+[矩阵分解 (特征值/奇异值分解+SVD+解齐次/非齐次线性方程组)](https://blog.csdn.net/MyArrow/article/details/53780972)
 
+[同济小旭学长 什么是奇异值分解SVD](https://www.bilibili.com/video/BV16A411T7zX)
+
+## 同济小旭学长 什么是奇异值分解SVD
 
 ![](Pics/svd001.png)
 
