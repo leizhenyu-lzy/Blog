@@ -469,3 +469,31 @@ Terminal=false
 StartupNotify=true
 Categories=Application;Development;
 ```
+
+
+# 镜像制作
+
+[Ubuntu 22.04 System Backup and Restore](https://linuxconfig.org/ubuntu-22-04-system-backup-and-restore)
+
+[打包自己的ubuntu镜像](https://www.bilibili.com/video/BV1ve411N7fh/)
+
+如何将自己的ubuntu系统打包为ISO镜像，视频中用到的命令：
+1、安装systemback
+sudo add-apt-repository ppa:nemh/systemback #添加源
+sudo apt-get update
+sudo apt-get install systemback unionfs-fuse # 安装systenback
+2、 制作镜像
+mkdir sblive
+tar -xf /home/myubuntu.sblive -C sblive
+
+mv sblive/syslinux/syslinux.cfg sblive/syslinux/isolinux.cfg
+mv sblive/syslinux sblive/isolinux
+wget https://nchc.dl.sourceforge.net/project/cdrtools/alpha/cdrtools-3.02a07.tar.gz
+
+tar -xzvf cdrtools-3.02a07.tar.gz
+cd cdrtools-3.02
+
+make
+make install
+
+/opt/schily/bin/mkisofs -iso-level 3 -r -V sblive -cache-inodes -J -l -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o sblive.iso sblive
