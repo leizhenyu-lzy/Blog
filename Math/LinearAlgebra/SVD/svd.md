@@ -10,6 +10,25 @@
 
 [同济小旭学长 什么是奇异值分解SVD](https://www.bilibili.com/video/BV16A411T7zX)
 
+## 奇异值分解求解线性方程组
+
+$A \in \mathbb{C}^{m \times n}_r$ 
+
+$U \in \mathbb{C}^{m \times m}$ 正交矩阵
+
+$V \in \mathbb{C}^{n \times n}$ 正交矩阵
+
+$ A = U
+\begin{bmatrix}
+   \sum_r & 0 \\
+   0 & 0 
+\end{bmatrix}
+V^T = UDV^T $
+
+$\sum_r = diag(\sigma_1,\cdots,\sigma_r)$ 矩阵的正奇异值
+
+
+
 ## 同济小旭学长 什么是奇异值分解SVD
 
 ![](Pics/svd001.png)

@@ -63,22 +63,61 @@
 
 模板是可以使用的，其他人的例子也可以
 
-### Preparation Plan
+### The Structure
 
 ![](Pics/writing018.png)
 
 ![](Pics/writing019.png)
 
+写作结构(五段式)
+
 ![](Pics/writing020.png)
 
-中间段
-1. 推理
+中间段(每一段都输出一个分论点)
+1. 抽象说理
 2. 例证
 3. 让步
 
+![](Pics/writing021.png)
+
+### Prompt Analysis & Brainstorming
+
+![](Pics/writing022.png)
+
+![](Pics/writing023.png)
+
+![](Pics/writing024.png)
+
+![](Pics/writing025.png)
+
+![](Pics/writing026.png)
+
+![](Pics/writing032.png)
+
+high的部分宏观，且易于拓展
+
+![](Pics/writing027.png)
+
+![](Pics/writing031.png)
+
+![](Pics/writing028.png)
+
+![](Pics/writing029.png)
+
+![](Pics/writing030.png)
+
+
+![](Pics/writing033.png)
 
 
 
+### Grand Opening
+
+hook + transition(过渡) + point
+
+![](Pics/writing034.png)
+
+https://www.bilibili.com/video/BV1UJ411T7oN/?p=4
 
 ## Season 2
 
