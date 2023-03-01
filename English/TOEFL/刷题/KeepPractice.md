@@ -100,9 +100,9 @@
 
 **听力:** 于2023-03-01完成
 1. Set1(课程学业): Student and Drama Professor 2min13s **4/5** **错:1**
-2. Set2(社会科学):  2min9s **6/6** 第六题有蒙的成分
-3. Set3(文化艺术):  mins **/** **错:**
-4. Set4(校园生活):  mins **/** **错:**
+2. Set2(社会科学): World History Class 2min9s **6/6** 第六题有蒙的成分
+3. Set3(文化艺术): Film Studies Class 2min39s **3/6** **错:1、3、4**
+4. Set4(校园生活): Student and the Cafeteria Manager 1min51s **5/5**
 5. Set5(自然科学):  mins **/** **错:**
 6. Set6(自然科学):  mins **/** **错:**
 
