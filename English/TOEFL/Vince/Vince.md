@@ -19,9 +19,11 @@
 
 ![](Pics/writing003.png)
 
+**Agree/Disagree**
+
 ![](Pics/writing004.png)
 
-**Prefer -> Some people think**
+**Prefer(Paired Views) -> Some people think**
 
 ![](Pics/writing005.png)
 
