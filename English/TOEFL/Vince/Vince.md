@@ -29,7 +29,11 @@
 
 ![](Pics/writing006.png)
 
+**Multiple Choices**
+
 ![](Pics/writing007.png)
+
+**Good Idea**
 
 ![](Pics/writing008.png)
 
@@ -55,7 +59,7 @@
 
 ![](Pics/writing014.png)
 
-判断两件事有无直接关联
+判断两件事有无逻辑关联
 
 ![](Pics/writing015.png)
 

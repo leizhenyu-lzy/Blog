@@ -17,19 +17,20 @@
 ![](Pics/checkUEFI02.jpg)
 
 ### 系统配置
+
 CPU
 ![](Pics/razorBIOS01.jpg)
 GPU
 ![](Pics/razorGPU.jpg)
 
 ### secure boot 关闭
+
 开机时按F2进入BIOS
 ![](Pics/razorSecureBoot01.jpg)
 ![](Pics/razorSecureBoot02.jpg)
 
-
-
 ## 换源
+
 [ubuntu换源](https://blog.csdn.net/qq_45878098/article/details/126037838)
 
 如果出现　Hash Sum mismatch Hashes of expected file
@@ -40,6 +41,7 @@ sudo apt clean
 然后换源，我是从中科大换成阿里解决的
 
 ## 卸载无用软件
+
 ```
 sudo apt remove thunderbird*
 sudo apt remove firefox*
@@ -47,6 +49,7 @@ sudo apt remove libreoffice-common
 sudo apt remove libreoffice*
 sudo apt remove rhythmbox*
 ```
+
 感觉22.04的libreoffice还行，就没卸载
 
 卸载相关小游戏
@@ -54,6 +57,7 @@ sudo apt remove rhythmbox*
 # 后续安装
 
 ## 终端补全忽略大小写
+
 ```bash
 # 在/etc/inputrc中添加使全局所有用户生效
 echo 'set completion-ignore-case on' >> /etc/inputrc
@@ -65,6 +69,7 @@ echo 'set completion-ignore-case on' >> ~/.inputrc
 如果显示权限不够，就直接 sudo gedit 打开文件改
 
 ## 输入法
+
 [在Ubuntu20.04中安装中文输入法](https://zhuanlan.zhihu.com/p/529892064)
 
 凑活用ibus也行
@@ -74,7 +79,7 @@ echo 'set completion-ignore-case on' >> ~/.inputrc
 [搜狗输入法linux 官方安装指南](https://shurufa.sogou.com/linux/guide)
 
 sudo apt-get install fcitx-bin
-sudo apt-get install fcitx-table 
+sudo apt-get install fcitx-table
 
 没事多重启就行
 
@@ -84,9 +89,8 @@ sudo apt-get install fcitx-table
 ![](Pics/shortCut02.png)
 ![](Pics/shortCut03.png)
 
-
-
 ## 显卡驱动
+
 [NVIDIA CUDA Toolkit Release Notes　官网](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
 
 ![](Pics/gpuDriver02.png)
@@ -97,7 +101,7 @@ sudo apt-get install fcitx-table
 
 ![](Pics/gpuDriver03.png)
 
-因为pytorch我会安装最新的11.7，所以这里选择了470 
+因为pytorch我会安装最新的11.7，所以这里选择了470
 P.S.本来想选择510但是直接不允许我下载，遂放弃，这个方法不一定行
 
 [NVIDIA显卡的Ubuntu驱动程序安装方法](https://www.bilibili.com/video/BV1wY411p7mU/)
@@ -156,6 +160,7 @@ sudo sh cuda_11.7.1_515.65.01_linux.run
 **deb方式**
 
 按照官网下面的命令运行即可运行，安装后重启
+
 ```
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
@@ -175,6 +180,7 @@ sudo apt-get -y install cuda
 ![](Pics/cuda01.png)
 
 如果想要在任何路径下的终端使用nvcc -v命令，则需在~/.bashrc中加入两行
+
 ```
 export PATH=/usr/local/cuda-11.7/bin:${PATH}
 export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64:${LD_LIBRARY_PATH}
@@ -197,8 +203,8 @@ print(torch.__version__)
 print(torch.version.cuda)
 print(torch.backends.cudnn.version())
 ```
-![](Pics/pytorch01.jpg)
 
+![](Pics/pytorch01.jpg)
 
 **启动时**
 进入启动项时，选中第一行Ubuntu，按[e]，编辑启动项参数
@@ -221,6 +227,7 @@ sudo update-initramfs -u
 如果提示没有make gcc等等，可以先安装ROS可能顺便解决，或者自己手动安装即可，然后一路yes即可
 
 ## 快捷方式
+
 .desktop文件
 
 记得添加可执行权限 chmod +x
@@ -251,6 +258,7 @@ baidu net disk
 linux qq
 Feishu
 netease cloud music [Ubuntu22.04运行网易云音乐错误](https://blog.csdn.net/qq_35628698/article/details/124815037)
+
 ```shell
 # 针对 22.04
 # Ubuntu 22.04由于更换/升级了一些动态库，系统动态库x86_64-linux-gnu内libgio-2.0.so.0、libpangocairo-1.0.so.0引用库缺少了函数支持， 导致程序无法运行，又因前两个动态库的更换导致依赖动态库libselinux.so.1缺少。故只能使用安装目录库并补齐以上三个动态库，且Ubuntu22.04的库无法使用，只能使用21.10以下的系统库文件。
@@ -291,17 +299,16 @@ meshlab
 gthumb
 kirta (P图)
 flameshot (截图软件，可以添加快捷键)
-timeshift备份 
+timeshift备份
 [Timeshift 系统备份和还原](https://blog.csdn.net/zjy1175044232/article/details/124248454)
 [Timeshift 官网](https://linuxmasterclub.com/timeshift/)
 alien rpm->deb
 qt5 : sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qtcreator
 
-
-
 fcitx
+
 1. sudo apt-get install fcitx-bin
-2. sudo apt-get install fcitx-table 
+2. sudo apt-get install fcitx-table
 
 新立得包管理 sudo apt install -y synaptic
 net-tools 用于ifconfig
@@ -312,12 +319,13 @@ QtScrapy
 [QtScrcpy github](https://github.com/barry-ran/QtScrcpy/blob/dev/README_zh.md)
 [QtScrcpy ubuntu](https://juejin.cn/post/7069577232984834079)
 手机端操作
+
 1. 打开设置，下拉选项，找到最后一个，关于手机
 2. 在关于手机选项里，找到版本号，连点7次
 3. 之后会提示，已处于开发者模式
-adb设置
-1. 设置中搜索adb
-2. 打开usb调试
+   adb设置
+4. 设置中搜索adb
+5. 打开usb调试
 
 **其他**
 VLC
@@ -327,21 +335,17 @@ clash
 beyondcompare
 xdm(idm替代)[xdm官网](https://xtremedownloadmanager.com/)[xdm插件安装教程](https://microsoftedge.microsoft.com/addons/search/xdm-browser-monitor)
 
-
-
 ## ROS
+
 鱼香ROS一键安装指令
 wget http://fishros.com/install -O fishros && . fishros
 
-
-
-
 ## miniconda
+
 [关于conda环境的配置，看这一篇就够了](https://www.bilibili.com/read/cv8956636)
 [使用Miniconda管理隔离虚拟Python环境](https://www.bilibili.com/video/BV1Mv411x775)
 
 输入 conda config 就会自动在用户目录下生成 .condarc 文件
-
 
 ## 微信
 
@@ -379,7 +383,8 @@ sudo sed -i "s/keexjEP3t4Mue23hrnuPtY4TdcsqNiJL-5174TsUdLmJSIXKfG2NGPwBL6vnRPddT
 ```shell
 GXN1eh9FbDiX1ACdd7XKMV7hL7x0ClBJLUJ-zFfKofjaj2yxE53xauIfkqZ8FoLpcZ0Ux6McTyNmODDSvSIHLYhg1QkTxjCeSCk6ARz0ABJcnUmd3dZYJNWFyJun14rmGByRnVPL49QH+Rs0kjRGKCB-cb8IT4Gf0Ue9WMQ1A6t31MO9jmjoYUeoUmbeAQSofvuK8GN1rLRv7WXfUJ0uyvYlGLqzq1ZoJAJDyo0Kdr4ThF-IXcv2cxVyWVW1SaMq8GFosDEGThnY7C-SgNXW30jqAOgiRjKKRX9RuNeDMFqgP2cuf0NMvyMrMScnM1ZyiAaJJtzbxqN5hZOMClUTE+++
 ```
-成功后在目录~/.config/bcompare/下会生成文件BC4Key.txt 
+
+成功后在目录~/.config/bcompare/下会生成文件BC4Key.txt
 
 为所有用户注册bcompare 命令，执行如下指令：
 
@@ -391,7 +396,7 @@ sudo cp ~/.config/bcompare/BC4Key.txt /etc/
 
 [Matlab R2021b v9.11 for Linux 中文授权激活版](https://www.jb51.net/softs/792028.html)
 
-[百度网盘 安装包+Crack链接 免解压](https://pan.baidu.com/s/1FW9--qZeE6Pgb-UrzPe9lg?pwd=fdfz) 
+[百度网盘 安装包+Crack链接 免解压](https://pan.baidu.com/s/1FW9--qZeE6Pgb-UrzPe9lg?pwd=fdfz)
 
 下载后首先点击 .iso 文件进行挂载，可以查看到如下结果
 
@@ -437,7 +442,6 @@ lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install
 
 ![](Pics/matlab06.png)
 
-
 安装完成后从文件夹中复制文件 **libmwlmgrimpl.so** 文件
 到 ALREADY EXISTING FOLDER "xxx\bin\glnxa64\matlab_startup_plugins\lmgrimpl"
 覆盖现有文件
@@ -448,7 +452,7 @@ lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install
 sudo cp /home/lzy/Downloads/MatlabR2021bLinux/libmwlmgrimpl.so /usr/local/MATLAB/R2021b/bin/glnxa64/matlab_startup_plugins/lmgrimpl/
 ```
 
-[Failed to load module "canberra-gtk-module"](https://blog.csdn.net/a970973835/article/details/110422343)
+[Failed to load module &#34;canberra-gtk-module&#34;](https://blog.csdn.net/a970973835/article/details/110422343)
 
 ```shell
 sudo ln -s /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so /usr/lib/libcanberra-gtk-module.so
@@ -469,7 +473,6 @@ Terminal=false
 StartupNotify=true
 Categories=Application;Development;
 ```
-
 
 # 镜像制作
 
