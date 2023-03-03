@@ -150,8 +150,8 @@
 
 **阅读:** 于2023-0x-xx完成 
 1. Passage1(社会科学): Evidence of the Earliest Writing 25min22s **13/14** **错:11**
-2. Passage2(自然科学):  mins **/** **错:**
-3. Passage3(文化艺术):  mins **/** **错:**
+2. Passage2(自然科学): Rain Forest Soils 18min59s **14/14**
+3. Passage3(文化艺术): Paleolithic Cave Painting 31min16s **11/14** **错:7、9、14**
 
 **听力:** 于2023-03-02完成
 1. Set1(课程学业): Student and Drama Professor 2min13s **4/5** **错:1**

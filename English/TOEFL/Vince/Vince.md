@@ -13,17 +13,19 @@
 
 ![](Pics/writing001.png)
 
+综合+独立
+
 ### Info
 
 读+听+说+写(综+独)
 
 ![](Pics/writing003.png)
 
-**Agree/Disagree**
+**Agree/Disagree** 对立
 
 ![](Pics/writing004.png)
 
-**Prefer(Paired Views) -> Some people think**
+**Prefer(Paired Views) -> Some people think** 不对立
 
 ![](Pics/writing005.png)
 
