@@ -96,7 +96,15 @@
 
 ![](Pics/writing024.png)
 
+宏观 可拓展 兼容性强
+
+万精油
+
+![](Pics/writing035.png)
+
 ![](Pics/writing025.png)
+
+金字塔架构
 
 ![](Pics/writing026.png)
 
@@ -110,22 +118,66 @@ high的部分宏观，且易于拓展
 
 ![](Pics/writing028.png)
 
+Agree/Disagree 以及 Paired View 都是做出直接的选择
+
 ![](Pics/writing029.png)
+
+三选一
 
 ![](Pics/writing030.png)
 
+不用囹圄在为什么是 best
+
+![](Pics/writing036.png)
+
+选择有话说的方面
+
+一开始建立一个大框架即可
 
 ![](Pics/writing033.png)
 
+建立自己的 high-level points
+
+折中的观点比较少
 
 
 ### Grand Opening
 
-hook + transition(过渡) + point
+公式 : hook + transition(过渡) + point
 
 ![](Pics/writing034.png)
 
-https://www.bilibili.com/video/BV1UJ411T7oN/?p=4
+有吸引力+有连贯性+意思清晰
+
+立场(Response) -> 观点(Points) -> 细节(Details)
+
+![](Pics/writing037.png)
+
+同意 或 不同意
+
+**与高层面观点有机结合**
+
+![](Pics/writing039.png)
+
+![](Pics/writing040.png)
+
+可以先引入对立的观点
+
+![](Pics/writing041.png)
+
+![](Pics/writing042.png)
+
+![](Pics/writing043.png)
+
+However, such a statement suffers from both logical and factual fallacies, and it should be examined meticulously.
+
+![](Pics/writing044.png)
+
+![](Pics/writing045.png)
+
+开头可以引入对立的立场，并在后面进行concession进行攻击。而且有收尾呼应的效果
+
+![](Pics/writing046.png)
 
 ## Season 2
 
