@@ -92,7 +92,17 @@
 
 
 
-## Official 52
+
+
+
+
+
+
+
+
+
+
+## Official 50
 
 **阅读:** 于2023-0x-xx完成 
 1. Passage1():  mins **/** **错:**
@@ -100,27 +110,15 @@
 3. Passage3():  mins **/** **错:**
 
 **听力:** 于2023-0x-xx完成
-1. Set1(课程学业): Creative Writing Professor 1min45s **2/5** **错:3、4、5**
-2. Set2(文化艺术): Art Class 3min47s **5/6** **错:1**
-3. Set3(生命科学): Environmental Science Class mins **4/6** **错:3、5**
+1. Set1(校园生活): Political Science 1min30s **5/5**
+2. Set2(文化艺术): Ancient History mins **5/6** **错:2** 第5题有蒙的成分
+3. Set3(生命科学):  mins **/** **错:**
 4. Set4(校园生活):  mins **/** **错:**
-5. Set5(自然科学):  mins **/** **错:**
-6. Set6(社会科学):  mins **/** **错:**
+5. Set5(文化艺术):  mins **/** **错:**
+6. Set6(自然科学):  mins **/** **错:**
 
 **口语:**
 **写作:**
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -144,11 +142,27 @@
 **口语:**
 **写作:**
 
+## Official 52
 
+**阅读:** 于2023-0x-xx完成 
+1. Passage1():  mins **/** **错:**
+2. Passage2():  mins **/** **错:**
+3. Passage3():  mins **/** **错:**
+
+**听力:** 于2023-0x-xx完成
+1. Set1(课程学业): Creative Writing Professor 1min45s **2/5** **错:3、4、5**
+2. Set2(文化艺术): Art Class 3min47s **5/6** **错:1**
+3. Set3(生命科学): Environmental Science Class mins **4/6** **错:3、5**
+4. Set4(校园生活):  mins **/** **错:**
+5. Set5(自然科学):  mins **/** **错:**
+6. Set6(社会科学):  mins **/** **错:**
+
+**口语:**
+**写作:**
 
 ## Official 53
 
-**阅读:** 于2023-0x-xx完成 
+**阅读:** 于2023-03-03完成 
 1. Passage1(社会科学): Evidence of the Earliest Writing 25min22s **13/14** **错:11**
 2. Passage2(自然科学): Rain Forest Soils 18min59s **14/14**
 3. Passage3(文化艺术): Paleolithic Cave Painting 31min16s **11/14** **错:7、9、14**

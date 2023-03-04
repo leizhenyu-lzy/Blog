@@ -2,13 +2,127 @@
 
 [toc]
 
-# Portal
+# 资料下载
+
+[资料下载](https://mp.weixin.qq.com/s/s3P9dmhc-kT7lbzJ9PyhzQ)
+
+下载位置:/mnt/sda1/Lectures/English/Vince
+
+语法课程幻灯片下载：
+链接：https://pan.baidu.com/s/1xqyV9Gr2bnsR-mbRywb0gw
+提取码：b7zn
+
+
+托福阅读课程幻灯片下载：
+链接：https://pan.baidu.com/s/1jSj6pXD-qFrE_ZTvNx4RVQ
+提取码：cki0 
+
+
+写作，口语课幻灯片，视频，题库，以及其他备考资料：
+链接：https://pan.baidu.com/s/1CXXh9uUyxssLJ7BOPTu0uw
+提取码：k0d1
+
+
+申请资料，简历CV，推荐信样本下载链接：
+链接：https://pan.baidu.com/s/15f4tYiD2UanNLH_d3Csl_A
+提取码：g4t0
+
+# 7节课突破30分托福听力 - TOEFL Listening 4h16min
+
+[7节课突破30分托福听力 - TOEFL Listening](https://www.bilibili.com/video/BV1KA4y1X7aH/)
+
+# 7节课突破30分托福阅读 - TOEFL Reading 5h21min
+
+[7节课突破30分托福阅读 - TOEFL Reading](https://www.bilibili.com/video/BV18A41157gd/)
+
+
+# 突破托福口语！- 根据2019年8月改革更新 1h41min
+
+[突破托福口语！- 根据2019年8月改革更新 1h41min](https://www.bilibili.com/video/BV16E411Y7mN/)
+
+![](Pics/speaking001.png)
+
+**目录**
+
+![](Pics/speaking002.png)
+
+## Session 1
+
+![](Pics/speaking003.png)
+
+![](Pics/speaking004.png)
+
+准备右边的为主，之前的视频:[带你7节课突破托福口语！](https://www.bilibili.com/video/BV1zb4112737/)也可以过一下
+
+![](Pics/speaking005.png)
+
+![](Pics/speaking006.png)
+
+![](Pics/speaking007.png)
+
+**模板**
+
+![](Pics/speaking010.png)
+
+提前热身、不要重复题目或之前的观点、用逻辑词和连接词、长短句配合
+
+![](Pics/speaking008.png)
+
+![](Pics/speaking009.png)
+
+也可以 brainstorm 结合 high-level point
+
+![](Pics/speaking011.png)
+
+准备时间15秒
+
+![](Pics/speaking012.png)
+
+![](Pics/speaking013.png)
+
+![](Pics/speaking014.png)
+
+synergy 协同工作
+
+![](Pics/speaking015.png)
+
+![](Pics/speaking016.png)
+
+**打分方式**
+
+机器&人 打分权重一致
+
+![](Pics/speaking017.png)
+
+## Session 2
+
+
+
+
+
+
+
+# 带你7节课突破托福口语！ 3h9min
+
+[带你7节课突破托福口语！](https://www.bilibili.com/video/BV1zb4112737/)
+
+
+
+
+
+
+
+
+
+
+
+# 7节课突破30分托福写作-独立写作 30min
 
 [7节课突破30分托福写作-独立写作 2019-09-27](https://www.bilibili.com/video/BV1UJ411T7oN/)
 
+[突破30分托福写作-独立写作-英语讲解和字幕 国际版](https://www.bilibili.com/video/BV1n7411S7mL/)
 
-# 7节课突破30分托福写作-独立写作 2021-07
-
+**独立部分的写作时间是30分钟**，综合部分的写作时间是20分钟
 ## Season 1
 
 ![](Pics/writing001.png)
@@ -179,11 +293,118 @@ However, such a statement suffers from both logical and factual fallacies, and i
 
 ![](Pics/writing046.png)
 
+### Reasoning
+
+呈现层次 + coherent & adequate(developed) & consistent
+
+有充实的内容来解释观点
+
+要仅仅结合主题，不要老是批判另一个
+
+![](Pics/writing047.png)
+
+**如果要充实细节，可以向自己之前的观点提问，进行细节挖掘** why who how 
+
+多种方式
+1. follow **Futhermore**
+   ![](Pics/writing048.png)
+2. fight **On the other hand**
+   ![](Pics/writing049.png)
+3. hybrid
+   ![](Pics/writing050.png)
+
+![](Pics/writing051.png)
+
+Optional filler
+1. Summary
+   ![](Pics/writing052.png)
+2. What if
+   ![](Pics/writing053.png)
+
+![](Pics/writing054.png)
+
+不要滥用
+
+![](Pics/writing055.png)
+
+
+### Exemplification
+
+例子要有说服力
+
+![](Pics/writing056.png)
+
+通过一个细节引出观点
+
+![](Pics/writing057.png)
+
+![](Pics/writing058.png)
+
+![](Pics/writing059.png)
+
+将元素带入
+
+![](Pics/writing060.png)
+
+此时还不够充分 adequate，仅仅是coherent
+
+![](Pics/writing061.png)
+
+![](Pics/writing062.png)
+
+![](Pics/writing063.png)
+
+红字增加了代表性 **generality** 更有说服力
+
+![](Pics/writing064.png)
+
+![](Pics/writing065.png)
+
+
+### Concession
+
+让步拉回
+
+![](Pics/writing066.png)
+
+![](Pics/writing067.png)
+
+![](Pics/writing068.png)
+
+![](Pics/writing069.png)
+
+此时还不够 adequate
+
+![](Pics/writing070.png)
+
+另一个方面的回答
+
+![](Pics/writing071.png)
+
+![](Pics/writing072.png)
+
+### Ending
+
+ending 如果没有时间可以省略，考官更注重之前的论证
+
+![](Pics/writing073.png)
+
+先对之前的观点进行复述，复述立场
+
+引用名人名言
+
+![](Pics/writing074.png)
+
+![](Pics/writing075.png)
+
+
+
 ## Season 2
 
 ![](Pics/writing002.png)
 
+[9120 试听](https://m.lizhiweike.com/lecture2/27290518)
 
-
+![](Pics/writing076.png)
 
 
