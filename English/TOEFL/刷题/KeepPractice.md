@@ -144,30 +144,30 @@
 
 ## Official 52
 
-**阅读:** 于2023-0x-xx完成 
-1. Passage1():  mins **/** **错:**
-2. Passage2():  mins **/** **错:**
-3. Passage3():  mins **/** **错:**
+**阅读:** 于2023-03-05完成 并 搞懂
+1. Passage1(自然科学): Stream Deposits 22min03s **11/14** **错:1、3、14**
+2. Passage2(社会科学): Natufian Culture 20min **13/14** **错:14**
+3. Passage3(自然科学): Early Food Production 30min12s **14/14**
 
 **听力:** 于2023-0x-xx完成
 1. Set1(课程学业): Creative Writing Professor 1min45s **2/5** **错:3、4、5**
 2. Set2(文化艺术): Art Class 3min47s **5/6** **错:1**
 3. Set3(生命科学): Environmental Science Class mins **4/6** **错:3、5**
-4. Set4(校园生活):  mins **/** **错:**
-5. Set5(自然科学):  mins **/** **错:**
-6. Set6(社会科学):  mins **/** **错:**
+4. Set4(校园生活): Campus Store 1min53s **4/5** **错:4**
+5. Set5(自然科学): Chemistry Class 2min **5/6** **错:5**
+6. Set6(社会科学): Archaeology Class 2min37s **5/6** **错:1**
 
 **口语:**
 **写作:**
 
 ## Official 53
 
-**阅读:** 于2023-03-03完成 
+**阅读:** 于2023-03-03完成 并 搞懂
 1. Passage1(社会科学): Evidence of the Earliest Writing 25min22s **13/14** **错:11**
 2. Passage2(自然科学): Rain Forest Soils 18min59s **14/14**
 3. Passage3(文化艺术): Paleolithic Cave Painting 31min16s **11/14** **错:7、9、14**
 
-**听力:** 于2023-03-02完成
+**听力:** 于2023-03-02完成 并 搞懂
 1. Set1(课程学业): Student and Drama Professor 2min13s **4/5** **错:1**
 2. Set2(社会科学): World History Class 2min9s **6/6** 第六题有蒙的成分
 3. Set3(文化艺术): Film Studies Class 2min39s **3/6** **错:1、3、4**
