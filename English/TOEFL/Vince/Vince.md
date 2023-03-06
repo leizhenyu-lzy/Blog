@@ -1,5 +1,7 @@
 # Vince TOEFL
 
+[Vince9120 B站首页](https://space.bilibili.com/396671281)
+
 [toc]
 
 # 资料下载
@@ -27,14 +29,112 @@
 链接：https://pan.baidu.com/s/15f4tYiD2UanNLH_d3Csl_A
 提取码：g4t0
 
-# 7节课突破30分托福听力 - TOEFL Listening 4h16min
+# 长难句分析和口语写作必备语法 - TOEFL, IELTS, GRE, GMAT 2h33min 2021-06-28
+
+[长难句分析和口语写作必备语法](https://www.bilibili.com/video/BV12B4y1K75K/)
+
+[7节课学会长难句分析和写作(deprecated)](https://www.bilibili.com/video/BV1L7411v7M7/)
+
+**标点符号往往是标志**
+
+![](Pics/sentence001.png)
+
+![](Pics/sentence002.png)
+
+## Sentence Structure
+
+linking verb 系动词
+
+![](Pics/sentence003.png)
+
+
+
+# 7节课突破30分托福听力 - TOEFL Listening 4h16min 2022-04-23
 
 [7节课突破30分托福听力 - TOEFL Listening](https://www.bilibili.com/video/BV1KA4y1X7aH/)
 
-# 7节课突破30分托福阅读 - TOEFL Reading 5h21min
+## Intro
+
+![](Pics/listening001.png)
+
+不知道哪一套题目(1,3)是加试的
+
+题材
+
+![](Pics/listening002.png)
+
+![](Pics/listening003.png)
+
+![](Pics/listening004.png)
+
+![](Pics/listening005.png)
+
+打分机制
+
+![](Pics/listening006.png)
+
+
+句子的架构和重点 语言熟练度 解题技巧 记笔记
+
+![](Pics/listening007.png)
+
+
+# 7节课突破30分托福阅读 - TOEFL Reading 5h21min 2021-04-06
+
+## Intro
 
 [7节课突破30分托福阅读 - TOEFL Reading](https://www.bilibili.com/video/BV18A41157gd/)
 
+![](Pics/reading001.png)
+
+![](Pics/reading002.png)
+
+![](Pics/reading003.png)
+
+托福阅读量大，题干长
+
+![](Pics/reading004.png)
+
+题型 主要分为两类
+1. top down
+2. bottom up
+
+![](Pics/reading005.png)
+
+inference : 往深里思考 
+factual info : 同义词替换
+
+summary : 比 categorization 常见
+categorization : 常常出现在对比的文章中
+
+## Prep Plan
+
+topics
+
+![](Pics/reading006.png)
+
+![](Pics/reading007.png)
+
+准备方式 : reading -> listening -> speaking
+
+学术单词 : study from passage
+
+语法 : 
+
+![](Pics/reading008.png)
+
+## Skimming
+
+通读全文段落
+
+![](Pics/reading009.png)
+
+找实义词 meaning-carrying words
+以及 frequently-mentionned terms/expressions
+
+仅仅读首句尾句是不够的
+
+![](Pics/reading010.png)
 
 # 突破托福口语！- 根据2019年8月改革更新 1h41min
 

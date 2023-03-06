@@ -474,6 +474,68 @@ StartupNotify=true
 Categories=Application;Development;
 ```
 
+## tmux
+[你必须知道的Unix终端神器 - Tmux](https://www.bilibili.com/video/BV1Mj411N7xS/)
+[bryant-video/tmux-tutorial Github](https://github.com/bryant-video/tmux-tutorial)
+[tmux-plugins/tpm](https://github.com/tmux-plugins/tpm)
+[tmux-plugins/tmux-continuum](https://github.com/tmux-plugins/tmux-continuum)
+[tmux-plugins/tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect)
+[调教终端神器——tmux 知乎](https://zhuanlan.zhihu.com/p/261207028)
+
+sudo apt install tmux 安装tmux
+tmux -V 查看版本
+
+man tmux 查看使用说明
+
+Ctrl+b : Prefix Key 前缀键
+
+原始快捷键(分屏)
+
+Ctrl+b & %(Ctrl+5)
+Ctrl+b & "(Ctrl+')
+
+配置自己的快捷键(-r 表示可以连续按多次该键)
+
+```
+unbind %
+bind | split-window -h -c "#{pane_current_path}"
+
+unbind '"'
+bind - split-window -v -c "#{pane_current_path}"
+
+unbind r
+bind r source-file ~/.tmux.conf
+
+bind -r j resize-pane -D 5
+bind -r k resize-pane -U 5
+bind -r l resize-pane -R 5
+bind -r h resize-pane -L 5
+bind -r m resize-pane -Z
+
+set -g mouse on
+set -g mouse-resize-pane on
+set -g mouse-select-pane on
+set -g mouse-select-window on
+set -g mode-keys vi
+
+set -g @plugin 'tmux-plugins/tpm'  # tmux package manager
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'  # persist tmux sessions after restart computer 
+set -g @plugin 'tmux-plugins/tmux-continuum'  # automatically saves sessions every 15 mins
+
+set -g @resurrect-capture-pane-contents 'on'
+set -g @continuum-restore 'on'
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+ctrl+b + : + source-file ~/.tmux.conf 生效刚才的配置文件(第一次 后续仅需 ctrl+b + r 即可)
+
+ctrl+b + : + list-keys 查看所有快捷键
+
+ctrl+b + : + set-options -g 
+
+
+
 # 镜像制作
 
 [Ubuntu 22.04 System Backup and Restore](https://linuxconfig.org/ubuntu-22-04-system-backup-and-restore)
@@ -500,3 +562,7 @@ make
 make install
 
 /opt/schily/bin/mkisofs -iso-level 3 -r -V sblive -cache-inodes -J -l -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o sblive.iso sblive
+
+
+
+
