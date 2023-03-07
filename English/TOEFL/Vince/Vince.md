@@ -43,9 +43,139 @@
 
 ## Sentence Structure
 
-linking verb 系动词
-
 ![](Pics/sentence003.png)
+
+linking verb 系动词 主系表结构
+
+predictive 表语 表达主语的一个属性
+
+**祈使句**
+
+![](Pics/sentence004.png)
+
+![](Pics/sentence005.png)
+
+clause : subjective + verb
+
+**复合句 compound sentence**
+
+![](Pics/sentence006.png)
+
+**修饰成分** 可以被移除
+
+![](Pics/sentence007.png)
+
+**限定性和非限定性**
+
+![](Pics/sentence008.png)
+
+在分析长难句过程中，删去没用的，留下 sentence cores
+
+![](Pics/sentence009.png)
+
+![](Pics/sentence010.png)
+
+## Practice
+
+there be sth <=> sth be there
+
+![](Pics/sentence011.png)
+
+![](Pics/sentence012.png)
+
+## Parts of Speech 词性
+
+![](Pics/sentence013.png)
+
+词性
+1. 名词
+2. 代词
+3. 动词
+4. 形容词
+5. 副词
+6. 连词
+7. 介词
+8. 感叹词
+
+**名词**
+
+![](Pics/sentence014.png)
+
+![](Pics/sentence015.png)
+
+使用不定冠词 a 更有指令感，更加具体
+
+![](Pics/sentence016.png)
+
+使用复数更加宽泛
+
+![](Pics/sentence017.png)
+
+使用定冠词 the 更加明确对象
+
+![](Pics/sentence018.png)
+
+**代词**
+
+![](Pics/sentence019.png)
+
+所有格
+
+**动词**
+
+![](Pics/sentence020.png)
+
+be become 为系动词 leave write 为action
+
+![](Pics/sentence021.png)
+
+红色为 working verb 是由主语发起的动作 
+listen 表示伴随状态
+
+**形容词**
+
+![](Pics/sentence022.png)
+
+![](Pics/sentence023.png)
+
+主系表结构，形容词作表语，表示主语的属性
+
+**副词**
+
+![](Pics/sentence024.png)
+
+![](Pics/sentence026.png)
+
+so 和 but 是连词，但是在口语中也可以这么用。在书面语中，还是应该使用副词。
+
+**连词**
+
+链接分句 不仅链接句子，而且可以表达逻辑上的关系
+
+![](Pics/sentence025.png)
+
+**介词**
+
+![](Pics/sentence027.png)
+
+可以修饰名词也可以修饰动词
+
+**感叹词**
+
+![](Pics/sentence028.png)
+
+## Practice
+
+
+
+
+
+
+
+
+
+
+
 
 
 
