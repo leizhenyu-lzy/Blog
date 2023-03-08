@@ -158,7 +158,7 @@ so 和 but 是连词，但是在口语中也可以这么用。在书面语中，
 
 ![](Pics/sentence027.png)
 
-可以修饰名词也可以修饰动词
+介词短语 可以修饰名词也可以修饰动词
 
 **感叹词**
 
@@ -166,16 +166,76 @@ so 和 but 是连词，但是在口语中也可以这么用。在书面语中，
 
 ## Practice
 
+## Noun Modifier
 
+![](Pics/sentence029.png)
 
+常见的名词修饰词
+1. 形容词 new, great, selfless
+2. 介词短语 of endeavor
+3. 定语从句(完整的 clause) who are able ...
+4. 分词 rising in 
+5. 同位语和插入语(- 和 , 效果相同) a new field
 
+插入语(一定是非限制性)
 
+![](Pics/sentence030.png)
 
+![](Pics/sentence031.png)
 
+同位语和插入语的关系
 
+![](Pics/sentence032.png)
 
+第一句的 Lina 是限制性定语，不能去掉，所以不加逗号，也不是插入语，仅仅是同位语
+## Practice
 
+![](Pics/sentence034.png)
 
+两个逗号间的定语从句是非限制性的，可以先跳过
+
+![](Pics/sentence035.png)
+
+![](Pics/sentence036.png)
+
+![](Pics/sentence037.png)
+
+## Adverb Modifier 状语
+
+常见的类似副词修饰词用于修饰名词以外的内容
+1. 副词 still, slowly, suddenly, inevitably
+2. 介词短语 into space, of the space race
+3. 状语从句 when the Cold War still slowly emerging
+4. 分词 triggering the beginning of the space race (现在分词，当然也有过去分词) 
+5. 插入语 
+
+![](Pics/sentence038.png)
+
+从句的都是有主从之分的
+
+**定语从句**，修饰laptop，不是 compound sentence，因为是主从关系
+
+![](Pics/sentence039.png)
+
+**名词性从句**
+
+![](Pics/sentence040.png)
+
+**状语从句**
+
+![](Pics/sentence041.png)
+
+![](Pics/sentence042.png)
+
+## Practice
+
+![](Pics/sentence043.png)
+
+![](Pics/sentence044.png)
+
+![](Pics/sentence045.png)
+
+## Tenses and moods 时态和语气
 
 
 
