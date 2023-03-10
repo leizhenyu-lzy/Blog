@@ -237,6 +237,65 @@ so 和 but 是连词，但是在口语中也可以这么用。在书面语中，
 
 ## Tenses and moods 时态和语气
 
+12种常用的时态
+
+![](Pics/sentence046.png)
+
+**一般时**
+
+![](Pics/sentence047.png)
+
+时态在主句和从句中可以混用
+
+![](Pics/sentence049.png)
+
+![](Pics/sentence050.png)
+
+**进行时**
+
+![](Pics/sentence051.png)
+
+进行时表示此时此刻正在发生，并且会持续一段时间continuous (for a while)
+
+![](Pics/sentence052.png)
+
+**完成时**
+
+![](Pics/sentence053.png)
+
+过去完成时(过去的过去)
+
+![](Pics/sentence054.png)
+
+现在完成时(现在的过去)
+
+![](Pics/sentence055.png)
+
+将来完成时(将来的过去)
+
+**完成进行时**
+
+Done + For a while -> 已经开始并会持续
+
+![](Pics/sentence056.png)
+
+![](Pics/sentence057.png)
+
+![](Pics/sentence058.png)
+
+## Practice
+
+托福口语对于时态的要求不是特别高(一般时即可)
+
+在托福写作中，需要进行时、完成时、完成进行时
+
+![](Pics/sentence059.png)
+
+雅思口语对于时态的要求较高
+
+![](Pics/sentence060.png)
+
+
 
 
 # 7节课突破30分托福听力 - TOEFL Listening 4h16min 2022-04-23
@@ -267,6 +326,23 @@ so 和 but 是连词，但是在口语中也可以这么用。在书面语中，
 句子的架构和重点 语言熟练度 解题技巧 记笔记
 
 ![](Pics/listening007.png)
+
+## Vocab
+
+![](Pics/listening008.png)
+
+## Practics 1
+
+## Practics 2
+
+
+
+
+# 单词
+
+[托福雅思听力基础单词学习辨听 22h08min](https://www.bilibili.com/video/BV1A341147JS/)
+
+[托福听力学科单词学习辨听 11h](https://www.bilibili.com/video/BV19P4y1E7bz/)
 
 
 # 7节课突破30分托福阅读 - TOEFL Reading 5h21min 2021-04-06
@@ -336,7 +412,7 @@ topics
 
 ![](Pics/speaking002.png)
 
-## Session 1
+## Session 1 Independent task
 
 ![](Pics/speaking003.png)
 
@@ -350,11 +426,11 @@ topics
 
 ![](Pics/speaking007.png)
 
-**模板**
+**模板** 解释+例子
 
 ![](Pics/speaking010.png)
 
-提前热身、不要重复题目或之前的观点、用逻辑词和连接词、长短句配合
+提前热身、不要重复题目或之前自己的观点、用逻辑词和连接词(有逻辑性)、长短句配合
 
 ![](Pics/speaking008.png)
 
@@ -384,27 +460,117 @@ synergy 协同工作
 
 ![](Pics/speaking017.png)
 
-## Session 2
+## Session 2 Task2
+
+![](Pics/speaking018.png)
+
+阅读文字，关于变化，及其原因。随后有两个学生的对话听力，表达观点
+
+![](Pics/speaking019.png)
+
+![](Pics/speaking020.png)
+
+**reading 只会出现一次，所以要记好笔记**
+
+![](Pics/speaking021.png)
+
+**模板**
+
+![](Pics/speaking022.png)
+
+重点应该在听力部分的材料复述
+
+用一些连接词
+
+简单句和复合句结合
+
+![](Pics/speaking023.png)
+
+![](Pics/speaking024.png)
+
+![](Pics/speaking025.png)
+
+![](Pics/speaking026.png)
+
+可能human rater 比重大一些
+
+## Session 3 Task3(两种题型)
+
+![](Pics/speaking027.png)
+
+阅读:学术主题、学术概念
+听力:1/2个例子
+
+对于一个例子
+1. cause-effect
+2. before-after
+
+![](Pics/speaking028.png)
+
+![](Pics/speaking029.png)
+
+![](Pics/speaking030.png)
+
+![](Pics/speaking031.png)
+
+**reading时，要抓住重点，词义解释**
+
+![](Pics/speaking032.png)
+
+**listening时，要抓住因果关系**
+
+![](Pics/speaking033.png)
+
+![](Pics/speaking034.png)
+
+![](Pics/speaking035.png)
 
 
+## Session 4 Task4
 
+![](Pics/speaking036.png)
 
+没有阅读部分，往往两个例子组成
 
+往往是两个例子
 
+也有可能一个例子，对于一个例子
+1. cause-effect
+2. before-after
+
+![](Pics/speaking037.png)
+
+![](Pics/speaking038.png)
+
+**题干**
+1. 上面的一般对应两个
+2. 下面的一般对应一个例子
+
+![](Pics/speaking039.png)
+
+![](Pics/speaking040.png)
+
+不需要conclusion
+
+![](Pics/speaking041.png)
+
+![](Pics/speaking042.png)
+
+![](Pics/speaking043.png)
+
+用一般现在时不容易错
+
+![](Pics/speaking044.png)
+
+![](Pics/speaking045.png)
+
+![](Pics/speaking046.png)
+
+![](Pics/speaking047.png)
 
 # 带你7节课突破托福口语！ 3h9min
 
 [带你7节课突破托福口语！](https://www.bilibili.com/video/BV1zb4112737/)
-
-
-
-
-
-
-
-
-
-
 
 # 7节课突破30分托福写作-独立写作 30min
 
@@ -696,5 +862,15 @@ ending 如果没有时间可以省略，考官更注重之前的论证
 [9120 试听](https://m.lizhiweike.com/lecture2/27290518)
 
 ![](Pics/writing076.png)
+
+
+# 3节课突破30分托福写作-综合写作
+
+[3节课突破30分托福写作-综合写作](https://www.bilibili.com/video/BV1hE411Z7jy/)
+
+## Grading 、 Structures & Reading Analysis
+
+
+
 
 
