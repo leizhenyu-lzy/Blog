@@ -868,9 +868,87 @@ ending 如果没有时间可以省略，考官更注重之前的论证
 
 [3节课突破30分托福写作-综合写作](https://www.bilibili.com/video/BV1hE411Z7jy/)
 
-## Grading 、 Structures & Reading Analysis
+## Grading 、Structures & Reading Analysis(3min)
+
+![](Pics/writing077.png)
+
+从听力和阅读中选取重要信息，写出 coherent accurate 的论文
+
+![](Pics/writing078.png)
+
+不一样的题型(问法)
+1. 听力材料和阅读材料观点相反
+2. 阅读材料中提出三个问题，听力中解决这些问题
+3. 阅读材料提出三个解决方法，听力中指出有些问题
+
+![](Pics/writing079.png)
+
+![](Pics/writing080.png)
+
+听力材料永远反对阅读材料，结构一一对应
+
+![](Pics/writing081.png)
+
+草稿纸准备
+
+![](Pics/writing082.png)
+
+![](Pics/writing083.png)
+
+![](Pics/writing084.png)
+
+![](Pics/writing085.png)
+
+![](Pics/writing086.png)
 
 
+## Listening Analysis And Writing Structure
 
+![](Pics/writing087.png)
 
+![](Pics/writing088.png)
+
+![](Pics/writing089.png)
+
+![](Pics/writing090.png)
+
+![](Pics/writing091.png)
+
+![](Pics/writing092.png)
+
+![](Pics/writing093.png)
+
+**写作结构**
+
+![](Pics/writing094.png)
+
+![](Pics/writing095.png)
+
+## Putting Everthing Together
+
+听力部分占比应该大一些
+
+![](Pics/writing096.png)
+
+阅读部分会重新出现
+
+不需要自己拓展，只需陈述事实观点即可
+
+![](Pics/writing097.png)
+
+![](Pics/writing098.png)
+
+观点一一对立，听力是重点
+
+![](Pics/writing099.png)
+
+![](Pics/writing100.png)
+
+![](Pics/writing101.png)
+
+![](Pics/writing102.png)
+
+![](Pics/writing103.png)
+
+![](Pics/writing104.png)
 

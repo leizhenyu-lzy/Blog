@@ -8,7 +8,7 @@
 [KMF考满分 托福 官方真题 听力](https://toefl.kmf.com/practice/listening)
 [KMF考满分 托福 官方真题 阅读](https://toefl.kmf.com/practice/reading)
 [KMF考满分 托福 官方真题 口语](https://toefl.kmf.com/speak/ets/new-order/0)
-
+[KMF考满分 托福 官方真题 写作](https://toefl.kmf.com/write/ets/order/0)
 
 ## Official 01
 
