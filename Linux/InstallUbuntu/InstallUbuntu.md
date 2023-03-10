@@ -345,7 +345,41 @@ wget http://fishros.com/install -O fishros && . fishros
 [关于conda环境的配置，看这一篇就够了](https://www.bilibili.com/read/cv8956636)
 [使用Miniconda管理隔离虚拟Python环境](https://www.bilibili.com/video/BV1Mv411x775)
 
-输入 conda config 就会自动在用户目录下生成 .condarc 文件
+输入 conda config 就会自动在用户目录下生成 .condarc 文件，添加清华源，然后conda clean -i
+
+[Anaconda 清华镜像使用帮助](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)
+
+[docs.conda.io 官方文档](https://docs.conda.io/en/latest/miniconda.html#system-requirements)
+
+[Installation instructions 官方文档](https://conda.io/projects/conda/en/stable/user-guide/install/index.html)
+
+按 q 跳出协议
+
+yes - yes - yes
+
+```
+# 手动激活Anaconda3环境
+conda activate
+# 手动退出Anaconda3环境
+conda deactivate
+# 配置打开终端时候默认不激活Anaconda环境：
+conda config --set auto_activate_base false
+# 配置打开终端时候默认激活Anaconda环境：
+conda config --set auto_activate_base true
+# 这是简化的命令形式
+conda create -n conda-new --clone conda-old
+# 然后删除原有的conda环境：
+conda remove -n conda-old --all
+```
+
+安装labelImg
+```
+pip install PyQt5 -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install pyqt5-tools -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install lxml -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip install labelImg -i https://pypi.tuna.tsinghua.edu.cn/simple/ （直接复制就可）
+```
+
 
 ## 微信
 
@@ -566,3 +600,7 @@ make install
 
 
 
+```
+WARNING: The candidate selected for download or install is a yanked version: 'opencv-contrib-python' candidate (version 3.4.2.16 at https://files.pythonhosted.org/packages/08/f1/66330f4042c4fb3b2d77a159db8e8916d9cdecc29bc8c1f56bc7f8a9bec9/opencv_contrib_python-3.4.2.16-cp36-cp36m-manylinux1_x86_64.whl#sha256=8de56394a9a3cf8788559032c2139c622ffdc7e37c32215ec865b4e1cd2ca70d (from https://pypi.org/simple/opencv-contrib-python/))
+Reason for being yanked: Release deprecated
+```
