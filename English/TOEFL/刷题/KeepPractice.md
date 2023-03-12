@@ -2,7 +2,7 @@
 
 [toc]
 
-# Portals
+## Portals
 
 [KMF考满分 托福 官方真题](https://toefl.kmf.com/)
 [KMF考满分 托福 官方真题 听力](https://toefl.kmf.com/practice/listening)
@@ -104,6 +104,58 @@
 
 
 
+
+
+
+
+## Official 48 (改革后)
+
+**阅读:** 于2023-0x-xx完成 
+1. Passage1(社会科学): **10/10**
+2. Passage2(生命科学): **10/10**
+3. Passage3(自然科学): **9/10**
+
+![](Pics/official48reading.png)
+
+**听力:** 29分 于2023-03-11完成
+1. Set1(校园生活):  **5/5**
+2. Set2(文化艺术):  **5/6** **错:3**
+3. Set3(自然科学):  **6/6** 有蒙的成分
+4. Set4(课程学业):  **5/5**
+5. Set5(生命科学):  **6/6**
+
+![](Pics/official48listening.png)
+
+
+**口语:**
+**写作:**
+
+
+
+
+
+## Official 49 (改革后)
+
+**阅读:** 于2023-0x-xx完成 
+1. Passage1():  mins **/** **错:**
+2. Passage2():  mins **/** **错:**
+3. Passage3():  mins **/** **错:**
+
+**听力:** 25分 于2023-03-11完成
+1. Set1(校园生活):  **3/5** **错:2、5**
+2. Set2(自然科学):  **4/6** **错:2、3** 太难了
+3. Set3(社会科学):  **4/6** **错:5、6** 听漏了一些
+4. Set4(课程学业):  **5/5**
+5. Set5(生命科学):  **6/6**
+
+
+**口语:**
+**写作:**
+
+
+
+
+
 ## Official 50
 
 **阅读:** 于2023-0x-xx完成 
@@ -122,13 +174,9 @@
 **口语:**
 **写作:**
 
-
-
-
-
 ## Official 51
 
-**阅读:** 于2023-0x-xx完成 
+**阅读(改革后):** 于2023-0x-xx完成 
 1. Passage1():  mins **/** **错:**
 2. Passage2():  mins **/** **错:**
 3. Passage3():  mins **/** **错:**
@@ -136,10 +184,9 @@
 **听力:** 于2023-0x-xx完成
 1. Set1(校园生活): Student Activities Center 1min45s **4/5** **错:3**
 2. Set2(文化艺术): Illustrated Books 2min37s **5/6** **错:3**
-3. Set3(自然科学):  mins **/** **错:**
+3. Set3(自然科学):  2min56s **3/6** **错:2、3、6** 没抓住重点
 4. Set4(课程学业):  mins **/** **错:**
-5. Set5(生命科学):  mins **/** **错:**
-6. Set6(社会科学):  mins **/** **错:**
+5. Set5(社会科学):  mins **/** **错:**
 
 **口语:**
 **写作:**
@@ -197,9 +244,40 @@
 6. Set6(自然科学): Archaeology Class 2min12s **5/6** **错:2**
 
 **口语:**
+1. Q2 : **Some people say that childhood is the best time in a person’s life. Other people disagree. What is your opinion? Explain why.**
+
+In my opinion, I disagree with this idea for the following 2 reasons. There's no denying that we have less pressure in our childhood, however, we have less freedom at the same time. We should behave what parents and teachers asked. And it's kind of boring, for lack of entertainment, we can only do our homework and watch TV at the spare time. However, when we grow up, we have more freedom. We are able to travel around the world and make friends with different kinds of people. What's more, we can learn more knowledge and know our world better. It is the variety of experiences that make our life a colorful and meaningful and better one.
+2. 其他
+
 **写作:**
+1. 独立写作
+    In the reading material, the author provides 3 methods to support the viewpoint in order to reduce the salinity level of the Salton Sea in California, without which the lake should become a dead zone. Nevertheless, the lecturer argues that these attempts are unrealistic and impossible for several reasons.
+
+    First and foremost, the author suggests that we can use desalinity devices to remove the salt from the lake water. Through evaporating the water, salt and other chemicals can be extract and the water becomes fresh. However, the lecturer argues that some of these chemicals extracted from the lake water are toxic and danger, which may cause health problem if humans breath in.
+
+    In addition, the lecturer also cast doubt on the second advice prompts by the author - diluting the lake water with ocean water transpoted by pipelines or canals which is 20% less salty. The lecturer analyzed that the local governement can not afford to build the pipelines or canals, for the ocean is 1000km away. This makes the idea an impractical one.
+
+    Finally, the third way to stop the salt level from rising is seperating the lake in several parts by walls and allowing the small section's salt level to increase while direct freshwater from rivers to the main section. The lecturer holds the point that the walls will not be functional for a long time, for the walls can be easily damaged by earthquakes.
+2. 综合写作
 
 
+## 模拟考 03-12
+
+**阅读:26** 于2023-03-12完成 
+1. Passage1(自然科学): **9/10** **错:6**
+2. Passage2(): **10/10**
+3. Passage3(): **7/10** **错:8、9、10** 时间不够
+
+![](Pics/0312reading.png)
+
+**听力:** 于2023-03-12完成
+1. Set1(): **/** **错:**
+2. Set2(): **/** **错:**
+3. Set3(): **/** **错:**
+4. Set4(): **/** **错:**
+5. Set5(): **/** **错:**
+
+![](Pics/0312listening.png)
 
 
 
