@@ -570,7 +570,7 @@ ctrl+b + : + set-options -g
 
 
 
-# 镜像制作
+## 镜像制作
 
 [Ubuntu 22.04 System Backup and Restore](https://linuxconfig.org/ubuntu-22-04-system-backup-and-restore)
 
@@ -600,7 +600,50 @@ make install
 
 
 
+## GNOME美化+窗口分屏
+
+[如何使用 GNOME Shell 扩展](https://linux.cn/article-9447-1.html)
+
+sudo apt install gnome-tweaks
+
+重启
+
+gnome-tweaks 打开 或
+
+![](Pics/gnome01.png)
+
+gnome-shell --version
+GNOME Shell 42.5
+
+[GNOME Shell 集成 浏览器 Extensions](https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep)
+
+安装主机连接器
+sudo apt install chrome-gnome-shell
+
+[Ubuntu桌面美化教程（GNOME Tweak Tool安装教程）](https://blog.csdn.net/qq_35395195/article/details/125266461)
+
+[GNOME扩展网站](https://extensions.gnome.org/)
+
+[Netspeed 插件](https://extensions.gnome.org/extension/4478/net-speed/)
+[Vitals 插件](https://extensions.gnome.org/extension/1460/vitals/)
+[Applications menu 插件](https://extensions.gnome.org/extension/6/applications-menu/)
+[Extension List 插件](https://extensions.gnome.org/extension/3088/extension-list/)
+[Clipboard Indicator 插件](https://extensions.gnome.org/extension/779/clipboard-indicator/)
+[gTile 分屏插件](https://extensions.gnome.org/extension/28/gtile/)
+[gTile 分屏插件 Github](https://github.com/gTile/gTile)
+
+
+[GNOME 桌面必备扩展](https://www.cnblogs.com/keatonlao/p/12686234.html)
+
+[《完全用Linux工作》作者：王垠](https://www.cnblogs.com/skyseraph/archive/2010/10/30/1865280.html)
+[谈 Linux，Windows 和 Mac 作者：王垠](http://www.yinwang.org/blog-cn/2013/03/07/linux-windows-mac)
+[用 Linux 为主力系统，也能有 Windows 一样的使用体验](https://sspai.com/post/38895#!)
+
 ```
 WARNING: The candidate selected for download or install is a yanked version: 'opencv-contrib-python' candidate (version 3.4.2.16 at https://files.pythonhosted.org/packages/08/f1/66330f4042c4fb3b2d77a159db8e8916d9cdecc29bc8c1f56bc7f8a9bec9/opencv_contrib_python-3.4.2.16-cp36-cp36m-manylinux1_x86_64.whl#sha256=8de56394a9a3cf8788559032c2139c622ffdc7e37c32215ec865b4e1cd2ca70d (from https://pypi.org/simple/opencv-contrib-python/))
 Reason for being yanked: Release deprecated
 ```
+
+
+
+

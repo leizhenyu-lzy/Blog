@@ -93,6 +93,29 @@
 **写作:**
 
 
+## Official 05
+
+**阅读:** 于2023-0x-xx完成 
+1. Passage1():  mins **/** **错:**
+2. Passage2():  mins **/** **错:**
+3. Passage3():  mins **/** **错:**
+
+**听力:** 于2023-03-13完成
+1. Set1(校园生活): University Counseling Center 1min28s **5/5**
+2. Set2(社会科学): Sociology Class 2min48s **4/6** **错:3、5** 没抓住重点
+3. Set3(自然科学): Astronomy Class 2min58s **6/6** 崩溃重做，直接全对
+4. Set4(课程学业): Film Class 1min25s **5/5**
+5. Set5(自然科学): Laboratory 2min6s **6/6**
+6. Set6(文化艺术): Folk Tale Fairy Tale 1min2s **4/6** **错:5、6**
+
+**口语:**
+**写作:**
+
+
+
+
+
+
 
 
 
@@ -110,7 +133,7 @@
 
 ## Official 48 (改革后)
 
-**阅读:** 于2023-0x-xx完成 
+**阅读:** 于2023-03-11完成 
 1. Passage1(社会科学): **10/10**
 2. Passage2(生命科学): **10/10**
 3. Passage3(自然科学): **9/10**
@@ -163,30 +186,29 @@
 2. Passage2():  mins **/** **错:**
 3. Passage3():  mins **/** **错:**
 
-**听力:** 于2023-0x-xx完成
+**听力:** 于2023-03-13完成
 1. Set1(校园生活): Political Science 1min30s **5/5**
 2. Set2(文化艺术): Ancient History mins **5/6** **错:2** 第5题有蒙的成分
-3. Set3(生命科学):  mins **/** **错:**
-4. Set4(校园生活):  mins **/** **错:**
-5. Set5(文化艺术):  mins **/** **错:**
-6. Set6(自然科学):  mins **/** **错:**
+3. Set3(校园生活): Building Maintenance 1min17s **5/5**
+4. Set4(文化艺术): Realism 3min12s **3/6** **错:1、2、3** 没抓住重点
+5. Set5(自然科学): Petroleum 1min49s **6/6**
 
 **口语:**
 **写作:**
 
 ## Official 51
 
-**阅读(改革后):** 于2023-0x-xx完成 
-1. Passage1():  mins **/** **错:**
-2. Passage2():  mins **/** **错:**
-3. Passage3():  mins **/** **错:**
+**阅读(改革后): 26分 做的太随便** 于2023-03-13完成 
+1. Passage1(): **7/10** **错:5、7、9**
+2. Passage2(): **8/10** **错:1、3**
+3. Passage3(): **8/10** **错:2、10**
 
-**听力:** 于2023-0x-xx完成
+**听力:** 于2023-03-13完成
 1. Set1(校园生活): Student Activities Center 1min45s **4/5** **错:3**
 2. Set2(文化艺术): Illustrated Books 2min37s **5/6** **错:3**
 3. Set3(自然科学):  2min56s **3/6** **错:2、3、6** 没抓住重点
-4. Set4(课程学业):  mins **/** **错:**
-5. Set5(社会科学):  mins **/** **错:**
+4. Set4(课程学业): Camouflage Experiment 1min24s **3/5** **错:4、5** 仔细读题
+5. Set5(社会科学): Cultural Diffusion mins **4/6** **错:4、5** go down in history 名垂青史
 
 **口语:**
 **写作:**
@@ -225,6 +247,8 @@
 6. Set6(自然科学): Astronomy Class 2min36s **5/6** **错:6**
 
 **口语:**
+ok
+
 **写作:**
 
 
@@ -261,21 +285,16 @@ In my opinion, I disagree with this idea for the following 2 reasons. There's no
 2. 综合写作
 
 
-## 模拟考 03-12
+## 模拟考 03-12 雪崩
 
 **阅读:26** 于2023-03-12完成 
-1. Passage1(自然科学): **9/10** **错:6**
+1. Passage1(): **9/10** **错:6**
 2. Passage2(): **10/10**
 3. Passage3(): **7/10** **错:8、9、10** 时间不够
 
 ![](Pics/0312reading.png)
 
-**听力:** 于2023-03-12完成
-1. Set1(): **/** **错:**
-2. Set2(): **/** **错:**
-3. Set3(): **/** **错:**
-4. Set4(): **/** **错:**
-5. Set5(): **/** **错:**
+**听力:21** 于2023-03-12完成
 
 ![](Pics/0312listening.png)
 
