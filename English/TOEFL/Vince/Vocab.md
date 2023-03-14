@@ -4,6 +4,51 @@
 
 # 流行词
 
+## 情绪失控
+
+get mad
+
+make sb mad
+
+go banana
+
+hit the roof 大怒
+
+lose my mind
+
+go nuts 发疯；失去理智
+
+go mental 发神经 气疯
+
+pissed off 生气，不高兴；愤怒；被激怒
+
+## 结婚生子 tie the knot
+
+结婚
+1. tie the knot 喜结连理
+2. marriage
+3. get hitched
+
+生子
+1. have a baby
+2. hear the patter(发出轻快的拍打声) of tiny feet
+
+## 家庭暴力 domestic violence
+
+domestic violence case/incident
+
+<link> incidence n.发生率；入射
+
+stalking
+1. v.潜近（猎物或人）；（非法）跟踪；存心骚扰（或迫害）；（诗、文）（悄悄地或威风凛凛地）穿过；（骄傲地或生气地）阔步走；（不好的气氛）笼罩（stalk 的现在分词）
+2. n.围捕；跟踪罪
+
+rape
+1. n.强奸罪，强奸案；（尤指对土地的）破坏，糟蹋；油菜；（榨汁后供制醋用的）葡萄渣
+2. v.强奸，强暴；蹂躏，破坏（地方）；掠夺，抢夺
+
+violent crime
+
 ## 内卷 rat race
 
 内卷
@@ -64,6 +109,8 @@ internal mental friction
 # 托福雅思听力基础单词学习辨听
 
 [托福雅思听力基础单词学习辨听](https://www.bilibili.com/video/BV1A341147JS/)
+
+## List1
 
 sincere
 1. genuine
@@ -467,6 +514,14 @@ scandal -> watergate scandal 、sex scandal
 2. dishonor
 3. disgrace
 4. stain
+
+
+## List2
+
+
+
+
+
 
 
 
