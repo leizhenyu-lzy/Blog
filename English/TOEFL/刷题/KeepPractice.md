@@ -131,16 +131,17 @@
 2. Passage2(生命科学): **/10**
 3. Passage3(自然科学): **/10**
 
-![](Pics/official48reading.png)
+![](Pics/official47reading.png)
+
 
 **听力:** 于2023-03-完成
 1. Set1(校园生活): **4/5** **错:4** lyric还有歌词的意思
-2. Set2(文化艺术): **/6**
-3. Set3(生命科学): **/6**
-4. Set4(课程学业): **/5**
-5. Set5(自然科学): **/6**
+2. Set2(文化艺术): **5/6** **错:5**
+3. Set3(生命科学): **6/6**
+4. Set4(课程学业): **5/5**
+5. Set5(自然科学): **6/6**
 
-![](Pics/official48listening.png)
+![](Pics/official47listening.png)
 
 
 **口语:**
