@@ -109,6 +109,7 @@
 6. Set6(文化艺术): Folk Tale Fairy Tale 1min2s **4/6** **错:5、6**
 
 **口语:**
+task4 3.1 24-30
 **写作:**
 
 
@@ -124,12 +125,79 @@
 
 
 
+## Official 30
+
+**阅读:** 于2023-0x-xx完成 
+1. Passage1():  mins **/** **错:**
+2. Passage2():  mins **/** **错:**
+3. Passage3():  mins **/** **错:**
+
+**听力:** 于2023-0x-xx完成
+1. Set1():  mins **/** **错:**
+2. Set2():  mins **/** **错:**
+3. Set3():  mins **/** **错:**
+4. Set4():  mins **/** **错:**
+5. Set5():  mins **/** **错:**
+6. Set6():  mins **/** **错:**
+
+**口语:3.0 19-23**
+
+task1 3.1
+task2 3.1
+task3 3.2
+task4 2.7
+
+
+**写作:**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Official 46
+
+**阅读:** 于2023-0x-xx完成 
+1. Passage1():  mins **/** **错:**
+2. Passage2():  mins **/** **错:**
+3. Passage3():  mins **/** **错:**
+
+**听力:** 于2023-0x-xx完成
+1. Set1():  mins **/** **错:**
+2. Set2():  mins **/** **错:**
+3. Set3():  mins **/** **错:**
+4. Set4():  mins **/** **错:**
+5. Set5():  mins **/** **错:**
+6. Set6():  mins **/** **错:**
+
+**口语:**
+**写作:**
+
+
+
+
+
+
+
 ## Official 47 (改革后)
 
 **阅读:** 于2023-03-完成 
-1. Passage1(社会科学): **/10**
-2. Passage2(生命科学): **/10**
-3. Passage3(自然科学): **/10**
+1. Passage1(社会科学): **9/10** **错:10**
+2. Passage2(生命科学): **10/10**
+3. Passage3(自然科学): **8/10** **错:3、10**
 
 ![](Pics/official47reading.png)
 
@@ -200,10 +268,10 @@
 
 ## Official 50
 
-**阅读:** 于2023-0x-xx完成 
-1. Passage1():  mins **/** **错:**
-2. Passage2():  mins **/** **错:**
-3. Passage3():  mins **/** **错:**
+**阅读:26** 于2023-0x-xx完成 
+1. Passage1(): **9/10** **错:4**
+2. Passage2(): **6/10** **错:4、5、7、9**
+3. Passage3(): **8/10** **错:7、10**
 
 **听力:** 于2023-03-13完成
 1. Set1(校园生活): Political Science 1min30s **5/5**
@@ -212,7 +280,8 @@
 4. Set4(文化艺术): Realism 3min12s **3/6** **错:1、2、3** 没抓住重点
 5. Set5(自然科学): Petroleum 1min49s **6/6**
 
-**口语:**
+**口语:19~23**
+
 **写作:**
 
 ## Official 51
@@ -317,6 +386,20 @@ In my opinion, I disagree with this idea for the following 2 reasons. There's no
 
 ![](Pics/0312listening.png)
 
+## 模拟考 03-16
+
+[2023.03.16 听力评分报告](https://toefl.kmf.com/exam/active/167893561203922354)
+
+[2023.03.16 阅读评分报告](https://toefl.kmf.com/exam/active/167895000164331355)
+
+
+**阅读:28** 于2023-03-16完成 
+
+![](Pics/0316reading.png)
+
+**听力:27** 于2023-03-16完成
+
+![](Pics/0316listening.png)
 
 
 

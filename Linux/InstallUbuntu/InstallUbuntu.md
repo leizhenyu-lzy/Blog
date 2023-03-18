@@ -305,6 +305,8 @@ timeshift备份
 alien rpm->deb
 qt5 : sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qtcreator
 
+gnome-sound-recorder
+
 fcitx
 
 1. sudo apt-get install fcitx-bin
@@ -373,13 +375,13 @@ conda remove -n conda-old --all
 ```
 
 安装labelImg
+
 ```
 pip install PyQt5 -i https://pypi.tuna.tsinghua.edu.cn/simple/
 pip install pyqt5-tools -i https://pypi.tuna.tsinghua.edu.cn/simple/
 pip install lxml -i https://pypi.tuna.tsinghua.edu.cn/simple/
 pip install labelImg -i https://pypi.tuna.tsinghua.edu.cn/simple/ （直接复制就可）
 ```
-
 
 ## 微信
 
@@ -509,6 +511,7 @@ Categories=Application;Development;
 ```
 
 ## tmux
+
 [你必须知道的Unix终端神器 - Tmux](https://www.bilibili.com/video/BV1Mj411N7xS/)
 [bryant-video/tmux-tutorial Github](https://github.com/bryant-video/tmux-tutorial)
 [tmux-plugins/tpm](https://github.com/tmux-plugins/tpm)
@@ -566,9 +569,7 @@ ctrl+b + : + source-file ~/.tmux.conf 生效刚才的配置文件(第一次 后�
 
 ctrl+b + : + list-keys 查看所有快捷键
 
-ctrl+b + : + set-options -g 
-
-
+ctrl+b + : + set-options -g
 
 ## 镜像制作
 
@@ -596,9 +597,6 @@ make
 make install
 
 /opt/schily/bin/mkisofs -iso-level 3 -r -V sblive -cache-inodes -J -l -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o sblive.iso sblive
-
-
-
 
 ## GNOME美化+窗口分屏
 
@@ -632,7 +630,6 @@ sudo apt install chrome-gnome-shell
 [gTile 分屏插件](https://extensions.gnome.org/extension/28/gtile/)
 [gTile 分屏插件 Github](https://github.com/gTile/gTile)
 
-
 [GNOME 桌面必备扩展](https://www.cnblogs.com/keatonlao/p/12686234.html)
 
 [《完全用Linux工作》作者：王垠](https://www.cnblogs.com/skyseraph/archive/2010/10/30/1865280.html)
@@ -643,7 +640,3 @@ sudo apt install chrome-gnome-shell
 WARNING: The candidate selected for download or install is a yanked version: 'opencv-contrib-python' candidate (version 3.4.2.16 at https://files.pythonhosted.org/packages/08/f1/66330f4042c4fb3b2d77a159db8e8916d9cdecc29bc8c1f56bc7f8a9bec9/opencv_contrib_python-3.4.2.16-cp36-cp36m-manylinux1_x86_64.whl#sha256=8de56394a9a3cf8788559032c2139c622ffdc7e37c32215ec865b4e1cd2ca70d (from https://pypi.org/simple/opencv-contrib-python/))
 Reason for being yanked: Release deprecated
 ```
-
-
-
-

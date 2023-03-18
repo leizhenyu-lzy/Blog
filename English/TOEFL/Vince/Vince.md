@@ -402,6 +402,45 @@ topics
 
 ![](Pics/reading010.png)
 
+# 吴奇老师的托口秀 简单实用的答题模版
+
+[吴奇老师的托口秀 简单实用的答题模版](https://www.bilibili.com/video/BV1Xy4y1m7qK/)
+
+答题套话 语言简单 逻辑清晰 熟练掌握
+
+**Task 01**
+
+![](Pics/wuqi01.png)
+
+**Task 02**
+
+![](Pics/wuqi02.png)
+
+**Task 03**
+
+![](Pics/wuqi03.png)
+
+前两句表示阅读
+
+后两句为文章
+
+on top of that 除此以外
+
+**Task 04**
+
+![](Pics/wuqi04.png)
+
+![](Pics/wuqi05.png)
+
+
+
+
+
+
+
+
+
+
 # 突破托福口语！- 根据2019年8月改革更新 1h41min
 
 [突破托福口语！- 根据2019年8月改革更新 1h41min](https://www.bilibili.com/video/BV16E411Y7mN/)
