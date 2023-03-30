@@ -44,12 +44,17 @@
 
 ### UIUC
 
+[学校库](https://offer.1point3acres.com/university/uiuc)
 
 [项目库](https://offer.1point3acres.com/university/uiuc/programs)
 1. ece meng(Meng in Electrical and Computer Engineering)[camaspp](https://csmsapp.org/ECE%20Meng%40UIUC/)
 2. mcs
 3. msim [MS in Information Management官网](https://ischool.illinois.edu/degrees-programs/graduate/ms-information-management/apply)
-4. 
+4. Meng of Autonomy and Robotics [官网](https://autonomy.illinois.edu/meng/academics)
+   1. [比较 UCLA MEng vs. UIUC MEng Robo vs. CMU MS ECE 一亩三分地](https://www.1point3acres.com/bbs/thread-878878-1-1.html)
+   2. 这个项目的课程和自动驾驶的开发很有关，学校也提供真的自动驾驶车辆给学生开发，整体上其实还是很不错的。一学期至少要修三门课
+   3. [直接入学 or defer？robotics UIUC，国内自动驾驶公司](https://www.1point3acres.com/bbs/thread-878891-1-1.html)
+   4. [CHINA 最低要求](https://grad.illinois.edu/admissions/3995/china)
 
 ### USC
 1. cs28

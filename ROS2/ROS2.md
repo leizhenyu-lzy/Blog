@@ -1,13 +1,16 @@
 # 动手学ROS2
 
-
 [toc]
-
-# Portals
 
 ## 文档教程
 
-[ROS Documentation 官方文档](https://docs.ros.org/)
+[ROS2 中文网](http://dev.ros2.fishros.com/)
+
+[鱼香社区](https://fishros.org.cn/forum/)
+
+[ROS 2 文档 中文](http://dev.ros2.fishros.com/doc/)
+
+[ROS Documentation 官方文档 英文](https://docs.ros.org/)
 
 ## 视频教程
 
@@ -32,6 +35,9 @@
 
 
 # 【鱼香ROS】动手学ROS2基础篇
+
+[【鱼香ROS】动手学ROS2基础篇|ROS2基础入门到实践教程](https://www.bilibili.com/video/BV1gr4y1Q7j5)
+
 
 
 
