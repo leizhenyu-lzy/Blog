@@ -199,9 +199,9 @@ export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64:${LD_LIBRARY_PATH}
 ```python
 # 使用 PyTorch 查看 CUDA 和 cuDNN 版本
 import torch
-print(torch.__version__)
-print(torch.version.cuda)
-print(torch.backends.cudnn.version())
+print(torch.__version__)  # 1.13.1+cu117
+print(torch.version.cuda)  # '11.7'
+print(torch.backends.cudnn.version())  # 8801
 ```
 
 ![](Pics/pytorch01.jpg)
@@ -640,3 +640,28 @@ sudo apt install chrome-gnome-shell
 WARNING: The candidate selected for download or install is a yanked version: 'opencv-contrib-python' candidate (version 3.4.2.16 at https://files.pythonhosted.org/packages/08/f1/66330f4042c4fb3b2d77a159db8e8916d9cdecc29bc8c1f56bc7f8a9bec9/opencv_contrib_python-3.4.2.16-cp36-cp36m-manylinux1_x86_64.whl#sha256=8de56394a9a3cf8788559032c2139c622ffdc7e37c32215ec865b4e1cd2ca70d (from https://pypi.org/simple/opencv-contrib-python/))
 Reason for being yanked: Release deprecated
 ```
+
+## 添加字体
+
+[jetbrain字体](https://www.jetbrains.com/zh-cn/lp/mono/#how-to-install)
+
+当然也可以从 windows 中打包出来
+
+**要查看系统中已经安装的字体，我们可以使用 fc-list 命令进行查看**，查找可以用 fc-list | grep
+
+下载字体
+解压缩存档并安装字体：
+macOS
+选择文件夹中的所有字体文件，然后双击 “安装字体” 按钮。
+
+Windows
+选择文件夹中的所有字体文件，右键单击其中任何一个，然后从菜单中选择 “安装”。
+
+Linux
+将字体解压缩到 ~/.local/share/fonts（或 usr/share/fonts，以在系统范围内安装字体）并执行 fc-cache -f -v
+
+重启您使用的 IDE
+转到 Preferences/Settings → Editor → Font ，然后从字体下拉列表中选择JetBrains Mono。
+
+
+似乎 wps 也能自动检测到
