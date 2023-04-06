@@ -8,6 +8,13 @@
 
 [乐奇编程学院 掌握正则表达式](https://www.bilibili.com/video/BV1da4y1p7iZ)
 
+# 工具 regex.ai
+
+[regex.ai 官网](https://regex.ai/)
+
+[使用说明](https://www.appinn.com/regex-ai/)
+
+
 # Learn REGEX the Easy Way
 
 <!-- ![](Pics/all.png) -->

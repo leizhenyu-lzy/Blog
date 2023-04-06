@@ -2,6 +2,188 @@
 
 [toc]
 
+
+# import & from import
+
+## 关于import你需要知道的一切！一个视频足够了
+
+[关于import你需要知道的一切！一个视频足够了 --- B站](https://www.bilibili.com/video/BV1K24y1k7XA/)
+
+**module**
+1. 常见形式为一个 .py 文(也有其他形式的文件可以生成module)
+2. 独立构成一个命名空间
+3. python 运行时概念，保存在内存中
+4. 本身是一个 python object(可以包含其他 python object)
+5. 组织结构上最末端的概念
+
+文件是一个操作系统级别的概念
+
+**通过 import 从 文件 或 文件夹 生成 module 或 package**
+
+**package**
+1. 一种特殊形式的 module ，功能相同
+2. 比 module 多一个 __ path __ 属性
+3. 往往对应一个文件夹(可以有 subpackage 也可以有 module)
+4. 无论是否包含 __ init __.py 文件都能作为一个 package
+
+**import 时发生的事**
+
+**import module(xxx)**
+1. 将 xxx 字符串作为**名字**寻找 module
+2. 首先检查缓存有无 xxx module 已经被读取
+   1. 如果有，可以直接赋值给 xxx， 无需 load
+   2. 如果无，则需要寻找这个 xxx module
+      1. 首先检查是否为 builtin module (python 自带的 module eg:sys os math)
+      2. 如果不是，则在数个文件夹中寻找可以被 load 为 xxx 的文件，常见的是 xxx.py 文件
+         1. **寻找的文件夹路径保存在 sys.path 中(按顺序的寻找，找到就不再找了)**)
+            ![](Pics/import001.png)
+            1. 第一个元素 '' 代表当前目录 (文件所在文件夹)
+            2. 注意命名冲突问题
+            3. site-packages 是 pip install 的位置
+            4. python 运行时 可以手动修改 sys.path
+            5. sys.path 其实就是一个 list
+         2. 寻找到符合条件的文件后，在单独的命名空间中运行该文件，建立 module (也会执行内部代码，定义一个类 等等)
+         3. 完成 module object 后，更新缓存，方便其他程序 import 该module，不必再次 load (即使多次 import 也只会运行一遍)
+         4. 最后，将module object 赋值给 xxx 变量
+
+此处 xxx 有两个责任
+1. 根据 xxx 名字 拿到 module
+2. module 保存在名为 xxx 的变量中
+
+可以将两个责任分开 使用 import ... as ...
+
+**import xxx as yyy**
+1. 根据 xxx 名字寻找 module
+2. 将 module 保存在 yyy 变量中 (没有创建名为 xxx 的变量)
+
+当只需要 module xxx 中的一个 object yyy
+
+**from xxx import yyy**
+1. load xxx 这个 module
+2. 刷新缓存
+3. 只是不把 module 赋值给变量
+4. 而是在 module 中找到名为 yyy 的变量，将变量 yyy 中保存的 object 再赋值给 yyy
+5. 此时 yyy 也有两个责任，也可以分开
+
+**from xxx import yyy as zzz**
+1. xxx module 中的变量 yyy 保存的 object 赋值给 zzz 变量
+
+**import pkg(xxx)**
+1. 与 import module 类似，在单独的命名空间运行 __ init __ 文件(如果有)，将这个命名空间构成 package
+2. import package 时，会查看 package 文件夹下有无 __ init __ 文件
+   1. 如果无，不会运行任何额外的代码
+   2. 如果有，则仅仅会运行 __ init __.py 文件(即使有其他文件 python 也不会引入)(也可以)
+
+**import pkg 时其实是在单独的命名空间中运行 __ init __.py 文件，将这个命名空间作为 module**
+
+如果要引入 package 中的 module，则需要 import pkg.module
+1. pkg.module 也会被当做字符串，作为 module 的 identifier
+2. python 根据该字符串从 sys.path 中寻找
+3. 会 load 整个 pkg (每一个 module) 并更新缓存
+4. import 后会将 package 赋值给 pkg 对象
+
+**import pkg.module**
+1. 原理与 import module 类似
+2. 将最外层的package 赋值给 pkg 变量
+
+**import pkg.module as pm**
+1. 将内层的 module 赋值给 pm 变量
+2. 不存在 pkg 变量
+
+**上述所讲的都是 absolute import 方式，根据确定的 string 寻找 module**  绝对
+
+**此外还有 relative import 方式，在一个 package 中的不同 module 中相互引用，module 中的相对关系更加稳定** 相对
+
+在同一个文件夹下可以省去一个包名，用 '.' 来代替 (这样当 package 改名后，仍能正确引用)
+
+如果在上一个文件夹，可以用 '..'，代表往上走一个 package
+
+**==relative import 只能在 package 里面的 module 中使用==**
+
+**==要求被引用 module 的跟着 package 被一起引入的 如果单单是一个 module 则不行(relative 无法转为 absolute)==**
+
+**每一个 relative import 都是先找到 module 绝对路径然后再 import** (relative import 先转为 absolute import)
+
+通过 module 的 package 变量计算绝对路径 
+
+可以获取 module 的 package 属性(pkg.module.__ package __)
+
+
+## python import中的绝对引用和相对引用
+
+[python import中的绝对引用和相对引用 --- B站视频](https://www.bilibili.com/video/BV1EK411g7Ff/)
+
+[Python Modules and Packages – An Introduction --- 英文文档](https://realpython.com/python-modules-packages/)
+
+易混淆概念
+1. script 脚本 : 脚本是一个旨在直接运行的 Python 文件，完成特定功能，一般不包含类和函数
+2. module 模块 : 模块是一个 Python 文件，旨在导入到脚本或其他模块中，可以用于定义类和函数
+3. package 包 : 包是相关模块的集合，它们一起工作以提供特定功能，老版本需要 __ init __
+4. library 库 : 库是一个总称，泛指“一堆代码”。 这些可以有数十个甚至数百个可以提供广泛功能的单独模块
+
+
+
+
+
+
+# __ init __.py 的作用
+
+当包和模块被导入时，首先被自动执行 init.py
+
+让一个文件夹变成Python的包（对于python3.3之前，不加init.py，文件夹无法被当做包）
+
+然后才可以通过文件夹名引用module
+
+**可以是空的**
+
+在python3.3之后，还是可以继续使用，方便进行包的引用
+
+例子
+
+```
+.
+├── folder
+│   ├── __init__.py
+│   └── method.py
+└── main.py
+```
+
+main.py
+```python
+import folder
+
+folder.drink()
+folder.eat()
+```
+
+或者(不用具体到文件名，具体到文件夹即可)，引用者不需要知道包内部结构(也可以在内部执行初始化操作)
+
+```python
+from folder import eat
+from folder import drink
+
+drink()
+eat()
+```
+
+init.py（注意文件夹名也要写）
+```python
+from folder.method import *
+
+print("this is __init__.py")
+```
+
+method.py
+```python
+def eat():
+    print("eat")
+
+def drink():
+    print("drink")
+```
+
+
+
 # 语法糖 Syntactic Sugar
 
 [Python中常用的九种语法糖](https://www.bilibili.com/video/BV1Nf4y1k7Pu/)
@@ -98,3 +280,114 @@ search packages from         : ['/home/lzy/Project/Blog/Python/Basic', '/opt/ros
 (opencv3.4.2) lzy@legion:~/Project/Blog$ 
 ```
 
+# pip install 和conda install 的区别
+
+## 官网对比
+
+[Understanding Conda and Pip --- anaconda 官方说明](https://www.anaconda.com/blog/understanding-conda-and-pip)
+
+![](Pics/conda&pip001.png)
+
+Conda 和 pip 通常被认为几乎相同。 尽管这两个工具的某些功能有重叠，但它们的设计目的不同，应该用于不同的目的。 Pip 是 Python Packaging 官方 推荐的工具，用于从 Python 包索引 PyPI 安装包。 Pip 安装打包为 wheels 或源代码发行版的 Python 软件。 后者可能需要系统在调用 pip 成功之前安装兼容的编译器和可能的库。
+
+Conda 是一个跨平台包和环境管理器，它从 Anaconda 存储库和 Anaconda Cloud 安装和管理 conda 包。 Conda 包是二进制文件。 永远不需要编译器来安装它们。 此外，conda 包不限于 Python 软件。 它们还可能包含 C 或 C++ 库、R 包或任何其他软件。
+
+这突出了 conda 和 pip 之间的一个关键区别。 Pip 安装 Python 包，而 conda 安装可能包含以任何语言编写的软件的包。 例如，在使用 pip 之前，必须通过系统包管理器或通过下载并运行安装程序来安装 Python 解释器。 另一方面，Conda 可以直接安装 Python 包和 Python 解释器。
+
+这两个工具之间的另一个主要区别是 conda 能够创建隔离环境，其中可以包含不同版本的 Python 和/或安装在其中的包。 这在使用数据科学工具时非常有用，因为不同的工具可能包含相互冲突的要求，这可能会阻止它们全部安装到单一环境中。 Pip 没有对环境的内置支持，而是依赖于其他工具（如 virtualenv 或 venv）来创建隔离环境。 pipenv、poetry 和 hatch 等工具包装 pip 和 virtualenv 以提供使用这些环境的统一方法。
+
+Pip 和 conda 在如何实现环境中的依赖关系方面也有所不同。 安装包时，pip 会在递归的串行循环中安装依赖项。 无法确保同时满足所有包的依赖性。 如果顺序中较早安装的包与顺序中较晚安装的包具有不兼容的依赖版本，这可能会导致环境以微妙的方式被破坏。 相反，conda 使用可满足性 (SAT) solver 来验证是否满足安装在环境中的所有包的所有要求。 此检查可能需要额外的时间，但有助于防止创建损坏的环境。 只要有关依赖项的包元数据是正确的，conda 就会按预期生成工作环境。
+
+鉴于 conda 和 pip 之间的相似性，一些人尝试结合这些工具来创建数据科学环境也就不足为奇了。 将 pip 与 conda 结合使用的一个主要原因是一个或多个软件包只能通过 pip 安装。 Anaconda 存储库中提供了超过 1,500 个软件包，包括最流行的数据科学、机器学习和 AI 框架。 可以使用 conda 安装这些，以及来自通道（包括 conda-forge 和 bioconda）的 Anaconda 云上可用的数千个附加包。 尽管有如此庞大的包集合，但与 PyPI 上可用的超过 150,000 个包相比，它仍然很小。 有时需要一个包，它不能作为 conda 包使用，但在 PyPI 上可用，并且可以使用 pip 安装。 在这些情况下，尝试同时使用 conda 和 pip 是有意义的。
+
+
+## 安装位置解析
+
+conda install [包名]
+1. 这种方式安装的库都会放在anaconda3/pkgs目录下(或者miniconda)
+2. 这样的好处就是，当在某个环境下已经下载好了某个库，再在另一个环境中还需要这个库时，就可以直接从pkgs目录下将该库复制至新环境而不用重复下载
+
+pip install [包名]  分两种情况
+1. 如果当前conda环境的python是conda安装的，和系统的不一样，那么xxx会被安装到anaconda3/envs/[current_env]/lib/python3.x/site-packages文件夹中(/home/lzy/miniconda3/envs/[current_env])
+   ```bash
+   ls ~/miniconda3/envs/pytorch/lib/python3.8/site-packages/
+   ```
+2. 如果当前conda环境用的是系统的python，那么xxx会通常会被安装到~/.local/lib/python3.x/site-packages文件夹中
+   ```bash
+   ls ~/.local/lib/python3.10/site-packages/
+   ```
+
+## 查看包信息
+
+pip show [包名]
+
+可以看到版本 安装位置 被依赖 等等
+
+```
+lzy@legion:~$ pip show numpy
+Name: numpy
+Version: 1.24.1
+Summary: Fundamental package for array computing in Python
+Home-page: https://www.numpy.org
+Author: Travis E. Oliphant et al.
+Author-email: 
+License: BSD-3-Clause
+Location: /home/lzy/.local/lib/python3.10/site-packages
+Requires: 
+Required-by: albumentations, contourpy, e2cnn, imageio, kwarray, mmcls, mmcv, mmdet, mmengine, mmrotate, mmyolo, onnx, opencv-contrib-python, opencv-python, ortools, pandas, pycocotools, PyWavelets, qudida, scikit-image, scikit-learn, seaborn, tensorboard, tensorboardX, tifffile, ultralytics
+```
+
+## 优先级
+
+conda和pip安装同一个xxx库情况下，conda环境下python代码中import xxx时，谁安装的xxx优先级较高会被import
+```bash
+python3 -m site
+# 或
+python -m site
+```
+
+**不在conda中**
+```bash
+lzy@legion:~$ python3 -m site
+sys.path = [
+    '/home/lzy',
+    '/opt/ros/humble/lib/python3.10/site-packages',
+    '/opt/ros/humble/local/lib/python3.10/dist-packages',
+    '/usr/lib/python310.zip',
+    '/usr/lib/python3.10',
+    '/usr/lib/python3.10/lib-dynload',
+    '/home/lzy/.local/lib/python3.10/site-packages',
+    '/home/lzy/Project/mmyolo',
+    '/usr/local/lib/python3.10/dist-packages',
+    '/usr/lib/python3/dist-packages',
+]
+USER_BASE: '/home/lzy/.local' (exists)
+USER_SITE: '/home/lzy/.local/lib/python3.10/site-packages' (exists)
+ENABLE_USER_SITE: True
+```
+
+**在conda中**
+```bash
+lzy@legion:~$ conda activate pytorch
+(pytorch) lzy@legion:~$ python3 -m site
+sys.path = [
+    '/home/lzy',
+    '/opt/ros/humble/lib/python3.10/site-packages',
+    '/opt/ros/humble/local/lib/python3.10/dist-packages',
+    '/home/lzy/miniconda3/envs/pytorch/lib/python38.zip',
+    '/home/lzy/miniconda3/envs/pytorch/lib/python3.8',
+    '/home/lzy/miniconda3/envs/pytorch/lib/python3.8/lib-dynload',
+    '/home/lzy/miniconda3/envs/pytorch/lib/python3.8/site-packages',
+    '/home/lzy/Project/mmcv',
+    '/home/lzy/Project/mmsegmentation',
+]
+USER_BASE: '/home/lzy/.local' (exists)
+USER_SITE: '/home/lzy/.local/lib/python3.8/site-packages' (doesn't exist)
+ENABLE_USER_SITE: True
+```
+
+# vscode debug 调试 加入参数 args
+
+![](Pics/debug001.png)
+
+![](Pics/debug002.png)
