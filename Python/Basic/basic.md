@@ -2,6 +2,75 @@
 
 [toc]
 
+# 当前文件路径
+
+```python
+# 只能在当前文件所在文件夹中打开
+import sys
+sys.path.append('..')  # add parent folder to path
+from my_package import my_module_in_package
+
+# 可以在任何位置打开
+import os
+import sys
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # 不加 os.path.abspath 也可以
+sys.path.append(parent_dir)
+from my_package import my_module_in_package
+```
+
+__ file __ is a special variable that contains the filepath of the current module. 
+
+os.path.dirname(__ file __) gets the directory containing the current module
+
+and os.path.join(os.path.dirname( __ file __ ), '..') gets the parent directory
+
+```python
+import sys
+print("sys.argv[0]                  ", sys.argv[0])
+
+import os
+print("os.path.dirname(__file__)    ", os.path.dirname(__file__))
+print("os.path.abspath(sys.argv[0]) ", os.path.abspath(sys.argv[0]))
+print("os.getcwd()                  ", os.getcwd())  #获取当前工作目录路径
+print("os.path.abspath('.')         ", os.path.abspath('.'))  #获取当前文件目录路径
+print("os.path.abspath('test.txt')  ", os.path.abspath('test.txt'))  #获取当前目录文件下的文件目录路径
+print("os.path.abspath('..')        ", os.path.abspath('..'))  #获取当前文件目录的父目录 ！注意是父目录路径
+print("os.path.abspath(os.curdir)   ", os.path.abspath(os.curdir)) #获取当前文件目录路径
+
+filePath = os.path.abspath(sys.argv[0])  #  文件真实路径
+print(os.path.exists(filePath))
+
+
+# 当前文件位置 /home/lzy/Project/Blog/Python/Basic/test/test.py
+
+# 在 ~/Project/Blog/Python/Basic 目录下运行 python3 test/test.py
+# sys.argv[0]                   test/test.py
+# os.path.dirname(__file__)     /home/lzy/Project/Blog/Python/Basic/test
+# os.path.abspath(sys.argv[0])  /home/lzy/Project/Blog/Python/Basic/test/test.py
+# os.getcwd()                   /home/lzy/Project/Blog/Python/Basic
+# os.path.abspath('.')          /home/lzy/Project/Blog/Python/Basic
+# os.path.abspath('test.txt')   /home/lzy/Project/Blog/Python/Basic/test.txt
+# os.path.abspath('..')         /home/lzy/Project/Blog/Python
+# os.path.abspath(os.curdir)    /home/lzy/Project/Blog/Python/Basic
+# True
+
+# 在 ~/Project/Blog/Python/Basic/test 目录下运行 python3 test.py
+# sys.argv[0]                   test.py
+# os.path.dirname(__file__)     /home/lzy/Project/Blog/Python/Basic/test
+# os.path.abspath(sys.argv[0])  /home/lzy/Project/Blog/Python/Basic/test/test.py
+# os.getcwd()                   /home/lzy/Project/Blog/Python/Basic/test
+# os.path.abspath('.')          /home/lzy/Project/Blog/Python/Basic/test
+# os.path.abspath('test.txt')   /home/lzy/Project/Blog/Python/Basic/test/test.txt
+# os.path.abspath('..')         /home/lzy/Project/Blog/Python/Basic
+# os.path.abspath(os.curdir)    /home/lzy/Project/Blog/Python/Basic/test
+# True
+```
+
+# 不同文件夹下的 import
+
+![](Pics/import002.png)
+
+python中导入某个模块，只需要该模块所在的文件夹路径在sys.path中即可
 
 # import & from import
 
@@ -391,3 +460,33 @@ ENABLE_USER_SITE: True
 ![](Pics/debug001.png)
 
 ![](Pics/debug002.png)
+
+# python file
+
+Different modes that can be used with the open() function:
+1. 'r': Read mode. This is the default mode when you don't specify any mode. The file is opened for reading, and you can read the contents of the file using methods like read(). If the file doesn't exist, an error is raised.
+2. 'w': Write mode. The file is opened for writing, and its contents are truncated. If the file doesn't exist, a new file is created. If there is already a file with the same name, its contents are deleted before writing to it.
+3. 'a': Append mode. The file is opened for appending, and new data is written at the end of the file. If the file doesn't exist, a new file is created.
+4. 'x': Exclusive creation mode. The file is opened for exclusive creation, which means that the file must not exist before opening it. If the file already exists, an error is raised.
+5. 'b': Binary mode. The file is opened in binary mode, which is used for non-text files like images, audio, and video files. This mode is used in conjunction with the other modes. For example, 'rb' means read the file in binary mode.
+6. 't': Text mode. The file is opened in text mode, which is used for text files. This mode is used in conjunction with the other modes. For example, 'wt' means write to the file in text mode. If you don't specify this mode, the file is opened in text mode by default.
+7. '+': Read and write mode. The file is opened for both reading and writing. This mode is used in conjunction with the other modes. For example, 'r+' means read and write to the file.
+
+It's important to note that the open() function returns a file object that you can use to read from or write to the file. When you're done with the file, you should close it using the close() method of the file object. Alternatively, you can use a with statement to automatically close the file when you're done with it. For example:
+
+with open('myfile.txt', 'w') as f:
+    f.write('Hello, world!')
+This code opens the file myfile.txt in write mode, writes the text 'Hello, world!' to the file, and then automatically closes the file when the with block is exited.
+
+
+
+|Character|Meaning|
+|---------|-------|
+|'r'|	open for reading (default)|
+|'w'|	open for writing, truncating the file first|
+|'x'|	create a new file and open it for writing|
+|'a'|	open for writing, appending to the end of the file if it exists|
+|'b'|	binary mode|
+|'t'|	text mode (default)|
+|'+'|	open a disk file for updating (reading and writing)|
+|'U'|	universal newline mode (deprecated)|

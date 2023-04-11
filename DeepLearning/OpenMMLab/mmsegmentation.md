@@ -4,9 +4,215 @@
 
 [mmsegmentation --- github官网](https://github.com/open-mmlab/mmsegmentation)
 
-[手撸OpenMMlab系列教程(mmcv，mmsegmentation) --- B站视频](https://www.bilibili.com/video/BV1ub4y187DP/)
 
-## install
+## [【OpenMMLab 公开课】语义分割与 MMSegmentation](https://www.bilibili.com/video/BV1944y1b76p/)
+
+### 全卷积网络
+
+![](Pics/mmseg001.png)
+
+![](Pics/mmseg002.png)
+
+![](Pics/mmseg003.png)
+
+![](Pics/mmseg004.png)
+
+意思就是，原来是卷积核和每一个小划窗进行卷积，现在是直接与原图进行卷积
+
+![](Pics/mmseg005.png)
+
+分类任务中，输入大小固定
+
+而分割任务中，输入大小不定，而希望输出和输入大小一致
+
+![](Pics/mmseg006.png)
+
+使用全连接层的卷积化，类别信息保存在通道中(图中为三分类)
+
+![](Pics/mmseg007.png)
+
+原来的分类问题使用的方法是先将特征图向量化，然后再通过矩阵乘法来模拟全连接
+
+现在为了获取和原图相同大小的，使用卷积，不用将特征图化为向量的形式。当把全连接层替换成了卷积层后，就可以不限制输入图像的大小，一次性输入网络即可获得一张图片所有位置的检测目标概率，形成一幅 heatmap
+
+![](Pics/mmseg008.png)
+
+![](Pics/mmseg009.png)
+
+双线性插值相对固定
+
+![](Pics/mmseg010.png)
+
+通过卷积化，加快计算速度
+
+![](Pics/mmseg011.png)
+
+转置卷积的卷积核可学习
+
+![](Pics/mmseg012.png)
+
+图中绿色为输出，蓝色为输入。转置卷积的操作可以理解为先散开然后卷积
+
+![](Pics/mmseg013.png)
+
+仅有形状上互逆
+
+![](Pics/mmseg014.png)
+
+![](Pics/mmseg015.png)
+
+低层次和高层次特征图优势互补
+
+![](Pics/mmseg016.png)
+
+细节越来越多
+
+![](Pics/mmseg017.png)
+
+### 上下文信息
+
+低层次小区域容易有歧义，通过上下文可以更加准确的进行判断
+
+![](Pics/mmseg018.png)
+
+建立特征图金字塔 pyramid pooling
+1. 金字塔越顶端，看到的范围越大
+2. 金字塔越底端，看到的范围越小
+
+![](Pics/mmseg019.png)
+
+### 空洞卷积与DeepLab系列算法
+
+FCN UNet PSPNet
+
+![](Pics/mmseg020.png)
+
+**空洞卷积 解决下采样问题**
+
+空洞卷积（atrous convolutions）又称扩张卷积（dilated convolutions）
+
+![](Pics/mmseg021.png)
+
+膨胀卷积核
+
+![](Pics/mmseg022.png)
+
+空洞卷积等价于下采样+卷积，两部合成一步
+
+膨胀卷积核，不加入额外参数
+
+![](Pics/mmseg023.png)
+
+DeepLab核心
+
+![](Pics/mmseg024.png)
+
+使用交叉熵损失函数
+
+**条件随机场 后处理**
+
+![](Pics/mmseg025.png)
+
+![](Pics/mmseg026.png)
+
+能量函数包含两项，只跟自己有关的和与周围像素有关的
+
+![](Pics/mmseg027.png)
+
+条件随机场可以产生更加精细的边界
+
+因为同时考虑了原图信息和网络输出的概率信息
+
+**多尺度空洞卷积 ASPP 空间金字塔池化 捕捉上下文信息** Atrous Spatial Pyramid Pooling
+
+![](Pics/mmseg028.png)
+
+和PSPNet不同点在于，PSPNet是多尺度池化，而DeepLab使用的是不同膨胀率的空洞卷积
+
+![](Pics/mmseg029.png)
+
+![](Pics/mmseg030.png)
+
+**总结**
+
+![](Pics/mmseg031.png)
+
+**评价体系**
+
+利用交集和并集
+
+![](Pics/mmseg032.png)
+
+Accuracy : 像素级的 交集与面积的比值
+
+IoU : 交集与并集的比值
+
+Dicd : 两倍的交集除(真实面积+预测面积)
+
+![](Pics/mmseg033.png)
+
+### 语义分割工具包 MMSegmentation
+
+![](Pics/mmseg034.png)
+
+![](Pics/mmseg035.png)
+
+![](Pics/mmseg036.png)
+
+![](Pics/mmseg037.png)
+
+![](Pics/mmseg038.png)
+
+**项目结构**
+
+![](Pics/mmseg039.png)
+
+![](Pics/mmseg040.png)
+
+![](Pics/mmseg041.png)
+
+![](Pics/mmseg042.png)
+
+![](Pics/mmseg043.png)
+
+![](Pics/mmseg044.png)
+
+![](Pics/mmseg045.png)
+
+![](Pics/mmseg046.png)
+
+![](Pics/mmseg047.png)
+
+### 代码实操演示
+
+[mmsegmentation 官方 model zoo](https://mmsegmentation.readthedocs.io/zh_CN/latest/modelzoo_statistics.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Install
 
 ### 源码安装
 
@@ -110,7 +316,11 @@ mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --des
 
 ![](Pics/result.jpg)
 
-## 手撸OpenMMlab系列教程(mmcv，mmsegmentation)
+
+
+
+
+## [手撸OpenMMlab系列教程(mmcv，mmsegmentation) --- B站视频](https://www.bilibili.com/video/BV1ub4y187DP/)
 
 ### 运行代码
 
@@ -121,13 +331,27 @@ mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --des
 ```bash
 # python3 tools/convert_datasets/chase_db1.py /path/to/CHASEDB1.zip
 
+# -o 指定结果保存位置
+
+# 转换位置 : /mnt/sda1/Datasets/CHASEDB1forMMSeg
+python3 tools/convert_datasets/chase_db1.py /mnt/sda1/Datasets/CHASEDB1.zip -o /mnt/sda1/Datasets/CHASEDB1forMMSeg
+
+# 转换位置 : /home/lzy/Project/mmsegmentation/data/CHASE_DB1
 python3 tools/convert_datasets/chase_db1.py /mnt/sda1/Datasets/CHASEDB1.zip
+
 ```
+
+训练的配置在 configs 下
 
 ```bash
-python3 tools/train.py configs/unet/deeplabv3_unet_s5-d16_128x128_40k_chase_db1.py --work-dir userLogs/chaseDB_20230402_162030 --seed 0
+python3 tools/train.py tools/train.py configs/unet/unet_s5-d16_deeplabv3_4xb4-40k_chase-db1-128x128.py --work-dir userLogs/chaseDB_20230402_162030 --seed 0
 ```
 
+可以在 /home/lzy/Project/mmsegmentation/configs/_base_/datasets/chase_db1.py 中修改数据集配置文件
+
+```python
+data_root = r"/mnt/sda1/Datasets/CHASEDB1forMMSeg"  # modified
+```
 
 
 
