@@ -2,6 +2,40 @@
 
 [toc]
 
+[python3 官方文档](https://docs.python.org/zh-cn/3.8/tutorial/index.html)
+
+# 魔术方法大全
+
+[【python】魔术方法大全 --- B站视频](https://www.bilibili.com/video/BV1b84y1e7hG/)
+
+
+
+
+# 当前工作目录
+
+在 Python 中，你可以使用 os 模块来确定当前文件的路径和项目路径。具体来说，你可以使用以下代码来获取当前文件的路径和项目路径：
+
+import os
+
+获取当前文件的路径
+current_path = os.path.dirname(os.path.abspath(__file__))
+
+获取项目的根目录路径s
+project_path = os.path.dirname(current_path)
+在这段代码中，__file__ 是当前文件的特殊变量，它包含了当前文件的路径。使用 os.path.abspath() 函数可以将其转换为绝对路径，使用 os.path.dirname() 函数可以获取该路径的父目录路径。因此，current_path 变量包含了当前文件的路径，project_path 变量包含了项目的根目录路径。
+
+注意，这种方法假定当前文件和项目根目录在同一级别。如果你的当前文件位于项目子目录中，则需要相应地更改代码。例如，如果你的当前文件位于 project/subdir/file.py 中，则可以使用以下代码来获取项目根目录路径：
+
+import os
+
+获取当前文件的路径
+current_path = os.path.dirname(os.path.abspath(__file__))
+
+获取项目的根目录路径
+project_path = os.path.dirname(os.path.dirname(current_path))
+在这个例子中，我们使用了两个 os.path.dirname() 函数来获取项目根目录路径，因为当前文件的父目录是 subdir 目录，而不是项目根目录。
+
+
 # 当前文件路径
 
 ```python
@@ -490,3 +524,384 @@ This code opens the file myfile.txt in write mode, writes the text 'Hello, world
 |'t'|	text mode (default)|
 |'+'|	open a disk file for updating (reading and writing)|
 |'U'|	universal newline mode (deprecated)|
+
+
+
+# pycharm 技巧
+
+[PyCharm 官方文档](https://www.jetbrains.com/help/pycharm/getting-started.html)
+
+![](Pics/pycharm001.png)
+
+右键左上角执行按钮即可进行配置
+
+可以在parameters中配置参数，这样就不用每次都在终端中写一长段args
+
+有些时候，在pycharm里面能正常运行的程序，只是换了终端运行，就报错了。是因为pycharm默认开启了下方方框的两项。“add content roots to PYTHONPATH”这句话的作用其实就是相当于在终端运行时手动添加的代码“sys.path.append("/home/jgirl/Workspace/PycharmProjects/Test")”。一般来说，在pycharm中执行代码不用手动添加自定义模块导入路径是因为系统已经帮你导入好了，特别是自定义模块在与运行程序在同一个项目文件夹。而终端没有自动导入的功能。当然，你也可以修改PYTHONPATH，把一些常用的模块的路径添加进去，方便使用。
+
+官方说明：
+1. **Add content roots to PYTHONPATH** : Select this checkbox to add all content roots of your project to the environment variable PYTHONPATH
+   1. Content root : In PyCharm, content is a collection of files with which you are currently working, possibly organized in a hierarchy of subfolders. The folder that is the highest in this hierarchy is called the content root folder or content root (shown as the Content root icon) for short. A project has at least one content root folder, which by default is the project folder itself.
+2. **Add source roots to PYTHONPATH** : Select this checkbox to add all source roots of your project to the environment variable PYTHONPATH;
+   1. Source root : These roots contain the actual source files and resources. PyCharm uses the source roots as the starting point for resolving imports.The files under the source roots are interpreted according to their type. PyCharm can parse, inspect, index, and compile the contents of these roots.
+
+
+# 迭代器 iterator
+
+[python 官方文档](https://docs.python.org/zh-cn/3.8/tutorial/classes.html#iterators)
+
+[【python】对迭代器一知半解？看完这个视频就会了 --- B站视频](https://www.bilibili.com/video/BV1ca411t7A9/)
+
+
+# 生成器 
+
+[【python】生成器是什么？怎么用？能干啥？ --- B站视频](https://www.bilibili.com/video/BV1KS4y1D7Qb/)
+
+# 装饰器 decorator
+
+## [【python】装饰器超详细教学 --- B站视频](https://www.bilibili.com/video/BV1Gu411Q7JV/)
+
+python中万物皆对象，函数也是object
+
+__ callable __ 后面可以跟小括号然后调用，如果不是 __ callable __ 但被调用 runtime 会出错
+
+**函数也可以被当做参数传入其他函数**
+
+```python
+def inner(content):
+    print(content , "from inner")
+
+def callFunc(func, content):
+    func(content)
+
+if __name__ == "__main__":
+    callFunc(inner, "HAHA")  # result : HAHA from inner
+```
+
+**函数本身也可以被当做返回值**
+
+```python
+def returnFunc(choice):
+    def first():
+        print("first")
+    def second():
+        print("second")
+    
+    if choice == 1:
+        return first
+    else:
+        return second
+
+if __name__ == "__main__":
+    returnFunc(1)()  # result : first
+    returnFunc(2)()  # result : second
+```
+
+
+**decorator 本身只是一个语法糖 就是一个 __ callable __**
+
+是一个输入和输出都可以是函数的函数，输入一定是函数
+
+```python
+@dec
+    def xxx():
+        ...
+
+# 完全等价于
+
+xxx = dec(xxx)  # 可以理解为xxx已经被修饰(修改)了
+
+```
+
+一个极端的例子
+
+
+```python
+def dec(f):
+    f("haha from dec")
+
+if __name__ == "__main__":
+    def showContent1(content):
+        print(content)  # result : haha from dec
+    showContent1 = dec(showContent1)  # 注意不是 dec(showContent())  # showContent1 此时是 None，因为dec没有返回值
+    print(showContent1)  # result : None
+
+    # 上下等价
+
+    @dec
+    def showContent2(content):
+        print(content)  # result : haha from dec
+    print(showContent2)  # result : None
+```
+
+```python
+import time
+
+def timeit(f):
+    def decoratedFunc(x):
+        start = time.time()
+        ret = f(x)  # 原本内容
+        end = time.time()
+        print("end-start : ", end-start)
+        return ret
+    
+    def originFunc(x):
+        return f(x)
+
+    # return originFunc  # HAHA 下面的输出
+    return decoratedFunc  # HAHA
+                          # end-start :  1.33514404296875e-05
+
+
+
+if __name__ == "__main__":
+    @timeit
+    def showContent(content):
+        print(content)
+
+    showContent("HAHA")  # 已经被修饰(修改)了
+```
+
+利用 *args 和 **kwargs 来传入任意数量的参数
+
+```python
+import time
+
+def timeit(f):
+    def decoratedFunc(*args, **kwargs):
+        start = time.time()
+        ret = f(*args, **kwargs)  # 原本内容
+        end = time.time()
+        print("end-start : ", end-start)
+        return ret
+
+    return decoratedFunc  # HAHA
+                          # {'a': 123, 'b': 456}
+                          # end-start :  4.8160552978515625e-05
+
+
+
+if __name__ == "__main__":
+    @timeit
+    def showContent(content1, content2):
+        print(content1)
+        print(content2)
+
+    showContent("HAHA", {"a":123, "b":456})  # 已经被修饰(修改)了
+```
+
+**带参数的decorator**
+
+相当于在等价代换前多加了一次函数调用
+
+```python
+@timeit(10)
+def multiple(x):
+    return x*2
+
+multiple = timeit(10)(multiple)
+```
+
+可以理解为多套了一层
+```python
+import time
+
+def timeit(iters):
+    def inner(f):
+        def decoratedFunc(*args, **kwargs):
+            start = time.time()
+            for iter in range(iters):
+                print(iter)
+                f(*args, **kwargs)
+            end = time.time()
+            print("end-start : ", end-start)
+        return decoratedFunc  # 返回装饰后的函数，不返回则showContent为NoneType
+    return inner  # HAHA
+
+if __name__ == "__main__":
+    @timeit(3)
+    def showContent(content):
+        print(content)
+
+    showContent("iters")
+
+# 0
+# iters
+# 1
+# iters
+# 2
+# iters
+# end-start :  2.2172927856445312e-05
+```
+
+## [【python】一个公式解决所有复杂的装饰器 --- B站视频](https://www.bilibili.com/video/BV19U4y1d79C/)
+
+两种理解
+1. 可以当做装饰器的类
+2. 可以装饰类的装饰器
+
+装饰器本身既可以是函数也可以是类
+
+装饰的对象可以是函数也可以是类
+
+
+### 装饰器"**类**"
+
+```python
+import time
+
+class Timer:
+    def __init__(self, func):
+        self.func = func
+    def __call__(self, *args, **kwargs):  # __call__ 让类的实例变为 callable，可以当做函数用
+        start =time.time()
+        ret = self.func(*args, **kwargs)
+        print(ret)
+        end =time.time()
+        print("end-start", end-start)
+        return ret
+
+if __name__ == "__main__":
+    def add(a,b):
+        return a+b
+    add(2,3)
+    print(add)  # <function add at 0x7fa7d6163d90>
+    print(type(add))  # <class 'function'>
+
+    # add 从一个函数对象转为一个 Timer 对象
+
+    @Timer  # 等价于 add = Timer(add) 
+    def add(a,b):
+        return a+b
+    add(2,3)  # 5  # 调用 Timer 对象的 __ call __
+              # end-start 1.9073486328125e-06
+    print(add)  # <__main__.Timer object at 0x7f2556197a60>
+    print(type(add))  # <class '__main__.Timer'>
+```
+
+```python
+import time
+
+class Timer:
+    def __init__(self, prefix):
+        self.prefix = prefix
+
+    def __call__(self, func):  # __call__ 让类的实例变为 callable，可以当做函数用
+        def wrapper(*args, **kwargs):
+            start =time.time()
+            ret = func(*args, **kwargs)
+            print(ret)
+            end =time.time()
+            print(self.prefix, end-start)
+            return ret
+        return wrapper
+
+
+if __name__ == "__main__":
+    def add(a,b):
+        return a+b
+    add(2,3)
+    print(add)  # <function add at 0x7fa7d6163d90>
+    print(type(add))  # <class 'function'>
+
+    # add 从一个函数对象转为一个 Timer 对象
+
+    @Timer(prefix = "spend_time : ")  # 等价于 add = Timer(prefix = "spend_time : ")(add) 
+    def add(a,b):
+        return a+b
+    add(2,3)  # 5  # 首先利用 prefix 创建 Timer 对象，再利用 Timer 对象的 __call__ ，返回一个函数
+              # end-start 1.9073486328125e-06
+    print(add)  # <function Timer.__call__.<locals>.wrapper at 0x7f5a8a0153f0>
+    print(type(add))  # <class 'function'>
+```
+
+### 类"**装饰器**"
+
+```python
+def add_str(cls):
+    def __str__(self):
+        return str(self.__dict__)
+    cls.__str__ = __str__  # 重载 __str__ 改变默认 print
+    return cls
+
+if __name__ == "__main__":
+    @add_str  # 装饰类的装饰器
+    class Obj:
+        def __init__(self,a,b):
+            self.a = a
+            self.b = b
+
+    # 等价形式 : Obj = add_str(Obj)  # 直接对类做手脚
+
+    obj = Obj(1,2)  # 类已经被动了手脚，然后才初始化的对象
+    print(obj)  # {'a': 1, 'b': 2}
+
+
+    class Obj:
+        def __init__(self,a,b):
+            self.a = a
+            self.b = b
+    obj = Obj(1,2)
+    print(obj)  # <__main__.Obj object at 0x7f72198d38e0>
+```
+
+同样也可以带参数(转化为等价形式理解即可)
+
+# 描述器 descriptor
+
+[【python】你知道描述器是多么重要的东西嘛？ --- B站视频](https://www.bilibili.com/video/BV1pT4y1a7dd/)
+
+# Python中的 *args 和 **kwargs
+
+[Python中的*args和**kwargs](https://zhuanlan.zhihu.com/p/50804195)
+
+## From ChatGPT
+
+在 Python 中，*args 和 **kwargs 是用来处理函数参数的特殊语法。它们可以让函数接受可变数量的参数，从而使函数更加灵活。
+
+**\*args 以元组（tuple）的形式接收任意数量的位置参数，这些参数将被传递给函数**。例如：
+
+```python
+def my_function(*args):
+    for arg in args:
+        print(arg)
+
+my_function(1, 2, 3)  # 输出：1 2 3
+```
+
+在上面的示例中，my_function() 接收任意数量的位置参数，这些参数被**打包成元组 args**，然后在函数中循环遍历输出。
+
+**\*\*kwargs 则以字典（dictionary）的形式接收任意数量的关键字参数，这些参数将被传递给函数**。例如：
+
+```python
+def my_function(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+my_function(name="Alice", age=25, city="New York")  # 输出：name: Alice  age: 25  city: New York
+```
+
+在上面的示例中，my_function() 接收任意数量的关键字参数，这些参数被**打包成字典 kwargs**，然后在函数中循环遍历输出。
+
+**需要注意的是，*args 和 **kwargs 必须放在函数定义的参数列表的最后面，以便与其他参数区分开来**。例如：
+
+```python
+def my_function(name, age, *args, **kwargs):
+    print(f"name: {name}")
+    print(f"age: {age}")
+    for arg in args:
+        print(arg)
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+my_function("Alice", 25, "New York", "Programmer", hobby="Swimming", favorite_color="Blue")
+
+# 输出：
+# name: Alice
+# age: 25
+# New York
+# Programmer
+# hobby: Swimming
+# favorite_color: Blue
+```
+在上面的示例中，*args 和 **kwargs 分别接收任意数量的位置参数和关键字参数，而 name 和 age 则是必需的位置参数。

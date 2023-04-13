@@ -159,27 +159,74 @@ Dicd : 两倍的交集除(真实面积+预测面积)
 
 ![](Pics/mmseg036.png)
 
+公平比较
+
 ![](Pics/mmseg037.png)
 
 ![](Pics/mmseg038.png)
 
 **项目结构**
 
+所有 openmmlab 工具包结构一致
+
 ![](Pics/mmseg039.png)
 
 ![](Pics/mmseg040.png)
+
+模型
+1. 主干网络  backbone eg. resnet
+2. 颈部  neck  将主干网络产生的多层次特征进行融合  eg. FPN(feature pyramid network)
+3. 解码头  decode head  根据特征生成分割图  eg. fcn转置卷积、PSPNet池化金字塔
+4. 辅助解码头  auxiliary decode head  基于底层特征产生分割图的结构  eg. resnet
+5. 级联解码头  cascade decode head  可能单个解码头效果不够好
 
 ![](Pics/mmseg041.png)
 
 ![](Pics/mmseg042.png)
 
+resnetV1c 是 resnet 的变种
+
+![](Pics/mmseg048.png)
+
+语义分割一般采用C，7x7 卷积拆分为3个 3x3 的卷积，非线性映射能力更强
+
+
+
+采用空洞卷积一般就不采用降采样了
+
+多机多卡的环境下使用 SyncBN
+
 ![](Pics/mmseg043.png)
+
+主解码头采用 PSPNet，包含池化金字塔
+
+loss_weight是因为还有一个辅助解码头，控制主解码头的损失函数权重
 
 ![](Pics/mmseg044.png)
 
+另一个解码头
+
+鼓励主干网络学习出更好的低层次特征
+
+同样的，也有一个loss_weight，一般辅助解码头的权重小一些
+
 ![](Pics/mmseg045.png)
 
+数据集配置
+
+指定一些 dataloader 的参数
+
+数据处理流水线
+
+数据集分为 train val test
+
 ![](Pics/mmseg046.png)
+
+数据处理流水线
+
+一开始只是字典
+
+进行数据增强，亮度和对比度等一些操作不用在分割图上同时调整，其他的需要在原图和分割图上同时调整
 
 ![](Pics/mmseg047.png)
 
