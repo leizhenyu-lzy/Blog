@@ -385,7 +385,24 @@ search packages from         : ['/home/lzy/Project/Blog/Python/Basic', '/opt/ros
 
 # pip install 和conda install 的区别
 
-## 官网对比
+## 常用命令
+
+conda常用命令
+1. 查看源
+   ```
+   conda config --show-sources
+   ```
+2. 添加源
+   ```
+   conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+   ```
+3. 移除源头
+   ```
+   conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+   ```
+
+
+## anaconda官网对比
 
 [Understanding Conda and Pip --- anaconda 官方说明](https://www.anaconda.com/blog/understanding-conda-and-pip)
 
@@ -905,3 +922,52 @@ my_function("Alice", 25, "New York", "Programmer", hobby="Swimming", favorite_co
 # favorite_color: Blue
 ```
 在上面的示例中，*args 和 **kwargs 分别接收任意数量的位置参数和关键字参数，而 name 和 age 则是必需的位置参数。
+
+
+# super().__ init __()
+
+super().__init__()是Python中用于调用父类构造函数的语法。在Python中，当定义一个类的子类时，我们通常需要在子类的构造函数中调用父类的构造函数以初始化父类中的属性和方法。super().__init__()提供了一种简便的方式来调用父类的构造函数。
+
+以下是一个简单的示例，演示如何在子类的构造函数中使用super().__init__()调用父类的构造函数：
+
+```python
+class Parent:
+    def __init__(self, name):
+        self.name = name
+        print("Parent __init__")
+
+class Child(Parent):
+    def __init__(self, name, age):
+        super().__init__(name)
+        self.age = age
+        print("Child __init__")
+
+child = Child("Alice", 10)
+```
+在这个例子中，我们定义了一个Parent类和一个Child类，Child类是Parent类的子类。Parent类有一个构造函数，接受一个名字参数，并将其赋值给实例变量name。Child类也有一个构造函数，接受一个名字参数和一个年龄参数。在Child类的构造函数中，我们首先使用super().__ init __(name)调用父类的构造函数来初始化name属性，然后将年龄参数赋值给age属性。
+
+当我们实例化一个Child对象时，它会自动调用Child类的构造函数。在构造函数中，首先调用父类的构造函数来初始化父类中的属性，然后初始化子类中的属性。最后，我们打印了一条消息，以便在创建对象时进行调试。
+
+请注意，在Python 3中，super()可以不带参数地调用，因为它会自动获取当前类和实例作为参数。但是，在Python 2中，必须显式地传递当前类和实例作为参数。例如，super(Child, self).__ init __(name)将调用Child类的父类构造函数，并传递self和name作为参数。
+
+```python
+class Parent():
+    def __init__(self, name):
+        self.name = name
+        print("Parent")
+        print(name)
+
+class Child(Parent):
+    def __init__(self, age, name):
+        super().__init__(name)
+        self.age = age
+        print("Child")
+        print(self.age)
+        print(self.name)
+        
+        
+if __name__ == "__main__":
+    Child(1,"sb")
+```
+父类的成员变量，子类也能 "self.xxx" 调用
+
