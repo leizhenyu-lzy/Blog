@@ -4,6 +4,41 @@
 
 [python3 官方文档](https://docs.python.org/zh-cn/3.8/tutorial/index.html)
 
+# pytorch cuda cudnn
+
+## Portals
+
+[NVIDIA 驱动程序下载](https://www.nvidia.cn/Download/index.aspx?lang=cn)
+
+[NVIDIA 开发者](https://developer.nvidia.cn/zh-cn)
+
+[CUDA 工具包/开发者套件](https://developer.nvidia.cn/zh-cn/cuda-zone)
+
+CUDA® 是 NVIDIA 专为图形处理单元 (GPU) 上的通用计算开发的并行计算平台和编程模型。借助 CUDA，开发者能够利用 GPU 的强大性能显著加速计算应用。
+
+在经 GPU 加速的应用中，工作负载的串行部分在 CPU 上运行，且 CPU 已针对单线程性能进行优化，而应用的计算密集型部分则以并行方式在数千个 GPU 核心上运行。
+
+NVIDIA 的 CUDA 工具包提供了开发 GPU 加速应用所需的一切。CUDA 工具包中包含多个 GPU 加速库、一个编译器、多种开发工具以及 CUDA 运行环境。
+
+[NVIDIA cuDNN](https://developer.nvidia.cn/zh-cn/cudnn)
+
+NVIDIA **CUDA® 深度神经网络库** (cuDNN) 是一个 GPU 加速的深度神经网络基元库，能够以高度优化的方式实现标准例程（如前向和反向卷积、池化层、归一化和激活层）。
+
+全球的深度学习研究人员和框架开发者都依赖 cuDNN 来实现高性能 GPU 加速。借助 cuDNN，研究人员和开发者可以专注于训练神经网络及开发软件应用，而不必花时间进行低层级的 GPU 性能调整。cuDNN 可加速广泛应用的深度学习框架，包括 Caffe2、Chainer、Keras、MATLAB、MxNet、PaddlePaddle、PyTorch 和 TensorFlow。
+
+## 版本查看
+
+如果 nvidia-smi 和 nvcc -V 命令看到的 CUDA 版本不同，这可能是因为它们显示的是不同的组件的版本号。
+1. **nvidia-smi** 命令显示的 CUDA 版本是 NVIDIA 显卡驱动程序中包含的 CUDA 版本。这个版本通常是在安装显卡驱动时安装的，并且可以与系统上安装的多个 CUDA 版本之一兼容。
+2. 另一方面，**nvcc -V** 命令显示的是 NVIDIA CUDA 编译器的版本号。这个版本通常是与您在系统上安装的 CUDA Toolkit 版本一起安装的，并且可能与您的显卡驱动程序中包含的 CUDA 版本不同。nvcc -V 命令只会显示 CUDA 编译器的版本信息，而不是显示 CUDA 运行时库的版本信息。
+3. **torch.version.cuda** 显示的是 PyTorch 在编译时使用的 CUDA 版本
+4. **torch.backends.cudnn.version()**输出当前 PyTorch 中使用的 cuDNN 版本号。如果您没有安装 cuDNN，或者使用的是不支持 cuDNN 的 PyTorch 版本，则此代码将引发异常。
+5. **torch.cuda.is_available()** 是一个 PyTorch 函数，用于检查您的系统上是否安装了 CUDA 并且是否可以使用 CUDA 加速 PyTorch 中的操作。当您调用 **torch.cuda.is_available()** 时，它将返回一个布尔值，指示 CUDA 是否可用。如果 CUDA 可用，则返回 True，否则返回 False。
+6. 访问torch.__ version __变量来获取 PyTorch 的版本信息
+
+PyTorch 通常使用特定版本的 CUDA Toolkit 进行编译，而不是使用最新版本。因此，torch.version.cuda 显示的 CUDA 版本可能与您在系统上安装的 CUDA Toolkit 版本不同。另外，如果您的系统上有多个版本的 CUDA Toolkit 安装，您需要确保使用与 PyTorch 编译时使用的版本兼容的版本。
+
+
 # 魔术方法大全
 
 [【python】魔术方法大全 --- B站视频](https://www.bilibili.com/video/BV1b84y1e7hG/)
@@ -387,20 +422,27 @@ search packages from         : ['/home/lzy/Project/Blog/Python/Basic', '/opt/ros
 
 ## 常用命令
 
-conda常用命令
-1. 查看源
+conda 常用命令
+1. 查看环境
+   ```
+   # 两行效果一致
+   conda env list
+   conda info --envs
+   ```
+2. 查看源
    ```
    conda config --show-sources
    ```
-2. 添加源
+3. 添加源
    ```
    conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
    ```
-3. 移除源头
+4. 移除源头
    ```
    conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
    ```
 
+pip 常用命令
 
 ## anaconda官网对比
 
