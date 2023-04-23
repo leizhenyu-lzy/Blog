@@ -1,6 +1,28 @@
 # SSH
 
 
+# 保持 SSH 连接不断开
+
+要保持 SSH 连接不断开，可以使用 SSH 的 KeepAlive 机制。KeepAlive 机制可以在 SSH 连接保持空闲状态时发送保活消息，防止连接因为长时间没有活动而被服务器断开。
+
+## 命令行选项：使用 -o 选项设置 SSH KeepAlive 参数
+
+```bash
+ssh -o ServerAliveInterval=60 user@host
+
+# 这将在 SSH 连接空闲 60 秒时发送保活消息
+```
+
+
+## SSH 配置文件：在 ~/etc/ssh/ssh_config 文件中添加
+
+```bash
+Host *  #这表示要让所有的ssh连接自动加上此属性，文件本身已经已经存在该字段
+ServerAliveInterval 60  # 该配置将对所有 SSH 主机生效，当 SSH 连接空闲 60 秒时发送保活消息
+```
+
+
+
 # SSH 教程 (没看完)
 
 [SSH 教程](https://www.cainiaojc.com/ssh/ssh-index.html)
