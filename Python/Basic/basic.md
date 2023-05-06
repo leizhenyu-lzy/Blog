@@ -591,11 +591,81 @@ USER_SITE: '/home/lzy/.local/lib/python3.8/site-packages' (doesn't exist)
 ENABLE_USER_SITE: True
 ```
 
-# vscode debug 调试 加入参数 args
+# vscode debug 调试
+
+创建 launch.json 并在 "configurations" 中添加参数
+
+## 加入参数 args
 
 ![](Pics/debug001.png)
 
 ![](Pics/debug002.png)
+
+## 指定 python 环境
+
+![](Pics/debug003.png)
+
+可以在终端中使用 whereis 命令来找到路径
+
+```bash
+lzy@legion:~/Project/Blog$ conda activate pytorch
+
+(pytorch) lzy@legion:~/Project/Blog$ whereis python
+python: /home/lzy/miniconda3/envs/pytorch/bin/python
+
+(pytorch) lzy@legion:~/Project/Blog$ whereis python3
+python3: /usr/bin/python3 /usr/lib/python3 /etc/python3 /usr/share/python3 /home/lzy/miniconda3/envs/pytorch/bin/python3 /usr/share/man/man1/python3.1.gz
+
+(pytorch) lzy@legion:~/Project/Blog$ whereis python3.8
+python3.8: /home/lzy/miniconda3/envs/pytorch/bin/python3.8
+```
+
+### 测试案例
+
+python 文件
+```python
+import os
+os.system("conda env list & conda list | grep torch")
+```
+json文件，注意 configurations 中的 python 参数
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "python": "/home/lzy/miniconda3/envs/pytorch/bin/python3",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
+```
+
+result，注意看 pytorch 后有个 * 号
+```text
+lzy@legion:~/Project/Blog$  cd /home/lzy/Project/Blog ; /usr/bin/env /bin/python3 /home/lzy/.vscode/extensions/ms-python.python-2023.8.0/pythonFiles/lib/python/debugpy/adapter/../../debugpy/launcher 50797 -- /home/lzy/Project/Blog/Python/Basic/testFolder/test.py 
+# conda environments:
+#
+base                     /home/lzy/miniconda3
+label                    /home/lzy/miniconda3/envs/label
+mmlab                    /home/lzy/miniconda3/envs/mmlab
+opencv3.4.2              /home/lzy/miniconda3/envs/opencv3.4.2
+pytorch               *  /home/lzy/miniconda3/envs/pytorch
+
+# packages in environment at /home/lzy/miniconda3/envs/pytorch:
+torch                     2.0.0                    pypi_0    pypi
+torch-tb-profiler         0.4.1                    pypi_0    pypi
+torchaudio                2.0.1                    pypi_0    pypi
+torchvision               0.15.1                   pypi_0    pypi
+```
+
 
 # python file
 
