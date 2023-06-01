@@ -92,6 +92,25 @@ view直接打开文件，previous和父commit比较(左右分栏)
 
 ![](Pics/githistory11.png)
 
+# 版本回退
+
+git status 查看commit状态
+
+git log 查看提交，黄色部分即为版本号 (按q退出显示)
+
+![](Pics/git01.png)
+
+git 回滚
+1. 已提交，没有push
+   1. git reset --soft [版本号] 撤销commit
+   2. git reset --mixed 撤销commit和add两个动作
+2. 已提交，并且push
+   1. git reset --hard 撤销并舍弃版本号之后的提交记录 **需谨慎使用**
+   2. git revert 撤销但保留提交记录
+
+
+
+
 # 廖雪峰
 
 ## Git 简介
