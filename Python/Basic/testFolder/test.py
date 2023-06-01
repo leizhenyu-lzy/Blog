@@ -1,10 +1,14 @@
-# import os
+import cv2
 
-# print("conda 环境列表")
-# os.system("conda env list")
+if __name__ == "__main__":
+    img = cv2.imread("/home/lzy/Pictures/uniqueID.png", cv2.IMREAD_COLOR)
+    print(img.shape)
 
-# print("conda torch 版本")
-# os.system("conda list | grep torch")
+    imgResize = cv2.resize(img, (500,500))
 
-import os
-os.system("conda env list & conda list | grep torch")
+    cv2.imshow("img", img)
+    cv2.imshow("imgResize", imgResize)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    

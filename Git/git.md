@@ -14,6 +14,84 @@
 
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/)
 
+# VSCode 插件
+
+![](Pics/gitExtension.png)
+
+## Git Graph
+
+[[vscode] 最好看最体贴的git插件：Git Graph](https://www.bilibili.com/video/BV1Zb4y1j7Zy/)
+
+![](Pics/gitgraph01.png)
+
+线代表branch(不同颜色)，节点表示commit
+
+顶部可以选择查看的branch(包括查看所有branch)
+
+点击commit可以详细查看信息(commit时间，message，被修改的文件)
+
+![](Pics/gitgraph02.png)
+
+右键commit会出现如下常见命令
+
+![](Pics/gitgraph03.png)
+
+点击commit中的具体文件可以查看具体修改内容(和其父commit的比较)
+
+![](Pics/gitgraph04.png)
+
+也可以右键具体文件(左右分栏对比)
+
+![](Pics/gitgraph05.png)
+
+**重点** : 当前commit和任意commit的比较(查看两个commit之间文件的改动)
+
+![](Pics/gitgraph06.png)
+
+可以查看用户、仓库设置、远程branch
+
+![](Pics/gitgraph07.png)
+
+## Git History
+
+[[vscode] 最好用的git比较历史插件: Git History](https://www.bilibili.com/video/BV1DY411L7YJ/)
+
+![](Pics/githistory01.png)
+
+主题界面如下
+
+![](Pics/githistory02.png)
+
+可以搜索、切换branch、切换作者
+
+![](Pics/githistory03.png)
+
+点击任意一个commit会在下方显示修改的文件
+
+![](Pics/githistory04.png)
+
+view直接打开文件，previous和父commit比较(左右分栏)
+
+![](Pics/githistory05.png)
+
+**重点** : 任意两个commit的比较(more->select，more->compare with，侧边栏 Compare Commits)
+
+![](Pics/githistory06.png)
+
+![](Pics/githistory07.png)
+
+![](Pics/githistory08.png)
+
+**重点** : 单独查看某个文件历史(文件侧边栏，选择文件，右键，View File History) 也可以在要查看的文件编辑页面右键进行查看
+
+![](Pics/githistory09.png)
+
+![](Pics/githistory10.png)
+
+查看结果如下
+
+![](Pics/githistory11.png)
+
 # 廖雪峰
 
 ## Git 简介
