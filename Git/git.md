@@ -100,15 +100,21 @@ git log 查看提交，黄色部分即为版本号 (按q退出显示)
 
 ![](Pics/git01.png)
 
+commit 后在vscode中 文件颜色变为白色
+
+
+
 git 回滚
 1. 已提交，没有push
    1. git reset --soft [之前的版本号] 撤销commit
    2. git reset --mixed [之前的版本号] 撤销commit和add两个动作
 2. 已提交，并且push
-   1. git reset --hard 撤销并舍弃版本号之后的提交记录 **需谨慎使用**
-   2. git revert 撤销但保留提交记录
+   1. git reset --hard [之前的版本号] 撤销并舍弃版本号之后的提交记录 **需谨慎使用** 在日志中无法再次查询，完全舍弃“毁尸灭迹”
+   2. git revert [要移除的版本号] 撤销但保留提交记录，会新生成一个版本，之前的无用版本也会存在于记录中
 
+![](Pics/gitreset.png)
 
+![](Pics/gitrevert.png)
 
 
 # 廖雪峰
