@@ -1,0 +1,2 @@
+lzy@legion:~/Project/Blog$ snap install dotnet-sdk --classic
+dotnet-sdk 7.0.304 from Microsoft .NET Core (dotnetcore✓) installed
