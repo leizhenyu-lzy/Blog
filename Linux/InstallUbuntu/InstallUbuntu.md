@@ -29,6 +29,24 @@ GPU
 ![](Pics/razorSecureBoot01.jpg)
 ![](Pics/razorSecureBoot02.jpg)
 
+Fn+F2
+
+
+### 强行关闭 secure boot
+
+[拯救者Y7000P 修改secure boot方法](https://blog.csdn.net/qq_50598558/article/details/119040725)
+
+```bash
+sudo apt install mokutil
+sudo mokutil --disable-validation
+
+sudo apt install mokutil
+sudo mokutil --disable-validation
+```
+出现蓝屏，选择change secure boot state
+
+Disable Secure Boot，选择yes
+
 ## 换源
 
 [ubuntu换源](https://blog.csdn.net/qq_45878098/article/details/126037838)
