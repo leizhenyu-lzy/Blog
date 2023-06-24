@@ -16,6 +16,8 @@
 
 [连接手柄 A Bluetooth gamepad "host" for the ESP32 / ESP32-S3 / ESP32-C3](https://github.com/ricardoquesada/bluepad32)
 
+[Bluepad32 firmware for Arduino + ESP32](https://github.com/ricardoquesada/bluepad32/blob/main/docs/plat_arduino.md)
+
 
 ---
 
@@ -27,17 +29,19 @@ ESP32开发板
 
 ![](Pics/wroom001.png)
 
+![](Pics/product02.png)
 
+![](Pics/product03.png)
 
 ---
 
-# 乐鑫 ESP32 物联网开发框架 ESP-IDF 开发入门
+# 乐鑫 ESP32 物联网开发框架 ESP-IDF 开发
 
 [乐鑫 ESP32 物联网开发框架 ESP-IDF 开发入门 --- 孤独的二进制 ](https://www.bilibili.com/video/BV1hM411k7zz/)
 
 [乐鑫官网 ESP-IDF 编程指南](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/index.html)
 
-## 入门
+## 准备 & 安装
 
 ### 安装
 
@@ -95,7 +99,7 @@ ttyUSB0
 # 配置工程
 cd ~/esp/hello_world  # 必要
 idf.py set-target esp32  # 打开一个新工程后，应首先使用 idf.py set-target esp32 设置“目标”芯片
-idf.py menuconfig
+idf.py menuconfig  # 主要是配置 flash 大小
 ```
 
 ![](Pics/esp002.png)
@@ -121,6 +125,32 @@ idf.py flash monitor -p /dev/ttyUSB0
 sudo chmod a+rw /dev/ttyUSB0
 ```
 
+```bash
+lzy@legion:~/esp/hello_world$ echo $IDF_PATH
+/home/lzy/esp/esp-idf
+
+cp -r $IDF_PATH/examples/get-started/
+```
+
+
+### VSCode 插件
+
+![](Pics/extension003.png)
+
+目前由于 Ubuntu 系统存储空间有限，仅仅安装了插件，没有进行配置
+
+#### 直接使用 VSCode 打开项目
+
+快捷键 Ctrl+Shift+P 选择 **ESP-IDF:Add vscode configuration folder**
+
+![](Pics/extension001.png)
+
+会添加几个配置文件，main.c 不爆红了
+
+![](Pics/extension002.png)
+
+
+## 入门
 
 ## 存储
 
