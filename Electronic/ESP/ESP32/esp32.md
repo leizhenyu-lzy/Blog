@@ -29,6 +29,8 @@ ESP32开发板
 
 ![](Pics/wroom001.png)
 
+引脚定义
+
 ![](Pics/product02.png)
 
 ![](Pics/product03.png)
@@ -154,6 +156,34 @@ cp -r $IDF_PATH/examples/get-started/
 
 ## 入门
 
+### 你好世界
+
+printf
+
+打印需要 "\n" 或者手动 flush 操作
+
+```cpp
+fflush(stdout)
+```
+
+```cpp
+// 浮点数 总长10位，小数点保留两位
+%10.2f    // 隐式用空格填充
+%010.2f   // 显式用0填充
+% 10.2f   // 显式用空格填充
+%+10.2f   // 显式强制输出+号
+```
+
+![](Pics/c01.webp)
+
+![](Pics/c02.webp)
+
+### 日志
+
+
+
+
+
 ## 存储
 
 ## WIFI基础篇
@@ -163,17 +193,28 @@ cp -r $IDF_PATH/examples/get-started/
 
 # 孤独的二进制 - ESP32上的FREERTOS
 
+![](Pics/rtos001.jpg)
+
 [孤独的二进制 - ESP32上的FREERTOS](https://www.bilibili.com/video/BV1q54y1Z7ca/)
 
 ## 什么是RTOS
 
-FreeRTOS中, Task = Thread
+FreeRTOS 开源
 
-开源
+ESP-IDF 的 FreeRTOS 基于 Vanilla FreeRTOS
 
 ESP32双核
 
+**SuperLoop 流程，不可控**
+
 ![](Pics/esp001.png)
+
+**RTOS 流程 (FreeRTOS中, Task任务 = Thread线程)**
+
+![](Pics/esp004.png)
+
+
+ 
 
 
 
