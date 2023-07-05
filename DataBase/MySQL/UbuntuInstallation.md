@@ -10,6 +10,12 @@ sudo apt update
 sudo apt install mysql-server
 ```
 
+```bash
+lzy@legion:~$ mysql -V
+mysql  Ver 8.0.33-0ubuntu0.22.04.2 for Linux on x86_64 ((Ubuntu))
+```
+
+
 ## 设置 root 密码
 
 **安全设置 mysql_secure_installation 前先设置 root 密码**
@@ -71,7 +77,35 @@ sudo mysql_secure_installation
 
 ```bash
 lzy@legion:~$ systemctl status mysql.service
+```
 
+
+
+
+
+```bash
+lzy@legion:~$ sudo cat /etc/mysql/debian.cnf 
+[sudo] password for lzy: 
+# Automatically generated for Debian scripts. DO NOT TOUCH!
+[client]
+host     = localhost
+user     = debian-sys-maint
+password = xxxxxxxxxxxxxxxx
+socket   = /var/run/mysqld/mysqld.sock
+[mysql_upgrade]
+host     = localhost
+user     = debian-sys-maint
+password = xxxxxxxxxxxxxxxx
+socket   = /var/run/mysqld/mysqld.sock
+```
+
+[可能有用 server client](https://blog.csdn.net/Petergzc/article/details/113185252?utm_source=app&app_version=4.5.0)
+
+
+```bash
+lzy@legion:~$ sudo netstat -tap | grep mysql
+tcp    0  0 localhost:33060     0.0.0.0:*   LISTEN      33335/mysqld
+tcp    0  0 localhost:mysql     0.0.0.0:*   LISTEN      33335/mysqld
 ```
 
 
