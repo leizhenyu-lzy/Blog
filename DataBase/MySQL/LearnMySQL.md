@@ -976,6 +976,9 @@ length与字符集有关，6是因为utf8中一个汉字三个字节。
 ### 子查询
 
 
+
+
+
 # Python + MySQL
 
 [Python + MySQL 0基础从入门到精通](https://www.bilibili.com/video/BV1B34y1R7in)
