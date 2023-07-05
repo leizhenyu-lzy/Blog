@@ -16,6 +16,23 @@
 
 [/etc/profile - 环境变量](https://www.jianshu.com/p/1dd22f5b521a)
 
+
+## Linux 命令大全 --- 菜鸟教程
+
+[Linux 命令大全 --- 菜鸟教程](https://www.runoob.com/linux/linux-command-manual.html)
+
+### chmod(change mode)
+
+[Linux chmod命令](https://www.runoob.com/linux/linux-comm-chmod.html)
+
+Linux chmod（英文全拼：change mode）命令是控制用户对文件的权限的命令
+
+Linux/Unix 的文件调用权限分为三级 : 文件所有者（Owner）、用户组（Group）、其它用户（Other Users）。
+
+只有文件所有者和超级用户可以修改文件或目录的权限。可以使用绝对模式（八进制数字模式），符号模式指定文件的权限。
+
+
+
 ## 查看版本
 
 ```shell
@@ -32,6 +49,8 @@ Description:	Ubuntu 20.04.5 LTS
 Release:	20.04
 Codename:	focal
 ```
+
+"lsb" 是 "Linux Standard Base" 的缩写。这是一个由 Linux 基础软件联盟 (Linux Foundation) 制定的标准，旨在定义一个稳定的、可移植的 Linux 操作系统接口，以便软件开发人员可以针对标准接口编写应用程序，而不需要考虑特定 Linux 发行版的差异性。"lsb_release -a" 命令是一个用于显示当前 Linux 发行版符合 LSB 标准的版本信息的命令。
 
 ## 查看文件
 ![](Pics/file02.png)
