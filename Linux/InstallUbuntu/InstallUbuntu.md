@@ -738,3 +738,22 @@ Linux
 转到 Preferences/Settings → Editor → Font ，然后从字体下拉列表中选择JetBrains Mono。
 
 似乎 wps 也能自动检测到
+
+## checksum
+
+### 软件
+
+[How to Verify Checksum on Linux [Beginner Guide]](https://itsfoss.com/checksum-tools-guide-linux/)
+
+```bash
+sudo apt install gtkhash
+```
+
+![](Pics/checksum01.png)
+
+### 命令行
+
+```bash
+lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz 
+a58954ed6732eb799502e14b250ead8b21e00c3f064e196ada34dcd6a3a3f399  /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
+```

@@ -1,16 +1,12 @@
 # Java
 
+目录
 [toc]
 
-## Portals
 
-[Java 基础到高级 - 宋红康](https://www.bilibili.com/video/av48370019)
+# 尚硅谷Java零基础全套视频教程2023版 --- 宋红康
 
-[狂神说 JavaSE阶段回顾总结](https://www.bilibili.com/video/BV1MJ411v7tJ)
-
-[狂神说 Java零基础学习视频](https://www.bilibili.com/video/BV12J41137hu)
-
-# Java 基础到高级 - 宋红康
+[尚硅谷Java零基础全套视频教程2023版 --- 宋红康](https://www.bilibili.com/video/BV1PY411e7J6/)
 
 Java基础是学习JavaEE、大数据、Android开发的基石
 
@@ -339,6 +335,10 @@ P43
 
 
 # 狂神说 Java零基础学习视频
+
+[狂神说 JavaSE阶段回顾总结](https://www.bilibili.com/video/BV1MJ411v7tJ)
+
+[狂神说 Java零基础学习视频](https://www.bilibili.com/video/BV12J41137hu)
 
 ## Java特性和优势
 
@@ -1164,26 +1164,3 @@ Exception
 
 ![](Pics/kuang/kuang032.png)
 
-# IDEA配置
-
-## IDEA优化
-
-[IDEA的常见的设置和优化(功能)](https://blog.csdn.net/zeal9s/article/details/83544074)
-
-## 大括号自动换行
-
-![](Pics/idea/idea001.png)
-
-# 其他相关知识
-
-## 常用DOS命令
-
-常用DOS命令
-1. dir
-2. md
-3. rd
-4. cd
-5. cd..
-6. cd\
-7. del
-8. exit

@@ -62,6 +62,17 @@ mysql> show schemas;
 | sys                |
 +--------------------+
 4 rows in set (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.02 sec)
 ```
 
 ## sudo mysql_secure_installation 设置
@@ -79,10 +90,6 @@ sudo mysql_secure_installation
 lzy@legion:~$ systemctl status mysql.service
 ```
 
-
-
-
-
 ```bash
 lzy@legion:~$ sudo cat /etc/mysql/debian.cnf 
 [sudo] password for lzy: 
@@ -97,6 +104,17 @@ host     = localhost
 user     = debian-sys-maint
 password = xxxxxxxxxxxxxxxx
 socket   = /var/run/mysqld/mysqld.sock
+```
+
+```bash
+/usr/bin                 客户端程序和脚本
+/usr/sbin                mysqld 服务器
+/var/lib/mysql           日志文件，数据库  ［重点要知道这个］
+/usr/share/doc/packages  文档
+/usr/include/mysql       包含( 头) 文件
+/usr/lib/mysql           库
+/usr/share/mysql         错误消息和字符集文件
+/usr/share/sql-bench     基准程序
 ```
 
 [可能有用 server client](https://blog.csdn.net/Petergzc/article/details/113185252?utm_source=app&app_version=4.5.0)
