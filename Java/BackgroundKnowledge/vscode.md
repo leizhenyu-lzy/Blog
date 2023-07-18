@@ -46,3 +46,20 @@ original 是原始版本，用于恢复
 ![](Pics/vscode/redhat003.png)
 
 ![](Pics/vscode/redhat004.png)
+
+
+[如何在vscode中配置java运行环境？](https://www.zhihu.com/question/278838022)
+
+
+
+# 运行
+
+1. Run
+2. F5
+3. code runner
+
+![](Pics/vscode/redhat005.png)
+
+# 查看字节码
+
+![](Pics/vscode/bytecode001.png)
