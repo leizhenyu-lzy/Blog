@@ -442,7 +442,7 @@ println 后都转为十进制
          public static void swap2(int a, int b) 
          {
             a = a^b;  // a的每一位是和b不同bit位置，b为原始b
-            b = b^a;  // 对同一数据异或两次结果不变，b^(a^b) = a
+            b = b^a;  // 对同一数据异或两次结果不变，b^(a^b) = a 
             a = a^b;  // (a^b)^a = b
             System.out.println("a="+a+","+"b="+b);
          }
