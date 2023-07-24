@@ -1,4 +1,18 @@
-# 阅读
+# GRE 公开课
+
+# 改革
+
+[GRE旧版VS新版](https://www.bilibili.com/video/BV1cV4y1S7px/)
+
+总时间 4h -> 2h
+
+取消写作 argument 仅保留 issue
+
+语文数学 : 40 -> 27
+
+语文41min完成，数学47min完成
+
+无加试及中间休息
 
 # 真经GRE小白入门课
 
@@ -147,9 +161,17 @@ unit digit 个位数
 
 ![](Pics/fillingblank008.png)
 
+![](Pics/fillingblank009.png)
+
+不要把可能当成必然
 
 
 
+## 写作
+
+450 - 500 词
+
+![](Pics/essay001.png)
 
 
 

@@ -1,7 +1,7 @@
 # 听力记录
 
 
-## 20230722 How to Be Ambitous Without Sacrificing Your Mental Health
+## 20230722 外刊精选 How to Be Ambitous Without Sacrificing Your Mental Health
 
 [How to Be Ambitous Without Sacrificing Your Mental Health](https://www.bilibili.com/video/BV1Bm4y1a7q6/)
 
@@ -88,6 +88,69 @@ side hustle 副业
 cash rewards
 
 better off 更好的
+
+
+## 20230724 外刊精选 Why Procrastinators Procrastinate
+
+procrastinate 拖延
+
+procrastinator 拖延者
+
+retrain 再训练
+
+last minute 最后一刻
+
+chronic 长期的
+
+neuroscientist 神经学家
+
+neurochemical 神经化学物质
+
+at hand 手头上的
+
+dopamine 多巴胺
+
+hardwired 硬连接的，固有的
+
+limbic brain 边缘大脑
+
+prefrontal cortex 前额叶皮层
+
+on track 在正道上
+
+up against sth/sb 必须应对
+
+reward pathway 奖励回路
+
+sprint 冲刺
+
+in an effort to 为了
+
+Pomodoro Technique 番茄工作法
+
+incorporate 并入，包含
+
+mindfulness 正念减压疗法
+
+meditation 冥想
+
+journal 日记
+
+yoga 瑜伽
+
+deliberate 刻意的
+
+eat that frog 先苦后甜
+
+trick 欺骗 诱骗
+
+latte 拿铁
+
+strenuous 艰苦的
+
+recharge 恢复精力
+
+
 
 
 
