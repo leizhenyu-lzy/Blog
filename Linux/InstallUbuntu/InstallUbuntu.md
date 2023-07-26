@@ -757,3 +757,29 @@ sudo apt install gtkhash
 lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz 
 a58954ed6732eb799502e14b250ead8b21e00c3f064e196ada34dcd6a3a3f399  /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
 ```
+
+
+
+
+# 垃圾清理
+
+## 清除 根目录
+
+[Linux / 清理空间的几个方法](https://zhuanlan.zhihu.com/p/347876565)
+
+记得 sudo
+
+## 清除 miniconda
+
+```bash
+du -sh *  # 进入miniconda目录，通过命令查看当下目录的所占内存
+
+conda clean -p    # 删除没有用的包（推荐）
+```
+
+# 电池查看
+
+![](Pics/battery001.png)
+
+[查看笔记本电池损耗情况](https://blog.csdn.net/qq_37623240/article/details/82916864)
+
