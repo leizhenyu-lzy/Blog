@@ -1086,6 +1086,83 @@ FPN精度高，FCN速度和内存上更优
 
 没看完
 
+
+
+
+## 51 序列模型
+
+现实中有很多数据是有**时序结构**
+
+![](Pics/L51P01.png)
+
+联合概率用条件概率展开
+
+![](Pics/L51P02.png)
+
+正序 和 反序(有时候物理上不可行，但是有实际意义(已知未来，回推过去))
+
+![](Pics/L51P03.png)
+
+对过去 t-1 个数据进行建模
+
+因为是用之前的数据，而不是其他的数据，所以叫自回归
+
+![](Pics/L51P04.png)
+
+引入马尔科夫假设后，定长数据，可以使用之前的工具 MLP、线性回归等等
+
+![](Pics/L51P05.png)
+
+不断更新潜变量 (RNN)
+
+两个模型
+1. h 与 x 推得 h'
+2. h' 与 x 推得 x'
+
+![](Pics/L51P06.png)
+
+
+## 52 文本预处理
+
+[NLP领域中的token和tokenization到底指的是什么？](https://www.zhihu.com/question/64984731)
+
+[Tokenization --- stanford nlp](https://nlp.stanford.edu/IR-book/html/htmledition/tokenization-1.html)
+
+将文本当做时序序列，便于序列
+
+暴力的预处理
+1. 将非英文字母变为空格
+2. 大写转小写
+
+将每行文本序列变为 token，两种类型
+1. word词(数量较多)
+2. char字符(但是需要学习词的构成)
+
+在自然语言处理中，通常会将句子切分成一小块一小块的单元，这些小块单元就被称为"Token"
+
+(对于中文需要分词 --- jieba)
+
+还需要构建一个字典，词汇表 vocabulary，用于将 token 映射为 数字索引
+
+很多次出现的次数很少的 token，将其作为 unknown token
+
+token中加入，unknown token，手动的 reserved token，以及出现频率较多的 token
+
+获取 idx-to-token(列表 []) 以及 token-to-idx(字典 {})
+
+word 都转为 index
+
+训练和预测必须使用相同的 vocab ，否则就乱套了
+
+
+## 53 语言模型
+
+
+
+
+
+
+
 ## 57 长短期记忆网络（LSTM）
 
 ![](Pics/L57P01.png)
@@ -1099,6 +1176,87 @@ FPN精度高，FCN速度和内存上更优
 ![](Pics/L57P05.png)
 
 ![](Pics/L57P06.png)
+
+
+
+
+
+
+
+
+## 60 机器翻译数据集
+
+使用空格将标点符号和单词分割，使得标点符号作为单独的单词
+
+utf-8 做处理
+
+token可以理解为最小语义单元，翻译的话个人喜欢叫词元（当然翻译成令牌、词都行），可以是word/char/subword。
+
+tokenization是指分词，目的是将输入文本分成一个个词元，保证各个词元拥有相对完整和独立的语义，以供后续任务（比如学习或者作为高级模型的输入）使用。
+
+`<pad>`(),`<bos>`(begin of sentence),`<eos>`(end of sentence)
+
+将出现频率过小的 原词 进行剔除
+
+序列样本都有一个固定的长度，截断或填充文本序列
+
+source 和 target 都有对应的 词表 vocabulary
+
+也可以将多种语言放在一个 vocab 中
+
+
+## 61 编码器解码器架构
+
+encoder-decoder
+
+![](Pics/L61P01.png)
+
+特征提取 可以理解为编码的过程
+
+原始形式 -> 中间形式，便于机器学习
+
+![](Pics/L61P02.png)
+
+![](Pics/L61P03.png)
+
+state 可以是 feature map 或者隐藏状态
+
+decoder 也可以拿到一些额外的输入
+
+编码器负责表示输入，解码器负责输出
+
+
+## 62 序列到序列学习(seq2seq)
+
+机器翻译，两个句子可以有不同的长度
+
+
+
+
+
+
+
+
+## 64 注意力机制
+
+[What exactly are keys, queries, and values in attention mechanisms? --- Stack Exchange](https://stats.stackexchange.com/questions/421935/what-exactly-are-keys-queries-and-values-in-attention-mechanisms?newreg=711a72f85079409bbaf0f46d7ada2c03)
+
+key/value/query 的概念类似于检索系统。例如，当你在 Youtube 上搜索视频时，搜索引擎会将你的 query(搜索栏中的文本)映射到数据库中与候选视频相关的一组 keys(视频标题、描述等) ，然后向你展示最匹配的视频(values)。
+
+![](Pics/L64P01.png)
+
+query 你想要干嘛 question
+
+环境是 key-value 对
+
+用 query 和 key 匹配，得到最佳的 value
+
+
+
+
+
+
+
 
 ## 68 Transformer
 
