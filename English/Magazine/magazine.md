@@ -151,6 +151,79 @@ strenuous 艰苦的
 recharge 恢复精力
 
 
+## 20230804 Barbie Has Never Been a Great Symbol, But She's an Excellent Mirrir
+
+culmination 终点，高潮
+
+languish 长期痛苦，受煎熬
+
+turnaround 转变，转向
+
+debut 首次登台，问世
+
+tortuous 拐弯抹角的，冗长费解的
+
+existential question 存在主义的问题
+
+controversial 有争议的
+
+executive 主管，经理
+
+flummox 使困惑，使惊慌失措
+
+sensation 感知，知觉
+
+grown woman 成年女性
+
+loom 赫然出现
+
+simultaneously 同时的
+
+unrealistically 不切实际的
+
+airhead 笨蛋，傻瓜
+
+utter 完全的；发声，说
+
+vigilant 警觉的
+
+chaperone 行为监督人，在场监护人
+
+tagline 标语，口号
+
+put away 割舍
+
+emblem 徽章，象征，符号
+
+scapegoat 替罪羊
+
+backlash 反对
+
+liberation 解放
+
+clinical psychologist 临床心理学家
+
+emblem of love 爱的象征
+
+catchy tagline 吸引人的标语
+
+advertising tagline 广告标语
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
