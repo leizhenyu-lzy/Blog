@@ -47,6 +47,9 @@ original 是原始版本，用于恢复
 
 ![](Pics/vscode/redhat004.png)
 
+重启 vscode 即可 format 看到效果
+
+当前文件夹中 有一个备份可以直接使用
 
 [如何在vscode中配置java运行环境？](https://www.zhihu.com/question/278838022)
 

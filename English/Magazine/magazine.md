@@ -90,6 +90,7 @@ cash rewards
 better off 更好的
 
 
+
 ## 20230724 外刊精选 Why Procrastinators Procrastinate
 
 procrastinate 拖延
@@ -209,13 +210,71 @@ catchy tagline 吸引人的标语
 
 advertising tagline 广告标语
 
+## 20230807 The Chinese are Working More Hours Than Ever
 
+[外刊精读｜经济学人｜中国打工人工作时间日益延长](https://www.bilibili.com/video/BV1gu411V7G5/)
 
+shrinking labour force
 
+National Bureau Statiscs 国家统计局
 
+toil = labour 辛勤劳动
 
+ridicule 嘲笑
 
+a Twitter-like platform
 
+netizen 网民
+
+annual/monthly round-up 年度/月度收集
+
+dip 下降
+
+pandemic
+
+International Labour Organisation
+
+in the top decile(十分位数) 在前10%
+
+"996" regime 管理体制
+
+without extra pay
+
+academic term
+
+neijuan/involution/rat race 内卷
+
+greater input does not yield more input
+
+stagnate 停滞不前
+
+labour law stipulate 劳动法规定
+
+overtime work 加班
+
+state-owned = state-controlled 国有
+
+government enforcement 政府实施
+
+trade union = labour union 工会
+
+wield little clout 行使少的影响力
+
+be affiliated with 隶属于
+
+side with 支持
+
+work-related message
+
+count as 视为
+
+messaging app
+
+invisible overtime
+
+plaintiff 原告
+
+encroach on 侵犯
 
 
 
