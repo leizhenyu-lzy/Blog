@@ -1,4 +1,4 @@
-# 听力记录
+# 外刊记录
 
 
 ## 20230722 外刊精选 How to Be Ambitous Without Sacrificing Your Mental Health
@@ -276,13 +276,149 @@ plaintiff 原告
 
 encroach on 侵犯
 
+## 20230812 Is the Luxury Sector Recession-Proof
 
+[外刊逐句精读｜《经济学人》：经济不好，还有人买奢侈品吗？](https://www.bilibili.com/video/BV1Da4y1F7mD/)
 
+recession-proof adj.不受经济衰退影响的
 
+waterproof bulletproof
 
+high-end 高端的
 
+Hermes 爱马仕集团
 
+a byword for 代名词
 
+exclusivity 独特性
+
+signature 标志性的
+
+glossy a.浮华的，虚有其表的
+
+an advertising/election campaign
+
+constrained supply 限量供应
+
+be worthy of
+
+stitch n.针脚，线迹；一针  vt.缝，缝合
+
+booming demand 需求激增
+
+goody <非正式>吸引人的东西
+
+Kering 开云集团 第三大奢侈品集团
+
+fashion label 时尚商标 brand
+
+GUCCI 古驰
+
+Balenciaga 巴黎世家 
+
+LVMH 路威酩轩集团 第一大奢侈品集团
+
+Tiffany 蒂芙尼
+
+Louis Vuitton 路易威登
+
+Richemont 厉峰集团
+
+Cartier 卡地亚
+
+bauble 廉价的小物品
+
+rake in 轻易的捞钱
+
+revenue 收入
+
+profit 利润
+
+make profits of xxx on revenues of xxx 从...的营业收入里获得...利润
+
+persistent inflation 持续的通货膨胀
+
+interest rate 利率
+
+fan 煽动 fear of global recession 
+
+unease 不安
+
+pow-wow 聚会，碰头会
+
+provoke a sell-off 引起抛售
+
+wipe from 抹除
+
+collective market value
+
+quake in your boots 怕的发抖
+
+Louboutins 路铂廷
+
+assess luxury stocks' prospects
+
+brand positioning 品牌定位 within luxury business
+
+mid-market houses 中端市场公司
+
+target merely affluent
+
+Ralph Lauren 拉夫劳伦
+
+polo-themed apparel 马球主题服装
+
+account for
+
+sensitive to economic headwind 逆风
+
+top-end brand 高端品牌
+
+cater to 迎合
+
+obscene 不公平的，骇人听闻的
+
+obscenely rich 富得流油
+
+shell out 付一大笔钱
+
+broker 经纪人，经纪公司
+
+by contrast
+
+loaded 很有钱的
+
+count on a sharp rebound 指望一个极具的回升
+
+harsh lockdown 封锁
+
+unobliging 不愿合作的
+
+restraint 克制，限制
+
+Estee Lauder 雅诗兰黛
+
+pedlar n.流动小贩
+
+pricey comsetics 高价化妆品
+
+Burberry 巴宝莉
+
+slash outlook 降低预期
+
+beige coat 淡棕色大衣
+
+geopolitical tension 地缘政治的紧张局面
+
+ratchet up 使...逐步提高
+
+new engines of growth
+
+stage a fashion show 举办时装秀
+
+discerning 有辨别力的，挑剔的
+
+posh wardrobes 豪华的服装
 
 
 

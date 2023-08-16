@@ -783,3 +783,8 @@ conda clean -p    # 删除没有用的包（推荐）
 
 [查看笔记本电池损耗情况](https://blog.csdn.net/qq_37623240/article/details/82916864)
 
+
+# apt
+
+cd /etc/apt/sources.list.d/
+
