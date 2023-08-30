@@ -732,12 +732,18 @@ Windows
 选择文件夹中的所有字体文件，右键单击其中任何一个，然后从菜单中选择 “安装”。
 
 Linux
-将字体解压缩到 ~/.local/share/fonts（或 usr/share/fonts，以在系统范围内安装字体）并执行 fc-cache -f -v
+将字体解压缩到 ~/.local/share/fonts（或 **usr/share/fonts**，以在系统范围内安装字体）并执行 fc-cache -f -v
 
 重启您使用的 IDE
 转到 Preferences/Settings → Editor → Font ，然后从字体下拉列表中选择JetBrains Mono。
 
 似乎 wps 也能自动检测到
+
+mono代表等距字符
+
+Ubuntu Mono 中英文可以对齐
+
+'Source Han Sans HW SC'
 
 ## checksum
 
@@ -784,7 +790,30 @@ conda clean -p    # 删除没有用的包（推荐）
 [查看笔记本电池损耗情况](https://blog.csdn.net/qq_37623240/article/details/82916864)
 
 
-# apt
+# apt 目录位置
 
+```
 cd /etc/apt/sources.list.d/
+```
+
+# wine
+
+[安装 WineHQ 安装包 --- winehq](https://wiki.winehq.org/Ubuntu_zhcn)
+
+[wine mono 中科大源](http://mirrors.ustc.edu.cn/wine/wine/wine-mono/)
+
+[wine手动安装wine-mono和wine-gecko组件](https://blog.csdn.net/u010164190/article/details/106785069)
+
+[.NET Framework --- winehq](https://appdb.winehq.org/objectManager.php?sClass=version&iId=31023)  
+
+```
+winetricks --force dotnet452 corefonts
+```
+
+wine 和 crossover 一个免费一个收费。
+
+一个需要自行解决问题，一个给你解决问题。
+
+crossover 类似容器，每个软件都可以单独生成一个 windows 系统进行隔离，wine里安装的流氓软件都是共存在一个 windows 系统里的
+
 
