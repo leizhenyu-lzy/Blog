@@ -829,7 +829,7 @@ sudo apt update && sudo apt install libreoffice
 
 texmath 安装后 在 libreoffic-writer 中查看
 
-
+[在线 Latex](https://www.latexlive.com/home##)
 
 # XDM下载器
 
