@@ -817,3 +817,30 @@ wine 和 crossover 一个免费一个收费。
 crossover 类似容器，每个软件都可以单独生成一个 windows 系统进行隔离，wine里安装的流氓软件都是共存在一个 windows 系统里的
 
 
+# LibreOffice
+
+[LibreOffice 插件](https://extensions.libreoffice.org/)
+
+下载最新版需添加一个ppa
+```
+sudo add-apt-repository ppa:libreoffice/ppa
+sudo apt update && sudo apt install libreoffice
+```
+
+texmath 安装后 在 libreoffic-writer 中查看
+
+
+
+# XDM下载器
+
+[XDM 下载器 github](https://github.com/subhra74/xdm/releases)
+
+[XDM 浏览器插件](https://chrome.google.com/webstore/detail/xdm-integration-module-be/akdmdglbephckgfmdffcdebnpjgamofc/related)
+
+自带浏览器插件位置
+
+```
+/opt/xdman/chrome-extension
+```
+
+
