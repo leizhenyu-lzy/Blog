@@ -843,4 +843,5 @@ texmath 安装后 在 libreoffic-writer 中查看
 /opt/xdman/chrome-extension
 ```
 
+sudo dpkg -i xdman_gtk_8.0.29_amd64.deb
 
