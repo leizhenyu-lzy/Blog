@@ -9,14 +9,29 @@ Cornell（康奈尔大学）	13	17	MPS-IS(B+)
 Dartmouth（达特茅斯学院）	237	12	MSCS(A-)			
 Dartmouth（达特茅斯学院）	237	12	CSDA(A-)			
 Duke（杜克大学）	57	10	ECE(A-)			
-GaTech（佐治亚理工学院）	97	44	ECE(A-)			
+GaTech（佐治亚理工学院）	97	44	ECE(A-)		项目 https://ece.gatech.edu/graduate/masters-degrees	
 GaTech（佐治亚理工学院）	97	44	CSE(A-)			
+GaTech（佐治亚理工学院）	97	44	MSR	"36 credit-hour,four semesters
+DDL February 1, 2024
+TOEFL iBT ≥ 90 (each section must score 19 or higher)"	"项目 https://research.gatech.edu/robotics/ms-robotics-program
+课程 https://research.gatech.edu/robotics/ms-robotics-detailed-curriculum
+语言 https://grad.gatech.edu/english-proficiency"	
 JHU（约翰霍普金斯大学）	28	7	MSECS(B)			
 NEU（东北大学）	375	44	CS Align(零基础转码)			
 NEU（东北大学）	375	44	ISB(零基础转码)			
+NEU（东北大学）	375	44	MSR	"GRE可选,2推荐信,个人陈述,简历,toefl95
+DDL Early 1/15 Final 6/1"	"项目 https://graduate.northeastern.edu/program/master-of-science-in-robotics-17772/
+要求 https://coe.northeastern.edu/academics-experiential-learning/graduate-school-of-engineering/graduate-admissions/"	
+NEU（东北大学）	375	44	MSDS		项目 https://catalog.northeastern.edu/graduate/computer-information-science/computer-science/data-science-ms/	
 NWU（西北大学）	47	10	MSCS(A-)			
+NWU（西北大学）	47	10	MSR	"DDL February 1,Toefl 100,GRE可选
+12-15 months full-time
+3推荐信、GRE可选、简历、个人陈述"	项目 https://www.mccormick.northwestern.edu/robotics/	
 NYU（纽约大学）	38	25	Tandon MSCS (B+)			
 NYU（纽约大学）	38	25	Tandon CE (B-)			
+NYU（纽约大学）	38	25	Tandon MSR	"GRE可选,托福90,机电一体化和机器人学
+DDL December 1,个人陈述,简历"	"项目 https://engineering.nyu.edu/academics/programs/mechatronics-and-robotics-ms
+英语 https://engineering.nyu.edu/admissions/graduate/apply/requirements/english-language-proficiency-testing"	
 NYU（纽约大学）	38	25	Courant MSCS (B+)			
 Rice（莱斯大学）	145	15	MCS(B+)			
 UChicago（芝加哥大学）	11	6	MPCS(零基础转码)			
@@ -29,14 +44,25 @@ UCSD（加州大学圣地亚哥分校）	62	34	EC82(B+)
 UCSD（加州大学圣地亚哥分校）	62	34	EC93(B+)			
 UIUC（伊利诺伊大学香槟分校）	64	41	MCS(A)			
 UIUC（伊利诺伊大学香槟分校）	64	41	ECE MEng(B+)	"coursework-only(non-thesis)，June 1
-study manual"	"项目 https://ece.illinois.edu/admissions/graduate/meng-degree-information
+study manual,比较偏向硬件"	"项目 https://ece.illinois.edu/admissions/graduate/meng-degree-information
 学习手册 https://ece.illinois.edu/academics/grad/meng-manual"	
+UIUC（伊利诺伊大学香槟分校）	64	41	M.Eng. in Autonomy & Robotics	"fast-paced, one-year, non-thesis, non-research
+ 3 封推荐信、简历、PurposeStatement、GRE 可选
+DDL April 1"	"项目 https://autonomy.illinois.edu/meng
+课程表 https://autonomy.illinois.edu/meng/academics
+申请 https://autonomy.illinois.edu/meng/admissions"	
 UMich（密歇根大学）	33	25	MSCSE(A)			
 UMich（密歇根大学）	33	25	DS(A-)			
+				托福84	"项目 https://robotics.umich.edu/academics/graduate/
+语言要求 https://robotics.umich.edu/academics/graduate/admissions/english-proficiency-test-scores/"	
 UPenn（宾夕法尼亚大学）	12	7	MCIT(零基础转码)			
 USC（南加州大学）	116	25	CS28(B+)			
 USC（南加州大学）	116	25	CS37(零基础转码)			
+USC（南加州大学）	116	25	MSR	"DDL  December 15, 2023,推荐信可选,无需GRE,个人陈述
+Intelligent Robotics,选修硕士论文"	"项目 https://viterbigradadmission.usc.edu/programs/masters/msprograms/computer-science/ms-computer-science-intelligent-robotics/
+课程表 https://catalogue.usc.edu/preview_program.php?catoid=18&poid=25465&returnto=7299"	
 WUSTL（圣路易斯华盛顿大学）	154	15	MSCS(B-)			
+WUSTL（圣路易斯华盛顿大学）	154	15	MEngR		项目 https://ese.wustl.edu/academics/graduate-programs/masters-and-certificates/Master-of-Engineering-in-Robotics.html	
 Yale（耶鲁大学）	16	3	MSCS(A+)			
 UNC（ 北卡罗来纳大学教堂山）	132	29	MSIS(零基础转码)			
 UW（华大西雅图）	63	6				
