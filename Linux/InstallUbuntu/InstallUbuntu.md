@@ -845,3 +845,14 @@ texmath 安装后 在 libreoffic-writer 中查看
 
 sudo dpkg -i xdman_gtk_8.0.29_amd64.deb
 
+
+# 解压中文乱码
+
+[linux下解压缩文件中文乱码问题的解决](https://www.cnblogs.com/zxhyJack/p/9818509.html)
+
+```bash
+unzip -O CP936 xxx.zip
+# (用GBK, GB18030也可以)
+```
+
+
