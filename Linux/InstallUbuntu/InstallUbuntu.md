@@ -31,7 +31,6 @@ GPU
 
 Fn+F2
 
-
 ### 强行关闭 secure boot
 
 [拯救者Y7000P 修改secure boot方法](https://blog.csdn.net/qq_50598558/article/details/119040725)
@@ -43,6 +42,7 @@ sudo mokutil --disable-validation
 sudo apt install mokutil
 sudo mokutil --disable-validation
 ```
+
 出现蓝屏，选择change secure boot state
 
 Disable Secure Boot，选择yes
@@ -139,6 +139,7 @@ sudo cp cudnn-*-archive/include/cudnn*.h /usr/local/cuda/include
 sudo cp -P cudnn-*-archive/lib/libcudnn* /usr/local/cuda/lib64 
 sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
 ```
+
 后续还有验证
 
 ```bash
@@ -151,6 +152,7 @@ make clean
 make  # 生成 mnistCUDNN.o 文件
 ./mnistCUDNN
 ```
+
 ```text
 Executing: mnistCUDNN
 cudnnGetVersion() : 8900 , CUDNN_VERSION from cudnn.h : 8900 (8.9.0)
@@ -183,9 +185,6 @@ Test passed!
 [Ubuntu安装CUDA+cuDNN](https://blog.chintsan.com/archives/561)
 
 [cudnn 官方安装指南 ](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html)
-
-
-
 
 选用了22.04，对应的ROS2版本为Humble[ROS2官网 查看支持版本](https://www.ros.org/reps/rep-2000.html#rolling-ridley-june-2020-ongoing)
 
@@ -405,7 +404,6 @@ VLC
 gthumb
 
 clash [Linux科学上网 Ubuntu20.04LTS 配置科学上网环境|Clash客户端](https://www.youtube.com/watch?v=pTlso8m_iRk)
-
 
 暴力猴+Bilibili插件[强大的哔哩哔哩增强脚本](https://github.com/the1812/Bilibili-Evolved)
 beyondcompare
@@ -764,9 +762,6 @@ lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
 a58954ed6732eb799502e14b250ead8b21e00c3f064e196ada34dcd6a3a3f399  /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
 ```
 
-
-
-
 # 垃圾清理
 
 ## 清除 根目录
@@ -789,7 +784,6 @@ conda clean -p    # 删除没有用的包（推荐）
 
 [查看笔记本电池损耗情况](https://blog.csdn.net/qq_37623240/article/details/82916864)
 
-
 # apt 目录位置
 
 ```
@@ -804,7 +798,7 @@ cd /etc/apt/sources.list.d/
 
 [wine手动安装wine-mono和wine-gecko组件](https://blog.csdn.net/u010164190/article/details/106785069)
 
-[.NET Framework --- winehq](https://appdb.winehq.org/objectManager.php?sClass=version&iId=31023)  
+[.NET Framework --- winehq](https://appdb.winehq.org/objectManager.php?sClass=version&iId=31023)
 
 ```
 winetricks --force dotnet452 corefonts
@@ -816,12 +810,12 @@ wine 和 crossover 一个免费一个收费。
 
 crossover 类似容器，每个软件都可以单独生成一个 windows 系统进行隔离，wine里安装的流氓软件都是共存在一个 windows 系统里的
 
-
 # LibreOffice
 
 [LibreOffice 插件](https://extensions.libreoffice.org/)
 
 下载最新版需添加一个ppa
+
 ```
 sudo add-apt-repository ppa:libreoffice/ppa
 sudo apt update && sudo apt install libreoffice
@@ -830,6 +824,10 @@ sudo apt update && sudo apt install libreoffice
 texmath 安装后 在 libreoffic-writer 中查看
 
 [在线 Latex](https://www.latexlive.com/home##)
+
+## 设置中文
+
+菜单“工具Tools - 选项Options “ ，在选项设置框的左侧边栏选 “ 语言 Language Settings - Languages'-”在“用户界面User interface”中选中文（chinese）。
 
 # XDM下载器
 
@@ -845,7 +843,6 @@ texmath 安装后 在 libreoffic-writer 中查看
 
 sudo dpkg -i xdman_gtk_8.0.29_amd64.deb
 
-
 # 解压中文乱码
 
 [linux下解压缩文件中文乱码问题的解决](https://www.cnblogs.com/zxhyJack/p/9818509.html)
@@ -854,5 +851,3 @@ sudo dpkg -i xdman_gtk_8.0.29_amd64.deb
 unzip -O CP936 xxx.zip
 # (用GBK, GB18030也可以)
 ```
-
-

@@ -422,3 +422,87 @@ posh wardrobes 豪华的服装
 
 
 
+
+## 20230912 Moutai and Luckin cause a stir with unexpected collaboration
+
+cause a stir 引起轰动
+
+Luckin Coffee
+
+best known for
+
+collection service 取餐服务
+
+brand image 品牌形象
+
+Moutai Kweichow 贵州茅台
+
+liquor 烈性酒 brand
+
+circulate 流通，流传
+
+liquor latte 酱香拿铁
+
+co-branded 联名的
+
+ongoing price war
+
+wage 发动，工资
+
+plummet 暴跌
+
+premiumisation 高端化
+
+remain competitive
+
+drunk and alert at the same time
+
+netizen 网民
+
+penchant 特别的喜好
+
+boundary-pushing 突破边界
+
+alchol-flavoured
+
+push sth to new limits
+
+dairy giant 乳制品巨头
+
+in partnership with
+
+bubble tea 珍珠奶茶
+
+
+## 20230912 Luckin Coffee dethrones Starbucks in China
+
+dethrone 废黜（国王或女王）；撵下台；免（某人）的职；罢（某人）的官
+
+tumultuous 混乱的 start
+
+secure the top spot in coffee market
+
+a series of aggressive tactics
+
+overthrow the incumbent 推翻现任者
+
+recover from downfall
+
+coconut latte 生椰拿铁
+
+leverage 杠杆作用 in price wars
+
+stiff competition
+
+lower-tier / top-tier city
+
+serve as the biggest threat
+
+price war strategy
+
+premium coffee 高端咖啡
+
+
+
+## 
+
