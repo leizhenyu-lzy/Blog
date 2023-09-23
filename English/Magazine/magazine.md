@@ -504,5 +504,61 @@ premium coffee 高端咖啡
 
 
 
-## 
+## 20230923 Don't let anyone rush you with their timelines
+
+assembly 集会
+
+start your career
+
+work for the top institutions
+
+make decent money
+
+Not everything that counts can be counted and not everything that's counted truly counts.
+
+fulfilling 令人满足的 life
+
+## 20230923 How to deal with difficult feelings
+
+TED interview series
+
+curator 园长，馆长
+
+coauthored 合著
+
+perfectionist 完美主义者 pressure
+
+manage relationship
+
+exacerbate vt.使恶化；使加重 anxious feelings
+
+exasperate 
+
+insecurity
+
+FOMO = fear of missing out
+
+intertwine with social media
+
+spectrum
+
+internalize
+
+generation of millennials
+
+gen-Z
+
+validate myself
+
+murky 阴暗的 territory
+
+performative
+
+priortize the importance of self-reflection
+
+racist sizeist sexist
+
+shout in the atomsphere
+
+echo chamber situation 回声室效应
 
