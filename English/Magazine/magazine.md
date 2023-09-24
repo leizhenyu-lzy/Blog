@@ -562,3 +562,154 @@ shout in the atomsphere
 
 echo chamber situation 回声室效应
 
+## 20230924 How to make semen taste better
+
+is it fact or fiction?
+
+semen 精液
+
+diet/hygiene/sex life
+
+ammonia 氨
+
+chlorine 氯
+
+calcium 钙
+
+magnesium 镁
+
+vary from person to person
+
+hydrate and dehydrate
+
+pH levels
+
+chemical measurement
+
+alkaline 碱性的
+
+bleach 漂白剂
+
+sugary sweet smell
+
+fructose 果糖，左旋糖（见于果汁、蜂蜜中）
+
+slightly metallic or salty smell
+
+strong fishy odor
+
+rotten eggs
+
+a sign of bacterial infection
+
+sexually transmitted disease
+
+diabete 糖尿病
+
+faint odor
+
+urine 尿
+
+garlic/onion/broccoli/cabbage
+
+caffeinated drinks
+
+food enzyme 食物酶
+
+no conclusive scientific evidence
+
+manage stress
+
+BMI body math index
+
+nutritious
+
+guava 番石榴
+
+antioxidant 抗氧化剂
+
+chlorophyll 叶绿素 photosynthesis 光合作用
+
+loaded with folic acid 叶酸
+
+infertility 不育的；不结果实的
+
+## 20230924 In a viral upset with 1 billion views, China's top beauty anchor Li Jiaqi enrages consumers
+
+[李佳琦直播风波](https://www.bilibili.com/video/BV1Jh4y1A7es/)
+
+viral
+1. 病毒
+2. go viral 病毒式传播
+
+anchor 主播
+
+enrage 激怒
+
+top livestream anchor
+
+lipstick 口红、唇膏
+
+in appropriate remark
+
+eyebrow pencil
+
+celebrity anchor
+
+receive a pay rise
+
+mock 嘲弄 low income people
+
+trigger heated discussion
+
+How disappointed I would be if I were the girl commenting.
+
+makeup counter salesman
+
+hashtag = #
+
+boast
+1. 吹嘘
+2. 骄傲的拥有
+
+most popular and influential anchor and beauty KOL(key opinion leader)
+
+in light of 鉴于，考虑到
+
+backlash （对社会变动等的）强烈抵制，集体反对
+
+abide by 遵守，遵循（法律、协议、协定等）
+
+empathy 同感；共鸣；同情 sympathy
+
+netizen 网民
+
+lose followers
+
+prompt 激起、引发/提示词
+
+take a dim view of = disapprove 反对，不支持
+
+issue a hypocritical adj.伪善的，虚伪的；伪善者的，伪君子的
+
+extravaganza 铺张华丽的娱乐表演
+
+global and domestic beauty brand
+
+achieve sales targets
+
+rely on top anchor's influence
+
+viral brouhaha 喧闹；喧哗；起哄
+
+watch how the situation evolve
+
+start contact other anchors as backup options
+
+rely on one mega KOL is a risky choice
+
+
+
+
+
+
