@@ -1,5 +1,6 @@
 # 外刊记录
 
+[toc]
 
 ## 20230722 外刊精选 How to Be Ambitous Without Sacrificing Your Mental Health
 
@@ -152,7 +153,7 @@ strenuous 艰苦的
 recharge 恢复精力
 
 
-## 20230804 Barbie Has Never Been a Great Symbol, But She's an Excellent Mirrir
+## 20230804 Barbie Has Never Been a Great Symbol, But She's an Excellent Mirror
 
 culmination 终点，高潮
 
@@ -707,6 +708,115 @@ watch how the situation evolve
 start contact other anchors as backup options
 
 rely on one mega KOL is a risky choice
+
+
+## 20231005 Key takeaways from McDonald's layoffs 麦当劳加入裁员
+
+local cashier 
+
+corporate employees
+
+grilled chicken 烤鸡
+
+lay off 解雇
+
+nimble 灵活
+
+strategy and decision making
+
+when it comes to
+
+a bit of a mystery
+
+virtual chat bot
+
+drive-through 免下车服务
+
+individual franchise 个体特许经营
+
+shake out 发生
+
+tech industry
+
+steady threat
+
+## 20231005 TicTok CEO Testifies at House Hearing TicTok首席执行官在众议院听证会上作证
+
+monthly active user
+
+the vast majority of people
+
+fastest growing demographics 人口特征
+
+demo- 与人（或人口）有关的
+
+adopt measures
+
+a suite of tools
+
+inspire a new generation
+
+discover a passion for math and science
+
+national security concern
+
+address a few misconceptions
+
+global institutional investors
+
+mainland China
+
+unwanted foreign access to data
+
+potential manipulation
+
+dismiss or trivialize
+
+bottom line
+
+American data stored on American soil by an American company overseen by American personnel.
+
+by default 
+
+independent American board 董事会
+
+with strong security credentials
+
+all protected US data will be under the protection of US law
+
+eliminate the concern
+
+be subject to 使经受, 使遭受 chinese law
+
+go further than what any other company in our industry have done
+
+provide unprecedented transparency and security for the source code
+
+recommendation engine
+
+ensure the integrity of the code
+
+monitor content ecosystem 内容生态
+
+same issue apply to other companies
+
+clear transparent rules that apply broadly to all tech companies
+
+make commitments 承诺
+
+as a top priority
+
+free expression
+
+be grateful for
+
+## 
+
+
+
+
+
+
 
 
 
