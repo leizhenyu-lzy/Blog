@@ -14,6 +14,8 @@
 
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/)
 
+[Git实战丨看故事学git --- 武沛齐](https://www.bilibili.com/video/BV1uD4y1V77L/)
+
 # VSCode 插件
 
 ![](Pics/gitExtension.png)
@@ -369,10 +371,19 @@ git diff    # 查看具体修改内容 q推出
 
 git add .   # 加入缓存，准备提交
 
-git commit -m "xxxx"
+git commit -m "xxxx" # 是本地被修改，还需要push到远程
 
 git pull
 
 
 git push
 1. origin xxx  # 推送 记得切换
+
+# Git实战丨看故事学git --- 武沛齐
+
+git
+1. 分布式
+2. 版本控制
+3. 软件
+
+
