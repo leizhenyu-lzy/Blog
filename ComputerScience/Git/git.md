@@ -347,3 +347,32 @@ git push -u origin master
 
 
 
+# Git 常用命令介绍
+
+git clone
+1. xxx.git
+
+git branch 
+1. -vv   # 查看本地分支&对应远程分支 (对应关系)
+2. -a    # 查看所有分支
+3. --set-upstream-to=origin/xxx  # 切换推送分支
+
+git checkout 
+1. -b xxx   # 新建xxx分支
+
+
+推送分支
+
+git status  # 查看修改文件
+
+git diff    # 查看具体修改内容 q推出
+
+git add .   # 加入缓存，准备提交
+
+git commit -m "xxxx"
+
+git pull
+
+
+git push
+1. origin xxx  # 推送 记得切换
