@@ -405,6 +405,7 @@ git reset
 git log  
 1. 后面不跟内容   # 查看最近提交记录，会显示唯一ID(可用于恢复)
 2. --graph --oneline # 图形化展示分支情况
+3. --oneline -5   # 查看最近5条
 
 
 
