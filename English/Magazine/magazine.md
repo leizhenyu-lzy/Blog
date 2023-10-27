@@ -2,280 +2,390 @@
 
 [toc]
 
-## 20230722 外刊精选 How to Be Ambitous Without Sacrificing Your Mental Health
 
-[How to Be Ambitous Without Sacrificing Your Mental Health](https://www.bilibili.com/video/BV1Bm4y1a7q6/)
 
-dirty word 忌讳
+## 20231005 TicTok CEO Testifies at House Hearing TicTok首席执行官在众议院听证会上作证
 
-**==quiet quitting 职场躺平==**
+monthly active user
 
-the Great Resignation 大辞职潮
+the vast majority of people
 
-always-striving mindset
+fastest growing demographics 人口特征
 
-Surgeon General 卫生局局长
+demo- 与人（或人口）有关的
 
-in the wake of the pandemic 作为某事的后果
+adopt measures
 
-extrinsic/intrinsic goals/motivators
+a suite of tools
 
-outright 完全地，彻底地
+inspire a new generation
 
-harness 控制
+discover a passion for math and science
 
-self-determination theory 自我决定理论
+national security concern
 
-school of thought 思想流派
+address a few misconceptions
 
-spoil the rest of life
+global institutional investors
 
-inherently 内在的
+mainland China
 
-track 跟踪
+unwanted foreign access to data
 
-life satisfaction
+potential manipulation
 
-drastically 及其
+dismiss or trivialize
 
-driven 奋发图强的
+bottom line
 
-consistently 连续的
+American data stored on American soil by an American company overseen by American personnel.
 
-professor/director emeritus /**iˈmerɪtəs**/ 荣誉退休的教授/董事
+by default 
 
-introspection n.内省，反省
+independent American board 董事会
 
-retrain 再训练
+with strong security credentials
 
-back 支撑，证明
+all protected US data will be under the protection of US law
 
-crowd out 挤出，排挤
+eliminate the concern
 
-autonomy 自主权
+be subject to 使经受, 使遭受 chinese law
 
-toll 严重的不良影响
+go further than what any other company in our industry have done
 
-at the expense of sth 
+provide unprecedented transparency and security for the source code
 
-for sb's/sth's sake
+recommendation engine
 
-pay raise 涨工资
+ensure the integrity of the code
 
-be in harmony with sth
+monitor content ecosystem 内容生态
 
-hone a skill 磨炼技能
+same issue apply to other companies
 
-cultivate a trait 培养特质
+clear transparent rules that apply broadly to all tech companies
 
-concrete goals 具体目标
+make commitments 承诺
 
-capitalist 资本主义的
+as a top priority
 
-materialistic 物质主义的
+free expression
 
-mindfulness
+be grateful for
 
-meditate
 
-mortality 生命的有限
+## 20231005 Key takeaways from McDonald's layoffs 麦当劳加入裁员
 
-in turn 因此
+local cashier 
 
-monetize 赚钱
+corporate employees
 
-side hustle 副业
+grilled chicken 烤鸡
 
-cash rewards
+lay off 解雇
 
-better off 更好的
+nimble 灵活
 
+strategy and decision making
 
+when it comes to
 
-## 20230724 外刊精选 Why Procrastinators Procrastinate
+a bit of a mystery
 
-procrastinate 拖延
+virtual chat bot
 
-procrastinator 拖延者
+drive-through 免下车服务
 
-retrain 再训练
+individual franchise 个体特许经营
 
-last minute 最后一刻
+shake out 发生
 
-chronic 长期的
+tech industry
 
-neuroscientist 神经学家
+steady threat
 
-neurochemical 神经化学物质
+## 20230924 In a viral upset with 1 billion views, China's top beauty anchor Li Jiaqi enrages consumers
 
-at hand 手头上的
+[李佳琦直播风波](https://www.bilibili.com/video/BV1Jh4y1A7es/)
 
-dopamine 多巴胺
+viral
+1. 病毒
+2. go viral 病毒式传播
 
-hardwired 硬连接的，固有的
+anchor 主播
 
-limbic brain 边缘大脑
+enrage 激怒
 
-prefrontal cortex 前额叶皮层
+top livestream anchor
 
-on track 在正道上
+lipstick 口红、唇膏
 
-up against sth/sb 必须应对
+in appropriate remark
 
-reward pathway 奖励回路
+eyebrow pencil
 
-sprint 冲刺
+celebrity anchor
 
-in an effort to 为了
+receive a pay rise
 
-Pomodoro Technique 番茄工作法
+mock 嘲弄 low income people
 
-incorporate 并入，包含
+trigger heated discussion
 
-mindfulness 正念减压疗法
+How disappointed I would be if I were the girl commenting.
 
-meditation 冥想
+makeup counter salesman
 
-journal 日记
+hashtag = #
 
-yoga 瑜伽
+boast
+1. 吹嘘
+2. 骄傲的拥有
 
-deliberate 刻意的
+most popular and influential anchor and beauty KOL(key opinion leader)
 
-eat that frog 先苦后甜
+in light of 鉴于，考虑到
 
-trick 欺骗 诱骗
+backlash （对社会变动等的）强烈抵制，集体反对
 
-latte 拿铁
+abide by 遵守，遵循（法律、协议、协定等）
 
-strenuous 艰苦的
-
-recharge 恢复精力
-
-
-## 20230804 Barbie Has Never Been a Great Symbol, But She's an Excellent Mirror
-
-culmination 终点，高潮
-
-languish 长期痛苦，受煎熬
-
-turnaround 转变，转向
-
-debut 首次登台，问世
-
-tortuous 拐弯抹角的，冗长费解的
-
-existential question 存在主义的问题
-
-controversial 有争议的
-
-executive 主管，经理
-
-flummox 使困惑，使惊慌失措
-
-sensation 感知，知觉
-
-grown woman 成年女性
-
-loom 赫然出现
-
-simultaneously 同时的
-
-unrealistically 不切实际的
-
-airhead 笨蛋，傻瓜
-
-utter 完全的；发声，说
-
-vigilant 警觉的
-
-chaperone 行为监督人，在场监护人
-
-tagline 标语，口号
-
-put away 割舍
-
-emblem 徽章，象征，符号
-
-scapegoat 替罪羊
-
-backlash 反对
-
-liberation 解放
-
-clinical psychologist 临床心理学家
-
-emblem of love 爱的象征
-
-catchy tagline 吸引人的标语
-
-advertising tagline 广告标语
-
-## 20230807 The Chinese are Working More Hours Than Ever
-
-[外刊精读｜经济学人｜中国打工人工作时间日益延长](https://www.bilibili.com/video/BV1gu411V7G5/)
-
-shrinking labour force
-
-National Bureau Statiscs 国家统计局
-
-toil = labour 辛勤劳动
-
-ridicule 嘲笑
-
-a Twitter-like platform
+empathy 同感；共鸣；同情 sympathy
 
 netizen 网民
 
-annual/monthly round-up 年度/月度收集
+lose followers
 
-dip 下降
+prompt 激起、引发/提示词
 
-pandemic
+take a dim view of = disapprove 反对，不支持
 
-International Labour Organisation
+issue a hypocritical adj.伪善的，虚伪的；伪善者的，伪君子的
 
-in the top decile(十分位数) 在前10%
+extravaganza 铺张华丽的娱乐表演
 
-"996" regime 管理体制
+global and domestic beauty brand
 
-without extra pay
+achieve sales targets
 
-academic term
+rely on top anchor's influence
 
-neijuan/involution/rat race 内卷
+viral brouhaha 喧闹；喧哗；起哄
 
-greater input does not yield more input
+watch how the situation evolve
 
-stagnate 停滞不前
+start contact other anchors as backup options
 
-labour law stipulate 劳动法规定
+rely on one mega KOL is a risky choice
 
-overtime work 加班
+## 20230924 How to make semen taste better
 
-state-owned = state-controlled 国有
+is it fact or fiction?
 
-government enforcement 政府实施
+semen 精液
 
-trade union = labour union 工会
+diet/hygiene/sex life
 
-wield little clout 行使少的影响力
+ammonia 氨
 
-be affiliated with 隶属于
+chlorine 氯
 
-side with 支持
+calcium 钙
 
-work-related message
+magnesium 镁
 
-count as 视为
+vary from person to person
 
-messaging app
+hydrate and dehydrate
 
-invisible overtime
+pH levels
 
-plaintiff 原告
+chemical measurement
 
-encroach on 侵犯
+alkaline 碱性的
+
+bleach 漂白剂
+
+sugary sweet smell
+
+fructose 果糖，左旋糖（见于果汁、蜂蜜中）
+
+slightly metallic or salty smell
+
+strong fishy odor
+
+rotten eggs
+
+a sign of bacterial infection
+
+sexually transmitted disease
+
+diabete 糖尿病
+
+faint odor
+
+urine 尿
+
+garlic/onion/broccoli/cabbage
+
+caffeinated drinks
+
+food enzyme 食物酶
+
+no conclusive scientific evidence
+
+manage stress
+
+BMI body math index
+
+nutritious
+
+guava 番石榴
+
+antioxidant 抗氧化剂
+
+chlorophyll 叶绿素 photosynthesis 光合作用
+
+loaded with folic acid 叶酸
+
+infertility 不育的；不结果实的
+
+## 20230923 How to deal with difficult feelings
+
+TED interview series
+
+curator 园长，馆长
+
+coauthored 合著
+
+perfectionist 完美主义者 pressure
+
+manage relationship
+
+exacerbate vt.使恶化；使加重 anxious feelings
+
+exasperate 
+
+insecurity
+
+FOMO = fear of missing out
+
+intertwine with social media
+
+spectrum
+
+internalize
+
+generation of millennials
+
+gen-Z
+
+validate myself
+
+murky 阴暗的 territory
+
+performative
+
+priortize the importance of self-reflection
+
+racist sizeist sexist
+
+shout in the atomsphere
+
+echo chamber situation 回声室效应
+
+## 20230923 Don't let anyone rush you with their timelines
+
+assembly 集会
+
+start your career
+
+work for the top institutions
+
+make decent money
+
+Not everything that counts can be counted and not everything that's counted truly counts.
+
+fulfilling 令人满足的 life
+
+## 20230912 Luckin Coffee dethrones Starbucks in China
+
+dethrone 废黜（国王或女王）；撵下台；免（某人）的职；罢（某人）的官
+
+tumultuous 混乱的 start
+
+secure the top spot in coffee market
+
+a series of aggressive tactics
+
+overthrow the incumbent 推翻现任者
+
+recover from downfall
+
+coconut latte 生椰拿铁
+
+leverage 杠杆作用 in price wars
+
+stiff competition
+
+lower-tier / top-tier city
+
+serve as the biggest threat
+
+price war strategy
+
+premium coffee 高端咖啡
+
+## 20230912 Moutai and Luckin cause a stir with unexpected collaboration
+
+cause a stir 引起轰动
+
+Luckin Coffee
+
+best known for
+
+collection service 取餐服务
+
+brand image 品牌形象
+
+Moutai Kweichow 贵州茅台
+
+liquor 烈性酒 brand
+
+circulate 流通，流传
+
+liquor latte 酱香拿铁
+
+co-branded 联名的
+
+ongoing price war
+
+wage 发动，工资
+
+plummet 暴跌
+
+premiumisation 高端化
+
+remain competitive
+
+drunk and alert at the same time
+
+netizen 网民
+
+penchant 特别的喜好
+
+boundary-pushing 突破边界
+
+alchol-flavoured
+
+push sth to new limits
+
+dairy giant 乳制品巨头
+
+in partnership with
+
+bubble tea 珍珠奶茶
 
 ## 20230812 Is the Luxury Sector Recession-Proof
 
@@ -421,400 +531,277 @@ discerning 有辨别力的，挑剔的
 
 posh wardrobes 豪华的服装
 
+## 20230807 The Chinese are Working More Hours Than Ever
 
+[外刊精读｜经济学人｜中国打工人工作时间日益延长](https://www.bilibili.com/video/BV1gu411V7G5/)
 
+shrinking labour force
 
-## 20230912 Moutai and Luckin cause a stir with unexpected collaboration
+National Bureau Statiscs 国家统计局
 
-cause a stir 引起轰动
+toil = labour 辛勤劳动
 
-Luckin Coffee
+ridicule 嘲笑
 
-best known for
-
-collection service 取餐服务
-
-brand image 品牌形象
-
-Moutai Kweichow 贵州茅台
-
-liquor 烈性酒 brand
-
-circulate 流通，流传
-
-liquor latte 酱香拿铁
-
-co-branded 联名的
-
-ongoing price war
-
-wage 发动，工资
-
-plummet 暴跌
-
-premiumisation 高端化
-
-remain competitive
-
-drunk and alert at the same time
+a Twitter-like platform
 
 netizen 网民
 
-penchant 特别的喜好
+annual/monthly round-up 年度/月度收集
 
-boundary-pushing 突破边界
+dip 下降
 
-alchol-flavoured
+pandemic
 
-push sth to new limits
+International Labour Organisation
 
-dairy giant 乳制品巨头
+in the top decile(十分位数) 在前10%
 
-in partnership with
+"996" regime 管理体制
 
-bubble tea 珍珠奶茶
+without extra pay
 
+academic term
 
-## 20230912 Luckin Coffee dethrones Starbucks in China
+neijuan/involution/rat race 内卷
 
-dethrone 废黜（国王或女王）；撵下台；免（某人）的职；罢（某人）的官
+greater input does not yield more input
 
-tumultuous 混乱的 start
+stagnate 停滞不前
 
-secure the top spot in coffee market
+labour law stipulate 劳动法规定
 
-a series of aggressive tactics
+overtime work 加班
 
-overthrow the incumbent 推翻现任者
+state-owned = state-controlled 国有
 
-recover from downfall
+government enforcement 政府实施
 
-coconut latte 生椰拿铁
+trade union = labour union 工会
 
-leverage 杠杆作用 in price wars
+wield little clout 行使少的影响力
 
-stiff competition
+be affiliated with 隶属于
 
-lower-tier / top-tier city
+side with 支持
 
-serve as the biggest threat
+work-related message
 
-price war strategy
+count as 视为
 
-premium coffee 高端咖啡
+messaging app
 
+invisible overtime
 
+plaintiff 原告
 
-## 20230923 Don't let anyone rush you with their timelines
+encroach on 侵犯
 
-assembly 集会
+## 20230804 Barbie Has Never Been a Great Symbol, But She's an Excellent Mirror
 
-start your career
+culmination 终点，高潮
 
-work for the top institutions
+languish 长期痛苦，受煎熬
 
-make decent money
+turnaround 转变，转向
 
-Not everything that counts can be counted and not everything that's counted truly counts.
+debut 首次登台，问世
 
-fulfilling 令人满足的 life
+tortuous 拐弯抹角的，冗长费解的
 
-## 20230923 How to deal with difficult feelings
+existential question 存在主义的问题
 
-TED interview series
+controversial 有争议的
 
-curator 园长，馆长
+executive 主管，经理
 
-coauthored 合著
+flummox 使困惑，使惊慌失措
 
-perfectionist 完美主义者 pressure
+sensation 感知，知觉
 
-manage relationship
+grown woman 成年女性
 
-exacerbate vt.使恶化；使加重 anxious feelings
+loom 赫然出现
 
-exasperate 
+simultaneously 同时的
 
-insecurity
+unrealistically 不切实际的
 
-FOMO = fear of missing out
+airhead 笨蛋，傻瓜
 
-intertwine with social media
+utter 完全的；发声，说
 
-spectrum
+vigilant 警觉的
 
-internalize
+chaperone 行为监督人，在场监护人
 
-generation of millennials
+tagline 标语，口号
 
-gen-Z
+put away 割舍
 
-validate myself
+emblem 徽章，象征，符号
 
-murky 阴暗的 territory
+scapegoat 替罪羊
 
-performative
+backlash 反对
 
-priortize the importance of self-reflection
+liberation 解放
 
-racist sizeist sexist
+clinical psychologist 临床心理学家
 
-shout in the atomsphere
+emblem of love 爱的象征
 
-echo chamber situation 回声室效应
+catchy tagline 吸引人的标语
 
-## 20230924 How to make semen taste better
+advertising tagline 广告标语
 
-is it fact or fiction?
+## 20230724 外刊精选 Why Procrastinators Procrastinate
 
-semen 精液
+procrastinate 拖延
 
-diet/hygiene/sex life
+procrastinator 拖延者
 
-ammonia 氨
+retrain 再训练
 
-chlorine 氯
+last minute 最后一刻
 
-calcium 钙
+chronic 长期的
 
-magnesium 镁
+neuroscientist 神经学家
 
-vary from person to person
+neurochemical 神经化学物质
 
-hydrate and dehydrate
+at hand 手头上的
 
-pH levels
+dopamine 多巴胺
 
-chemical measurement
+hardwired 硬连接的，固有的
 
-alkaline 碱性的
+limbic brain 边缘大脑
 
-bleach 漂白剂
+prefrontal cortex 前额叶皮层
 
-sugary sweet smell
+on track 在正道上
 
-fructose 果糖，左旋糖（见于果汁、蜂蜜中）
+up against sth/sb 必须应对
 
-slightly metallic or salty smell
+reward pathway 奖励回路
 
-strong fishy odor
+sprint 冲刺
 
-rotten eggs
+in an effort to 为了
 
-a sign of bacterial infection
+Pomodoro Technique 番茄工作法
 
-sexually transmitted disease
+incorporate 并入，包含
 
-diabete 糖尿病
+mindfulness 正念减压疗法
 
-faint odor
+meditation 冥想
 
-urine 尿
+journal 日记
 
-garlic/onion/broccoli/cabbage
+yoga 瑜伽
 
-caffeinated drinks
+deliberate 刻意的
 
-food enzyme 食物酶
+eat that frog 先苦后甜
 
-no conclusive scientific evidence
+trick 欺骗 诱骗
 
-manage stress
+latte 拿铁
 
-BMI body math index
+strenuous 艰苦的
 
-nutritious
+recharge 恢复精力
 
-guava 番石榴
+## 20230722 外刊精选 How to Be Ambitous Without Sacrificing Your Mental Health
 
-antioxidant 抗氧化剂
+[How to Be Ambitous Without Sacrificing Your Mental Health](https://www.bilibili.com/video/BV1Bm4y1a7q6/)
 
-chlorophyll 叶绿素 photosynthesis 光合作用
+dirty word 忌讳
 
-loaded with folic acid 叶酸
+**==quiet quitting 职场躺平==**
 
-infertility 不育的；不结果实的
+the Great Resignation 大辞职潮
 
-## 20230924 In a viral upset with 1 billion views, China's top beauty anchor Li Jiaqi enrages consumers
+always-striving mindset
 
-[李佳琦直播风波](https://www.bilibili.com/video/BV1Jh4y1A7es/)
+Surgeon General 卫生局局长
 
-viral
-1. 病毒
-2. go viral 病毒式传播
+in the wake of the pandemic 作为某事的后果
 
-anchor 主播
+extrinsic/intrinsic goals/motivators
 
-enrage 激怒
+outright 完全地，彻底地
 
-top livestream anchor
+harness 控制
 
-lipstick 口红、唇膏
+self-determination theory 自我决定理论
 
-in appropriate remark
+school of thought 思想流派
 
-eyebrow pencil
+spoil the rest of life
 
-celebrity anchor
+inherently 内在的
 
-receive a pay rise
+track 跟踪
 
-mock 嘲弄 low income people
+life satisfaction
 
-trigger heated discussion
+drastically 及其
 
-How disappointed I would be if I were the girl commenting.
+driven 奋发图强的
 
-makeup counter salesman
+consistently 连续的
 
-hashtag = #
+professor/director emeritus /**iˈmerɪtəs**/ 荣誉退休的教授/董事
 
-boast
-1. 吹嘘
-2. 骄傲的拥有
+introspection n.内省，反省
 
-most popular and influential anchor and beauty KOL(key opinion leader)
+retrain 再训练
 
-in light of 鉴于，考虑到
+back 支撑，证明
 
-backlash （对社会变动等的）强烈抵制，集体反对
+crowd out 挤出，排挤
 
-abide by 遵守，遵循（法律、协议、协定等）
+autonomy 自主权
 
-empathy 同感；共鸣；同情 sympathy
+toll 严重的不良影响
 
-netizen 网民
+at the expense of sth 
 
-lose followers
+for sb's/sth's sake
 
-prompt 激起、引发/提示词
+pay raise 涨工资
 
-take a dim view of = disapprove 反对，不支持
+be in harmony with sth
 
-issue a hypocritical adj.伪善的，虚伪的；伪善者的，伪君子的
+hone a skill 磨炼技能
 
-extravaganza 铺张华丽的娱乐表演
+cultivate a trait 培养特质
 
-global and domestic beauty brand
+concrete goals 具体目标
 
-achieve sales targets
+capitalist 资本主义的
 
-rely on top anchor's influence
+materialistic 物质主义的
 
-viral brouhaha 喧闹；喧哗；起哄
+mindfulness
 
-watch how the situation evolve
+meditate
 
-start contact other anchors as backup options
+mortality 生命的有限
 
-rely on one mega KOL is a risky choice
+in turn 因此
 
+monetize 赚钱
 
-## 20231005 Key takeaways from McDonald's layoffs 麦当劳加入裁员
+side hustle 副业
 
-local cashier 
+cash rewards
 
-corporate employees
-
-grilled chicken 烤鸡
-
-lay off 解雇
-
-nimble 灵活
-
-strategy and decision making
-
-when it comes to
-
-a bit of a mystery
-
-virtual chat bot
-
-drive-through 免下车服务
-
-individual franchise 个体特许经营
-
-shake out 发生
-
-tech industry
-
-steady threat
-
-## 20231005 TicTok CEO Testifies at House Hearing TicTok首席执行官在众议院听证会上作证
-
-monthly active user
-
-the vast majority of people
-
-fastest growing demographics 人口特征
-
-demo- 与人（或人口）有关的
-
-adopt measures
-
-a suite of tools
-
-inspire a new generation
-
-discover a passion for math and science
-
-national security concern
-
-address a few misconceptions
-
-global institutional investors
-
-mainland China
-
-unwanted foreign access to data
-
-potential manipulation
-
-dismiss or trivialize
-
-bottom line
-
-American data stored on American soil by an American company overseen by American personnel.
-
-by default 
-
-independent American board 董事会
-
-with strong security credentials
-
-all protected US data will be under the protection of US law
-
-eliminate the concern
-
-be subject to 使经受, 使遭受 chinese law
-
-go further than what any other company in our industry have done
-
-provide unprecedented transparency and security for the source code
-
-recommendation engine
-
-ensure the integrity of the code
-
-monitor content ecosystem 内容生态
-
-same issue apply to other companies
-
-clear transparent rules that apply broadly to all tech companies
-
-make commitments 承诺
-
-as a top priority
-
-free expression
-
-be grateful for
-
-## 
-
-
-
-
+better off 更好的
 
 
 
