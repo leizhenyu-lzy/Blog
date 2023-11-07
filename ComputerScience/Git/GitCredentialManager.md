@@ -4,6 +4,20 @@
 
 [Git 工具 - 凭证存储 --- Git官网](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8)
 
+
+# git credential helper 让你的 https 不再需要输入用户名密码
+
+[git credential helper 让你的 https 不再需要输入用户名密码](https://blog.csdn.net/ustccw/article/details/84591578)
+
+在使用版本管理 git 时, 如果使用 https 连接, 通常要求你输入 username & password
+
+那么如何可以不用每次都输入 username & password 呢?
+1. 采用 SSH 连接方式，前提当然你得有权限将自己主机 id_rsa.pub 加入到 git 账户的 SSH Keys 中
+2. 采用 HTTPS 连接方式，只要你有仓库访问权限即可, 使用本文即将介绍的 credential 来配置一下即可
+
+
+
+
 # 必知必会之Git Windows credential.helper
 
 [必知必会之Git Windows credential.helper](https://zhuanlan.zhihu.com/p/157751660)
