@@ -3,6 +3,95 @@
 [toc]
 
 
+## 20231114 Belt and Road 一带一路
+
+span thousands of years
+
+echo of camel bells
+
+connect past with present 连接古今
+
+cross mountains and seas
+
+a promising trade road
+
+fully embrace the diversity of civilizations
+
+It was proposed by China, but belongs to the whole world
+
+in the era of lasting turbulence and constant changes
+
+has peace and development as its beacon 灯塔
+
+embody principles of extensive consultation and joint contribution for shared benefits 以共商共建共享为基石
+
+lead to a vision of happiness and well-being
+
+policy coordination 政策沟通
+
+infrastructure connectivity 设施联通
+
+unimpeded trade 贸易通畅
+
+financial integration 资金融通
+
+people-to-people bonds 民心相通
+
+open arms to
+
+expand the circle of friends
+
+witness the mushrooming 激增 of national landmarks
+
+livelihood projects 民生工程
+
+monument of cooperation 合作丰碑
+
+deliver tangible 可感知的 fruits
+
+since its inception
+
+bond of cooperation/friendship 合作纽带
+
+press ahead with a common vision
+
+stand still
+
+without back-pedaling 出尔反尔
+
+benefit from each other's development
+
+
+
+## 20231107 The Collins Word of the Year 2023 is AI
+
+![](Pics/ai.gif)
+
+将dragonfly（蜻蜓）、armchair（扶手椅）和grandchild（孙子、孙女）三个单词放入机器，最终却得到了喷火的苍蝇（字面含义的西方龙+苍蝇）、手臂形状的椅子（将原词拆分为arm和chair两个词）和庄严的小孩（grand字面意思“庄严、华丽”）三张不明所以的图片。
+
+Collins Dictionary has named "AI" as its word of the year, defining it as an "abbreviation for artificial intelligence: the modelling of human mental functions by computer programs."
+
+"Considered to be the next great technological revolution, AI has seen rapid development and has been much talked about in 2023," the UK-based dictionary publisher said in a statement announcing its decision.
+
+If computers were suddenly experts in that most human of domains, language, what next?
+
+We know that AI has been a big focus this year in the way that it has developed and has quickly become as **ubiquitous**(无所不在) and **embedded in our lives** as email, streaming or any other once futuristic, now everyday technology.
+
+**Nepotism**(裙带关系) is the unfair use of power in order to get jobs or other benefits for your family or friends.
+
+**nepo baby** 星二代
+
+![](Pics/nepo.gif)
+
+**deinfluencing** 拔草-使用社交媒体警告粉丝避免特定的商品、生活方式的行为
+
+![](Pics/deinfluencing.gif)
+
+**greedflation** 贪婪通胀-指以通货膨胀之名涨价并牟利的行为
+
+![](Pics/greedflation.png)
+
+
 
 ## 20231005 TicTok CEO Testifies at House Hearing TicTok首席执行官在众议院听证会上作证
 
