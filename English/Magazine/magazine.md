@@ -3,6 +3,137 @@
 [toc]
 
 
+## 20231123 Ilya - The AI scientist shaping the world
+
+[卫报](https://www.bilibili.com/video/BV14b4y1u7o3/)
+
+两种关系
+1. e/acc = Effective Accelerationism = 有效加速 = 全力推进科技进步 ()Garry Tan -- Y Combinator)
+2. Super Alignment = 确保 AI 与人类价值观的一致
+
+employment disease poverty
+
+the problem of fake news is going to be a million times worse
+
+cyber attacks will become much more extreme
+
+totally automated AI weapons
+
+AI has the potentional to create infinitely stable dictatorships 独裁；专政
+
+a warning of the power of artificial intelligence
+
+ask for a pause in the development
+
+consider the risk
+
+tech industry leaders, researchers and others
+
+playing god 扮演上帝
+
+completely autonomous beings with their own goals
+
+the goals of these beings be aligned一致 with our goals
+
+there's a lot of similarity between technology and biological evolution
+
+genetic mutations 基因突变
+
+natural selections 自然选择
+
+huge complexity in organisms
+
+keep repeating the process
+
+the complexity of the data gets transferred into the complexity of the model
+
+the algorithm
+
+the first spots of rain before a downpour 倾盆大雨前的第一场雨
+
+a watershed moment
+
+ChatGPT is being heralded被誉为 as a gamechanger
+
+in many ways, its latest triumph outscore people
+
+a recent study by Microsoft research concludes that
+
+is an early, yet still incomplete artificial general intelligence system
+
+a theoretical AI
+
+surpass human intelligence
+
+a computer system that can do any job/task that a human does, but only better
+
+take xxx seriously
+
+data center
+
+packed with specialized neural network processors working in parallel
+
+compact, hot, power hungry
+
+completely astronomical impact on society
+
+a growing chorus
+
+AI experts, scientists and politicians
+
+call for global regulation of AI
+
+beliefs and desires
+
+have a lot of affection for them
+
+operate on their own behalf 以自己的名义
+
+knowledgeable and experienced
+
+have a lot of skepticism
+
+arms race 军备竞赛
+
+care for human
+
+avalanche of AGI development
+
+given these kinds of concerns 鉴于这种担忧
+
+## 20231122 The Happiness in Helping Others
+
+be stressed out
+
+calm one's mind
+
+warmth that comes with helping others
+
+giving back 回馈
+
+think back on a situation
+
+during a stressful time
+
+take the path
+
+
+## 20231120 奥本海默 信号与系统 结课
+
+the purpose of a set of lectures is not really to cover a subject but to uncover the subject
+
+at least to some degree 
+
+uncover the topic of signals and systems
+
+through the series of lectures
+
+we get a very brief glance into
+
+get you interested enough of them
+
+pursue some of these on your own
+
 ## 20231114 Belt and Road 一带一路
 
 span thousands of years
