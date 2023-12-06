@@ -6,6 +6,7 @@ Graduate Record Examination
 
 [GRE核心词汇一本通 讲解视频](https://www.bilibili.com/video/BV1u3411W7ir/)
 
+[【GRE写作】10分钟学会ISSUE万能模板](https://www.bilibili.com/video/BV1B441167yu/)
 
 [加一正在学习中 B站个人主页](https://space.bilibili.com/402744668)
 

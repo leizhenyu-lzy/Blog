@@ -3,6 +3,64 @@
 [toc]
 
 
+## 20231205 Oxford’s 2023 Word of the Year Is ... 'Rizz'
+
+'Rizz' — Gen Z slang俚语 for 'style, charm or attractiveness,' or 'the ability to attract a romantic or sexual partner'
+
+Rizz 被定义为风格、魅力或吸引力，或者一个人浪漫、罗曼蒂克、吸引性伴侣的能力
+
+rizz是charisma「个人魅力」的缩写 abbreviated form to come from the middle
+
+beat out 击败
+
+contenders like situationship情境关系, 提示词, de-influencing逆流 and Swiftie(Taylor swift 的粉丝名)
+1. **prompt** : An instruction given to an artificial intelligence program, algorithm, etc., which determines or influences the content it generates.
+2. **situationship** : A romantic or sexual relationship that is not considered to be formal or established.
+3. **Swiftie** : An enthusiastic fan of the singer Taylor Swift.
+4. **beige flag** : A characteristic suggesting a partner is boring or lack originality
+5. **de-influencing** : The practice of discouraging people from buying particular products, or of encouraging people to reduce their consumption of material goods, esp. via social media.
+6. **heat dome** : A persistent high-pressure weather system over a particular geographic area, which traps a mass of hot air below it.
+7. **parasocial** : 大众与媒体人物之间的一种单方面关系 Designating a relationship characterized by the one-sided, unreciprocated sense of intimacy felt by a viewer, fan, or follower for a well-known or prominent figure (typically a media celebrity), in which the follower or fan comes to feel (falsely) that they know the celebrity as a friend.
+
+牛津 Oxford
+科林斯 Collins
+韦氏 Merriam-Webster
+
+spawn衍生 a crush of memes表情包/段子/梗
+
+increase/decrease by a factor of X增加/减少X倍
+
+change expoentially
+
+Oxford’s lexicographer 词典编纂者
+
+assemble a shortlist of words or expressions
+
+see a statistically relevant surge
+
+reality show 真人秀
+
+vote on three finalists
+
+weigh in on sth 发表（有分量的）观点、发挥作用
+
+head-to-head  正面交锋的，面对面地
+
+celebrity culture
+
+personal characteristics
+
+
+
+## 20231203 Cleaning Up ChatGPT Takes Heavy Toll on Human Workers
+
+[ChatGPT如何剥削非洲劳工](https://www.bilibili.com/video/BV1Uh4y1C782/)
+
+take a toll 产生负面影响,造成损失
+
+
+
+
 ## 20231123 Ilya - The AI scientist shaping the world
 
 [卫报](https://www.bilibili.com/video/BV14b4y1u7o3/)
