@@ -455,6 +455,8 @@ on top of that 除此以外
 
 ![](Pics/speaking003.png)
 
+新旧题型
+
 ![](Pics/speaking004.png)
 
 准备右边的为主，之前的视频:[带你7节课突破托福口语！](https://www.bilibili.com/video/BV1zb4112737/)也可以过一下
@@ -469,9 +471,13 @@ on top of that 除此以外
 
 ![](Pics/speaking010.png)
 
+elaboration 和 example 顺序不固定
+
 提前热身、不要重复题目或之前自己的观点、用逻辑词和连接词(有逻辑性)、长短句配合
 
 ![](Pics/speaking008.png)
+
+沟通越有效越好
 
 ![](Pics/speaking009.png)
 
@@ -479,7 +485,7 @@ on top of that 除此以外
 
 ![](Pics/speaking011.png)
 
-准备时间15秒
+**准备时间15秒**
 
 ![](Pics/speaking012.png)
 
@@ -589,7 +595,7 @@ synergy 协同工作
 
 ![](Pics/speaking040.png)
 
-不需要conclusion
+**所有口语题目都不需要conclusion**，summarize即可
 
 ![](Pics/speaking041.png)
 
