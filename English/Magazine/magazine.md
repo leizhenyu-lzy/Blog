@@ -2,6 +2,117 @@
 
 [toc]
 
+## 20240103 It's harder to save money than it was in the past
+
+In my opinion, saving money has indeed become more challenging compared to the past. And there are several factors contributing to this issue.
+
+Firstly, the cost of living has significantly increased over the past decade. Housing, eduction, healthcare are all becoming more and more expensive and you can not
+
+
+ really save money in these areas. It seems that the inflation is always faster than the increase of your income.
+
+Secondly, nowadays people are constantly exposed to new products and services on the Internet. When you are surfing on TikTok or simply reading an article, you will inevitably see a lot of ads which will trigger your desire to buy stuff that you do not actually need.
+
+In conclusion, it is much harder to save money in the modern era.
+
+
+## 20240102 Inflated Hopes - Japan's economy
+
+animal spirits 野性精神
+
+long-awaited opportunity
+
+be giddy about 发狂，举止反常
+
+build up big holdings股份
+
+asset manager
+
+pilgrimage朝圣
+
+prime minister首相
+
+dent损害，伤害 investors' optimism
+
+false dawn黎明
+
+bubble bursting
+
+deflation， low inflation， stagnation
+
+identify promising signs of change
+
+the sun peep露出 over the horizon
+
+the most palpable可感知的 shock
+
+duly适当地；恰当地
+
+audacious大胆的 monetary货币的 easing宽松
+
+albeit尽管；虽然
+
+a healthier cycle of wage and consumption growth
+
+geopolitical地理政治学的
+
+spur a new wave of investment
+
+reconfiguration of regional supply chains供应链
+
+corporate-governance reform 公司治理改革
+
+a promising new phase
+
+institutional investors机构投资者
+
+put pressure on
+
+policymaker，executives，politicians
+
+nurture the green shoots of dynamism
+
+unwind放松 unorthodox非传统 monetary policies
+
+suffocate（使）窒息而死 the nascent新生的 inflation
+
+highly indebted government
+
+versed精通的
+
+at the substance
+
+status quo现状；原来的状况
+
+maneuver操控
+
+hoard贮藏 cash
+
+turn words into deeds
+
+revise tax codes
+
+zombie incumbent在职者；现任者
+
+risk-taking investors
+
+behind the wheel
+
+convertible活动顶篷式汽车
+
+way back in xxxx
+
+way better
+
+in hindsight
+
+see the light of day
+
+hit a bullseye 直中靶心
+
+effusive太动感情的；奔放的
+
+
 
 ## 20231205 Oxford’s 2023 Word of the Year Is ... 'Rizz'
 
