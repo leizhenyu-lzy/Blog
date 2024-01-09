@@ -2,6 +2,16 @@
 
 [toc]
 
+## 20240109 Mandarin - 满大人？
+
+英文 Mandarin (中国国语/官话/普通话/华语) 源自葡文 Mandarim ，而葡文 Mandarim 源自马来文 menteri (朝臣、部长)，而马来文 menteri 又源自梵文 mantrin (部长)
+
+Mandarin 绝非甚么「满大人」的音译，当时满洲人尚未入关，中原还是大明的天下，而且当时满洲族仍称女真族，满洲族之名是皇太极改后金国号为清时一并改的
+
+十六世纪末至十七世纪初的来华传教士利玛窦就用 Mandarim 的拉丁文转写 Mandarinos 来称呼明朝的官员，尤其是与他交好的士大夫
+
+Mandarim在清初时有了引申义：由单纯指中国官员，变成兼指中国官员所说的语言，即中国官话。后来引申义变得比原义更通用。
+
 ## 20240103 It's harder to save money than it was in the past
 
 In my opinion, saving money has indeed become more challenging compared to the past. And there are several factors contributing to this issue.
