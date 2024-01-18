@@ -2,6 +2,377 @@
 
 [toc]
 
+## 20240118 "Little Luxuries": The affordable treats driving consumer spending
+
+[Economic Downturn](https://www.bilibili.com/video/BV1f5411i7ZH/)
+
+the data of traveling and consumptions
+
+reportedly have bounced back
+
+economic downturn
+
+consumption downgrade
+
+eyebrow pencil
+
+litter luxuries
+
+the affordable treats
+
+drive consumer spending
+
+stave off避开，推迟 a recession
+
+tighten the belt
+
+surge = skyrocket = hike = spike = soar 激增
+
+prolonged economic uncertainty
+
+lipstick index口红指数
+
+relative affordable splurges乱花钱；糟蹋钱；挥霍
+
+small cosmetics and perfumes
+
+budget-conscious consumers
+
+big-ticket items大件
+
+sluggish萧条的
+
+encompass包含
+
+drive robust growth
+
+luxury-feeling products
+
+tap into进入、利用 re-sale market
+
+a broad sector of 广泛群体
+
+snap up抢购
+
+fall through失败
+
+slack off摸鱼 on training
+
+roll out推出、发布 new product line
+
+lay out布局 the schedule
+
+
+
+## 20240118 How reading can change our lives ? - TED
+
+[How reading can change our lives?](https://www.bilibili.com/video/BV1494y1T7S1/)
+
+lagging/leading indicator
+
+stock price
+
+franchise特许经销权 value
+
+proprietary专卖的；专营的
+
+a lonely, idiosyncratic异质的 undertaking事业
+
+fill the void
+
+feel racially conscious
+
+indict起诉
+
+conviction判罪
+
+fight for the right to vote
+
+Mississippi Delta
+
+segregate隔离
+
+guidance counselor辅导员
+
+introspective内省的
+
+depressing
+
+zealous optimist
+
+have a prestigious有威望的 law degree
+
+progress/regress
+
+mysterious and gorgeous
+
+teach oneself to read and write
+
+put sb in a kind of panic
+
+school days
+
+free of worry
+
+run away with 相信
+
+chancy有风险的；不确定的
+
+earn the living
+
+avenge-为他人复仇
+revenge-报私仇
+
+
+
+## 20240118 Maximizing your Personal Brand-Communicating Who You Are to Help Get What You Want
+
+[最大化你的品牌, 如何建立个人品牌?](https://www.bilibili.com/video/BV1tC4y1Y7TG/)
+
+economic benefits and disadvantages
+
+measure quantifiedly
+
+make rational/irrational choices
+
+parents view
+
+commitment
+
+sports apparel运动服装
+
+consultant speaker
+
+personal brand
+
+brand equity品牌资产
+
+synonym for reputation
+
+trademark
+
+dive into
+
+reputation managemnet
+
+methodology
+
+mirror back
+
+in your industry or field
+
+strategic thinker
+
+package up
+
+share a passion for strategic communication
+
+stategic leverage杠杆作用
+
+add some insight
+
+feel intimidating令人胆怯的
+
+who you are jealous of
+
+jealousy can be a clue
+
+stick pins in the voodoo doll巫毒娃娃
+
+resonate and connect with
+
+create the outline
+
+kill two birds with one stone
+
+take advantage of leverage
+
+fear of missing out害怕错过心理
+
+come up with the concept
+
+tactical
+
+put myself in situations
+
+guiding principle/passion
+
+develop expertise
+
+put a stake in the ground认真对待
+
+have the integrity of legitimate knowledge
+
+at a fundamental level
+
+a recognized公认的 expert
+
+at scale大规模
+
+content creation
+
+intellectual property
+
+amplification device
+
+social proof
+
+in the next step in their career
+
+expand ones purview视野
+
+take on more responsibility
+
+Silicon Valley
+
+theoretically encourage
+
+discretionary自行决定的；酌情行事的；便宜行事的 activity
+
+ubiquitous似乎无所不在的；十分普遍的
+
+muck around游手好闲；游荡
+
+set the agenda
+
+a big chunk of time
+
+keep developing myself
+
+unfold逐渐展现；展示；透露
+
+assiduous 兢兢业业，勤勤恳恳
+
+per se 本身；本质上
+
+career-centered
+
+deep diving into
+
+Barack Obama
+
+emotions are contagious
+
+control own physiology
+
+demeanor外表；风度；行为；举止
+
+## 20240110 Character.ai: Young people turning to AI therapist bots
+
+[Character.ai: Young people turning to AI therapist bots](https://www.bbc.com/news/technology-67872693)
+
+therapist 临床医学家；治疗师；物理治疗
+
+persona n.角色；人物
+
+create chatbots based on fictional or real people
+
+be more in demand than
+
+help with life difficulties 帮助解决生活中的困难
+
+San Francisco Bay area firm
+
+more interested in role-playing for entertainment
+
+by far the most popular mental health character
+
+sharing glowing reviews 分享热情洋溢的评论
+
+be really positively affected by
+
+utilize it as a source of comfort
+
+in his words
+
+the emerging trend of AI therapy and why it appeals to young people
+
+less daunting than picking up the phone or having a face-to-face conversation
+
+fails to gather all the information a human would and is not a competent therapist
+
+high levels of mental ill health and a lack of public resources
+
+odd place for a therapeutic revolution to take place
+
+chat logs are private to users
+
+the underlying technology called a Large Language Model (LLM)
+
+LLMs act like predicted text messages by stringing words together in ways in which they are most likely to appear in other writing on which the AI has been trained
+
+site is rated mature because of its sexual nature
+
+psychologists warn that AI bots may be giving poor advice to patients
+
+have ingrained biases against race or gender
+
+tentatively accept them as tools to be used to help cope with high demands on public services
+
+## 20240109 First major renovation of Inner Ring Road underway
+
+underway 已经开始；在进行中
+
+busy traffic flow on Inner Ring Road
+
+orbital motorways encircling downtown areas
+
+help reduce traffic volume in urban cores and connect suburbs with efficient travel
+
+launch a major facelift 翻新，整修
+
+circumferential 
+
+change the traveling mode of local citizens from the ground to the overhead road
+
+a dividing line for the city's housing prices
+
+it comprises the city's main traffic network
+
+a trial project for a complete facelift
+
+a demonstration for ensuing renovations of its old infrastructure facilities
+
+the surging number of cars has damaged bridge structures and put great pressure on its maintenance
+
+structures will be reinforced and cracks will be fixed
+
+ancillary辅助的；补充的 facilities
+
+be upgraded with cutting-edge technologies
+
+be integrated more harmoniously into the surroundings
+
+refurbish 再装修；清理装修
+
+prefabricated 预制的；用预制构件组装的
+
+cause no congestion on nearby roads
+
+the opening of the Pudong section
+
+at the top of the city government's agenda
+
+to facilitate rapid urban development and relieve major traffic jams in the downtown area
+
+effectively prevented traffic congestion in downtown areas by distributing a large among of vehicles
+
+## 20240109 Super spreader mall ordered to close up shop
+
+Super spreader 超级传播者
+
+suspend operations
+
+be subject to further judicial investigations 司法调查
+
+lax不严格的；不严厉的；马虎的 anti-virus measures
+
+QR code (Quick Response Code)
+
+examine their health information
+
+be listed as a medium-risk area
+
 ## 20240109 Mandarin - 满大人？
 
 英文 Mandarin (中国国语/官话/普通话/华语) 源自葡文 Mandarim ，而葡文 Mandarim 源自马来文 menteri (朝臣、部长)，而马来文 menteri 又源自梵文 mantrin (部长)

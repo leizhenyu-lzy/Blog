@@ -617,6 +617,8 @@ synergy 协同工作
 
 [带你7节课突破托福口语！](https://www.bilibili.com/video/BV1zb4112737/)
 
+
+
 # 7节课突破30分托福写作-独立写作 30min
 
 [7节课突破30分托福写作-独立写作 2019-09-27](https://www.bilibili.com/video/BV1UJ411T7oN/)
@@ -930,11 +932,18 @@ ending 如果没有时间可以省略，考官更注重之前的论证
 
 ![](Pics/writing080.png)
 
-听力材料永远反对阅读材料，结构一一对应
+**听力材料永远反对阅读材料，结构一一对应**
 
 ![](Pics/writing081.png)
 
-草稿纸准备
+**草稿纸准备**，先看到3分钟阅读材料
+
+重要性
+1. main idea
+2. summary
+3. details
+
+
 
 ![](Pics/writing082.png)
 
@@ -951,6 +960,9 @@ ending 如果没有时间可以省略，考官更注重之前的论证
 
 ![](Pics/writing087.png)
 
+先有 expectation 不要记录每一个细节。
+还是要抓住main idea，其次才是main idea
+ 
 ![](Pics/writing088.png)
 
 ![](Pics/writing089.png)
@@ -964,6 +976,17 @@ ending 如果没有时间可以省略，考官更注重之前的论证
 ![](Pics/writing093.png)
 
 **写作结构**
+
+cite 3 reasons to support the viewpoint that
+
+reading/listening material
+author - lecturer
+
+argue
+offer an opposite stand
+cast doubt on
+be counteracted by
+oppose the point
 
 ![](Pics/writing094.png)
 
@@ -996,4 +1019,9 @@ ending 如果没有时间可以省略，考官更注重之前的论证
 ![](Pics/writing103.png)
 
 ![](Pics/writing104.png)
+
+
+# 7节课突破30分托福写作 - 学术讨论 Academic Discussion 独立写作 大作文
+
+[【TOEFL119斯坦福学长】7节课突破30分托福写作 - 学术讨论](https://www.bilibili.com/video/BV1UJ411T7oN/)
 
