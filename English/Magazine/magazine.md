@@ -2,9 +2,89 @@
 
 [toc]
 
+## 20240120 Mourning China's boom years
+
+[Mourning China's boom years](https://zhuanlan.zhihu.com/p/677682120)
+
+
+
+## 20240119 China is NOT What I Expected
+
+[China is NOT What I Expected](https://www.youtube.com/watch?v=b5FtjD2I8es)
+
+rich in culture
+
+famous for hard-working people and ancient history
+
+be limited to what I have heard
+
+maglev = magnetic levitation
+
+drool流口水
+
+omelet煎蛋卷
+
+a peek一瞥 into daily life
+
+roller coaster过山车
+
+stroll around闲逛 = wander = amble
+
+dig a little deeper into
+
+scallion = green onion
+
+soy sauce酱油
+
+bun小圆面包
+
+cameras on literally every single corner
+
+general friendliness
+
+payment methods
+
+meat skewer肉串
+
+mush软稠的一摊；糊状物
+
+alleyway小巷；窄街
+
+bubble tea珍珠奶茶
+
+whipped cream
+
+smoothie水果沙冰；鲜果奶昔
+
+worries fizzle out成为泡影
+
+genuine moment of joy and achievement
+
+outside of our comfort zones
+
+throw ourselves into the unexpected
+
+defy the warnings
+
+the heartbeat of a country
+
+be rewarded with beautiful experiences
+
+hospitality
+
+gracious welcome
+
+soaring skyscrapers
+
+bustling streets
+
+entrepreneurial activity
+
 ## 20240118 "Little Luxuries": The affordable treats driving consumer spending
 
 [Economic Downturn](https://www.bilibili.com/video/BV1f5411i7ZH/)
+
+pros and cons
 
 the data of traveling and consumptions
 
@@ -54,13 +134,17 @@ a broad sector of 广泛群体
 
 snap up抢购
 
-fall through失败
+fall through失败 due to the disagreements on pricing
 
 slack off摸鱼 on training
+
+struggle with the upcoming challenges
 
 roll out推出、发布 new product line
 
 lay out布局 the schedule
+
+lay out the budget
 
 
 

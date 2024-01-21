@@ -8,7 +8,7 @@
 
 [考满分 备考指南](https://toefl.kmf.com/learn/beikao)
 
-
+[Vince9120 - B站主页](https://space.bilibili.com/396671281/)
 
 # 托福备考经验 + 改革
 
@@ -161,6 +161,17 @@
 
 # 写作
 
+[托福写作（综合和独立），模板和建议](https://www.bilibili.com/video/BV1UE411E731/)
+
+[托福写作新题型 | 学术讨论写作怎么分配考试时间？](https://www.bilibili.com/video/BV1Tr4y197Ms/)
+
+
+[托福写作新题型 | 手把手教你写满分范文-学术讨论写作](https://www.bilibili.com/video/BV1hh4y1d73d/)
+
+[托福写作 | 2023年12月托福综合写作考情汇总与分析](https://www.bilibili.com/video/BV1ei4y1a7ja/)
+
+[【Vince】7节课突破30分托福写作 - 学术讨论](https://www.bilibili.com/video/BV1UJ411T7oN/)
+
 句式变换
 1. 形式主语
 2. 动名词作主语
@@ -188,9 +199,22 @@
 
 # 口语
 
-20240106-20231112
+[托福口语 TPO 1-75 Sample合集](https://www.bilibili.com/video/BV12P411U7Lc/)
 
+[托福口语task1-4，模板和建议](https://www.bilibili.com/video/BV1b7411t7Vr/)
 
+[TOEFL Practice Test](https://www.bilibili.com/video/BV11B4y197f5)
 
+[托福口语真题专项精讲班（含讲义）TOEFL Speaking Practice - B站视频](https://www.bilibili.com/video/BV1ca4y1V7k8/)
 
+[【晗啸托福口语全指南】导论-基础班](https://www.bilibili.com/video/BV1ju4y1n7k9/)
 
+[【TOEFL118斯坦福学长】带你7节课突破托福口语！- Vince](https://www.bilibili.com/video/BV1zb4112737/)
+
+[TPO30-托福口语范例 - 晗啸托福英语](https://www.bilibili.com/video/BV1eh4y1e7Er/)
+
+[考满分 托福口语 知识点讲解](https://toefl.kmf.com/learn/speaking)
+
+# 词汇
+
+[精选100句记7000托福单词](https://www.bilibili.com/video/BV1Yu4y1a7uU/)

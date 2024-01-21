@@ -12,6 +12,8 @@ Graduate Record Examination
 
 [一个视频搞懂GRE备考 | 北大学姐](https://www.bilibili.com/video/BV1gL4y1P7NG/)
 
+[【GRE332+4.0｜211学姐自学GRE超详细经验分享】](https://www.bilibili.com/video/BV1C54y1G75q/)
+
 考试时长 ≈ 3h 45min
 
 GRE 达到官网平均分即可 
