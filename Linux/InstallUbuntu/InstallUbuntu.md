@@ -7,6 +7,15 @@
 跟着这个视频做就好，很清楚
 [Windows 和 Ubuntu 双系统的安装和卸载 --- 机器人工匠阿杰](https://www.bilibili.com/video/BV1554y1n7zv)
 
+分区
+1. 引导区
+2. Swap - 内存交换区 - 通常设置的比物理内存大一点
+3. 根挂载点 / - 相当于 Windows C盘
+4. home挂载点 /home
+
+500GB - 500MB+20GB+200GB+其他
+
+
 ## 雷蛇
 
 ### 查看BIOS模式
