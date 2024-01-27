@@ -1046,7 +1046,13 @@ sudo apt install git
 
 可以根据 GitInShell.md 文章进行美化可显示分支
 
+```bash
+git config --global --list
 
+git config --global user.name leixxxx-lzy
+
+git config --global user.email lzyxxx@gmail.com
+```
 
 
 
