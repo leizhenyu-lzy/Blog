@@ -1163,6 +1163,9 @@ wget http://fishros.com/install -O fishros && . fishros
 [免费下载 Krita](https://krita.org/zh/download-zh/krita-desktop-zh/)
 
 
+# Spark应用商店
+
+[Spark应用商店](https://spark-app.store/)
 
 # Docker
 
