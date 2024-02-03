@@ -67,19 +67,7 @@ sudo apt clean
 
 然后换源，我是从中科大换成阿里解决的
 
-# 卸载无用软件
 
-```bash
-sudo apt remove thunderbird*
-sudo apt remove firefox*
-sudo apt remove libreoffice-common
-sudo apt remove libreoffice*
-sudo apt remove rhythmbox*
-```
-
-感觉22.04的libreoffice还行，就没卸载
-
-卸载相关小游戏
 
 
 
@@ -312,24 +300,7 @@ qt5 : sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qtcreat
 
 
 
-
-
-
-
-
-
-
-
-暴力猴+Bilibili插件[强大的哔哩哔哩增强脚本](https://github.com/the1812/Bilibili-Evolved)
-
-
-
 xdm(idm替代)[xdm官网](https://xtremedownloadmanager.com/)[xdm插件安装教程](https://microsoftedge.microsoft.com/addons/search/xdm-browser-monitor)
-
-## ROS
-
-鱼香ROS一键安装指令
-wget http://fishros.com/install -O fishros && . fishros
 
 ## miniconda
 
@@ -446,77 +417,9 @@ ctrl+b + : + list-keys 查看所有快捷键
 
 ctrl+b + : + set-options -g
 
-## 镜像制作
 
-[Ubuntu 22.04 System Backup and Restore](https://linuxconfig.org/ubuntu-22-04-system-backup-and-restore)
 
-[打包自己的ubuntu镜像](https://www.bilibili.com/video/BV1ve411N7fh/)
 
-如何将自己的ubuntu系统打包为ISO镜像，视频中用到的命令：
-1、安装systemback
-sudo add-apt-repository ppa:nemh/systemback #添加源
-sudo apt-get update
-sudo apt-get install systemback unionfs-fuse # 安装systenback
-2、 制作镜像
-mkdir sblive
-tar -xf /home/myubuntu.sblive -C sblive
-
-mv sblive/syslinux/syslinux.cfg sblive/syslinux/isolinux.cfg
-mv sblive/syslinux sblive/isolinux
-wget https://nchc.dl.sourceforge.net/project/cdrtools/alpha/cdrtools-3.02a07.tar.gz
-
-tar -xzvf cdrtools-3.02a07.tar.gz
-cd cdrtools-3.02
-
-make
-make install
-
-/opt/schily/bin/mkisofs -iso-level 3 -r -V sblive -cache-inodes -J -l -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -c isolinux/boot.cat -o sblive.iso sblive
-
-## GNOME美化+窗口分屏
-
-[如何使用 GNOME Shell 扩展](https://linux.cn/article-9447-1.html)
-
-```bash
-sudo apt install gnome-tweaks
-```
-
-重启
-
-gnome-tweaks 打开 或
-
-![](Pics/gnome01.png)
-
-gnome-shell --version
-GNOME Shell 42.5
-
-[GNOME Shell 集成 浏览器 Extensions](https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep)
-
-安装主机连接器
-sudo apt install chrome-gnome-shell
-
-[Ubuntu桌面美化教程（GNOME Tweak Tool安装教程）](https://blog.csdn.net/qq_35395195/article/details/125266461)
-
-[GNOME扩展网站](https://extensions.gnome.org/)
-
-[Netspeed 插件](https://extensions.gnome.org/extension/4478/net-speed/)
-[Vitals 插件](https://extensions.gnome.org/extension/1460/vitals/)
-[Applications menu 插件](https://extensions.gnome.org/extension/6/applications-menu/)
-[Extension List 插件](https://extensions.gnome.org/extension/3088/extension-list/)
-[Clipboard Indicator 插件](https://extensions.gnome.org/extension/779/clipboard-indicator/)
-[gTile 分屏插件](https://extensions.gnome.org/extension/28/gtile/)
-[gTile 分屏插件 Github](https://github.com/gTile/gTile)
-
-[GNOME 桌面必备扩展](https://www.cnblogs.com/keatonlao/p/12686234.html)
-
-[《完全用Linux工作》作者：王垠](https://www.cnblogs.com/skyseraph/archive/2010/10/30/1865280.html)
-[谈 Linux，Windows 和 Mac 作者：王垠](http://www.yinwang.org/blog-cn/2013/03/07/linux-windows-mac)
-[用 Linux 为主力系统，也能有 Windows 一样的使用体验](https://sspai.com/post/38895#!)
-
-```
-WARNING: The candidate selected for download or install is a yanked version: 'opencv-contrib-python' candidate (version 3.4.2.16 at https://files.pythonhosted.org/packages/08/f1/66330f4042c4fb3b2d77a159db8e8916d9cdecc29bc8c1f56bc7f8a9bec9/opencv_contrib_python-3.4.2.16-cp36-cp36m-manylinux1_x86_64.whl#sha256=8de56394a9a3cf8788559032c2139c622ffdc7e37c32215ec865b4e1cd2ca70d (from https://pypi.org/simple/opencv-contrib-python/))
-Reason for being yanked: Release deprecated
-```
 
 ## 添加字体
 
@@ -548,46 +451,10 @@ Ubuntu Mono 中英文可以对齐
 
 'Source Han Sans HW SC'
 
-## checksum
 
-### 软件
 
-[How to Verify Checksum on Linux [Beginner Guide]](https://itsfoss.com/checksum-tools-guide-linux/)
 
-```bash
-sudo apt install gtkhash
-```
 
-![](Pics/checksum01.png)
-
-### 命令行
-
-```bash
-lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz 
-a58954ed6732eb799502e14b250ead8b21e00c3f064e196ada34dcd6a3a3f399  /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
-```
-
-# 垃圾清理
-
-## 清除 根目录
-
-[Linux / 清理空间的几个方法](https://zhuanlan.zhihu.com/p/347876565)
-
-记得 sudo
-
-## 清除 miniconda
-
-```bash
-du -sh *  # 进入miniconda目录，通过命令查看当下目录的所占内存
-
-conda clean -p    # 删除没有用的包（推荐）
-```
-
-# 电池查看
-
-![](Pics/battery001.png)
-
-[查看笔记本电池损耗情况](https://blog.csdn.net/qq_37623240/article/details/82916864)
 
 # apt 目录位置
 
@@ -658,22 +525,7 @@ sudo dpkg -i xdman_gtk_8.0.29_amd64.deb
 
 
 
-# 终端补全忽略大小写
 
-```bash
-# 在/etc/inputrc中添加使全局所有用户生效
-echo 'set completion-ignore-case on' >> /etc/inputrc
-
-# 对于个别用户，则可以在用户home目录下添加
-echo 'set completion-ignore-case on' >> ~/.inputrc
-```
-
-如果显示权限不够，就直接 sudo gedit 打开文件改
-
-
-# Change Server
-
-Software & Updates -> Ubuntu Software -> Download from : http://mirrors.aliyun.com/ubuntu
 
 # 显卡驱动安装
 
@@ -1306,10 +1158,53 @@ gpustat
 wget http://fishros.com/install -O fishros && . fishros
 ```
 
+# Kirta
+
+[免费下载 Krita](https://krita.org/zh/download-zh/krita-desktop-zh/)
+
+
 
 # Docker
 
-[](https://docs.docker.com/desktop/install/ubuntu/)
+## 官方教程
+
+[Install Docker Desktop on Ubuntu - Docker官方](https://docs.docker.com/desktop/install/ubuntu/)
+1. Set up Docker's package repository. See step one of Install using the apt repository.[Install Docker Engine on Ubuntu - Docker官方](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+   1. Set up Docker's apt repository.
+      ```bash
+      # Add Docker's official GPG key:
+      sudo apt-get update
+      sudo apt-get install ca-certificates curl
+      sudo install -m 0755 -d /etc/apt/keyrings
+      sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+      sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+      # Add the repository to Apt sources:
+      echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      sudo apt-get update
+      ```
+   2. Install the Docker packages.
+      ```bash
+      sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+      ```
+   3. Verify that the Docker Engine installation is successful by running the hello-world image.
+      ```bash
+      sudo docker run hello-world
+      ```
+2. Download latest DEB package.
+3. Install the package with apt as follows:
+   ```bash
+   sudo apt-get update
+   sudo apt-get install ./docker-desktop-<version>-<arch>.deb
+   ```
+
+
+
+
+## 其他安装教程
 
 ```bash
 sudo apt update                              # 升级 apt
@@ -1321,7 +1216,9 @@ docker ps -a
 docker run hello-world
 ```
 
-可能出现的下面的问题导致上面的下两行命令需要sudo，进而导致vscode中无法正常使用
+## 常见问题
+
+### docker run 命令需要 sudo，导致 vscode 中无法正常使用
 
 ```text
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1": dial unix /var/run/docker.sock: connect: permission denied
@@ -1333,7 +1230,7 @@ permission denied while trying to connect to the Docker daemon socket at unix://
 sudo chmod 666 /var/run/docker.sock
 ```
 
-其他可能出现的问题 - vscode没有运行docker的permission
+### vscode没有运行docker的permission
 
 ```bash
 sudo groupadd docker             # 创建docker组，如果提示groupadd: group 'docker' already exists，表示这个组之前已经创建
@@ -1341,9 +1238,9 @@ sudo usermod -aG docker $USER    # 添加你的用户到docker组中
 newgrp docker                    # 在终端中输入下面的命令更新组
 ```
 
-其他可能的问题 - docker-desktop : Depends: docker-ce-cli but it is not installable
+### docker-desktop : Depends: docker-ce-cli but it is not installable
 
-[Install using the apt repository](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+[Install using the apt repository - Docker官方](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 
 ```bash
 sudo apt install -y ca-certificates curl gnupg lsb-release
@@ -1356,7 +1253,9 @@ echo \
 sudo apt update
 ```
 
+### 无法登录 docker desktop
 
+[Sign in to Docker Desktop - Docker官方](https://docs.docker.com/desktop/get-started/#credentials-management-for-linux-users)
 
 
 # 小技巧
@@ -1415,6 +1314,109 @@ unzip -O CP936 xxx.zip
 # -O CHARSET  specify a character encoding for DOS, Windows and OS/2 archives
 ```
 
+## 电池查看
+
+![](Pics/battery001.png)
+
+[查看笔记本电池损耗情况](https://blog.csdn.net/qq_37623240/article/details/82916864)
+
+
+## 终端补全忽略大小写
+
+```bash
+# 在/etc/inputrc中添加使全局所有用户生效
+echo 'set completion-ignore-case on' >> /etc/inputrc
+
+# 对于个别用户，则可以在用户home目录下添加
+echo 'set completion-ignore-case on' >> ~/.inputrc
+```
+
+如果显示权限不够，就直接 sudo gedit 打开文件改
+
+
+## 更换Linux源
+
+Software & Updates -> Ubuntu Software -> Download from : http://mirrors.aliyun.com/ubuntu
+
+## GNOME 美化 + 窗口分屏
+
+[GNOME Extensions 商店](https://extensions.gnome.org/)
+
+[如何使用 GNOME Shell 扩展](https://linux.cn/article-9447-1.html)
+
+[GNOME 桌面必备扩展推荐](https://www.cnblogs.com/keatonlao/p/12686234.html)
+
+```bash
+sudo apt install gnome-tweaks
+sudo apt install chrome-gnome-shell # 安装主机连接器
+gnome-shell --version               # GNOME Shell 42.9
+
+gnome-tweaks
+```
+
+[GNOME Shell 集成 浏览器 Extensions](https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep)
+
+[Ubuntu桌面美化教程（GNOME Tweak Tool安装教程）](https://blog.csdn.net/qq_35395195/article/details/125266461)
+
+推荐插件
+1. [Netspeed - 显示网速](https://extensions.gnome.org/extension/4478/net-speed/)
+2. [Clipboard Indicator - 显示剪贴板](https://extensions.gnome.org/extension/779/clipboard-indicator/)
+3. [gTile - 分屏](https://extensions.gnome.org/extension/28/gtile/)、[gTile 分屏插件 Github](https://github.com/gTile/gTile)
+4. [Extension List - 顶栏查看插件](https://extensions.gnome.org/extension/3088/extension-list/)
+5. [Removable Drive Menu - 弹出U盘](https://extensions.gnome.org/extension/7/removable-drive-menu/)
+6. [Sound Input & Output Device Chooser - 音频选择](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
+7. [Applications menu 插件 - 快捷应用](https://extensions.gnome.org/extension/6/applications-menu/)
+8. [Vitals 插件 - 温度、电压、风扇](https://extensions.gnome.org/extension/1460/vitals/)
+
+
+## checksum
+
+### 软件
+
+[How to Verify Checksum on Linux [Beginner Guide]](https://itsfoss.com/checksum-tools-guide-linux/)
+
+```bash
+sudo apt install gtkhash
+```
+
+![](Pics/checksum01.png)
+
+### 命令行
+
+```bash
+lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz 
+a58954ed6732eb799502e14b250ead8b21e00c3f064e196ada34dcd6a3a3f399  /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
+```
+
+
+## 卸载无用软件
+
+```bash
+sudo apt remove thunderbird*
+sudo apt remove firefox*
+sudo apt remove libreoffice-common
+sudo apt remove libreoffice*
+sudo apt remove rhythmbox*
+```
+
+卸载相关小游戏
+
+## 垃圾清理
+
+### 1 清除 根目录
+
+[Linux / 清理空间的几个方法](https://zhuanlan.zhihu.com/p/347876565)
+
+记得 sudo
+
+## 2 清除 miniconda
+
+```bash
+du -sh *  # 进入miniconda目录，通过命令查看当下目录的所占内存
+
+conda clean -p    # 删除没有用的包（推荐）
+```
+
 
 
 
@@ -1422,7 +1424,13 @@ unzip -O CP936 xxx.zip
 
 软件列表
 1. Edge
+   1. 暴力猴 + [强大的哔哩哔哩增强脚本](https://github.com/the1812/Bilibili-Evolved)
 2. VScode
+   1. [解决 Unable to resolve your shell environment in a reasonable time.](https://www.jianshu.com/p/b669dac20e02)
+      ```
+      Unable to resolve your shell environment in a reasonable time.
+      Please review your shell configuration and restart.
+      ```
 3. Clash
 4. 欧路词典
 5. drawio
@@ -1430,3 +1438,20 @@ unzip -O CP936 xxx.zip
 7. Sunlogin 向日葵
 8. Tencent Meeting
 9. 百度网盘
+
+
+
+
+
+
+
+
+# 杂
+
+[《完全用Linux工作》作者：王垠](https://www.cnblogs.com/skyseraph/archive/2010/10/30/1865280.html)
+[谈 Linux，Windows 和 Mac 作者：王垠](http://www.yinwang.org/blog-cn/2013/03/07/linux-windows-mac)
+[用 Linux 为主力系统，也能有 Windows 一样的使用体验](https://sspai.com/post/38895#!)
+
+
+
+
