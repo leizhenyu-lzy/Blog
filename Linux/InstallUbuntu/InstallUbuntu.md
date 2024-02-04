@@ -1162,6 +1162,25 @@ wget http://fishros.com/install -O fishros && . fishros
 
 [免费下载 Krita](https://krita.org/zh/download-zh/krita-desktop-zh/)
 
+# Remmina + FileZilla
+
+```bash
+sudo apt install remmina
+sudo apt install filezilla
+```
+
+# Cheese相机 + Shotwell
+
+```bash
+sudo apt install cheese
+sudo apt install shotwell
+```
+
+# meshlab
+
+```bash
+sudo apt install meshlab
+```
 
 # Spark应用商店
 
