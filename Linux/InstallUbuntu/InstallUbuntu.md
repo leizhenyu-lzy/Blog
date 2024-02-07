@@ -822,16 +822,7 @@ sudo apt install gnome-sound-recorder
 ```
 
 
-QtScrapy
-[QtScrcpy github](https://github.com/barry-ran/QtScrcpy/blob/dev/README_zh.md)
-[QtScrcpy ubuntu](https://juejin.cn/post/7069577232984834079)
-手机端操作
-1. 打开设置，下拉选项，找到最后一个，关于手机
-2. 在关于手机选项里，找到版本号，连点7次
-3. 之后会提示，已处于开发者模式
-   adb设置
-4. 设置中搜索adb
-5. 打开usb调试
+
 
 
 
@@ -934,6 +925,8 @@ Categories=Application;Development;
 ```
 
 # Clash 
+
+![](pics/clash.png)
 
 [Youtube - Linux科学上网 Ubuntu20.04LTS 配置科学上网环境|Clash客户端](https://www.youtube.com/watch?v=pTlso8m_iRk)
 
@@ -1178,6 +1171,8 @@ sudo apt install shotwell
 
 # meshlab
 
+![](pics/meshlab.png)
+
 ```bash
 sudo apt install meshlab
 ```
@@ -1279,6 +1274,61 @@ sudo apt update
 
 [Sign in to Docker Desktop - Docker官方](https://docs.docker.com/desktop/get-started/#credentials-management-for-linux-users)
 
+
+# QtScrcpy
+
+[QtScrcpy github](https://github.com/barry-ran/QtScrcpy/blob/dev/README_zh.md)
+
+[QtScrcpy Release 可以直接下载编译好的 .zip](https://github.com/barry-ran/QtScrcpy/releases)
+
+可能会遇到缺少包的情况，解决方法如下
+
+```bash
+sudo apt install libqt5multimedia5
+# sudo apt install qtcreator
+```
+
+运行程序命令(可能需要chmod)
+```bash
+/home/lzy/Tools/QtScrcpy-ubuntu-22.04-gcc_64/output/x64/Release/QtScrcpy
+```
+
+手机端操作
+1. 打开设置，下拉选项，找到最后一个，关于手机
+2. 在关于手机选项里，找到版本号(HarmonyOS)，连点
+3. 之后会提示，已处于开发者模式
+
+adb设置
+1. 设置中搜索adb
+2. 打开usb调试
+
+再做一下快捷方式
+
+icon location
+
+![](pics/QtScrcpy.png)
+
+```bash
+/usr/share/pixmaps/QtScrcpy.png
+```
+
+desktop file location
+
+```bash
+/usr/share/applications/QtScrcpy.desktop
+```
+
+```
+[Desktop Entry]
+Name=QtScrcpy
+Comment=QtScrcpy-ubuntu-22.04-gcc_64
+Type=Application
+Icon=/usr/share/pixmaps/QtScrcpy.png
+Exec=/home/lzy/Tools/QtScrcpy-ubuntu-22.04-gcc_64/output/x64/Release/QtScrcpy
+Terminal=false
+StartupNotify=true
+Categories=Application;Development;
+```
 
 # 小技巧
 
