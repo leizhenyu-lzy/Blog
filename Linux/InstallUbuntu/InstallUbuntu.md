@@ -343,16 +343,7 @@ pip install lxml -i https://pypi.tuna.tsinghua.edu.cn/simple/
 pip install labelImg -i https://pypi.tuna.tsinghua.edu.cn/simple/ （直接复制就可）
 ```
 
-## 微信
 
-[deepin-wine 微信](https://www.bilibili.com/video/BV1Vb4y1r79y)
-
-```
-官网：https://deepin-wine.i-m.dev/
-首次使用需要添加仓库： wget -O- https://deepin-wine.i-m.dev/setup.sh | sh
-而后使用： apt install ... 安装对应软件包
-应用图标需要注销重登录后才会出现
-```
 
 
 
@@ -769,7 +760,17 @@ pip3 config list
 
 # QQ
 
-[新版QQ](https://im.qq.com/linuxqq/index.shtml)
+[新版QQ官网](https://im.qq.com/linuxqq/index.shtml)
+
+# 微信(非官方版)
+
+该微信所有功能都能正常使用
+
+spark应用商店搜索下列链接
+
+```text
+spk://store/chat/com.qq.weixin.mejituu
+```
 
 # vlc
 
@@ -820,11 +821,6 @@ sudo apt install gthumb
 ```bash
 sudo apt install gnome-sound-recorder
 ```
-
-
-
-
-
 
 # Matlab
 
@@ -1059,6 +1055,8 @@ git config --global user.name leixxxx-lzy
 git config --global user.email lzyxxx@gmail.com
 ```
 
+
+# Git Credential Manager
 
 
 # Miniconda
