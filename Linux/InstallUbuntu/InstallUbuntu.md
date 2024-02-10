@@ -1058,6 +1058,12 @@ git config --global user.email lzyxxx@gmail.com
 
 # Git Credential Manager
 
+[Install instructions of Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md)
+
+```bash
+sudo dpkg -i <path-to-package>
+git-credential-manager configure
+```
 
 # Miniconda
 
