@@ -284,9 +284,6 @@ netease-cloud-music
 
 **apt install**
 
-meshlab
-
-kirta (P图)
 
 timeshift备份
 [Timeshift 系统备份和还原](https://blog.csdn.net/zjy1175044232/article/details/124248454)
@@ -295,12 +292,9 @@ alien rpm->deb
 qt5 : sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qtcreator
 
 
-
-
-
-
-
 xdm(idm替代)[xdm官网](https://xtremedownloadmanager.com/)[xdm插件安装教程](https://microsoftedge.microsoft.com/addons/search/xdm-browser-monitor)
+
+
 
 ## miniconda
 
@@ -778,6 +772,15 @@ spk://store/chat/com.qq.weixin.mejituu
 sudo snap install vlc
 ```
 
+# mpv
+
+[mpv 官网](https://mpv.io/)
+
+```bash
+sudo apt install mpv
+```
+
+
 # flameshot(截图软件，可以添加快捷键)
 
 ```bash
@@ -802,6 +805,13 @@ sudo apt install -y synaptic
 
 ```bash
 sudo snap install net-tools 
+```
+
+# ubuntu-restricted-extras(基本的媒体编解码器)
+ubuntu-restricted-extras 是一个包含各种基本软件
+如 Flash 插件、unrar、gstreamer、mp4、Ubuntu 中的 Chromium 浏览器的编解码器等的软件包。
+```bash
+sudo apt install ubuntu-restricted-extras
 ```
 
 # tree
@@ -1155,9 +1165,25 @@ gpustat
 wget http://fishros.com/install -O fishros && . fishros
 ```
 
-# Kirta
+# Krita
 
-[免费下载 Krita](https://krita.org/zh/download-zh/krita-desktop-zh/)
+![](Pics/krita.png)
+
+[下载 Krita](https://krita.org/zh-cn/download/)
+
+[snap 下载 Krita](https://snapcraft.io/krita)
+
+```bash
+sudo snap install krita
+```
+
+修改 .desktop 位于
+
+```bash
+/var/lib/snapd/desktop/icons
+```
+
+
 
 # Remmina + FileZilla
 
@@ -1181,13 +1207,42 @@ sudo apt install shotwell
 sudo apt install meshlab
 ```
 
+# ffmpeg
+
+```bash
+sudo apt install ffmpeg
+```
+
+# kazam - 简单录屏软件
+
+```bash
+sudo apt install kazam
+```
+
+# OBS
+
+[OBS Studio](https://obsproject.com/)
+
+[](https://github.com/obsproject/obs-studio/wiki/install-instructions#linux)
+
+```bash
+# xserver-xorg version 1.18.4 or newer is recommended
+# OpenGL 3.3 (or later) support is required to use OBS Studio on Linux
+# For virtual camera support, you need the v4l2loopback kernel module installed
+sudo apt install v4l2loopback-dkms
+
+sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt update
+sudo apt install obs-studio
+```
+
 # Spark应用商店
 
 [Spark应用商店](https://spark-app.store/)
 
 # Docker
 
-## 官方教程
+## 官方安装教程
 
 [Install Docker Desktop on Ubuntu - Docker官方](https://docs.docker.com/desktop/install/ubuntu/)
 1. Set up Docker's package repository. See step one of Install using the apt repository.[Install Docker Engine on Ubuntu - Docker官方](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
@@ -1344,6 +1399,18 @@ Categories=Application;Development;
 
 [订阅](https://ubuntu.com/pro/subscribe)
 
+## 音频管理
+
+pavucontrol
+
+```bash
+sudo apt install pavucontrol
+```
+
+在 playback 中 进行调整
+
+![](Pics/pauv.png)
+
 
 ## 快捷键设置
 
@@ -1443,6 +1510,17 @@ gnome-tweaks
 6. [Sound Input & Output Device Chooser - 音频选择](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
 7. [Applications menu 插件 - 快捷应用](https://extensions.gnome.org/extension/6/applications-menu/)
 8. [Vitals 插件 - 温度、电压、风扇](https://extensions.gnome.org/extension/1460/vitals/)
+
+
+## Snap应用商店
+
+Snap应用程序的快捷方式和图标通常存储在
+
+```bash
+/var/lib/snapd/desktop/applications/
+```
+
+修改 .desktop 文件 的 Icon 行
 
 
 ## checksum
