@@ -59,10 +59,8 @@ Docker 只是容器化的解决方案&平台
 2. 最流行的 - docker hub - 公共的，可上传和下载 镜像
 
 docker 使用 client-server 架构模式
-
-docker client 和 docker daemon(服务端的守护进程) 之间通过 socket 或 restful api 通信
-
-docker client 向 docker daemon 发送请求，docker daemon 接收到请求后进行处理，结果返回给 docker client
+1. docker client 和 docker daemon(服务端的守护进程) 之间通过 socket 或 restful api 通信
+2. docker client 向 docker daemon 发送请求，docker daemon 接收到请求后进行处理，结果返回给 docker client
 
 
 # Docker 安装
@@ -105,10 +103,88 @@ Server: Docker Desktop 4.28.0 (139021)
 
 ## 容器化 和 Dockerfile
 
-https://www.bilibili.com/video/BV14s4y1i7Vf?p=6
+containerization
+
+容器化三个步骤
+![](Pics/docker013.png)
+
+Dockerfile - 文本文件 - 包含指令，告诉 docker 构建应用程序镜像所需要的步骤和配置
+
+包含
+1. 精简版操作系统
+2. 应用程序的运行环境
+3. 应用程序
+4. 第三方依赖
+5. 配置文件
+6. 环境变量
 
 
-# 安装
+## 实践环节
+
+Dockerfile (D大写，无后缀)
+
+```docker
+FROM baseImage
+<!-- 指定基础镜像 -->
+
+COPY source dest
+<!-- 复制文件 源路径（相对Dockerfile） 目标路径（相对镜像） -->
+
+CMD 
+<!--  -->
+```
+
+```bash
+docker build -t [name] .
+# .表示当前目录
+```
+
+查看镜像位置
+```bash
+docker image ls
+# 或
+docker images
+```
+
+```bash
+lzy@Razer:/media/lzy/4D01-C671/Blog/Docker/HelloDocker (main)$ docker image ls
+REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
+hello-my-docker   latest    6d2dd257ed27   15 minutes ago   119MB
+```
+TAG - 版本(不指定默认为latest)
+
+
+```bash
+docker run [name]
+```
+
+如果想在另一环境运行，仅需复制镜像，再run
+
+也可以将镜像上传仓库，使用docker pull
+
+[Play with Docker 网站](https://labs.play-with-docker.com/#)
+
+可以使用命令行运行
+
+## Docker Desktop
+
+volumes - 逻辑卷
+
+docker容器中的数据不会持久化，容器停止后，所有数据会丢失
+
+如果想要持久化，则使用逻辑卷，可以将容器中的目录或指定路径映射到宿主机，保存在宿主机的磁盘中
+
+Dev Environments 用于配置开发环境
+
+## Docker Compose
+
+![](Pics/docker014.png)
+
+![](Pics/docker015.png)
+
+
+
+# 安装 Docker & Docker Desktop
 
 ## 官方安装教程
 
