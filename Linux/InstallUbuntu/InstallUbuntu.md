@@ -1010,7 +1010,7 @@ Procedure
    ```
 
 
-# beyondcompare 的安装和破解
+# beyond compare 安装和破解
 
 下载安装包：
 
@@ -1592,8 +1592,6 @@ conda clean -p    # 删除没有用的包（推荐）
 7. Sunlogin 向日葵
 8. Tencent Meeting
 9. 百度网盘
-
-
 
 
 
