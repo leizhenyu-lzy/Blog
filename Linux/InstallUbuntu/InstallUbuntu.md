@@ -1154,6 +1154,19 @@ sudo apt install gpustat
 gpustat
 ```
 
+# 硬件设备监控
+
+```bash
+sudo apt install psensor
+# Psensor 是一个图形化工具，能显示硬件的温度信息，包括CPU和硬盘
+sudo apt install gsmartcontrol 
+# GSmartControl 是一个图形用户界面的硬盘健康检查工具
+sudo apt install hardinfo
+# Hardinfo能提供一个系统信息的图形概览
+```
+
+
+
 # ROS
 
 [鱼香ROS机器人社区](https://fishros.com/)
