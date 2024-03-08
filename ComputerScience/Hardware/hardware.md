@@ -105,6 +105,118 @@ SATA & NVMe 对比
 AHCI还是基于传统的块传输。而NVMe使用了一种叫做“Doorbell”的机制来充分利用了极长的队列，大大减小了延迟。
 
 
+## [【硬核科普】硬盘的SATA M.2 NGFF NVME是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](https://www.bilibili.com/video/BV1Qv411t7ZL/)
+
+### 协议-总线-接口 总图
+
+![](Pics/hardware008.png)
+
+**常用接口**
+1. 民用：SATA、mSATA、SATA Express、M.2(B-Key & M-Key)、PCIe
+2. 企业：U.2、 SAS
+
+其中，**PCIe 总线的硬盘之间的接口大部分可以相互转换**
+
+![](Pics/hardware025.png)
+
+
+SATA 3.0 普及较广
+
+![](Pics/hardware017.png)
+
+$6Gbps × 8/10 = 6/8 GB/s × 8/10 = 0.6 GB/s = 600 MB/s$
+
+PCIe 3.0 4.0 普及较广 (PCIe 带宽和长度有关)
+
+![](Pics/hardware018.png)
+
+SAS 3.0 普及较广
+
+![](Pics/hardware019.png)
+
+$12Gbps × 8/10 = 12/8 GB/s × 8/10 = 1.2 GB/s$
+
+
+
+### SATA 接口
+
+使用 SATA 总线，AHCI 协议
+
+![](Pics/hardware014.png)
+
+民用 2.5寸机械硬盘、3.5寸机械硬盘、2.5寸固态硬盘 使用的都是该接口
+
+![](Pics/hardware015.png)
+
+SATA 接口 分为两部分
+1. 供电 - 接驳在电脑电源上
+2. 数据 - SATA数据线接驳在主板上
+
+速度上限 600 MB/s
+
+### mSATA 接口
+
+使用 SATA 总线，AHCI 协议
+
+诞生目的 - 给SATA接口的固态缩小体积
+
+![](Pics/hardware016.png)
+
+速率没有提升，没有前瞻性的提供高带宽，只是单纯的减少体积，因此在 M.2 接口普及后就消失了
+
+### SATA Express 接口
+
+PCIe × 2 总线，可以走 AHCI协议 或 NVMe协议
+
+![](Pics/hardware020.png)
+
+不够前瞻性，接口体积过于庞大，后被tao'tai
+
+### M.2 接口 (别名 NGFF)
+
+![](Pics/hardware021.png)
+
+走 SATA 总线 AHCI 协议，则和普通的 SATA 硬盘没有区别，速率限制在 500 MB/S
+
+可以走 PCIe 总线， AHCI 协议 或 NVMe 协议，速率上限由 PCIe 版本 和 长度 决定
+
+最常见的组合是 PCIe + NVMe
+
+M.2 接口
+1. B-Key(Socket2，豁口在左)，支持 SATA 总线 和 PCIe * 2
+2. M-Key(Socket3，豁口在右)，支持 SATA 总线 和 PCIe * 4
+
+无法通过外形判断支持什么协议
+
+### PCIe 接口
+
+PCIe 可以作为总线、传输通道，也可也以接口形式存在
+
+![](Pics/hardware022.png)
+
+目前直接以 PCIe 为接口的固态硬盘常见于超高性能等级以及企业级固态硬盘上，民用级固态硬盘还是以 M.2 为主
+
+### SAS 接口
+
+SAS 总线、SCSI协议，服务器上用的较多，可以理解为强化版 SATA 接口
+
+SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
+
+![](Pics/hardware023.png)
+
+由于直接在 SATA 接口上改款而来，**SAS 接口** 可以向下兼容 SATA 硬盘，走 AHCI
+
+而 SAS 硬盘本身是 SAS 总线，SCSI 协议
+
+### U.2 接口
+
+在 SAS 接口上继续改款
+
+![](Pics/hardware023.png)
+
+兼容 SAS、SATA
+
+额外提供 PCIe × 4 总线 支持
 
 # 南桥 & 北桥
 
