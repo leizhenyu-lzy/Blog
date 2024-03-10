@@ -279,6 +279,13 @@ docker network ls                查看网络列表
    sudo apt-get update
    sudo apt-get install ./docker-desktop-<version>-<arch>.deb
    ```
+4. config the proxy via docker-desktop which is same as the proxy of ubuntu (if using clash)
+5. [Sign in to Docker Desktop](https://docs.docker.com/desktop/get-started/#credentials-management-for-linux-users)  -- "Unable to log in You must initialize pass"
+   ```bash
+   gpg --generate-key
+   pass init xxxxxxx(between pub and uid)
+   ```
+
 
 ## 测试与 Docker Hub 的连通性
 

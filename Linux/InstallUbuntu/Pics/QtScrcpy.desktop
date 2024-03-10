@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=QtScrcpy
+Comment=QtScrcpy-ubuntu-22.04-gcc_64
+Type=Application
+Icon=/usr/share/pixmaps/QtScrcpy.png
+Exec=/home/lzy/Tools/QtScrcpy-ubuntu-22.04-gcc_64/output/x64/Release/QtScrcpy
+Terminal=false
+StartupNotify=true
+Categories=Application;Development;
+
