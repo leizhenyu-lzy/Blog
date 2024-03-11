@@ -1453,6 +1453,18 @@ unset WAYLAND_DISPLAYCOPY
 if [ "$XDG_SESSION_TYPE" = "wayland" ];
 ```
 
+# PlatformIO
+
+[PlatformIO IDE for VSCode](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode)
+
+[Linux: apt-get install python3-venv](https://github.com/platformio/platformio-core-installer/issues/85)
+
+```bash
+sudo apt install platformio
+pip3 install -U platformio
+
+pio upgrade
+```
 
 # DingTalk
 
