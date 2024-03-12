@@ -1434,6 +1434,17 @@ Categories=Application;Development;
 
 # Sunlogin 向日葵
 
+# FreeCAD
+
+[FreeCAD 官网](https://www.freecad.org/index.php)
+
+[Installing on Linux - FreeCAD Documentation](https://wiki.freecad.org/Installing_on_Linux)
+
+
+```bash
+sudo apt install freecad
+```
+
 # Tencent Meeting - only for gnome
 
 [](https://www.zhihu.com/question/538842265) - 摄像头，音频都正常 - 缺点：就是无法共享屏幕
