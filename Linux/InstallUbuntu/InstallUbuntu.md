@@ -1095,6 +1095,12 @@ sudo dpkg -i <path-to-package>
 git-credential-manager configure
 ```
 
+# clang
+
+```bash
+sudo apt install clang
+```
+
 # Miniconda
 
 [Miniconda 官网](https://docs.conda.io/projects/miniconda/en/latest/)
@@ -1130,6 +1136,65 @@ conda remove -n conda-old --all
 ```
 
 # neofetch
+
+# java
+
+安装 + 验证
+
+```bash
+# 安装
+sudo apt update
+sudo apt install openjdk-11-jdk
+
+# 验证
+java -version
+javac -version
+```
+
+配置优先级 + 查看java位置
+
+```bash
+lzy@legion:/media/lzy/4D01-C671/Blog (main)$ which java
+/usr/bin/java
+lzy@legion:/media/lzy/4D01-C671/Blog (main)$ ll /usr/bin/java
+lrwxrwxrwx 1 root root 22  3月  9 20:31 /usr/bin/java -> /etc/alternatives/java*
+# java是由alternatives管理的，即可以在系统中设置并切换多个jdk版本
+
+
+lzy@legion:/media/lzy/4D01-C671/Blog (main)$ sudo update-alternatives --config java
+There is only one alternative in link group java (providing /usr/bin/java): /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+Nothing to configure.
+```
+
+
+
+使用apt install安装，并没有把JAVA_HOME内置到环境变量
+
+配置环境变量 + 验证
+```bash
+sudo gedit /etc/environment
+JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+source /etc/environment
+echo $JAVA_HOME
+```
+
+卸载 openjdk-8
+```bash
+sudo apt remove openjdk-8-*
+```
+
+# mysql
+
+参考 DataBase 中的文章
+
+# unity
+
+[Install the Unity Hub on Linux](https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux)
+
+# unreal
+
+[
+安装虚幻引擎](https://docs.unrealengine.com/5.0/zh-CN/installing-unreal-engine/)
 
 # WPS Office
 
