@@ -36,7 +36,13 @@ Model = Deep Network
    1. 语言助手唤醒，需要模型够小（省电）
 7. 输入是文字时
    1. ![](Pics/dlhlp003.png)
+8. 输出是文字时
+   1. auto  regressive
+9. 输入输出同时是文字
+   ![](Pics/dlhlp004.png)
 
+
+**meta learning** = learn to learn
 
 
 
