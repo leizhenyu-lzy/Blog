@@ -419,7 +419,7 @@ Windows
 选择文件夹中的所有字体文件，右键单击其中任何一个，然后从菜单中选择 “安装”。
 
 Linux
-将字体解压缩到 ~/.local/share/fonts（或 **usr/share/fonts**，以在系统范围内安装字体）并执行 fc-cache -f -v
+将字体解压缩到 ~/.local/share/fonts（或 **/usr/share/fonts**，以在系统范围内安装字体）并执行 fc-cache -f -v
 
 重启您使用的 IDE
 转到 Preferences/Settings → Editor → Font ，然后从字体下拉列表中选择JetBrains Mono。
@@ -1095,11 +1095,33 @@ sudo dpkg -i <path-to-package>
 git-credential-manager configure
 ```
 
+# xmind
+
+[Xmind Download](https://xmind.app/download/)
+
+
+# 飞书
+
+[下载飞书客户端](https://www.feishu.cn/download)
+
+# 金山PDF(wine)
+
+Spark Store
+
+[金山PDF(wine)](spk://store/office/com.wpspdf.spark)
+
+可以将pdf拖拽进窗口来编辑
+
 # clang
 
 ```bash
 sudo apt install clang
 ```
+
+# GitKraken
+
+[GitKraken](spk://store/development/gitkraken)
+
 
 # Miniconda
 
@@ -1186,6 +1208,18 @@ sudo apt remove openjdk-8-*
 # mysql
 
 参考 DataBase 中的文章
+
+# steam
+
+[Github - canonical/steam-snap - FAQ](https://github.com/canonical/steam-snap/wiki/FAQ#32-bit-driver)
+
+```bash
+sudo snap install steam
+
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install libnvidia-gl-550:i386  # 不一定有
+```
 
 # unity
 
@@ -1333,6 +1367,14 @@ sudo apt install v4l2loopback-dkms
 sudo add-apt-repository ppa:obsproject/obs-studio
 sudo apt update
 sudo apt install obs-studio
+```
+
+# Audacity(音频)
+
+[Audacity Support](https://support.audacityteam.org/)
+
+```bash
+sudo apt install audacity
 ```
 
 # Spark应用商店
