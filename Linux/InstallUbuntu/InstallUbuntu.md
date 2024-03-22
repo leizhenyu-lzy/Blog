@@ -1122,6 +1122,11 @@ sudo apt install clang
 
 [GitKraken](spk://store/development/gitkraken)
 
+# Discord(需翻墙)
+
+```bash
+sudo snap install discord
+```
 
 # Miniconda
 

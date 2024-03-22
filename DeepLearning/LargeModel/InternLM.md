@@ -6,6 +6,8 @@
 [toc]
 
 
+
+
 # 书生·浦语 大模型实战营
 
 ![](Pics/InternLM003.png)
@@ -15,8 +17,6 @@
 [书生·浦语 大模型实战营(第二期)](https://github.com/InternLM/Tutorial/tree/camp2)
 
 [书生·浦语 大模型实战营(第一期)](https://github.com/internLM/tutorial)
-
-[](https://github.com/InternLM/Tutorial/blob/main/README.md)
 
 [书生·浦语 系列模型仓库](https://github.com/internLM/internLM/)
 

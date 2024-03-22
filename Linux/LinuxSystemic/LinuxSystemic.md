@@ -1,9 +1,49 @@
 # Linux Systemic
 
+<!-- TOC -->
+
+- [Linux Systemic](#linux-systemic)
+- [鸟哥的Linux私房菜 : 基础学习篇](#%E9%B8%9F%E5%93%A5%E7%9A%84linux%E7%A7%81%E6%88%BF%E8%8F%9C--%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AF%87)
+        - [相关指令](#%E7%9B%B8%E5%85%B3%E6%8C%87%E4%BB%A4)
+    - [第01章 Linux是什么与如何学习](#%E7%AC%AC01%E7%AB%A0-linux%E6%98%AF%E4%BB%80%E4%B9%88%E4%B8%8E%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0)
+    - [第02章 主机规划与磁盘分区](#%E7%AC%AC02%E7%AB%A0-%E4%B8%BB%E6%9C%BA%E8%A7%84%E5%88%92%E4%B8%8E%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA)
+    - [第03章 安装 CentOS7.x](#%E7%AC%AC03%E7%AB%A0-%E5%AE%89%E8%A3%85-centos7x)
+    - [第04章 首次登陆与线上求助](#%E7%AC%AC04%E7%AB%A0-%E9%A6%96%E6%AC%A1%E7%99%BB%E9%99%86%E4%B8%8E%E7%BA%BF%E4%B8%8A%E6%B1%82%E5%8A%A9)
+    - [第05章 Linux 的文件权限与目录配置](#%E7%AC%AC05%E7%AB%A0-linux-%E7%9A%84%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E4%B8%8E%E7%9B%AE%E5%BD%95%E9%85%8D%E7%BD%AE)
+    - [第06章 Linux 文件与目录管理](#%E7%AC%AC06%E7%AB%A0-linux-%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86)
+    - [第07章 Linux 磁盘与文件系统管理](#%E7%AC%AC07%E7%AB%A0-linux-%E7%A3%81%E7%9B%98%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86)
+    - [第08章 文件与文件系统的压缩,打包与备份](#%E7%AC%AC08%E7%AB%A0-%E6%96%87%E4%BB%B6%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8E%8B%E7%BC%A9%E6%89%93%E5%8C%85%E4%B8%8E%E5%A4%87%E4%BB%BD)
+    - [第09章 vim 程序编辑器](#%E7%AC%AC09%E7%AB%A0-vim-%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8)
+    - [第10章 认识与学习BASH](#%E7%AC%AC10%E7%AB%A0-%E8%AE%A4%E8%AF%86%E4%B8%8E%E5%AD%A6%E4%B9%A0bash)
+    - [第11章 正则表达式与文件格式化处理](#%E7%AC%AC11%E7%AB%A0-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8E%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%A4%84%E7%90%86)
+    - [第12章 学习 Shell Scripts](#%E7%AC%AC12%E7%AB%A0-%E5%AD%A6%E4%B9%A0-shell-scripts)
+    - [第13章 Linux 帐号管理与 ACL 权限设置](#%E7%AC%AC13%E7%AB%A0-linux-%E5%B8%90%E5%8F%B7%E7%AE%A1%E7%90%86%E4%B8%8E-acl-%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE)
+    - [第14章 磁盘配额（Quota）与进阶文件系统管理](#%E7%AC%AC14%E7%AB%A0-%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9Dquota%E4%B8%8E%E8%BF%9B%E9%98%B6%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86)
+    - [第15章 例行性工作调度（crontab）](#%E7%AC%AC15%E7%AB%A0-%E4%BE%8B%E8%A1%8C%E6%80%A7%E5%B7%A5%E4%BD%9C%E8%B0%83%E5%BA%A6crontab)
+    - [第16章 程序管理与 SELinux 初探](#%E7%AC%AC16%E7%AB%A0-%E7%A8%8B%E5%BA%8F%E7%AE%A1%E7%90%86%E4%B8%8E-selinux-%E5%88%9D%E6%8E%A2)
+    - [第17章 认识系统服务 （daemons）](#%E7%AC%AC17%E7%AB%A0-%E8%AE%A4%E8%AF%86%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1-daemons)
+    - [第18章 认识与分析登录文件](#%E7%AC%AC18%E7%AB%A0-%E8%AE%A4%E8%AF%86%E4%B8%8E%E5%88%86%E6%9E%90%E7%99%BB%E5%BD%95%E6%96%87%E4%BB%B6)
+    - [第19章 开机流程、模块管理与 Loader](#%E7%AC%AC19%E7%AB%A0-%E5%BC%80%E6%9C%BA%E6%B5%81%E7%A8%8B%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86%E4%B8%8E-loader)
+    - [第20章 基础系统设置与备份策略](#%E7%AC%AC20%E7%AB%A0-%E5%9F%BA%E7%A1%80%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE%E4%B8%8E%E5%A4%87%E4%BB%BD%E7%AD%96%E7%95%A5)
+    - [第21章 软件安装：源代码与 Tarball](#%E7%AC%AC21%E7%AB%A0-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E6%BA%90%E4%BB%A3%E7%A0%81%E4%B8%8E-tarball)
+    - [第22章 软件安装 RPM, SRPM 与 YUM](#%E7%AC%AC22%E7%AB%A0-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85-rpm-srpm-%E4%B8%8E-yum)
+    - [第23章 X Window 设置介绍](#%E7%AC%AC23%E7%AB%A0-x-window-%E8%AE%BE%E7%BD%AE%E4%BB%8B%E7%BB%8D)
+    - [第24章 Linux 核心编译与管理](#%E7%AC%AC24%E7%AB%A0-linux-%E6%A0%B8%E5%BF%83%E7%BC%96%E8%AF%91%E4%B8%8E%E7%AE%A1%E7%90%86)
+- [黑马程序员 - 新版Linux入门到精通](#%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98---%E6%96%B0%E7%89%88linux%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A)
+    - [初始 Linux](#%E5%88%9D%E5%A7%8B-linux)
+    - [Linux 基础命令](#linux-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4)
+    - [Linux 权限管控](#linux-%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7)
+    - [Linux 实用操作](#linux-%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C)
+    - [实战软件部署](#%E5%AE%9E%E6%88%98%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2)
+    - [脚本 & 自动化](#%E8%84%9A%E6%9C%AC--%E8%87%AA%E5%8A%A8%E5%8C%96)
+    - [项目实战](#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98)
+    - [云平台技术](#%E4%BA%91%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF)
+
+<!-- /TOC -->
+
+
 
 # 鸟哥的Linux私房菜 : 基础学习篇
-
-## 第00章 计算机概论
 
 **五大单元**
 1. 输入单元
@@ -39,7 +79,7 @@ CPU 其实内部已经含有一些微指令
 
 bit 实在太小了，所以在储存数据时每份简单的数据都会使用到 8 个 bits 的大小来记录，因此定义出 Byte
 
-不同的x86架构的CPU微指令集不同，新的x86的CPU大多含有很先进 的微指令集
+不同的x86架构的CPU微指令集不同，新的x86的CPU大多含有很先进的微指令集
 
 **芯片组**
 主板上面有个链接沟通所有设备的**芯片组**，可以将所有单元的设备链接起来，
@@ -67,6 +107,12 @@ Mbps 是 Mbits per second，亦即是每秒多少 Mbit，转成文件大小的 B
 答：因为一般硬盘制造商会使用十进制的单位，所以 500 GByte 代表为 500×1000×1000×1000 Byte。 转成文件的容量单位时使用二进制(1024为底)，所以就成 为466GB左右的容量了。硬盘厂商并非要骗人，只是因为硬盘的最小物理量为512Bytes，最小的组成单位为扇区sector， 通常硬盘容量的计算采用 多少个sector ，所以才会使用十进制来处理的。
 
 Linux最早在发展的时候，就是依据个人电脑的架构来发展的
+
+原本的单核心CPU仅有一个运算单元，多核心则是在一颗CPU封装当中嵌入两个以上的运算核心，一个实体CPU外壳中，含有两个以上的CPU单元
+
+不同的CPU型号大多具有不同的脚位，能够搭配的主板芯片组也不同
+
+
 
 ### 相关指令
 
