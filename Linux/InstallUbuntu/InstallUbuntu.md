@@ -1589,6 +1589,14 @@ pip3 install -U platformio
 pio upgrade
 ```
 
+# KiCAD
+
+[Install on Linux](https://www.kicad.org/download/linux/)
+
+[Tutorial: ngspice simulation in KiCad/Eeschema](https://ngspice.sourceforge.io/ngspice-eeschema.html)
+
+[SPICE Simulation](https://www.kicad.org/discover/spice/)
+
 # DingTalk
 
 # Baidunetdisk
