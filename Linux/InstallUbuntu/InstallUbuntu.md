@@ -1486,6 +1486,12 @@ sudo apt update
 sudo snap install blender --classic
 ```
 
+# STM32
+
+[Arm Keil Studio Pack 插件](https://marketplace.visualstudio.com/items?itemName=Arm.keil-studio-pack)
+
+[Embedded IDE 插件](https://marketplace.visualstudio.com/items?itemName=CL.eide)
+
 # QtScrcpy
 
 [QtScrcpy github](https://github.com/barry-ran/QtScrcpy/blob/dev/README_zh.md)
