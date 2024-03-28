@@ -719,6 +719,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 # vscode
 
+```bash
+pip3 install --upgrade jupyter ipywidgets
+```
+
 # pip3
 
 ```bash
@@ -1552,6 +1556,10 @@ Categories=Application;Development;
 
 # Sunlogin 向日葵
 
+# Leetcode
+
+[禁止 Leetcode 跳转中文站](https://greasyfork.org/zh-CN/scripts/408371-%E7%A6%81%E6%AD%A2-leetcode-%E8%B7%B3%E8%BD%AC%E4%B8%AD%E6%96%87%E7%AB%99)
+
 # FreeCAD
 
 [FreeCAD 官网](https://www.freecad.org/index.php)
@@ -1593,6 +1601,18 @@ sudo apt install platformio
 pip3 install -U platformio
 
 pio upgrade
+```
+
+# nodejs
+
+```bash
+sudo apt install nodejs
+```
+
+# dotnet
+
+```bash
+sudo apt install dotnet8
 ```
 
 # KiCAD
