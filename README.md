@@ -1,39 +1,20 @@
+# Blog
+Record What I Learned
+```text
 .
 ├── Algorithm&DataStructure
 │   ├── Books
 │   ├── Pics
 │   ├── STL
-│   │   ├── Pics
-│   │   └── UseSTL
 │   ├── SystematicLearning
 │   └── UnSystematicLearning
-│       ├── Dijkstra
-│       ├── KMP
-│       ├── MergeSort
-│       ├── MiniMax_AlphaBeta
-│       └── TimSort
 ├── Android
 │   └── GoogleFrame
-│       ├── APK
-│       └── Pics
 ├── C#
 │   ├── Pics
 │   └── TestInstall
-│       ├── bin
-│       └── obj
 ├── Company
 │   ├── 公司调研
-│   │   ├── Bilibili
-│   │   ├── EMC
-│   │   ├── momenta
-│   │   ├── 上海大数据股份
-│   │   ├── 上海建工羿云科技
-│   │   ├── 上海智能网联汽车
-│   │   ├── 仪电
-│   │   ├── 优刻得
-│   │   ├── 星环科技
-│   │   ├── 智驾汽车
-│   │   └── 爱回收
 │   ├── 可行性研究报告
 │   ├── 找工
 │   ├── 薪资
@@ -42,119 +23,56 @@
 ├── ComputerScience
 │   ├── ASCII
 │   ├── Cloud
-│   │   └── Pics
 │   ├── ComputerOrganization
-│   │   ├── image
-│   │   └── Pics
 │   ├── Cpp
-│   │   ├── argc_argv
-│   │   ├── CMake
-│   │   ├── Dynamic_Memory_Allocate
-│   │   ├── Exception
-│   │   ├── File_Operation
-│   │   ├── Lambda
-│   │   ├── Pointer_In_Headfile
-│   │   ├── Pointer_Pro
-│   │   ├── Socket
-│   │   ├── Sstream
-│   │   ├── STL
-│   │   ├── vcpkg
-│   │   ├── 输入输出重定向及管道运算符
-│   │   └── 运算符优先级结合性
 │   ├── Cryptology
-│   │   └── Pics
 │   ├── DesignPattern
-│   │   └── Pics
 │   ├── DLL&LIB
-│   │   └── Pics
 │   ├── Git
-│   │   ├── Pics
-│   │   └── TestGit
 │   ├── Hardware
-│   │   └── Pics
 │   ├── LLM
-│   │   └── Pics
 │   ├── Multithreading
-│   │   ├── Learn_OpenMP
-│   │   └── Learn_thread
 │   ├── Network&CyberSecurity
-│   │   ├── BasicNotion
-│   │   └── 国家标准
 │   ├── NP问题
-│   │   └── Pics
 │   ├── OOP
-│   │   ├── Houjie
-│   │   └── Java
 │   ├── Pipeline
 │   ├── PseudoInstruction
 │   ├── reCAPTCHA
-│   │   └── Pics
 │   ├── Regex
-│   │   └── Pics
 │   ├── 信创
-│   │   └── Pics
 │   ├── 字节序
-│   │   └── Pics
 │   └── 浮点数
 ├── ComputerVision
 │   ├── FFmpeg
-│   │   └── Pics
 │   ├── OpenCV
-│   │   ├── Cpp
-│   │   └── Python
 │   ├── OpticalFlow
 │   ├── 分辨率&像素
 │   └── 抗锯齿
-│       └── Pics
 ├── DataBase
 │   ├── LearnDataBase
-│   │   └── Pics
 │   ├── MySQL
-│   │   └── Pics
 │   └── PostgreSQL
-│       └── Pics
 ├── DataScience
 │   ├── DataLake
 │   ├── DataWarehouse
 │   ├── HadoopHiveSparkNoob
-│   │   └── Pics
 │   └── RecommendationSystem
-│       └── Pics
 ├── DeepLearning
 │   ├── BEV
-│   │   ├── image
-│   │   └── Pics
 │   ├── D2L
-│   │   ├── OfficialNoteBooks
-│   │   └── Pics
 │   ├── DatasetNote
-│   │   └── COCO
 │   ├── Deploy
-│   │   ├── MMDeploy
-│   │   ├── OpenVINO
-│   │   ├── Pics
-│   │   └── TensorRT
 │   ├── DiveIntoDeepLearning_old
-│   │   ├── OtherLecturePics
-│   │   └── Pics
 │   ├── Hardware
-│   │   └── Pics
 │   ├── LargeModel
-│   │   └── Pics
 │   ├── LearnDeepLearning
-│   │   └── Convolution
 │   ├── NeRF
 │   ├── NLP
-│   │   └── Pics
 │   ├── OpenMMLab
-│   │   └── Pics
 │   ├── Pics
 │   ├── SAM
-│   │   └── pics
 │   ├── UsePytorch
 │   ├── YOLO
-│   │   ├── Pics
-│   │   └── YOLOv5
 │   └── 面试题
 ├── Docker
 │   ├── HelloDocker
@@ -163,80 +81,43 @@
 │   └── Pics
 ├── Electronic
 │   ├── Arduino
-│   │   └── Pics
 │   ├── ESP
-│   │   ├── ESP32
-│   │   └── ESP8266
 │   ├── Hardware
-│   │   └── Pics
 │   ├── JetsonNano
-│   │   ├── JetsonNanoBasicConfig
-│   │   └── JetsonNanoGPIO
 │   ├── PlatformIO
-│   │   └── Pics
 │   ├── Raspberry
-│   │   └── PICO
 │   └── STM32
-│       ├── FreeRTOS
-│       ├── KEIL
-│       ├── LearnCubeMX
-│       ├── LearnSTM32
-│       └── OpenMV
 ├── Encyclopedia
 │   └── Pics
 ├── English
 │   ├── BackgroundKnowledge
-│   │   └── Pics
 │   ├── GoodSentence
 │   ├── Grammar
-│   │   └── Pics
 │   ├── GRE
-│   │   ├── Pics
-│   │   └── 地基词
 │   ├── HotWords
 │   ├── Magazine
-│   │   └── Pics
 │   ├── SimilarWords
 │   ├── TOEFL
-│   │   ├── Essays
-│   │   ├── LEAD
-│   │   ├── Official
-│   │   ├── Others
-│   │   ├── Pics
-│   │   ├── Vince
-│   │   ├── 刷题
-│   │   └── 备考
 │   └── WES
-│       └── sample2
 ├── Entertainment
 │   └── Pics
 ├── Geography
 │   └── Pics
 ├── Java
 │   ├── BackgroundKnowledge
-│   │   └── Pics
 │   ├── JavaBasic
-│   │   └── Pics
 │   ├── LearnCSS
 │   ├── LearnHTML
-│   │   └── Pics
 │   ├── LearnJavaIO
-│   │   └── Pics
 │   ├── LearnJDBC
-│   │   └── Pics
 │   ├── LearnMaven
-│   │   └── Pics
 │   ├── LearnMybatis
-│   │   └── Pics
 │   ├── LearnSpring
 │   ├── LearnSpringBoot
-│   │   └── Pics
 │   ├── LearnSwagger
 │   ├── LearnVue
 │   ├── LearnWeb
-│   │   └── Pics
 │   ├── Thread
-│   │   └── Pics
 │   └── Timer
 ├── Latex
 │   ├── Pics
@@ -245,158 +126,88 @@
 │   └── 素材
 ├── Linux
 │   ├── AccessAuthority
-│   │   └── Pics
 │   ├── Bash
-│   │   └── Pics
 │   ├── CommonCommand
-│   │   ├── Code
-│   │   └── Pics
 │   ├── Hosts
-│   │   └── Pics
 │   ├── InstallUbuntu
-│   │   ├── image
-│   │   └── Pics
 │   ├── LinuxSystemic
-│   │   ├── image
-│   │   └── Pics
 │   └── SSH
 ├── MachineLearning
 │   └── PracticalMachineLearning
-│       └── Pics
 ├── Math
 │   ├── LinearAlgebra
-│   │   ├── Covariance
-│   │   ├── EigenValue&EigenVector
-│   │   ├── PseudoInverseMatrix
-│   │   └── SVD
 │   ├── MachineLearing
-│   │   └── ConfusionMatrix
 │   ├── Optimization
-│   │   └── OptimizationWithPython
 │   ├── PatternRecognition
-│   │   └── PCA
 │   ├── Probability
-│   │   └── Pics
 │   └── Quaternion
-│       └── Pics
 ├── Matlab
 │   ├── PrincipleOfControl
-│   │   ├── MatlabFiles
-│   │   └── Pics
 │   └── RoboticsToolbox
-│       ├── Files
-│       └── Pics
 ├── Modeling
 │   ├── 3D
-│   │   └── Pics
 │   └── Blender
-│       └── Pics
 ├── PictureEditor
 ├── Python
 │   ├── AdvancedPython
-│   │   └── d
 │   ├── Basic
-│   │   ├── multiDir
-│   │   ├── parent_folder
-│   │   ├── Pics
-│   │   └── testFolder
 │   ├── JupyterNotebook
-│   │   └── Pics
 │   ├── LearnPython
-│   │   └── Pics
 │   ├── Matplotlib
 │   ├── OS
 │   ├── Pandas
-│   │   ├── Codes
-│   │   └── Pics
 │   ├── Pics
 │   ├── PIL
 │   ├── PythonSTL
-│   │   └── LearnOS
 │   ├── Selenium
 │   ├── Sklearn
-│   │   ├── Code
-│   │   └── Pics
 │   ├── Socket
-│   │   └── Code
 │   ├── WebCrawler
-│   │   └── Pics
 │   └── XML
 ├── PyTorch
 │   ├── Install
 │   └── LearnPytorch
-│       └── Pics
 ├── Qt
 │   └── Pics
 ├── Robotics
 │   ├── ROS1
-│   │   ├── Install
-│   │   ├── Launch
-│   │   ├── LearnGazebo
-│   │   ├── LearnROS
-│   │   ├── LearnSLAM
-│   │   ├── LearnTF
-│   │   ├── LearnURDF
-│   │   ├── MessageService
-│   │   ├── PathPlanning
-│   │   └── Problems
 │   ├── ROS2
 │   └── SLAM
-│       ├── OpenCourses
-│       └── SlamBook14
 ├── ScientificResearch
 ├── Society
 │   ├── CommonKnowledge
-│   │   └── Pics
 │   ├── Government
 │   ├── Politics
-│   │   └── Pics
 │   ├── ProductManager
 │   ├── TetraPak
-│   │   ├── Docs
-│   │   └── Pics
 │   ├── 五险一金
 │   ├── 军队
-│   │   └── Pics
 │   ├── 创业
-│   │   ├── 养老
-│   │   └── 方法论
 │   ├── 商业计划书
 │   └── 生产模式
 ├── Tongji
 │   ├── 人工智能基础
-│   │   └── Pics
 │   ├── 模式识别
-│   │   └── Pics
 │   ├── 系统编程
-│   │   └── Pics
 │   └── 自动控制原理
-│       └── Pics
 ├── Unity
 ├── VideoEditor
 │   └── Pics
 ├── Windows
 │   ├── 修改PowerShell编码
-│   │   └── Pics
 │   └── 重装系统
-│       └── Pics
 ├── 润
 │   ├── 16-21fallCS+ECE
-│   │   ├── 001 计算机科学
-│   │   └── 002 计算机工程
 │   ├── 棕榈大道
 │   ├── 美
 │   └── 选校
 ├── 考研
 │   ├── 专业课
-│   │   ├── 上海交通大学
-│   │   ├── 东南大学
-│   │   └── 浙江大学
 │   ├── 学校选择
-│   │   └── Pics
 │   ├── 考研日记
 │   └── 考研科目
 └── 证书
     └── Pics
 
-399 directories
+206 directories
+```
