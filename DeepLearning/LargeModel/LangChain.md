@@ -1,11 +1,26 @@
-# LangChain
+![](Pics/langchain000.png)
 
 ---
 
+# 目录
+- [目录](#目录)
 - [LangChain](#langchain)
-- [LangChain](#langchain-1)
   - [Introduction](#introduction)
+  - [QuickStart](#quickstart)
   - [Components](#components)
+  - [LangChain \& ZhipuAI](#langchain--zhipuai)
+    - [Getting started](#getting-started)
+- [九天玩转Langchain](#九天玩转langchain)
+  - [第 01 讲 - 简介](#第-01-讲---简介)
+  - [第 02 讲 - HelloWorld](#第-02-讲---helloworld)
+  - [第 03 讲 -](#第-03-讲--)
+  - [第 04 讲 -](#第-04-讲--)
+  - [第 05 讲 -](#第-05-讲--)
+  - [第 06 讲 -](#第-06-讲--)
+  - [第 07 讲 -](#第-07-讲--)
+  - [第 08 讲 -](#第-08-讲--)
+  - [第 09 讲 -](#第-09-讲--)
+  - [第 10 讲 -](#第-10-讲--)
 - [Functions, Tools and Agents with LangChain](#functions-tools-and-agents-with-langchain)
 - [LangChain for LLM Application Development](#langchain-for-llm-application-development)
 - [Additional Reading](#additional-reading)
@@ -20,27 +35,70 @@
 
 [LangChain Docs - 官网](https://python.langchain.com/docs/get_started/introduction/)
 
+
+
 ## Introduction
 
 LangChain is a framework for developing applications powered by large language models
 
 Simplifies every stage of the LLM application lifecycle
-1. Development - using LangChain's open-source building **blocks** and [components](https://python.langchain.com/docs/modules/)
-2. Productionization - **LangSmith** to inspect, monitor and evaluate your chains
-3. Deployment - Turn any chain into an API with **LangServe**
+1. Development开发 - using LangChain's open-source building **blocks** and [components](https://python.langchain.com/docs/modules/)
+2. Productionization生产 - **LangSmith** to inspect, monitor and evaluate your chains
+3. Deployment部署 - Turn any chain into an API with **LangServe**
 
 ![](Pics/langchain001.svg)
 
 framework consists of the following open-source libraries
-1. langchain-core
-2. langchain-community : 3rd integrations
-3. langchain : 
-4. langgraph : 
+1. langchain-core : 基础抽象和LangChain表达式语言
+2. langchain-community : 第三方集成，如langchain-openai、langchain-anthropic等
+3. langchain : Chains, agents, and retrieval strategies
+4. langgraph : Build robust and stateful multi-actor applications with LLMs by modeling steps
 5. langserve : deploy chains as REST APIs
+6. LangSmith : developer platform (debug, test, evaluate, and monitor LLM applications)
+
+## QuickStart
+
+
 
 ## Components
 
 [Components](https://python.langchain.com/docs/modules/)
+
+
+## LangChain & ZhipuAI
+
+[LangChain & ZhipuAI - LangChain官网](https://python.langchain.com/docs/integrations/chat/zhipuai/)
+
+[资源包管理 - 智谱AI开放平台](https://open.bigmodel.cn/usercenter/resourcepack)
+
+### Getting started
+
+**Installation**
+
+```python
+%pip install --quiet httpx[socks]==0.24.1 httpx-sse PyJWT
+```
+
+**Importing the Required Modules**
+
+```python
+from langchain_community.chat_models import ChatZhipuAI
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+
+zhipuai_api_key = "your_api_key"
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -50,6 +108,81 @@ framework consists of the following open-source libraries
 
 
 ---
+
+# 九天玩转Langchain
+
+[九天玩转Langchain](https://space.bilibili.com/1235535223/channel/collectiondetail?sid=1794575)
+
+## 第 01 讲 - 简介
+
+LLM - 补全
+
+Prompt 提示词
+
+主流 LLM
+1. GPT
+2. LLaMA(Large Language Model Meta AI)
+3. ChatGLM - 中文语料
+
+GPT API
+1. model - 模型选择
+2. prompt
+3. temperature - 模型发散能力
+
+几个问题
+1. 如何 格式化 输出 json/csv
+2. 提示词长度 / 长文本
+3. 多次进行 API 调用，连续的问题
+4. 调用外部的服务
+5. 标准化的开发
+6. 快速切换模型
+
+LangChain 类似与工具箱，协助 LLM 应用开发
+
+设计思路 - 交互流程 模块化、抽象化
+
+Mixture of Experts - 专家混合模型
+1. 将大型网络分解为多个较小的子网络
+2. 每个专家负责学习输入数据的一部分
+3. 进行预测时，MoE模型会根据输入选择最相关的专家进行处理
+4. 一个 **门控机制** gating mechanism，决定哪个专家对于给定的输入最为合适，从而只激活一个或少数几个专家进行计算
+5. 提高模型的效率和扩展性
+6. MoE特别适用于处理非常大的数据集和模型，因为它允许模型动态地只激活相关的部分
+
+
+## 第 02 讲 - HelloWorld
+
+
+
+LLM 模型
+1. 本地
+2. API
+   1. 百度 ERNIE
+   2. 阿里 Qwen
+   3. Replicate
+   4. OpenAI
+
+predict 根据输入的文本生成新的文本
+
+
+
+
+## 第 03 讲 - 
+
+## 第 04 讲 - 
+
+## 第 05 讲 - 
+
+## 第 06 讲 - 
+
+## 第 07 讲 - 
+
+## 第 08 讲 - 
+
+## 第 09 讲 - 
+
+## 第 10 讲 - 
+
 
 
 # Functions, Tools and Agents with LangChain
