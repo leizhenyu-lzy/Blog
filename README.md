@@ -1,6 +1,13 @@
 # Blog
+
+---
+
 Record What I Learned
-![](githubcat.gif)
+
+![](GithubCat.gif)
+
+---
+
 **Table of Content**
 ```text
 .
@@ -212,3 +219,4 @@ Record What I Learned
 
 205 directories
 ```
+
