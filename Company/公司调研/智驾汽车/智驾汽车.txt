@@ -1,0 +1,37 @@
+视觉+激光雷达Lidar
+
+目前自动驾驶技术中分为L0-L5的六个等级：见图片
+
+L3以前都是属于驾驶员为驾驶主体，L3以后更多的是车辆作为驾驶主体，而L3本身则是驾驶员和车辆共同驾驶的阶段。
+
+ADAS：
+安全：降低事故发生率、伤害程度
+简单：驾驶更便捷
+低成本：车速控制，车道规划
+
+输入（感知算法、融合） 决策   输出（声音、视觉、振动、车辆控制）
+
+Time  Quality  Cost
+
+
+车道偏离报警(Lane Departure Warning, LDW)
+车道居中智能巡航(LCC)
+车道保持辅助系统(Lane Keeping Assist, LKA)
+自适应巡航控制(AdaptiveCruiseControl, ACC)
+疲劳驾驶提醒(DDW)
+指令变道辅助(ILC)
+
+
+
+过曝、欠曝，逆光
+合适
+特斯拉纯视觉方案
+通用性：图森
+
+乘用车、商用车  nRnV多传感器融合方案
+
+1-10
+https://mp.weixin.qq.com/s?__biz=MzU2NjU3OTc5NA==&mid=2247541068&idx=1&sn=d8b579d259e3a352d2c7f5175f8c56d2&chksm=fca82671cbdfaf6773d7ea69cd1cf7c8a2b52268f2b8155369496691e7162790b9e4fa9bc784&scene=21#wechat_redirect
+
+11-20
+https://mp.weixin.qq.com/s?__biz=MzU2NjU3OTc5NA==&mid=2247541173&idx=2&sn=b4a8285bdf9b47df489659a1cfba8fa4&chksm=fca82688cbdfaf9e841b45b903f6c0c93b419d50d84c0106b02e49d4c100e3881df5db2ed756&scene=27

@@ -1,0 +1,10 @@
+lzy@legion:~/Project/Blog$ snap install dotnet-sdk --classic
+dotnet-sdk 7.0.304 from Microsoft .NET Core (dotnetcore✓) installed
+
+
+
+# vscode extension
+Downloading the .NET Runtime.
+Downloading .NET version(s) 7.0.10 ........................................... Done!
+.NET 7.0.10 executable path: /home/lzy/.config/Code/User/globalStorage/ms-dotnettools.vscode-dotnet-runtime/.dotnet/7.0.10/dotnet
+

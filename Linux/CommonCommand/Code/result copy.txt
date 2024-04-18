@@ -1,0 +1,4 @@
+input sth : input :  hello world
+/usr/bin/python3
+3.8.10 (default, Nov 14 2022, 12:59:47) 
+[GCC 9.4.0]

@@ -1,0 +1,15 @@
+/home/lzy/Project/Blog/C#/TestInstall/bin/Debug/net7.0/TestInstall
+/home/lzy/Project/Blog/C#/TestInstall/bin/Debug/net7.0/TestInstall.deps.json
+/home/lzy/Project/Blog/C#/TestInstall/bin/Debug/net7.0/TestInstall.runtimeconfig.json
+/home/lzy/Project/Blog/C#/TestInstall/bin/Debug/net7.0/TestInstall.dll
+/home/lzy/Project/Blog/C#/TestInstall/bin/Debug/net7.0/TestInstall.pdb
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.csproj.AssemblyReference.cache
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.GeneratedMSBuildEditorConfig.editorconfig
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.AssemblyInfoInputs.cache
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.AssemblyInfo.cs
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.csproj.CoreCompileInputs.cache
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.dll
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/refint/TestInstall.dll
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.pdb
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/TestInstall.genruntimeconfig.cache
+/home/lzy/Project/Blog/C#/TestInstall/obj/Debug/net7.0/ref/TestInstall.dll

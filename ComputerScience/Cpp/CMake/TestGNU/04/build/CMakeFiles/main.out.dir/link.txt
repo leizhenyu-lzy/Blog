@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/main.out.dir/main.cpp.o CMakeFiles/main.out.dir/hello.cpp.o -o main.out 
