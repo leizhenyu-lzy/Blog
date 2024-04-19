@@ -8,9 +8,10 @@
   - [Introduction](#introduction)
   - [QuickStart](#quickstart)
   - [Components](#components)
-  - [LangChain \& ZhipuAI](#langchain--zhipuai)
+  - [LangChain \& ZhipuAI(ChatGLM)](#langchain--zhipuaichatglm)
     - [Getting started](#getting-started)
-- [九天玩转Langchain](#九天玩转langchain)
+    - [ChatGLM + LangChain 实践培训 (实现基于本地知识的问答)](#chatglm--langchain-实践培训-实现基于本地知识的问答)
+- [九天玩转 Langchain](#九天玩转-langchain)
   - [第 01 讲 - 简介](#第-01-讲---简介)
   - [第 02 讲 - HelloWorld](#第-02-讲---helloworld)
   - [第 03 讲 -](#第-03-讲--)
@@ -64,12 +65,45 @@ framework consists of the following open-source libraries
 
 [Components](https://python.langchain.com/docs/modules/)
 
+**Main Components**
+1. [Model I/O](https://python.langchain.com/docs/modules/model_io/)
+   ![](Pics/langchain004.png)
+   1. **Prompts**
+   2. **Chat Models**
+      1. tuned for **conversations**
+      2. take a list of chat messages(not single string) as input and they return an AI message as output
+      3. 受 上下文窗口 限制 - 对话管理策略 : 信息压缩和摘要、关键信息标记
+   3. **LLMs**
+      1. in LangChain == **pure text completion models**
+      2. take **a string prompt as input** and **output a string completion**
+   4. **Output Parsers**
+   5. What's More
+      1. Different models have different prompting strategies that work best for them
+      2. **Anthropic**'s models work best with **XML** (P.S. Anthropic 是一家人工智能研究和安全公司，由前OpenAI员工创建，Claude)
+      3. **OpenAI**'s models work best with **JSON**
+2. Retrieval
+   1. Document Loaders
+   2. Text Splitters
+   3. Embedding Models
+   4. Vectorestores
+   5. Retrievers
+3. Composition
+   1. Tools
+   2. Agents
+   3. Chains
+4. Additional
+   1. Memory
+   2. Callbacks
 
-## LangChain & ZhipuAI
+
+
+## LangChain & ZhipuAI(ChatGLM)
 
 [LangChain & ZhipuAI - LangChain官网](https://python.langchain.com/docs/integrations/chat/zhipuai/)
 
 [资源包管理 - 智谱AI开放平台](https://open.bigmodel.cn/usercenter/resourcepack)
+
+[GLM-4 接口文档 - 智谱AI](https://open.bigmodel.cn/dev/api#glm-4)
 
 ### Getting started
 
@@ -88,11 +122,42 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 zhipuai_api_key = "your_api_key"
 ```
 
+### ChatGLM + LangChain 实践培训 (实现基于本地知识的问答)
+
+[ChatGLM + LangChain 实践培训](https://www.bilibili.com/video/BV13M4y1e7cN/)
+
+[ LangChain-Chatchat (原 Langchain-ChatGLM) 配套代码](https://github.com/chatchat-space/Langchain-Chatchat)
+
+ChatGLM 具备的能力
+1. 自我认知
+2. 提纲写作
+3. 文案写作
+4. 信息抽取
+
+LangChain 应用场景
+1. 文档问答
+2. 个人助理
+3. 查询表格数据
+4. API 交互
+5. 信息提取
+6. 文档总结
+
+基于 **单一文档问答** 的实现原理
+1. 加载本地文档 - 读取本地文档加载为文本
+2. 文本拆分 - 将文本按照 字符、长度或语义 进行拆分 - 输入有长度限制
+   1. chunking - 分块 - 指的是将长文本分割成的较小的、可管理的段落或部分
+   2. 内存管理、并行处理
+3. 根据提问匹配文本 - 根据用户提问对文本进行 字符匹配 或 **语义检索(向量化 & 向量空间检索)**
+4. 构建prompt - 将匹配文本、用户提问加入Prompt模板
+5. LLM生成回答 - 将Prompt发送给LLM获得基于文档内容的回答
+
+基于 **本地知识库问答** 的实现原理 (VectorStore 向量数据库)
+![](Pics/langchain003.png)
 
 
-
-
-
+AIMessage
+SystemMessage
+HumanMessage
 
 
 
@@ -109,7 +174,7 @@ zhipuai_api_key = "your_api_key"
 
 ---
 
-# 九天玩转Langchain
+# 九天玩转 Langchain
 
 [九天玩转Langchain](https://space.bilibili.com/1235535223/channel/collectiondetail?sid=1794575)
 

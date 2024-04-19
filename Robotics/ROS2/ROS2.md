@@ -12,6 +12,7 @@
   - [文档教程](#文档教程)
   - [视频教程](#视频教程)
 - [常用命令](#常用命令)
+- [常见问题](#常见问题)
 - [The Construct](#the-construct)
 - [【鱼香ROS】动手学ROS2](#鱼香ros动手学ros2)
   - [第 01 章 - ROS2 介绍 与 安装](#第-01-章---ros2-介绍-与-安装)
@@ -38,6 +39,8 @@
   - [第 20 章 - Moveit2仿真](#第-20-章---moveit2仿真)
   - [第 21 章 - Moveit2进阶](#第-21-章---moveit2进阶)
   - [第 23 章 - Moveit2真机控制](#第-23-章---moveit2真机控制)
+- [扩展阅读](#扩展阅读)
+  - [DDS 数据分发服务](#dds-数据分发服务)
 
 
 ---
@@ -57,6 +60,8 @@
 
 [ROS Documentation 官方文档 英文](https://docs.ros.org/)
 
+[ROS2 Documentation(humble) 官方文档 英文](https://docs.ros.org/en/humble/index.html)
+
 ## 视频教程
 
 [【鱼香ROS】动手学ROS2基础篇|ROS2基础入门到实践教程](https://www.bilibili.com/video/BV1gr4y1Q7j5)
@@ -75,9 +80,12 @@
 
 # 常用命令
 
-常用命令:
+命令
 1. **查看ROS版本** : printenv ROS_DISTRO  **result** : humble
 2. 
+
+# 常见问题
+1. **sh: 0: getcwd() failed: No such file or directory** - 切换到其他目录 如 ~/
 
 
 ---
@@ -108,7 +116,9 @@
 ### 基础篇 - Linux 基础
 
 **操作系统**OS - 管理计算机 硬件与软件 资源的 计算机程序
-1. 用户界面 GUI & CLI(命令行界面)
+1. 用户界面
+   1. GUI - Graphical User Interface - 图形化界面
+   2. CLI - Command-Line Interface - 命令行
 2. 系统库
 3. 系统工具 & 应用程序
 4. 安全机制
@@ -252,19 +262,36 @@ sudo(superuser do) & root
 
 
 **ROS1 与 ROS2 架构对比**
-1. **架构图对比** - 论文 **Exploring the Performance of ROS2**
+1. **架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://readpaper.com/pdf-annotate/note?pdfId=4546269770222821377&noteId=2274943744417993728)
    ![](Pics/ros003.png)
-2. **OS 操作系统层**
-   1. 从原来的只支持 linux 平台，变成了支持 Windows、MAC 甚至是 嵌入式RTOS 平台
-3. **MiddleWare 中间件层**
-   1. 去中心化 - ROS2 取消 master 节点，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 1对1、1对n、n对n 进行互相通信
-   2. 通信更换为 DDS - 使得ROS2的实时性、可靠性和连续性上都有了增强
-4. **Application 应用层**
-   1. python2 到 pyhton3 的支持
+   ![](Pics/ros005.png)
+   1. **OS Layer - 操作系统层**
+      1. 原来的只支持 linux 平台，现在支持 Windows、MAC 甚至是 嵌入式RTOS 平台
+   2. **MiddleWare - 中间件层**
+      1. 特点
+         1. 去中心化 - ROS2 取消 master 节点(基于DDS的互相发现协议)，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 1对1、1对n、n对n 进行互相通信
+         2. 提供多个节点中间通信
+         3. 通信更换为 **DDS** - 使得ROS2的实时性、可靠性和连续性上都有了增强
+         4. ROS1 的中间件是 ROS组织 基于TCP/UDP 建立的
+      2. **DDS Implementation Layer - DSS实现层**
+         1. 对不同常见的DDS接口进行再次的封装，让其保持统一性，为DDS抽象层提供统一的API
+         2. ROS2 为每家 DDS供应商 开发对应的 DDS_Interface 即 DDS接口层
+      3. **Abstract DDS Layer - DDS抽象层 RMW**
+         1. 通过 DDS Abstract 抽象层来 **统一 DDS 的 API**
+         2. 将DDS实现层进一步的封装，使得DDS更容易使用
+         3. DDS需要大量的设置和配置(分区，主题名称，发现模式，消息创建,...)
+      4. **ROS2 Client Layer - ROS2客户端库 RCL**
+         ![](Pics/ros007.webp)
+         1. RCL (ROS Client Library) ROS客户端库，其实就是ROS的一种API，提供对ROS话题、服务、参数、Action等接口
+         2. 不同语言对应不同 RCL - **Python:rclpy** - **C++:rclcpp** - 操作ROS2的节点话题服务
+         3. RMW(中间件接口)层 是对各家 DDS 的抽象层，基于 RMW 实现 rclc，基于 rclc 实现了 rclpy 和 rclcpp
+   3. **Application Layer - 应用层**
+      1. 写代码以及ROS2开发的各种常用的机器人相关开发工具所在的层
+2. **整体改进**
+   1. python2 到 python3 的支持
    2. 编译系统的改进 catkin 到 ament
    3. C++ 标准更新到 C++11
    4. 相同 API 的 进程间 和 进程内 通信
-
 
 
 **ROS 2 新概念**
@@ -278,12 +305,41 @@ sudo(superuser do) & root
 
 
 
-**安装**
+**安装 & 卸载**
 1. 一键安装 ROS2
    ```bash
    wget http://fishros.com/install -O fishros && . fishros
    ```
+2. 手动安装 [Installation - Ubuntu (Debian packages)](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
+3. 卸载
+   ```bash
+   sudo apt remove ros-humble-*
+   sudo apt autoremove
+   ```
+4. 安装位置 - ROS安装的默认目录在/opt/ros/下，根据版本的名字进行区分
+   ```bash
+   cd /opt/ros/humble/ && ls
+   ```
 
+**HelloWorld**
+1. 话题通信 - listener & talker
+   ```bash
+   ros2 run demo_nodes_py listener
+   # 一开始无output，需要等talker运行，可以同时收听多个talker
+   ros2 run demo_nodes_py talker
+   ros2 run demo_nodes_cpp talker
+   ```
+2. turtle
+   ```bash
+   ros2 run turtlesim turtlesim_node
+   ros2 run turtlesim turtle_teleop_key
+   # Velocity command received during rotation goal. Aborting goal
+   ```
+3. rqt
+   1. rqt is a framework for graphical user interfaces.
+   2. It is extensible with plugins which can be written in either Python or C++.
+   3. 选择插件 - introspection - node graph
+   4. 也可以直接 rqt_graph
 
 
 
@@ -354,3 +410,38 @@ sudo(superuser do) & root
 ## 第 23 章 - Moveit2真机控制
 
 ---
+
+# 扩展阅读
+
+## DDS 数据分发服务
+
+[ROS2 的核心 - 数据分发服务DDS导论](https://www.bilibili.com/video/BV1sU4y1P7yn/)
+
+**DDS (Data Distribution Service - 数据分发服务)**
+1. 一种 **中间件协议标准**，旨在为 实时系统 提供 高性能、可扩展的 数据交换
+2. 由 **OMG (Object Management Group)** 制定
+3. 使用 **发布-订阅 (Pub/Sub) 模式**，发布者不需要知道谁是接收者，订阅者也不需要知道谁是发送者(解耦)
+4. 技术核心 - **数据为核心的发布/订阅模型 Data-Centric Publish-Subscribe DCPS**，创建 **全域数据空间 Global Data Space** 概念，所有独立的应用都可访问
+5. 数据通过定义好的 **主题** 来发布，订阅者可以订阅一个或多个主题，从而接收相关的数据
+6. 优劣
+   1. **优势**
+      1. 实现系统解耦
+      2. 延迟更低，吞吐量更高
+      3. 远程参与者的自动发现
+      4. 丰富的 QoS 参数集，允许调整通信各方面(靠性、持久性、冗余、寿命、传输设置、资源)
+      5. 实时发布订阅协议 (RTPS) 几乎可以通过任何传输实现(UDP、TCP、共享内存 等)
+      6. DDS 有定义好的 行为和规范，有完善的文档
+   2. **劣势**
+      1. API复杂，灵活性以复杂性为代价
+      2. 系统开销相对较大
+7. **架构**
+   ![](Pics/ros008.png)
+   1. **DDS的定位** - Real-TIme - Mission/Business Critical
+
+
+不可扩展的系统架构问题
+1. 无互操作性
+2. 系统结构复杂
+3. 不可靠传输
+4. 组件紧密耦合
+5. 维护成本高

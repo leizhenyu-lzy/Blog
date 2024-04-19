@@ -809,6 +809,23 @@ sudo apt install flameshot
 [Wayland Help - Troubleshooting Flameshot on Wayland](https://flameshot.org/docs/guide/wayland-help/)
 
 
+# GIMP - GNU IMAGE MANIPULATION PROGRAM
+
+```bash
+sudo apt install gimp
+```
+
+# Scribus
+
+```bash
+sudo apt install scribus
+```
+
+# INKSCAPE
+
+```bash
+sudo apt install inkscape
+```
 
 # python3-pip
 
