@@ -1,3 +1,8 @@
 {
-    "editor.fontFamily": "'JetBrains Mono','Source Han Sans HW SC'"
+    "editor.fontFamily": "'JetBrains Mono','Source Han Sans HW SC'",
+    "markdownConverter.ConversionType": [
+        "PDF",
+        "HTML"
+    ],
+    "markdown-preview-enhanced.usePandocParser": false
 }
