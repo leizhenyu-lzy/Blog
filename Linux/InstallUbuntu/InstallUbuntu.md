@@ -439,31 +439,10 @@ Ubuntu Mono 中英文可以对齐
 
 
 
-# wine
-
-[安装 WineHQ 安装包 --- winehq](https://wiki.winehq.org/Ubuntu_zhcn)
-
-[wine mono 中科大源](http://mirrors.ustc.edu.cn/wine/wine/wine-mono/)
-
-[wine手动安装wine-mono和wine-gecko组件](https://blog.csdn.net/u010164190/article/details/106785069)
-
-[.NET Framework --- winehq](https://appdb.winehq.org/objectManager.php?sClass=version&iId=31023)
-
-```
-winetricks --force dotnet452 corefonts
-```
-
-wine 和 crossover 一个免费一个收费。
-
-一个需要自行解决问题，一个给你解决问题。
-
-crossover 类似容器，每个软件都可以单独生成一个 windows 系统进行隔离，wine里安装的流氓软件都是共存在一个 windows 系统里的
 
 
 
-## 设置中文
 
-菜单“工具Tools - 选项Options “ ，在选项设置框的左侧边栏选 “ 语言 Language Settings - Languages'-”在“用户界面User interface”中选中文（chinese）。
 
 # XDM下载器
 
@@ -1586,11 +1565,22 @@ Categories=Application;Development;
 
 ```bash
 sudo apt install freecad
+
+# 或
+
+sudo snap install freecad
 ```
+
+
+
 
 # Tencent Meeting - only for gnome
 
-[](https://www.zhihu.com/question/538842265) - 摄像头，音频都正常 - 缺点：就是无法共享屏幕
+[Ubuntu 22.04 Wayland 下使用腾讯会议](https://www.zhihu.com/question/538842265)
+
+摄像头，音频都正常
+
+缺点：就是无法共享屏幕
 
 ```bash
 sudo gedit /opt/wemeet/wemeetapp.sh 
@@ -1632,6 +1622,37 @@ sudo apt install nodejs
 sudo apt install dotnet8
 ```
 
+# wine
+
+[wine 官网](https://www.winehq.org/)
+
+[安装 WineHQ 安装包 --- winehq](https://wiki.winehq.org/Ubuntu_zhcn)
+
+```bash
+wine --version  # 查看版本
+```
+
+[wine mono 中科大源](http://mirrors.ustc.edu.cn/wine/wine/wine-mono/)
+
+[wine手动安装wine-mono和wine-gecko组件](https://blog.csdn.net/u010164190/article/details/106785069)
+
+[.NET Framework --- winehq](https://appdb.winehq.org/objectManager.php?sClass=version&iId=31023)
+
+```
+winetricks --force dotnet452 corefonts
+```
+
+# Lutris - Game Platform
+
+![](Pics/lutris001.png)
+
+[Lutris - Download](https://lutris.net/downloads)
+
+[Lutris - HeartStone](https://lutris.net/games/hearthstone/)
+
+如果有些包下载失败可以按照网址手动去下载，并防在指定位置
+
+
 # KiCAD
 
 [Install on Linux](https://www.kicad.org/download/linux/)
@@ -1640,11 +1661,35 @@ sudo apt install dotnet8
 
 [SPICE Simulation](https://www.kicad.org/discover/spice/)
 
+```bash
+sudo add-apt-repository ppa:kicad/kicad-8.0-releases
+sudo apt update
+sudo apt install kicad
+```
+
+或者 snap
+
+```bash
+sudo snap install kicad
+```
+
 # DingTalk
 
 # Baidunetdisk
 
 # 欧路词典 + 每日英语听力
+
+# Pomatez - 计时器
+
+[Pomatez](https://zidoro.github.io/pomatez/)
+
+[Pomatez - Snap](https://snapcraft.io/pomatez)
+
+[Pomatez - Github](https://github.com/zidoro/pomatez)
+
+```bash
+sudo snap install pomatez
+```
 
 # DOTNET
 
@@ -1790,6 +1835,21 @@ Snap应用程序的快捷方式和图标通常存储在
 修改 .desktop 文件 的 Icon 行
 
 
+## ppa 文件
+
+[如何在 Ubuntu Linux 中移除或删除 PPA](https://cn.linux-console.net/?p=19570)
+
+ppa 文件位置
+
+```bash
+ls /etc/apt/sources.list.d 
+```
+
+图形化操作
+
+![](Pics/ppa001.png)
+
+
 ## checksum
 
 ### 软件
@@ -1830,13 +1890,27 @@ sudo apt remove rhythmbox*
 
 记得 sudo
 
-## 2 清除 miniconda
+### 2 清除 miniconda
 
 ```bash
 du -sh *  # 进入miniconda目录，通过命令查看当下目录的所占内存
 
 conda clean -p    # 删除没有用的包（推荐）
 ```
+
+### 3 清除 snap
+
+```bash
+#!/bin/bash
+# Removes old revisions of snaps
+# CLOSE ALL SNAPS BEFORE RUNNING THIS
+set -eu
+snap list --all | awk '/disabled/{print $1, $3}' |
+    while read snapname revision; do
+        snap remove "$snapname" --revision="$revision"
+    done
+```
+
 
 ## apt 目录位置
 

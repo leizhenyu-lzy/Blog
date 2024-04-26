@@ -16,6 +16,13 @@
 
 [NVLink 和 NVSwitch - Nvidia官网](https://www.nvidia.cn/data-center/nvlink/)
 
+![](Pics/nvidia007.png)
+
+![](Pics/nvidia008.png)
+
+![](Pics/nvidia009.png)[](Pics/nvidia009.png)
+
+
 可支持 **服务器内** 和 **服务器间** 实现高级 **多 GPU 通信** 的基础模组
 
 在每个 GPU 之间实现 无缝高速通信的 **多节点、多 GPU 系统**
@@ -24,9 +31,7 @@
 
 单个 NVIDIA H100 Tensor Core GPU 支持多达 18 个 NVLink 连接，总带宽为 900 GB/s，是 PCIe 5.0 带宽的 7 倍
 
-![](Pics/nvidia003.png)
-
-![](Pics/nvidia004.png)
+![](Pics/nvidia003.png) ![](Pics/nvidia004.png)
 
 
 **NVLink 性能**
