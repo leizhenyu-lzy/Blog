@@ -1941,6 +1941,16 @@ sudo systemctl restart gdm3
 ```
 
 
+## AppImage
+
+添加可执行权限
+
+```bash
+./xxxx.appimage
+```
+
+即可
+
 
 
 

@@ -1,18 +1,17 @@
-# Hardware for Deep Learning
+# NVLink & NVSwitch™
 
 ---
 
 # Table of Contents
-- [Hardware for Deep Learning](#hardware-for-deep-learning)
-- [Table of Contents](#table-of-contents)
 - [NVLink \& NVSwitch™](#nvlink--nvswitch)
+- [Table of Contents](#table-of-contents)
+- [NVLink \& NVSwitch™](#nvlink--nvswitch-1)
   - [行业基准 MLPerf 1.1](#行业基准-mlperf-11)
-- [GPU \& GPGPU \& NPU](#gpu--gpgpu--npu)
-
 
 ---
 
 # NVLink & NVSwitch™
+
 
 [NVLink 和 NVSwitch - Nvidia官网](https://www.nvidia.cn/data-center/nvlink/)
 
@@ -22,6 +21,11 @@
 
 ![](Pics/nvidia009.png)[](Pics/nvidia009.png)
 
+同主机内不同 GPU 之间的一种高速互联方式
+
+NVLink 高速、高带宽、低延迟 互联技术，提供直接的点对点连接，比传统的 PCIe 总线更高的速度和带宽
+
+支持GPU之间点对点通信(无需通过主机内存、CPU)，支持GPU之间的内存共享(可以直接访问彼此内存空间)
 
 可支持 **服务器内** 和 **服务器间** 实现高级 **多 GPU 通信** 的基础模组
 
@@ -78,37 +82,4 @@ MLPerf（Machine Learning Performance）基准测试的目的是建立一个共�
       2. 模型配置
       3. 训练策略
 
-
-
----
-
-# GPU & GPGPU & NPU
-
-**GPU (Graphics Processing Unit)**
-1. 简介 - GPU最初设计用于加速计算机图形渲染过程，尤其是3D图形。它是一种高度并行结构的处理器，专门用于处理图形和图像计算任务。
-2. 用途
-3. 场景
-
-**GPGPU (General-Purpose computing on Graphics Processing Units)**
-1. 简介 - GPGPU 是指将GPU的计算能力用于非图形计算任务，即进行通用计算。它是一种通过特定的编程模型（如CUDA或OpenCL）利用GPU执行复杂计算的方法。GPGPU 允许开发者利用GPU的并行处理能力，解决各种复杂的计算问题。
-2. 用途 - GPGPU 技术可以用于执行各种高性能计算任务，比如机器学习算法的训练、大规模物理模拟、加密货币挖矿、生物信息学计算等。
-3. 场景 - 适合那些可以并行处理的计算密集型任务，特别是那些需要处理大量数据的任务，如科研模拟、金融分析、图像和视频处理等。
-
-**NPU (Neural Processing Unit)**
-1. 简介 - NPU 是专为神经网络和深度学习工作负载优化的处理器。它是一种专用硬件，用于高效处理机器学习任务中的大量矩阵和向量运算。
-2. 用途 - NPU 被设计用来加速神经网络的前向传播和反向传播，从而提高机器学习模型训练和推断的速度。
-3. 场景 - NPU 主要用在需要快速和高效处理深度学习模型的场景中，例如智能手机、无人机、自动驾驶汽车、高端服务器和数据中心等。经常集成在移动设备和服务器硬件中，以提供专门的计算能力。
-
-
-GPU、NPU相对CPU，主要都是为了提升算力，提高并行运算能力而生的
-
-训练首选GPGPU，应用首选NPU。
-
-GPU 是指图形处理器。 可以理解成显卡，一般用来显示工作的。
-
-GPGPU 是通用目的GPU，现阶段主流显卡都是GPGPU。通常算力很强，可以适用于大多数目的。
-
-NPU 是网络处理器也可以指代所谓神经网络处理器。功能相对固化，单位功耗下性能更高。专门为AI设计的芯片。AI方面算力很强。大多数的NPU并不能用于训练，主要是因为设计目的的限制。 
-
----
 
