@@ -6,14 +6,68 @@
 
 - [NVMe Over Fabrics](#nvme-over-fabrics)
   - [Table of Contents](#table-of-contents)
+- [RDMA](#rdma)
 - [NVMe Over Fabrics](#nvme-over-fabrics-1)
   - [FC (Fibre Channel 光纤通道)](#fc-fibre-channel-光纤通道)
   - [NVMe (Non-Volatile Memory Express)](#nvme-non-volatile-memory-express)
   - [NoF (NVMe over Fabrics)](#nof-nvme-over-fabrics)
-  - [RoCE (RDMA over Converged Ethernet)](#roce-rdma-over-converged-ethernet)
 
 
 ---
+
+# RDMA
+
+传统 TCP/IP 网络通讯 有毫秒级延迟(内存复制和处理)
+
+**RDMA** - Remote Direct Memory Access 远程直接内存访问 - 允许计算机系统之间直接在内存(虚拟内存)之间传输数据，而无需操作系统(Kernel内核)的介入，从而实现内存零拷贝
+
+适用于高性能计算（HPC）、数据中心和云计算环境，显著减少 数据传输延迟 和 CPU负载
+
+RDMA 要求承载网络无丢包，保证数据传输的可靠性
+
+![](Pics/nvme003.png)
+
+![](Pics/nvme007.png)
+
+
+3种 RDMA 网络 (都实现了RDMA)
+1. **InfiniBand(IB)**
+   1. **专为RDMA设计的网络**
+   2. 在硬件层面提供了RDMA功能
+   3. **成本高昂**，需要购买全套的 IB 设备，包括网卡、线缆、交换机和路由器等等
+   4. 常用于 DPC(Data Processing Center) 场景中的存储前端网络
+2. **RoCE(RDMA over Converged Ethernet)**
+   1. Ethernet-Based，允许 RDMA通信 在 **以太网** 上进行
+   2. **RoCE v1** - 基于以太网链路层实现的 RDMA 协议 - RoCEv1 的数据帧不带IP头部，只能在L2子网内通信
+   3. **RoCE v2** - 以太网TCP/IP协议中UDP层实现，引入 IP 解决了扩展性问题，支持通过IP网络路由。将GRH(Global Routing Header)换成 UDP header +　IP header
+   ![](Pics/nvme006.png)
+   4. 消耗的资源比 iWARP 少，支持的特性比 iWARP 多
+   5. 可以使用普通的以太网交换机，需要支持 RoCE 的网卡(其他网络设备都是兼容的)
+   6. 常用于存储后端网络
+3. iWARP(Internet Wide Area RDMA Protocol)
+   1. TCP/IP - Based，只能支持可靠传输
+   2. 允许RDMA操作在广域网上执行，利用已经存在的以太网和IP基础设施
+   3. iWARP协议栈 相比其他两者更为复杂
+
+
+![](Pics/nvme004.png)
+
+|           | InfiniBand  | iWARP           | RoCE       |
+|-----------|-------------|-----------------|------------|
+| **性能**   | 最好        | 稍差(受TCP影响)   | 与 IB 接近  |
+| **成本**   | 高          | 中              | 低          |
+| **稳定性** | 好          | 差               | 较好        |
+| **交换机** | IB 交换机    | 以太网交换机      | 以太网交换机  |
+
+RoCE
+
+![](Pics/nvme005.png)
+
+
+
+
+
+
 
 # NVMe Over Fabrics
 
@@ -25,10 +79,11 @@ NVMe-oF 非常适合现代的 大规模 和 分布式 存储环境 (eg:AI数据�
 3. 高性能 - 提供接近本地性能的延迟和吞吐量
 
 利用了现有的网络技术
-1. Ethernet - RoCE(RDMA over Converged Ethernet)
-2. InfiniBand
-3. Fibre Channel
-4. iWARP(Internet Wide Area RDMA Protocol)
+1. Fibre Channel
+2. RDMA 网络
+   1. Ethernet-Based - RoCE(RDMA over Converged Ethernet)
+   2. InfiniBand(IB)
+   3. Ethernet-Based - iWARP(Internet Wide Area RDMA Protocol)
 
 **NVMe传输分布图**
 
@@ -47,28 +102,6 @@ PCIe 5.0 x16 的 **双向带宽 = 单向带宽 x 2 = 64 GB/s x 2 = 128 GB/s**(�
 但是 AI加速卡上的内存 都是 TB/s 级别，仅用 PCIe 效率不够
 
 **NIC** - Network Interface Card - 网络接口卡
-
-
-
-
-
-RDMA - Remote Direct Memory Access 远程直接内存访问 - 允许计算机系统之间直接在内存之间传输数据，而无需操作系统的介入，从而实现内存零拷贝
-
-适用于高性能计算（HPC）、数据中心和云计算环境，显著减少 数据传输延迟 和 CPU负载
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -101,10 +134,8 @@ NVMe over Fabrics
 
 不仅限于直连到主机的PCIe设备，NVMe协议现在可以通过各种网络技术(如Fibre Channel、Ethernet等)，跨越更远的距离进行操作
 
-## RoCE (RDMA over Converged Ethernet) 
 
-RoCE 是一种网络技术，**允许远程直接内存访问 (RDMA) 的操作在以太网网络上进行**
 
-RDMA(Remote Direct Memory Access)，允许一台计算机直接从另一台计算机的内存中读取或写入数据，而无需经过操作系统和CPU的处理，从而显著减少延迟并提高数据传输速率
 
-RoCE 使得这种高效的数据传输方式能够在传统的以太网基础设施上实现，从而增加了网络的灵活性和数据处理能力
+
+
