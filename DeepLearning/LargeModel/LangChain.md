@@ -67,7 +67,7 @@ framework consists of the following open-source libraries
 
 **Main Components**
 1. [Model I/O](https://python.langchain.com/docs/modules/model_io/)
-   ![](Pics/langchain004.png)
+   ![](Pics/langchain003.png)
    1. **Prompts**
    2. **Chat Models**
       1. tuned for **conversations**
@@ -152,7 +152,7 @@ LangChain 应用场景
 5. LLM生成回答 - 将Prompt发送给LLM获得基于文档内容的回答
 
 基于 **本地知识库问答** 的实现原理 (VectorStore 向量数据库)
-![](Pics/langchain003.png)
+![](Pics/rag001.png)
 
 
 AIMessage
