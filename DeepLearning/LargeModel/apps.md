@@ -6,6 +6,9 @@
 - [Useful Apps \& Websites](#useful-apps--websites)
   - [Table of Contents](#table-of-contents)
 - [Latent Box - AI、创意、艺术 的 精选合集 (论文 工具)](#latent-box---ai创意艺术-的-精选合集-论文-工具)
+- [character.ai - 聊天机器人(角色扮演)](#characterai---聊天机器人角色扮演)
+- [AWS - Amazon Web Services](#aws---amazon-web-services)
+- [Answer Questions](#answer-questions)
 - [AIHub-发现最新优质AI工具](#aihub-发现最新优质ai工具)
 - [OpenXLab 浦源 应用中心](#openxlab-浦源-应用中心)
 - [主流大模型深度评测](#主流大模型深度评测)
@@ -27,6 +30,35 @@
 [Latent Box - Github](https://github.com/latentcat/latentbox)
 
 ![](Pics/app003.png)
+
+
+# character.ai - 聊天机器人(角色扮演)
+
+[character.ai](https://character.ai/)
+
+
+# AWS - Amazon Web Services
+
+[AWS](https://aws.amazon.com/cn/)
+
+[Amazon Bedrock - 使用基础模型（FM）构建和扩展生成式人工智能应用程序的最简单方法](https://us-west-2.console.aws.amazon.com/bedrock/home?region=us-west-2#/)
+
+
+# Answer Questions
+
+![](Pics/app004.png)
+
+[Answer.AI](https://answerai.pro/)
+
+支持
+1. 对话
+2. 截图
+3. PDF
+
+
+[AnswersAi](https://answersai.com/#)
+
+![](Pics/app005.png)
 
 # AIHub-发现最新优质AI工具
 

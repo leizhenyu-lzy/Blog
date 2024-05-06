@@ -5,17 +5,296 @@
 ## Table of Content
 - [RAG](#rag)
   - [Table of Content](#table-of-content)
+- [IBM Technology - Introductions](#ibm-technology---introductions)
+  - [How Large Language Models Work?](#how-large-language-models-work)
+  - [Why Are There So Many Foundation Models?](#why-are-there-so-many-foundation-models)
+  - [What is Retrieval-Augmented Generation (RAG)?](#what-is-retrieval-augmented-generation-rag)
+  - [Why Large Language Models Hallucinate?](#why-large-language-models-hallucinate)
+  - [What is a Vector Database?](#what-is-a-vector-database)
 - [Retrieval-Augmented Generation for Large Language Models: A Survey](#retrieval-augmented-generation-for-large-language-models-a-survey)
+  - [Links](#links)
+- [Advanced RAG Techniques : an Illustrated Overview](#advanced-rag-techniques--an-illustrated-overview)
+  - [Vector Search - 向量搜索](#vector-search---向量搜索)
+  - [LLM 产品](#llm-产品)
+  - [LLM-based pipelines \& applications](#llm-based-pipelines--applications)
+  - [Naive RAG](#naive-rag)
+  - [Advanced RAG](#advanced-rag)
+    - [01 - Chunking \& vectorisation](#01---chunking--vectorisation)
+    - [02 - Search index](#02---search-index)
+    - [03 - Reranking \& filtering](#03---reranking--filtering)
+    - [04 - Query transformations](#04---query-transformations)
+    - [05 - Chat Engine](#05---chat-engine)
+    - [06 - Query Routing](#06---query-routing)
+    - [07 - Agents in RAG](#07---agents-in-rag)
+    - [08 - Response synthesiser](#08---response-synthesiser)
 - [12 RAG Pain Points and Proposed Solutions-Solving the core challenges of Retrieval-Augmented Generation](#12-rag-pain-points-and-proposed-solutions-solving-the-core-challenges-of-retrieval-augmented-generation)
+
+---
+
+![](Pics/rag002.png)
+
+---
+
+# IBM Technology - Introductions
+
+## How Large Language Models Work?
+
+[How Large Language Models Work?](https://www.youtube.com/watch?v=5sLYAQS9sWQ)
+
+GPT - generative pretrained transformer
+
+instance(实例) of foundation model
+
+self-supervised learning != unsupervised learning
+1. self-supervised learning
+   1. 从数据本身自动生成标签来训练模型，不依赖外部提供的标签(预测图像的某个部分、预测句子中遮挡的单词)
+   2. 但创建了一个监督任务，使模型能够通过预测数据的某些方面来学习数据的表示
+2. unsupervised learning
+   1. 发现数据中的隐藏结构或模式，而不是从标签数据中学习
+      1. 聚类 - clustering - K-means & hierarchical
+      2. 降维 - dimension reduction - PCA & t-SNE
+      3. 关联规则学习 - association rule learning
+
+LLM = data + architecture(transformer) + training
+
+business applicaitons
+1. Customer Service Application - ChatBot
+2. Content Creation - article / email / video
+3. Software Development - code review
+
+## Why Are There So Many Foundation Models?
+
+[Why Are There So Many Foundation Models?](https://www.youtube.com/watch?v=QPQy7jUpmyA)
+
+[IBM NASA Geospatial - HuggingFace](https://huggingface.co/ibm-nasa-geospatial)
+
+HuggingFace - download open source foundation models
+
+Foundation Model - 规模更大、应用更广泛 的预训练模型(多功能性 & 可适应性 & 迁移学习，通过少量的调整或甚至零次调整 zero-shot learning 处理各种任务)
+
+Transformer - turn raw data to compressed representation & catch the data's basic structure
+
+can be fine-tuned to perform different tasks
+
+
+
+## What is Retrieval-Augmented Generation (RAG)?
+
+[What is Retrieval-Augmented Generation (RAG)?](https://www.youtube.com/watch?v=T-D1OfcDW1M)
+
+**RAG - Retrieval-Augmented Generation - 检索增强生成**
+
+**Challenges**
+1. no source
+2. knowledge out of date
+
+content source (Internet/Documents/Policies)
+
+LLMs are instructed to pay attention to source data before respond
+
+**Pros:**
+1. less likely to hallucinate(幻觉) 
+2. less likely to leak data(数据隔离、访问控制)
+3. know when to say "I don't know"
+
+**Cons:**
+1. if the retriever is bad -> user can't get an answer
+
+## Why Large Language Models Hallucinate?
+
+[Why Large Language Models Hallucinate?](https://www.youtube.com/watch?v=cfqtFvWOfg0)
+
+plausible sounding nonsense
+
+make up completely fabricated or contradictory statements
+
+Different Granularity(颗粒度)
+1. sentense contradiction(contradict previous sentence)
+2. prompt contradiction
+3. factual contradiction
+4. nonsensical/irrelevant information base hallucinations
+
+
+Causes
+1. data quality(not possible to cover all topics)
+2. generation method
+   1. beam search
+   2. sampling
+   3. maximum
+
+
+
+
+## What is a Vector Database?
+
+[What is a Vector Database?](https://www.youtube.com/watch?v=t9IDoenf-lo)
+
+Database
+1. SQL - 结构化 数据 - tables
+2. NoSQL(Not Only SQL) - 非结构化/半结构化 数据 - docs
+3. Graph - 图结构 数据 - nodes
+4. Vector - 向量 数据 - AI apps
+
+2 concepts
+1. Vector
+   1. images、texts、documents -> represented in type of numerical value(array)
+2. Embedding
+   1. 对象 (单词、句子、图像) 映射到向量空间
+   2. flexibility(vary input)/scability
+
+
+
+
 
 ---
 
 # Retrieval-Augmented Generation for Large Language Models: A Survey
 
+## Links
+
 [Retrieval-Augmented Generation for Large Language Models: A Survey](https://arxiv.org/abs/2312.10997)
 
+[RAG-Survey - Github](https://github.com/Tongji-KGLLM/RAG-Survey)
 
 
+
+
+
+
+
+
+---
+
+# Advanced RAG Techniques : an Illustrated Overview
+
+[Advanced RAG Techniques : an Illustrated Overview](https://medium.com/towards-artificial-intelligence/advanced-rag-techniques-an-illustrated-overview-04d193d8fec6)
+
+RAG provides LLMs with the information retrieved from some data source to ground its generated answer on
+
+RAG = Search + LLM prompting(query and the retrieved context)
+
+## Vector Search - 向量搜索
+
+**Vector Search - 向量搜索**
+1. [Faiss Wiki - Github](https://github.com/facebookresearch/faiss/wiki) - a library for efficient similarity search and clustering of dense vectors
+2. [Chroma - Github](https://github.com/chroma-core/chroma) - the open-source embedding database
+3. [weavaite.io](https://weaviate.io/) - an open source, AI-native vector database
+4. [pinecone](https://www.pinecone.io/) - a serverless vector database
+5. [nmslib](https://github.com/nmslib/nmslib) - an efficient cross-platform similarity search library and a toolkit for evaluation of similarity search methods
+6. [Qdrant](https://qdrant.tech/) - a vector similarity search engine and vector database
+
+## LLM 产品
+
+LLM
+1. [ChatGPT - OpenAI](https://openai.com/chatgpt) - Get answers. Find inspiration. Be more productive.
+2. [Claude - Anthropic](https://www.anthropic.com/product) - a family of foundational AI models that can be used in a variety of applications
+3. [Mixtral form Mistral](https://mistral.ai/news/mixtral-of-experts/) - A high quality Sparse Mixture-of-Experts
+4. [Phi-2 from Microsoft](https://www.microsoft.com/en-us/research/blog/phi-2-the-surprising-power-of-small-language-models/)
+5. [Llama2](https://huggingface.co/blog/zh/llama2) - a family of state-of-the-art open-access large language models 
+6. [OpenLLaMA - UC Berkelely](https://huggingface.co/openlm-research) - open source reproduction of Meta AI’s LLaMA model trained on the RedPajama dataset
+7. [Falcon](https://huggingface.co/tiiuae) - TII's flagship series of large language models, built from scratch using a custom data pipeline and distributed training library
+
+## LLM-based pipelines & applications
+
+**open source libraries for LLM-based pipelines & applications**
+1. [LangChain 🦜️](https://python.langchain.com/docs/get_started/introduction/)
+   ![](Pics/rag003.png)
+2. [LlamaIndex 🦙](https://docs.llamaindex.ai/en/stable/) - a framework for building context-augmented LLM applications
+   ![](Pics/rag004.png)
+3. [Dify](https://dify.ai/zh) - **开源的** LLM 应用开发平台。提供从 Agent 构建到 AI workflow 编排、RAG 检索、模型管理等能力，轻松构建和运营生成式 AI 原生应用
+   ![](Pics/rag005.png)   
+4. [BiSheng](https://bisheng.dataelem.com/) - 便捷、灵活、可靠的企业级大模型应用开发平台
+   ![](Pics/rag006.png)
+
+
+## Naive RAG
+
+![](Pics/rag007.webp)
+
+**Vanilla RAG case**
+1. split texts into chunks
+2. **embed chunks into vectors** with some Transformer Encoder model
+3. put all those vectors into an index
+4. create prompt for LLM that tells the model to answers user’s query(given the context found)
+
+**Runtime**
+1. **vectorize user’s query** with the same Encoder model
+2. execute search of this query vector against the index
+3. find the top-k results
+4. retrieve the corresponding text chunks from our database
+5. feed them into the LLM prompt as context
+
+Prompt engineering is the cheapest thing you can try to improve your RAG pipeline
+
+[OpenAI - Prompt engineering(shares strategies and tactics for getting better results from large language models)](https://platform.openai.com/docs/guides/prompt-engineering)
+
+
+## Advanced RAG
+
+![](Pics/rag008.webp)
+
+### 01 - Chunking & vectorisation
+
+create an index of vectors, representing our document contents
+
+in the runtime to search for the **least cosine distance**(余弦值用来表示两个向量的相似性)
+
+$$ \cos (x, y)
+=\frac{x \cdot y}{|x| \cdot |y|}
+=\frac{\sum_{i=1}^{n} x_{i} y_{i}}
+{\sqrt{\sum_{i=1}^{n} x_{i}^{2}} \sqrt{\sum_{i=1}^{n} y_{i}^{2}}} $$
+
+query vector which corresponds to the closest semantic meaning
+
+**Chunking** - split the initial documents in chunks of some size without loosing their meaning
+1. Transformer models have fixed input sequence length
+2. 相比于几页文本的平均向量，一句话或几句话的向量更能准确地代表其语义含义
+3. size of the chunk depends on the embedding model and capacity in tokens
+4. [Chunking Strategies for LLM Applications](https://www.pinecone.io/learn/chunking-strategies/)
+
+
+**Vectorization**
+1. choose a model to embed our chunks
+2. search optimised models
+   1. [bge(-large](https://huggingface.co/BAAI/bge-large-en-v1.5)
+   2. [E5](https://huggingface.co/intfloat/multilingual-e5-large)
+3. [Overall MTEB English leaderboard](https://huggingface.co/spaces/mteb/leaderboard) - Massive Text Embedding Benchmark
+
+
+
+### 02 - Search index
+
+**Vector store index**
+
+![](Pics/rag009.webp)
+
+most naive implementation uses a flat index(a brute force distance calculation between the query vector and all the chunks’ vectors)
+
+
+
+Hierarchical indices
+
+Hypothetical Questions and HyDE
+
+Context enrichment
+
+Fusion retrieval or hybrid search
+
+
+### 03 - Reranking & filtering
+
+
+### 04 - Query transformations
+
+
+### 05 - Chat Engine
+
+
+### 06 - Query Routing
+
+### 07 - Agents in RAG
+
+### 08 - Response synthesiser
 
 
 ---

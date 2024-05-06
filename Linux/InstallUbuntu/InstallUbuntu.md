@@ -247,34 +247,7 @@ eudic 欧陆词典  (22.04欧路词典暂时打不开，使用goldendict替换�
 
 
 Feishu
-netease cloud music [Ubuntu22.04运行网易云音乐错误](https://blog.csdn.net/qq_35628698/article/details/124815037)
 
-```shell
-# 针对 22.04
-# Ubuntu 22.04由于更换/升级了一些动态库，系统动态库x86_64-linux-gnu内libgio-2.0.so.0、libpangocairo-1.0.so.0引用库缺少了函数支持， 导致程序无法运行，又因前两个动态库的更换导致依赖动态库libselinux.so.1缺少。故只能使用安装目录库并补齐以上三个动态库，且Ubuntu22.04的库无法使用，只能使用21.10以下的系统库文件。
-
-# 安装软件
-sudo dpkg -i netease-cloud-music_1.2.1_amd64_ubuntu_20190428.deb
-# 修改启动脚本
-vim /opt/netease/netease-cloud-music/netease-cloud-music.bash
-# 修改为
-------
-#!/bin/sh
-#HERE="$(dirname "$(readlink -f "${0}")")"
-HERE=/opt/netease/netease-cloud-music
-export LD_LIBRARY_PATH="${HERE}"/libs
-export QT_PLUGIN_PATH="${HERE}"/plugins
-export QT_QPA_PLATFORM_PLUGIN_PATH="${HERE}"/plugins/platforms
-exec $HERE/netease-cloud-music $@
-------
-# 将动态连接库复制到网易云音乐依赖包里面 注意不要放全局 因为只有网易云用这个 其他的系统模块还是用原来的 放全局容易会导致系统崩溃
-cp libgio-2.0.so.0 libpangocairo-1.0.so.0.4800.10 libselinux.so.1 /opt/netease/netease-cloud-music/libs
-# 更改连接库名称
-cd /opt/netease/netease-cloud-music/libs
-mv libpangocairo-1.0.so.0.4800.10 libpangocairo-1.0.so.0
-# 启动
-netease-cloud-music
-```
 
 
 
@@ -1700,6 +1673,22 @@ sudo snap install pomatez
 ```bash
 ~/.bashrc
 ```
+
+# 网易云音乐
+
+
+## 官网 Linux 下载 (现在没了)
+
+[Ubuntu 22.4网易云音乐启动失败处理方法](https://icode.best/i/15851947332762)
+
+[Ubuntu22.04运行网易云音乐错误](https://blog.csdn.net/qq_35628698/article/details/124815037)
+
+
+## 代替方案
+
+[YesPlayMusic](https://github.com/qier222/YesPlayMusic)
+
+release 找 amd64.deb 然后 sudo apt install xxx.deb 即可
 
 # 小技巧
 
