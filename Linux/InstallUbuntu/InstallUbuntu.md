@@ -1553,7 +1553,7 @@ sudo snap install freecad
 
 摄像头，音频都正常
 
-缺点：就是无法共享屏幕
+缺点：就是无法共享屏幕(有时候可以，有时候不行)
 
 ```bash
 sudo gedit /opt/wemeet/wemeetapp.sh 
@@ -1568,6 +1568,32 @@ unset WAYLAND_DISPLAY
 unset WAYLAND_DISPLAYCOPY
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ];
+```
+
+# Zoom - 视频会议
+
+[Zoom Download Center](https://www.zoom.us/download)
+
+# Obsidian - 笔记
+
+[Obsidian](https://obsidian.md/)
+
+```bash
+sudo snap install obsidian --classic 
+```
+
+同步需要钱
+
+# WhatsApp
+
+[Download WhatsApp - 官网](https://www.whatsapp.com/download)
+
+[WhatsApp for Linux (unofficial) - Snap Store](https://snapcraft.io/whatsapp-for-linux)
+
+[WhatsApp for Linux (unofficial) - Github](https://github.com/eneshecan/whatsapp-for-linux)
+
+```bash
+sudo snap install whatsapp-for-linux
 ```
 
 # PlatformIO
