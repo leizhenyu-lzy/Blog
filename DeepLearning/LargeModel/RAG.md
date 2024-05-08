@@ -20,7 +20,12 @@
   - [Naive RAG](#naive-rag)
   - [Advanced RAG](#advanced-rag)
     - [01 - Chunking \& vectorisation](#01---chunking--vectorisation)
-    - [02 - Search index](#02---search-index)
+    - [02 - Index](#02---index)
+      - [02.01 - Vector store index](#0201---vector-store-index)
+      - [02.02 - Hierarchical indices](#0202---hierarchical-indices)
+      - [02.03 - Hypothetical Questions and HyDE](#0203---hypothetical-questions-and-hyde)
+      - [02.04 - Context enrichment](#0204---context-enrichment)
+      - [02.05 - Fusion retrieval or hybrid search](#0205---fusion-retrieval-or-hybrid-search)
     - [03 - Reranking \& filtering](#03---reranking--filtering)
     - [04 - Query transformations](#04---query-transformations)
     - [05 - Chat Engine](#05---chat-engine)
@@ -169,6 +174,8 @@ Database
 
 [Advanced RAG Techniques : an Illustrated Overview](https://medium.com/towards-artificial-intelligence/advanced-rag-techniques-an-illustrated-overview-04d193d8fec6)
 
+[高级 RAG 技术 : 图解概览 [译]](https://baoyu.io/translations/rag/advanced-rag-techniques-an-illustrated-overview)
+
 RAG provides LLMs with the information retrieved from some data source to ground its generated answer on
 
 RAG = Search + LLM prompting(query and the retrieved context)
@@ -185,7 +192,7 @@ RAG = Search + LLM prompting(query and the retrieved context)
 
 ## LLM 产品
 
-LLM
+LLM(**brain** for **RAG pipeline**)
 1. [ChatGPT - OpenAI](https://openai.com/chatgpt) - Get answers. Find inspiration. Be more productive.
 2. [Claude - Anthropic](https://www.anthropic.com/product) - a family of foundational AI models that can be used in a variety of applications
 3. [Mixtral form Mistral](https://mistral.ai/news/mixtral-of-experts/) - A high quality Sparse Mixture-of-Experts
@@ -215,7 +222,20 @@ LLM
 1. split texts into chunks
 2. **embed chunks into vectors** with some Transformer Encoder model
 3. put all those vectors into an index
-4. create prompt for LLM that tells the model to answers user’s query(given the context found)
+4. create **prompt** for LLM that tells the model to answers user’s query(given the context found)
+   ```python
+   def question_answering(context, query):
+      prompt = f"""
+                  Give the answer to the user query delimited by triple backticks ```{query}```\
+                  using the information given in context delimited by triple backticks ```{context}```.\
+                  If there is no relevant information in the provided context, try to answer yourself, 
+                  but tell user that you did not have any relevant context to base your answer on.
+                  Be concise and output the answer of size less than 80 tokens.
+                  """
+      response = get_completion(instruction, prompt, model="gpt-3.5-turbo")
+      answer = response.choices[0].message["content"]
+      return answer
+   ```
 
 **Runtime**
 1. **vectorize user’s query** with the same Encoder model
@@ -224,7 +244,7 @@ LLM
 4. retrieve the corresponding text chunks from our database
 5. feed them into the LLM prompt as context
 
-Prompt engineering is the cheapest thing you can try to improve your RAG pipeline
+Prompt engineering is the **cheapest** thing you can try to improve your RAG pipeline
 
 [OpenAI - Prompt engineering(shares strategies and tactics for getting better results from large language models)](https://platform.openai.com/docs/guides/prompt-engineering)
 
@@ -235,50 +255,58 @@ Prompt engineering is the cheapest thing you can try to improve your RAG pipelin
 
 ### 01 - Chunking & vectorisation
 
-create an index of vectors, representing our document contents
+Procedure
+1. create an index of vectors(向量索引), representing our document contents
+2. in the runtime to search for the **least cosine distance**(余弦值用来表示两个向量的相似性)
+3. query vector which corresponds to the closest semantic meaning
 
-in the runtime to search for the **least cosine distance**(余弦值用来表示两个向量的相似性)
-
-$$ \cos (x, y)
+**least cosine distance**
+**$$ \cos (x, y)
 =\frac{x \cdot y}{|x| \cdot |y|}
 =\frac{\sum_{i=1}^{n} x_{i} y_{i}}
-{\sqrt{\sum_{i=1}^{n} x_{i}^{2}} \sqrt{\sum_{i=1}^{n} y_{i}^{2}}} $$
+{\sqrt{\sum_{i=1}^{n} x_{i}^{2}} \sqrt{\sum_{i=1}^{n} y_{i}^{2}}} $$**
 
-query vector which corresponds to the closest semantic meaning
 
-**Chunking** - split the initial documents in chunks of some size without loosing their meaning
+**Chunking** - split documents in chunks without loosing meaning
 1. Transformer models have fixed input sequence length
 2. 相比于几页文本的平均向量，一句话或几句话的向量更能准确地代表其语义含义
-3. size of the chunk depends on the embedding model and capacity in tokens
+3. size of the chunk depends on the embedding model and its capacity in tokens
 4. [Chunking Strategies for LLM Applications](https://www.pinecone.io/learn/chunking-strategies/)
 
 
 **Vectorization**
 1. choose a model to embed our chunks
-2. search optimised models
-   1. [bge(-large](https://huggingface.co/BAAI/bge-large-en-v1.5)
+2. search optimized models(为搜索优化的模型)
+   1. [bge-large](https://huggingface.co/BAAI/bge-large-en-v1.5)
+      1. [FlagEmbedding - Github](https://github.com/FlagOpen/FlagEmbedding/blob/master/README_zh.md)
    2. [E5](https://huggingface.co/intfloat/multilingual-e5-large)
 3. [Overall MTEB English leaderboard](https://huggingface.co/spaces/mteb/leaderboard) - Massive Text Embedding Benchmark
 
 
 
-### 02 - Search index
+### 02 - Index
 
-**Vector store index**
+#### 02.01 - Vector store index
 
 ![](Pics/rag009.webp)
 
-most naive implementation uses a flat index(a brute force distance calculation between the query vector and all the chunks’ vectors)
+(omit the Encoder block)
 
+the crucial part of the RAG pipeline is the **search index 搜索索引**, storing your vectorized content
 
+most naive implementation uses **flat index**(a brute force 暴力 distance calculation between the **query vector** and **all the chunks’ vectors**)
 
-Hierarchical indices
+a vector index like faiss, nmslib or annoy - optimized for efficient retrieval, using **Approximate Nearest Neighbours** implementation(clustring, trees or HNSW algorithm)
 
-Hypothetical Questions and HyDE
+[Vector Search - Hierarchical Navigable Small World (HNSW) graphs](https://www.pinecone.io/learn/series/faiss/hnsw/)
 
-Context enrichment
+#### 02.02 - Hierarchical indices
 
-Fusion retrieval or hybrid search
+#### 02.03 - Hypothetical Questions and HyDE
+
+#### 02.04 - Context enrichment
+
+#### 02.05 - Fusion retrieval or hybrid search
 
 
 ### 03 - Reranking & filtering
@@ -295,6 +323,10 @@ Fusion retrieval or hybrid search
 ### 07 - Agents in RAG
 
 ### 08 - Response synthesiser
+
+
+
+
 
 
 ---

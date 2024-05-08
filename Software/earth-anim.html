@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Earth Animation</title>
+</head>
+<body>
+<script>
+eval(z='p="<"+"pre>"/* ,.oq#+     ,._, */;for(y in n="zw24l6k\
+4e3t4jnt4qj24xh2 x/* =<,m#F^    A W###q. */42kty24wrt413n243n\
+9h243pdxt41csb yz/* #K       q##H######Am */43iyb6k43pk7243nm\
+r24".split(4)){/* dP      cpq#q##########b, */for(a in t=pars\
+eInt(n[y],36)+/*         p##@###YG=[#######y */(e=x=r=[]))for\
+(r=!r,i=0;t[a/*         d#qg `*PWo##q#######D */]>i;i+=.05)wi\
+th(Math)x-= /*        aem1k.com Q###KWR#### W[ */.05,0>cos(o=\
+new Date/1e3/*      .Q#########Md#.###OP  A@ , */+x/PI)&&(e[~\
+~(32*sin(o)*/* ,    (W#####Xx######.P^     T % */sin(.5+y/7))\
++60] =-~ r);/* #y    `^TqW####P###BP           */for(x=0;122>\
+x;)p+="   *#"/* b.        OQ####x#K           */[e[x++]+e[x++\
+]]||(S=("eval"/* l         `X#####D  ,       */+"(z=\'"+z.spl\
+it(B = "\\\\")./*           G####B" #       */join(B+B).split\
+(Q="\'").join(B+Q/*          VQBP`        */)+Q+")//m1k")[x/2\
++61*y-1]).fontcolor/*         TP         */(/\\w/.test(S)&&"#\
+03B");document.body.innerHTML=p+=B+"\\n"}setTimeout(z)')
+</script>
+</body>
+</html>
+
+<!-- [JavaScript Hacks and Creative Coding - Martin Kleppe](https://aem1k.com/) -->
+
+<!-- 
+eval(z='p="<"+"pre>";' + 
+    'for (y in n = "zw24l6k4e3t4jnt4qj24xh2x42kty24wrt413n243n9h243pdxt41csbyz43iyb6k43pk7243nmr24".split(4)) {' +
+        'for (a in t = parseInt(n[y], 36) + (e = x = r = [])) ' +
+            'for (r = !r, i = 0; t[a] > i; i += .05) ' +
+                'with (Math) ' +
+                    'x -= .05, 0 > cos(o = new Date / 1e3 + x / PI) && (e[~~(32 * sin(o) * sin(.5 + y / 7)) + 60] = -~r);' +
+        'for (x = 0; 122 > x;) ' +
+            'p += "   *#" [e[x++] + e[x++]] || ' +
+            '(S = ("eval" + "(z=\'' + z.split(B = "\\\\").join(B + B).split(Q = "\'").join(B + Q) + Q + ")//m1k")[x / 2 + 61 * y - 1]).fontcolor(/\\w/.test(S) && "#03B");' +
+        'document.body.innerHTML = p += B + "\\n";' +
+    '}' +
+    'setTimeout(z)'); 
+-->
+
+<!--
+eval 函数用于执行一个字符串形式的 JavaScript 代码。这要求整段代码必须正确地被视为字符串，因此需要被单引号包围
+
+初始化
+使用 <pre> 标签开始，这是因为 <pre> 保留了空格和换行，适合显示 ASCII 文本
+
+主循环
+外层循环 for (y in n = "...".split(4)) 遍历一个通过 4 分割的字符串数组
+  zw2 4  l6k 4  e3t 4  jnt 4  qj2 4  xh2x 4  2kty2 4  wrt 4  13n2 4  3n9h2 4  3pdxt 4  1csbyz 4  3iyb6k 4  3pk72 4  3nmr2 4
+["zw2", "l6k", "e3t", "jnt", "qj2", "xh2x", "2kty2", "wrt", "13n2", "3n9h2", "3pdxt", "1csbyz", "3iyb6k", "3pk72", "3nmr2"]
+这里 n 数组里的每个元素都是经过 Base36 编码的数字，表示不同的动画帧数据
+
+动画帧计算
+parseInt(n[y], 36) 将 Base36 编码的字符串转换为整数，用作后续的动画帧计算
+内层循环 for (r = !r, i = 0; t[a] > i; i += .05) 利用数学函数来根据时间变量动态计算字符位置，这是动画效果的核心。这里使用正弦和余弦函数结合当前时间生成动态效果
+
+字符渲染
+将计算结果映射到特定字符上，更新 p 字符串，该字符串存储当前帧的所有字符
+
+循环更新页面内容
+用 document.body.innerHTML = p += B + "\\n"; 更新网页内容，显示当前动画帧
+
+递归调用
+setTimeout(z) 在每帧结束后递归调用自身，实现动画的连续播放
+-->
