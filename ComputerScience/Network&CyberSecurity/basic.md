@@ -1,75 +1,66 @@
-# 基本概念
+# 网络 & 信安 基本概念
 
+---
 
 ## Table of Contents
 
-- [基本概念](#基本概念)
+- [网络 \& 信安 基本概念](#网络--信安-基本概念)
   - [Table of Contents](#table-of-contents)
-- [相关公司](#相关公司)
-  - [思科 - CISCO](#思科---cisco)
-- [基本概念](#基本概念-1)
-  - [【硬核翻墙系列】 - 电丸科技AK](#硬核翻墙系列---电丸科技ak)
-    - [第一期 - 防火墙/GFW是什么？为什么会有墙？墙的真正用意是什么？你为什么要搞清楚翻墙的原理？](#第一期---防火墙gfw是什么为什么会有墙墙的真正用意是什么你为什么要搞清楚翻墙的原理)
-    - [第二期 - GFW原理和Shadowsocks/V2ray/Trojan又是如何突破封锁的？](#第二期---gfw原理和shadowsocksv2raytrojan又是如何突破封锁的)
-    - [第三期 - 翻墙软件 路由器 软路由硬件翻墙 和网关模式翻墙等多种翻墙方式的利弊和特点 你更适合哪一种？](#第三期---翻墙软件-路由器-软路由硬件翻墙-和网关模式翻墙等多种翻墙方式的利弊和特点-你更适合哪一种)
-    - [第四期 - 各种线路详解 CN2/BGP/IPLC/GCP/AWS/Azure](#第四期---各种线路详解-cn2bgpiplcgcpawsazure)
-    - [第五期 - 机场还是VPS？选择哪一种更适合你？](#第五期---机场还是vps选择哪一种更适合你)
-    - [第六期 - 协议之战 原版SS SSR V2Ray的WS+TLS还是trojan？](#第六期---协议之战-原版ss-ssr-v2ray的wstls还是trojan)
-    - [第七期 - VPN才是主流？比Shadowsocks和v2ray好在哪里？](#第七期---vpn才是主流比shadowsocks和v2ray好在哪里)
-  - [中国骨干网](#中国骨干网)
-  - [特殊 端口 \& IP](#特殊-端口--ip)
-    - [特殊 端口](#特殊-端口)
-    - [特殊 IP](#特殊-ip)
-  - [VPN - Virtual Private Network](#vpn---virtual-private-network)
-  - [Cookie Session Token](#cookie-session-token)
-  - [IDC 机房](#idc-机房)
-  - [数字签名 及 数字证书](#数字签名-及-数字证书)
-  - [RSA 加密算法原理](#rsa-加密算法原理)
-  - [CA - Certificate Authority](#ca---certificate-authority)
-  - [SSH - Secure Shell](#ssh---secure-shell)
-  - [SSL/TLS - Secure Sockets Layer/Transport Layer Security](#ssltls---secure-sockets-layertransport-layer-security)
-  - [HTTP(超文本传输协议) \& HTTPS(HTTP安全)](#http超文本传输协议--httpshttp安全)
-  - [DNS服务器](#dns服务器)
-  - [热点 Hotspot](#热点-hotspot)
-  - [桥接(Bridging) \& 中继(Repeater)](#桥接bridging--中继repeater)
-  - [WAP(无线接入点) \& Router(路由器)](#wap无线接入点--router路由器)
-  - [防火墙 Firewall](#防火墙-firewall)
-  - [长城防火墙 Great Fire Wall(GFW)](#长城防火墙-great-fire-wallgfw)
-  - [shadowsocks \& Vmess](#shadowsocks--vmess)
-  - [Trojan](#trojan)
-  - [CDN](#cdn)
-  - [调制解调器 Modem \& 路由器 Router](#调制解调器-modem--路由器-router)
-  - [集线器 Hub \& 交换机 Switch \& 路由器 Router](#集线器-hub--交换机-switch--路由器-router)
-  - [WAN LAN 子网](#wan-lan-子网)
-  - [公共和私有IP地址](#公共和私有ip地址)
-  - [MAC地址](#mac地址)
-  - [堡垒机](#堡垒机)
-  - [静电保护](#静电保护)
+- [【硬核翻墙系列】 - 电丸科技AK](#硬核翻墙系列---电丸科技ak)
+  - [第一期 - 防火墙/GFW是什么？为什么会有墙？墙的真正用意是什么？你为什么要搞清楚翻墙的原理？](#第一期---防火墙gfw是什么为什么会有墙墙的真正用意是什么你为什么要搞清楚翻墙的原理)
+  - [第二期 - GFW原理和Shadowsocks/V2ray/Trojan又是如何突破封锁的？](#第二期---gfw原理和shadowsocksv2raytrojan又是如何突破封锁的)
+  - [第三期 - 翻墙软件 路由器 软路由硬件翻墙 和网关模式翻墙等多种翻墙方式的利弊和特点 你更适合哪一种？](#第三期---翻墙软件-路由器-软路由硬件翻墙-和网关模式翻墙等多种翻墙方式的利弊和特点-你更适合哪一种)
+  - [第四期 - 各种线路详解 CN2/BGP/IPLC/GCP/AWS/Azure](#第四期---各种线路详解-cn2bgpiplcgcpawsazure)
+  - [第五期 - 机场还是VPS？选择哪一种更适合你？](#第五期---机场还是vps选择哪一种更适合你)
+  - [第六期 - 协议之战 原版SS SSR V2Ray的WS+TLS还是trojan？](#第六期---协议之战-原版ss-ssr-v2ray的wstls还是trojan)
+  - [第七期 - VPN才是主流？比Shadowsocks和v2ray好在哪里？](#第七期---vpn才是主流比shadowsocks和v2ray好在哪里)
+- [中国骨干网](#中国骨干网)
+- [特殊 端口 \& IP](#特殊-端口--ip)
+  - [特殊 端口](#特殊-端口)
+  - [特殊 IP](#特殊-ip)
+- [VPN - Virtual Private Network](#vpn---virtual-private-network)
+- [Cookie Session Token](#cookie-session-token)
+- [IDC 机房](#idc-机房)
+- [数字签名 及 数字证书](#数字签名-及-数字证书)
+- [RSA 加密算法原理](#rsa-加密算法原理)
+- [CA - Certificate Authority](#ca---certificate-authority)
+- [SSH - Secure Shell](#ssh---secure-shell)
+- [SSL/TLS - Secure Sockets Layer/Transport Layer Security](#ssltls---secure-sockets-layertransport-layer-security)
+- [HTTP(超文本传输协议) \& HTTPS(HTTP安全)](#http超文本传输协议--httpshttp安全)
+- [DNS服务器](#dns服务器)
+- [热点 Hotspot](#热点-hotspot)
+- [桥接(Bridging) \& 中继(Repeater)](#桥接bridging--中继repeater)
+- [WAP(无线接入点) \& Router(路由器)](#wap无线接入点--router路由器)
+- [裸金属服务器 - Bare Metal Server](#裸金属服务器---bare-metal-server)
+- [防火墙 Firewall](#防火墙-firewall)
+- [长城防火墙 Great Fire Wall(GFW)](#长城防火墙-great-fire-wallgfw)
+- [shadowsocks \& Vmess](#shadowsocks--vmess)
+- [Trojan](#trojan)
+- [CDN](#cdn)
+- [调制解调器 Modem \& 路由器 Router](#调制解调器-modem--路由器-router)
+- [集线器 Hub \& 交换机 Switch \& 路由器 Router](#集线器-hub--交换机-switch--路由器-router)
+- [WAN LAN 子网](#wan-lan-子网)
+- [公共和私有IP地址](#公共和私有ip地址)
+- [MAC地址](#mac地址)
+- [堡垒机](#堡垒机)
+- [静电保护](#静电保护)
 
-
+---
 
 [PowerCert Animated Videos - Youtube](https://www.youtube.com/@PowerCertAnimatedVideos)
 
-# 相关公司
-
-## 思科 - CISCO
-
-![](Pics/company002.png)
-
-[CISCO 官网](https://www.cisco.com/site/cn/zh/index.html)
 
 
-# 基本概念
 
-## 【硬核翻墙系列】 - 电丸科技AK
+# 【硬核翻墙系列】 - 电丸科技AK
 
-### [第一期 - 防火墙/GFW是什么？为什么会有墙？墙的真正用意是什么？你为什么要搞清楚翻墙的原理？](https://www.youtube.com/watch?app=desktop&v=XKZM_AjCUr0)
+## [第一期 - 防火墙/GFW是什么？为什么会有墙？墙的真正用意是什么？你为什么要搞清楚翻墙的原理？](https://www.youtube.com/watch?app=desktop&v=XKZM_AjCUr0)
 
 GFW - great firewall
 
 阻止大陆互联网用户访问境外网站和服务
 
-### [第二期 - GFW原理和Shadowsocks/V2ray/Trojan又是如何突破封锁的？](https://www.youtube.com/watch?v=k80cu16M-rw)
+## [第二期 - GFW原理和Shadowsocks/V2ray/Trojan又是如何突破封锁的？](https://www.youtube.com/watch?v=k80cu16M-rw)
 
 GFW封锁方式
 1. DNS污染 - 解析错误地址或不解析
@@ -95,7 +86,7 @@ GFW封锁方式
     3. 相比翻墙的流量，99%都是正常需求
     4. 相比之下VPN的特征很明显，需要先发送建立加密通道的数据包，Shadowsocks直接在本地完成加密，使得GFW无法探测其模式和特征
 
-### [第三期 - 翻墙软件 路由器 软路由硬件翻墙 和网关模式翻墙等多种翻墙方式的利弊和特点 你更适合哪一种？](https://www.youtube.com/watch?v=f9ohvZyQrmY)
+## [第三期 - 翻墙软件 路由器 软路由硬件翻墙 和网关模式翻墙等多种翻墙方式的利弊和特点 你更适合哪一种？](https://www.youtube.com/watch?v=f9ohvZyQrmY)
 
 
 翻墙手段三大类
@@ -117,7 +108,7 @@ GFW封锁方式
    3. 优点 - 方便(无论是切换节点还是调试，可以直接在电脑软件上操作)，性能好，便于集中管理(不需要逐一安装翻墙软件)
    4. 缺点 - 需要一台电脑长期开机，保证网关模式的运行
 
-### [第四期 - 各种线路详解 CN2/BGP/IPLC/GCP/AWS/Azure](https://www.youtube.com/watch?v=S_qo6qu4wm0)
+## [第四期 - 各种线路详解 CN2/BGP/IPLC/GCP/AWS/Azure](https://www.youtube.com/watch?v=S_qo6qu4wm0)
 
 **CN2 - Chinatelecom Next Carrier Network - 中国电信下一代承载网络** : 相较于老的163骨干网更加通畅，搭载了先进的QoS技术，主要面向政企大客户，保证高质量的国际访问。普通民众走的是163的老骨干网。但是CN2的价格很高，并且分为两种
 1. CN2GT - Global Transit - 相对便宜
@@ -140,7 +131,7 @@ GFW封锁方式
 
 **IPLC - International Private Leased Circuit - 国际私有租用线路(也称专线)** : 价格巨贵，往往带宽小、流量低。IPLC不过GFW审查，不用翻。IPLC游戏加速器效果最好
 
-### [第五期 - 机场还是VPS？选择哪一种更适合你？](https://www.youtube.com/watch?v=kf90r28t4f0)
+## [第五期 - 机场还是VPS？选择哪一种更适合你？](https://www.youtube.com/watch?v=kf90r28t4f0)
 
 [DuyaoSS-机场测速和简介](https://www.duyaoss.com/ )
 
@@ -164,7 +155,7 @@ VPS
 ![](Pics/cyber025.png)
 
 
-### [第六期 - 协议之战 原版SS SSR V2Ray的WS+TLS还是trojan？](https://www.youtube.com/watch?v=ePxnyW7iju4)
+## [第六期 - 协议之战 原版SS SSR V2Ray的WS+TLS还是trojan？](https://www.youtube.com/watch?v=ePxnyW7iju4)
 
 所有的协议都不绝对安全，只有相对安全
 
@@ -201,7 +192,7 @@ Trojan
 
 TLS的加密方式非常成熟，政府和银行也是用TLS
 
-### [第七期 - VPN才是主流？比Shadowsocks和v2ray好在哪里？](https://www.youtube.com/watch?v=wAxOjL_gDzk)
+## [第七期 - VPN才是主流？比Shadowsocks和v2ray好在哪里？](https://www.youtube.com/watch?v=wAxOjL_gDzk)
 
 
 
@@ -210,7 +201,7 @@ TLS的加密方式非常成熟，政府和银行也是用TLS
 
 
 
-## 中国骨干网
+# 中国骨干网
 
 [大话中国骨干网（上）](https://zhuanlan.zhihu.com/p/335599924)
 
@@ -222,9 +213,9 @@ ChinaNet，中国第一骨干网，也被称为163网络(与网易无关)
 
 
 
-## 特殊 端口 & IP
+# 特殊 端口 & IP
 
-### 特殊 端口
+## 特殊 端口
 
 21 - 用于 FTP(File Transfer Protocol，文件传输协议) 服务
 
@@ -244,7 +235,7 @@ ChinaNet，中国第一骨干网，也被称为163网络(与网易无关)
 
 8080 - 通常被用作 http 服务的备用端口
 
-### 特殊 IP
+## 特殊 IP
 
 ***斜杠符号 / 后面跟随的数字，表示子网掩码的位长度（从前面开始数）***
 
@@ -262,7 +253,7 @@ ChinaNet，中国第一骨干网，也被称为163网络(与网易无关)
 
 DHCP(动态主机配置协议，Dynamic Host Configuration Protocol)
 
-## VPN - Virtual Private Network
+# VPN - Virtual Private Network
 
 [VPN概念，技术原理和误区](https://www.bilibili.com/video/BV1KY411t75D/)
 
@@ -310,7 +301,7 @@ VPN也不能隐藏自己对IP地址
 4. 流量分析 - 加密流量的特征可能不同于普通流量
 5. 已知VPN端口和协议 - VPN服务可能使用特定的网络端口和协议
 
-## Cookie Session Token
+# Cookie Session Token
 
 [Cookie、Session、Token究竟区别在哪？](https://www.bilibili.com/video/BV1ob4y1Y7Ep/)
 
@@ -319,7 +310,7 @@ VPN也不能隐藏自己对IP地址
 HTTP是无状态的
 
 
-## IDC 机房
+# IDC 机房
 
 Internet Data Center - 互联网数据中心
 
@@ -348,7 +339,7 @@ Internet Data Center - 互联网数据中心
    1. 单位通过托管主机，建立自己的电子商务系统，通过这个商业平台来为供应商、批发商、经销商和最终用户提供完善的服务
 
 
-## 数字签名 及 数字证书
+# 数字签名 及 数字证书
 
 [数字签名 及 数字证书 原理](https://www.bilibili.com/video/BV18N411X7ty/)
 
@@ -409,7 +400,7 @@ Internet Data Center - 互联网数据中心
 
 
 
-## RSA 加密算法原理
+# RSA 加密算法原理
 
 [RSA加密算法原理](https://www.bilibili.com/video/BV1gf4y1r75B/)
 
@@ -522,7 +513,7 @@ RSA加密算法的核心原理 : 多位数n的因式分解
 
 
 
-## CA - Certificate Authority
+# CA - Certificate Authority
 
 CA 是一个负责发放和管理安全证书的机构
 
@@ -541,7 +532,7 @@ CA证书可以基于多种密码算法生成，如RSA、ECDSA等，而不局限�
 
 
 
-## SSH - Secure Shell
+# SSH - Secure Shell
 
 SSH 是一种网络协议，用于安全地访问远程计算机
 
@@ -554,7 +545,7 @@ SSH 使用公钥加密技术来确保数据在传输过程中不会被篡改
 
 
 
-## SSL/TLS - Secure Sockets Layer/Transport Layer Security
+# SSL/TLS - Secure Sockets Layer/Transport Layer Security
 
 [SSL，HTTPS，TLS三者的区别](https://zhuanlan.zhihu.com/p/158711125)
 
@@ -576,7 +567,7 @@ TLS是SSL的继承者，被设计来解决SSL的某些安全问题
 
 CA（证书颁发机构）颁发的SSL/TLS证书通常是针对域名发放的，而不是针对IP地址。这是因为SSL/TLS证书的主要目的是为了验证一个网络实体的身份，这个实体通常是通过其域名来识别的。证书中包含了所保护的域名信息，使得访问这些域名的用户可以确认他们正在与正确的服务器进行通信。
 
-## HTTP(超文本传输协议) & HTTPS(HTTP安全)
+# HTTP(超文本传输协议) & HTTPS(HTTP安全)
 
 **最常见的超文本示例是网页**，电子书和在线文档
 
@@ -606,8 +597,7 @@ CA（证书颁发机构）颁发的SSL/TLS证书通常是针对域名发放的�
 
 
 
-
-## DNS服务器
+# DNS服务器
 
 如果直接访问网站的IP地址，你的请求可以不经过DNS服务器
 DNS（域名系统）的主要功能是将域名转换为相应的IP地址，当直接使用IP地址访问网站时，你实际上绕过了这一转换过程
@@ -622,7 +612,7 @@ DNS（域名系统）的主要功能是将域名转换为相应的IP地址，当
 
 
 
-## 热点 Hotspot
+# 热点 Hotspot
 
 hotspot 其实是指 location
 
@@ -646,7 +636,7 @@ mobile hotspot (有单独的设备，也可也集成在手机中) 感觉和 wifi
 
 ![](Pics/cyber022.png)
 
-## 桥接(Bridging) & 中继(Repeater)
+# 桥接(Bridging) & 中继(Repeater)
 
 **桥接(Bridging)**
 1. 功能：桥接器**用于连接两个或多个网络段，它们可以是同种类型的网络(如以太网与以太网)或不同类型的网络(如无线与有线)**。桥接器工作在OSI模型的**数据链路层**。
@@ -675,7 +665,7 @@ mobile hotspot (有单独的设备，也可也集成在手机中) 感觉和 wifi
 
 
 
-## WAP(无线接入点) & Router(路由器)
+# WAP(无线接入点) & Router(路由器)
 
 **路由器**是一种支持有线和无线连接的网络设备。作为一种智能设备，它能以最快和最有效的方式引导网络上的流量传入和传出，相当于一个转发器，它可将网络带宽信号通过天线转发给附近的无线网络设备
 
@@ -695,17 +685,44 @@ mobile hotspot (有单独的设备，也可也集成在手机中) 感觉和 wifi
 4. 通常不提供路由功能：无线接入点通常不涉及决定数据包的路由，它只是桥接无线设备和有线网络
 
 
+# 裸金属服务器 - Bare Metal Server
+
+裸金属服务器 是一种 物理服务器，通常提供给 **单一租户使用**
+
+与虚拟化服务器环境不同，在虚拟化环境中，多个用户或客户可以共享同一台物理服务器的资源，通过 虚拟机VM 分割(每个虚拟机可以运行不同的操作系统和应用)
+
+**优势**
+1. **性能** - 没有任何虚拟化的开销，裸金属服务器可以提供更高的性能，用户可以直接访问物理服务器的所有资源，包括CPU、内存和存储
+2. **安全** - 不与其他租户共享硬件，可以提供更高的安全性和隔离性
+3. **定制** - 提供更高的可定制性，用户可以根据具体需求选择操作系统、硬件配置和软件堆栈
+4. **预测** - 资源不被其他租户共享，裸金属服务器提供了更可预测的性能
+5. **无嘈杂邻居效应**(虚拟化虽然承诺了资源配额，但当其它租户突发高负荷的时候，你的使用体验还是会受到影响)
+
+**场景** - 常用于需要大量计算资源和高性能的应用场景和任何对性能要求极高的任务
+1. 大数据分析
+2. 核心数据库
+3. 政企、金融、银行
+4. 科学计算
+5. 高性能计算
+6. 游戏业务
+
+裸金属服务器依然是租，云服务提供商 租 给你一个 **专属的物理服务器**(唯一的租户)
+
+裸金属 意味 它不包括相应的操作系统和软件，是客户后期自选配置的
+1. 提供 CPU 和 内存
+2. 存储 采用 云盘，实现快速装机，镜像直接装机，便于 业务迁移 或 故障恢复
+
+通常可以无缝对接和兼容云厂商提供的其它云服务 - 网络服务 & 云数据库服务 等
 
 
 
 
-
-## 防火墙 Firewall
-
+# 防火墙 Firewall
 
 
 
-## 长城防火墙 Great Fire Wall(GFW)
+
+# 长城防火墙 Great Fire Wall(GFW)
 
 [墙究竟在干什么，为什么你的梯子会没了？](https://www.youtube.com/watch?v=AIOMcbk-UL8)
 
@@ -735,7 +752,7 @@ GFW对网络内容的过滤和分析是双向的，GFW不仅针对国内读者�
 2. 主动制造错误请求，试探服务器
 
 
-## shadowsocks & Vmess
+# shadowsocks & Vmess
 
 通过密码学的方式将真实请求加密
 
@@ -743,9 +760,9 @@ GFW对网络内容的过滤和分析是双向的，GFW不仅针对国内读者�
 
 但是墙也可以通过信息熵来判断你是否在翻墙
 
-## Trojan
+# Trojan
 
-## CDN
+# CDN
 
 用内容分发服务商的服务器搭梯子
 
@@ -753,27 +770,27 @@ wireguard VPN加密协议
 
 
 
-## 调制解调器 Modem & 路由器 Router
+# 调制解调器 Modem & 路由器 Router
 
-## 集线器 Hub & 交换机 Switch & 路由器 Router
-
-
-
-
-
-## WAN LAN 子网
-
-## 公共和私有IP地址
-
-## MAC地址
+# 集线器 Hub & 交换机 Switch & 路由器 Router
 
 
 
 
 
+# WAN LAN 子网
+
+# 公共和私有IP地址
+
+# MAC地址
 
 
-## 堡垒机
+
+
+
+
+
+# 堡垒机
 
 堡垒机(堡垒服务器，运维审计系统)，用于管理&控制敏感系统和服务器
 1. 保护 敏感数据资源 & 网络资源
@@ -800,7 +817,7 @@ wireguard VPN加密协议
 2. 云安全 : 用于管理云服务器的访问，提供额外的安全保护，确保云上的敏感数据
 
 
-## 静电保护
+# 静电保护
 
 [笔记本死机解决方案](https://www.dell.com/support/kbdoc/zh-cn/000147955/)
 
