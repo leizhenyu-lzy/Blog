@@ -1,47 +1,50 @@
 # Linux Systemic
 
-<!-- TOC -->
+---
+
+## Table of Contents
 
 - [Linux Systemic](#linux-systemic)
-- [鸟哥的Linux私房菜 : 基础学习篇](#%E9%B8%9F%E5%93%A5%E7%9A%84linux%E7%A7%81%E6%88%BF%E8%8F%9C--%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AF%87)
-        - [相关指令](#%E7%9B%B8%E5%85%B3%E6%8C%87%E4%BB%A4)
-    - [第01章 Linux是什么与如何学习](#%E7%AC%AC01%E7%AB%A0-linux%E6%98%AF%E4%BB%80%E4%B9%88%E4%B8%8E%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0)
-    - [第02章 主机规划与磁盘分区](#%E7%AC%AC02%E7%AB%A0-%E4%B8%BB%E6%9C%BA%E8%A7%84%E5%88%92%E4%B8%8E%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA)
-    - [第03章 安装 CentOS7.x](#%E7%AC%AC03%E7%AB%A0-%E5%AE%89%E8%A3%85-centos7x)
-    - [第04章 首次登陆与线上求助](#%E7%AC%AC04%E7%AB%A0-%E9%A6%96%E6%AC%A1%E7%99%BB%E9%99%86%E4%B8%8E%E7%BA%BF%E4%B8%8A%E6%B1%82%E5%8A%A9)
-    - [第05章 Linux 的文件权限与目录配置](#%E7%AC%AC05%E7%AB%A0-linux-%E7%9A%84%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E4%B8%8E%E7%9B%AE%E5%BD%95%E9%85%8D%E7%BD%AE)
-    - [第06章 Linux 文件与目录管理](#%E7%AC%AC06%E7%AB%A0-linux-%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86)
-    - [第07章 Linux 磁盘与文件系统管理](#%E7%AC%AC07%E7%AB%A0-linux-%E7%A3%81%E7%9B%98%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86)
-    - [第08章 文件与文件系统的压缩,打包与备份](#%E7%AC%AC08%E7%AB%A0-%E6%96%87%E4%BB%B6%E4%B8%8E%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8E%8B%E7%BC%A9%E6%89%93%E5%8C%85%E4%B8%8E%E5%A4%87%E4%BB%BD)
-    - [第09章 vim 程序编辑器](#%E7%AC%AC09%E7%AB%A0-vim-%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8)
-    - [第10章 认识与学习BASH](#%E7%AC%AC10%E7%AB%A0-%E8%AE%A4%E8%AF%86%E4%B8%8E%E5%AD%A6%E4%B9%A0bash)
-    - [第11章 正则表达式与文件格式化处理](#%E7%AC%AC11%E7%AB%A0-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8E%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%A4%84%E7%90%86)
-    - [第12章 学习 Shell Scripts](#%E7%AC%AC12%E7%AB%A0-%E5%AD%A6%E4%B9%A0-shell-scripts)
-    - [第13章 Linux 帐号管理与 ACL 权限设置](#%E7%AC%AC13%E7%AB%A0-linux-%E5%B8%90%E5%8F%B7%E7%AE%A1%E7%90%86%E4%B8%8E-acl-%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE)
-    - [第14章 磁盘配额（Quota）与进阶文件系统管理](#%E7%AC%AC14%E7%AB%A0-%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9Dquota%E4%B8%8E%E8%BF%9B%E9%98%B6%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86)
-    - [第15章 例行性工作调度（crontab）](#%E7%AC%AC15%E7%AB%A0-%E4%BE%8B%E8%A1%8C%E6%80%A7%E5%B7%A5%E4%BD%9C%E8%B0%83%E5%BA%A6crontab)
-    - [第16章 程序管理与 SELinux 初探](#%E7%AC%AC16%E7%AB%A0-%E7%A8%8B%E5%BA%8F%E7%AE%A1%E7%90%86%E4%B8%8E-selinux-%E5%88%9D%E6%8E%A2)
-    - [第17章 认识系统服务 （daemons）](#%E7%AC%AC17%E7%AB%A0-%E8%AE%A4%E8%AF%86%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1-daemons)
-    - [第18章 认识与分析登录文件](#%E7%AC%AC18%E7%AB%A0-%E8%AE%A4%E8%AF%86%E4%B8%8E%E5%88%86%E6%9E%90%E7%99%BB%E5%BD%95%E6%96%87%E4%BB%B6)
-    - [第19章 开机流程、模块管理与 Loader](#%E7%AC%AC19%E7%AB%A0-%E5%BC%80%E6%9C%BA%E6%B5%81%E7%A8%8B%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86%E4%B8%8E-loader)
-    - [第20章 基础系统设置与备份策略](#%E7%AC%AC20%E7%AB%A0-%E5%9F%BA%E7%A1%80%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE%E4%B8%8E%E5%A4%87%E4%BB%BD%E7%AD%96%E7%95%A5)
-    - [第21章 软件安装：源代码与 Tarball](#%E7%AC%AC21%E7%AB%A0-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E6%BA%90%E4%BB%A3%E7%A0%81%E4%B8%8E-tarball)
-    - [第22章 软件安装 RPM, SRPM 与 YUM](#%E7%AC%AC22%E7%AB%A0-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85-rpm-srpm-%E4%B8%8E-yum)
-    - [第23章 X Window 设置介绍](#%E7%AC%AC23%E7%AB%A0-x-window-%E8%AE%BE%E7%BD%AE%E4%BB%8B%E7%BB%8D)
-    - [第24章 Linux 核心编译与管理](#%E7%AC%AC24%E7%AB%A0-linux-%E6%A0%B8%E5%BF%83%E7%BC%96%E8%AF%91%E4%B8%8E%E7%AE%A1%E7%90%86)
-- [黑马程序员 - 新版Linux入门到精通](#%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98---%E6%96%B0%E7%89%88linux%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A)
-    - [初始 Linux](#%E5%88%9D%E5%A7%8B-linux)
-    - [Linux 基础命令](#linux-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4)
-    - [Linux 权限管控](#linux-%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7)
-    - [Linux 实用操作](#linux-%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C)
-    - [实战软件部署](#%E5%AE%9E%E6%88%98%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2)
-    - [脚本 & 自动化](#%E8%84%9A%E6%9C%AC--%E8%87%AA%E5%8A%A8%E5%8C%96)
-    - [项目实战](#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98)
-    - [云平台技术](#%E4%BA%91%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF)
+  - [Table of Contents](#table-of-contents)
+- [鸟哥的Linux私房菜 : 基础学习篇](#鸟哥的linux私房菜--基础学习篇)
+    - [相关指令](#相关指令)
+  - [第01章 Linux是什么与如何学习](#第01章-linux是什么与如何学习)
+  - [第02章 主机规划与磁盘分区](#第02章-主机规划与磁盘分区)
+  - [第03章 安装 CentOS7.x](#第03章-安装-centos7x)
+  - [第04章 首次登陆与线上求助](#第04章-首次登陆与线上求助)
+  - [第05章 Linux 的文件权限与目录配置](#第05章-linux-的文件权限与目录配置)
+    - [补充阅读 - root \& sudo / su](#补充阅读---root--sudo--su)
+  - [第06章 Linux 文件与目录管理](#第06章-linux-文件与目录管理)
+  - [第07章 Linux 磁盘与文件系统管理](#第07章-linux-磁盘与文件系统管理)
+  - [第08章 文件与文件系统的压缩,打包与备份](#第08章-文件与文件系统的压缩打包与备份)
+  - [第09章 vim 程序编辑器](#第09章-vim-程序编辑器)
+  - [第10章 认识与学习BASH](#第10章-认识与学习bash)
+  - [第11章 正则表达式与文件格式化处理](#第11章-正则表达式与文件格式化处理)
+  - [第12章 学习 Shell Scripts](#第12章-学习-shell-scripts)
+  - [第13章 Linux 帐号管理与 ACL 权限设置](#第13章-linux-帐号管理与-acl-权限设置)
+  - [第14章 磁盘配额（Quota）与进阶文件系统管理](#第14章-磁盘配额quota与进阶文件系统管理)
+  - [第15章 例行性工作调度（crontab）](#第15章-例行性工作调度crontab)
+  - [第16章 程序管理与 SELinux 初探](#第16章-程序管理与-selinux-初探)
+  - [第17章 认识系统服务 （daemons）](#第17章-认识系统服务-daemons)
+  - [第18章 认识与分析登录文件](#第18章-认识与分析登录文件)
+  - [第19章 开机流程、模块管理与 Loader](#第19章-开机流程模块管理与-loader)
+  - [第20章 基础系统设置与备份策略](#第20章-基础系统设置与备份策略)
+  - [第21章 软件安装：源代码与 Tarball](#第21章-软件安装源代码与-tarball)
+  - [第22章 软件安装 RPM, SRPM 与 YUM](#第22章-软件安装-rpm-srpm-与-yum)
+  - [第23章 X Window 设置介绍](#第23章-x-window-设置介绍)
+  - [第24章 Linux 核心编译与管理](#第24章-linux-核心编译与管理)
+- [黑马程序员 - 新版Linux入门到精通](#黑马程序员---新版linux入门到精通)
+  - [初始 Linux](#初始-linux)
+  - [Linux 基础命令](#linux-基础命令)
+  - [Linux 权限管控](#linux-权限管控)
+  - [Linux 实用操作](#linux-实用操作)
+  - [实战软件部署](#实战软件部署)
+  - [脚本 \& 自动化](#脚本--自动化)
+  - [项目实战](#项目实战)
+  - [云平台技术](#云平台技术)
 
-<!-- /TOC -->
 
-
+---
 
 # 鸟哥的Linux私房菜 : 基础学习篇
 
@@ -139,6 +142,40 @@ Linux的核心原型是1991年由托瓦兹 Linus Torvalds 写出来的
 ## 第04章 首次登陆与线上求助
 
 ## 第05章 Linux 的文件权限与目录配置
+
+
+### 补充阅读 - root & sudo / su
+
+**/root** 是系统根用户的根目录，通常对普通用户是不开放的，只有 root 用户或者有相应权限的用户可以访问
+
+**su** 和 **sudo** 命令 都可以用来 **获得 root 权限**
+
+**区别**
+1. **su** (switch user 或 substitute user) - 执行 **su** 命令时，系统会要求你输入 **root 用户的密码**
+2. **sudo** (superuser do) - 使用 **sudo -i** 时，系统会要求你输入 **自己的密码**，而不是 root 的密码
+
+```bash
+sudo -i  # 临时切换到 root 用户
+
+su       # 登录为 root 用户，然后你可以自由访问 /root 目录下的文件和文件夹
+```
+
+Linux 发行版中 (特别是基于 **Ubuntu** 的系统)，**root 账户默认是禁用的**，无法使用 su 来切换到 root 用户，因为没有有效的密码可以输入
+
+如果出于某种原因你需要使用 su，系统管理员需要先为 root 账户设置一个密码，可以通过以下命令来设置
+
+```bash
+lzy@legion:~ $ sudo passwd root
+New password: 
+Retype new password: 
+passwd: password updated successfully
+
+lzy@legion:~ $ su
+Password: 
+root@legion:/home/lzy# exit  # 退出
+exit
+lzy@legion:~ $ 
+```
 
 ## 第06章 Linux 文件与目录管理
 
