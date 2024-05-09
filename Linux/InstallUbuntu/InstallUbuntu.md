@@ -735,10 +735,32 @@ spark应用商店搜索下列链接
 spk://store/chat/com.qq.weixin.mejituu
 ```
 
-# vlc
+# Motrix - 下载器
+
+完全免费并且开源的BT下载工具
+
+支持 HTTP，FTP，BitTorrent，Magnet 等下载方式
+
+支持 Windows、macOS、Linux
+
+[Motrix 官网](https://motrix.app/)
 
 ```bash
-sudo snap install vlc
+sudo snap install motrix
+```
+
+基础设置 中 可设置中文
+
+进阶设置 中 每天自动更新trackers服务器列表
+
+
+# vlc
+
+[VLC media player](https://www.videolan.org/vlc/)
+
+```bash
+sudo apt install vlc  # 正常运行
+# sudo snap install vlc  # 有时候无法运行，不知道为什么
 ```
 
 # mpv (bad)

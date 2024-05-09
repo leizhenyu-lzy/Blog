@@ -156,7 +156,6 @@ Linux的核心原型是1991年由托瓦兹 Linus Torvalds 写出来的
 
 ```bash
 sudo -i  # 临时切换到 root 用户
-
 su       # 登录为 root 用户，然后你可以自由访问 /root 目录下的文件和文件夹
 ```
 
@@ -172,9 +171,13 @@ passwd: password updated successfully
 
 lzy@legion:~ $ su
 Password: 
-root@legion:/home/lzy# exit  # 退出
+root@legion:/home/lzy# exit
 exit
+lzy@legion:~ $ sudo -i
+root@legion:~# exit
+logout
 lzy@legion:~ $ 
+
 ```
 
 ## 第06章 Linux 文件与目录管理
