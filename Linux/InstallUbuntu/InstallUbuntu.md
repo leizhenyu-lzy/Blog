@@ -1574,7 +1574,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ];
 
 [Zoom Download Center](https://www.zoom.us/download)
 
-# Obsidian - 笔记
+# Obsidian - 笔记软件
 
 [Obsidian](https://obsidian.md/)
 
@@ -1588,9 +1588,15 @@ sudo snap install obsidian --classic
 
 [Download WhatsApp - 官网](https://www.whatsapp.com/download)
 
+可以使用 edge 支持的 网页版 (桌面上也有快捷方式)
+
+![](Pics/whatsapp001.png)
+
 [WhatsApp for Linux (unofficial) - Snap Store](https://snapcraft.io/whatsapp-for-linux)
 
 [WhatsApp for Linux (unofficial) - Github](https://github.com/eneshecan/whatsapp-for-linux)
+
+不能发送语音
 
 ```bash
 sudo snap install whatsapp-for-linux
