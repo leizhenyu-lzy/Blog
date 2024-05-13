@@ -8,6 +8,7 @@
   - [Table of Contents](#table-of-contents)
 - [Embedding 排行榜](#embedding-排行榜)
 - [FlagEmbedding(BAAI)](#flagembeddingbaai)
+- [word2vec](#word2vec)
 
 ---
 
@@ -31,3 +32,8 @@ RAG 开发时 会涉及到向量数据库，需要使用 Embedding 模型对文�
 [FlagOpen - BAAI(北京智源人工智能研究院)](https://flagopen.baai.ac.cn/#/home)
 
 [FlagEmbedding(BAAI) - Github](https://github.com/FlagOpen/FlagEmbedding)，中国人自己开发的，同时支持中文和英文
+
+
+# word2vec
+
+
