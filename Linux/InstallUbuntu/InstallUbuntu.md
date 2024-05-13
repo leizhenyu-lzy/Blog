@@ -944,7 +944,7 @@ StartupNotify=true
 Categories=Application;Development;
 ```
 
-# Clash 
+# Clash
 
 ![](pics/clash.png)
 
@@ -1207,7 +1207,13 @@ sudo apt remove openjdk-8-*
 
 # mysql
 
-参考 DataBase 中的文章
+[Ubuntu Install](../../Data/RelationalDB/MySQL/UbuntuInstallMySQL.md)
+
+[Windows Install](../../Data/RelationalDB/MySQL/WindowsInstallMySQL.md)
+
+# Neo4j - GraphDB
+
+[Neo4j Install](../../Data/GraphDB/Neo4j.md#install)
 
 # steam
 

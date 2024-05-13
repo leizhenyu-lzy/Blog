@@ -4,5 +4,11 @@
         "PDF",
         "HTML"
     ],
-    "markdown-preview-enhanced.usePandocParser": false
+    "markdown-preview-enhanced.usePandocParser": false,
+    "cSpell.words": [
+        "onsistency",
+        "solation",
+        "tomicity",
+        "urability"
+    ]
 }
