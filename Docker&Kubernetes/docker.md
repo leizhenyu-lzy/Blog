@@ -1,76 +1,179 @@
+![](Pics/docker000.png)
+
 # Docker
 
-[toc]
+[Docker - Official Website](https://www.docker.com/)
+
+Products
+1. Docker Desktop
+   1. Docker 引擎
+   2. Docker CLI - 命令行工具，用于与 Docker 交互
+   3. Docker Compose
+   4. Kubernetes
+2. Docker Hub
+   1. 公共镜像库，包含了官方镜像和社区贡献的镜像
+   2. 允许用户创建和管理私有镜像库
+   3. 提供镜像的版本控制和访问控制
+3. Docker Scout
+   1. 分析和可视化工具
+4. Docker Build Cloud
+   1. 云端的构建服务，用于在云环境中构建 Docker 镜像
 
 
-# [【GeekHour】30分钟Docker入门教程](https://www.bilibili.com/video/BV14s4y1i7Vf) 
+![](Pics/docker022.png)
 
-## Docker 简介
+---
 
-用于 构建build、运行run、传送ship 应用程序的平台 
+## Table of Contents
+
+
+- [Docker](#docker)
+  - [Table of Contents](#table-of-contents)
+- [Docker 入门](#docker-入门)
+  - [00. Docker 简介](#00-docker-简介)
+  - [01. Docker 和 虚拟机 的区别](#01-docker-和-虚拟机-的区别)
+  - [02. 基本原理和概念](#02-基本原理和概念)
+  - [03. Docker 安装](#03-docker-安装)
+  - [04. 容器化 和 Dockerfile](#04-容器化-和-dockerfile)
+  - [05. 实践环节](#05-实践环节)
+  - [06. Docker Desktop (图形化界面)](#06-docker-desktop-图形化界面)
+  - [07. Docker Compose](#07-docker-compose)
+  - [08. VPS \& ECS](#08-vps--ecs)
+  - [09. Namespace \& Cgroup](#09-namespace--cgroup)
+  - [10. Docker Swarm (K8s 竞品)](#10-docker-swarm-k8s-竞品)
+  - [11. K8s](#11-k8s)
+- [Docker 1小时快速上手教程，无废话纯干货](#docker-1小时快速上手教程无废话纯干货)
+  - [Docker 简介](#docker-简介)
+  - [镜像加速源](#镜像加速源)
+  - [用 Docker 快速安装软件](#用-docker-快速安装软件)
+- [安装 Docker \& Docker Desktop](#安装-docker--docker-desktop)
+  - [官方安装教程](#官方安装教程)
+  - [测试与 Docker Hub 的连通性](#测试与-docker-hub-的连通性)
+  - [其他安装教程](#其他安装教程)
+  - [常见问题](#常见问题)
+    - [docker run 命令需要 sudo，导致 vscode 中无法正常使用](#docker-run-命令需要-sudo导致-vscode-中无法正常使用)
+    - [vscode没有运行docker的permission](#vscode没有运行docker的permission)
+    - [docker-desktop : Depends: docker-ce-cli but it is not installable](#docker-desktop--depends-docker-ce-cli-but-it-is-not-installable)
+    - [无法登录 docker desktop](#无法登录-docker-desktop)
+- [NVIDIA Container Toolkit 安装 - nvidia-docker](#nvidia-container-toolkit-安装---nvidia-docker)
+  - [Installing the NVIDIA Container Toolkit](#installing-the-nvidia-container-toolkit)
+  - [Configuration](#configuration)
+  - [Docker Hub nvidia/cuda Images](#docker-hub-nvidiacuda-images)
+  - [Running a Sample Workload](#running-a-sample-workload)
+- [Docker 三大版本](#docker-三大版本)
+
+---
+
+# Docker 入门
+
+[【GeekHour】30分钟Docker入门教程](https://www.bilibili.com/video/BV14s4y1i7Vf)
+
+[docker容器和传统虚拟机有什么区别？ - 小白debug]()
+
+## 00. Docker 简介
+
+用于 构建build、运行run、传送ship 应用程序的平台
 
 ![](Pics/docker007.png)
 
-## Docker 和 虚拟机 的区别
+## 01. Docker 和 虚拟机 的区别
 
-虚拟机
+**虚拟机**
 
 ![](Pics/docker008.png)
 
-使用虚拟化(Hypervisor)技术实现
+使用虚拟化(Hypervisor)技术实现，将物理资源虚拟为多个逻辑资源(有各自的 OS、CPU、Memory、Network 可以独立运行)
 
 ![](Pics/docker009.png)
 
-缺点
+特点
 1. 占用资源多
 2. 启动速度慢
+3. 有一个额外的**虚拟化层**
+4. 需要运行一个**完整的操作系统内核**
+5. 提供**操作系统级的隔离**，更加彻底，但也更加重量级
 
 大部分时候不需要整个操作系统的所有功能
 
 ![](Pics/docker010.png)
 
-容器
+**容器** - 运行在宿主机操作系统上的轻量级虚拟化实例，容器共享宿主机的操作系统内核
 
-容器 ≠ Docker
-
-Docker 只是容器化的解决方案&平台
+**容器 ≠ Docker** - Docker 只是容器化的解决方案 & 平台
 
 ![](Pics/docker011.png)
 
-容器使用宿主机的操作系统
+![](Pics/docker020.png)
 
-优点
+
+容器 使用 **宿主机的操作系统**
+
+特点
 1. 启动速度快
-2. 减少资源的浪费（服务器上开更多的容器）
+2. 减少资源的浪费(物理服务器上开更多的容器)，性能接近原生
+3. 容器共享宿主机内核
+4. 提供**进程级的隔离**，适合微服务架构和应用程序容器化
 
-## 基本原理和概念
+将 `程序` 和 `环境` 一起打包
+
+![](Pics/docker019.png)
+
+操作系统 分为 `用户空间` & `内核空间`，应用程序运行在 `用户空间`
+
+**容器 与 宿主机的操作系统内核 共享**，因此不能直接在 Ubuntu 宿主机上运行为 Windows 操作系统设计的 Docker 镜像
+
+Ubuntu 镜像**包含了独立于宿主机的 Ubuntu 操作系统的用户空间**，但**并不包含操作系统内核**。包含内容如下:
+1. 文件系统 - `/bin`, `/lib`, `/etc`, `/usr`
+2. 命令行工具 - `bash`, `ls`, `cp`, `mv`, `grep`
+3. 系统库 - GNU C 库(glibc) 等
+4. 包管理器 - `apt`
+5. 默认配置文件 - 网络配置、用户配置等，在`/etc` 目录下
+6. 其他基础设施 - 网络工具 等
+
+## 02. 基本原理和概念
 
 ![](Pics/docker012.png)
 
-镜像 image
+Docker **容器 是由 镜像 启动的**，**镜像 包含了运行应用程序所需的所有文件和依赖**
+1. 镜像是分层的，每一层都代表镜像的一次变更
+2. 容器启动时，会从镜像创建一个只读层，并在其上添加一个可写层，容器运行时的所有修改都会记录在这个可写层上
+
+**镜像&容器 ≈ 类&对象(实例)** ≈ 食谱&菜
+
+**镜像 image** - docker build 写好的 Dockerfile 构建环境 & 应用程序 并 打包为 image
 1. 只读的模板
 2. 可以用来创建容器
 
-容器 container
+**容器 container** - docker run 镜像 得到 容器
 1. 运行实例
 2. 提供独立可移植的环境
 
-**镜像&容器 ≈ 类&对象（实例）**
-
-仓库 registry
+**仓库 registry**
 1. 存储 docker 镜像
-2. 最流行的 - docker hub - 公共的，可上传和下载 镜像
+2. 最流行的 - **docker hub** - 公共的，可上传和下载 镜像
 
-docker 使用 client-server 架构模式
+docker 使用 **Client-Server** 架构模式
 1. docker client 和 docker daemon(服务端的守护进程) 之间通过 socket 或 restful api 通信
 2. docker client 向 docker daemon 发送请求，docker daemon 接收到请求后进行处理，结果返回给 docker client
 
+![](Pics/docker021.png)
 
-## Docker 安装
+docker daemon 分为
+1. docker server 层
+   1. 本质是 http 服务器
+   2. 对外提供操作 容器 & 镜像 的API
+   3. 接收到请求后分发任务给engine层
+2. engine 层
+   1. 创建 job
+   2. job 实际执行工作
+
+[RESTful 个人笔记](../Software/restful.md)
+
+## 03. Docker 安装
 
 Windows 中需要开启 Hyper-V 功能
 
-查看版本信息（只看到client说明没有启动docker）
+查看版本信息 - 只看到 client 说明没有启动 Docker
 
 ```bash
 lzy@Razer:/media/lzy/4D01-C671/Blog (main)$ docker version
@@ -104,45 +207,74 @@ Server: Docker Desktop 4.28.0 (139021)
   GitCommit:        de40ad0
 ```
 
-## 容器化 和 Dockerfile
+## 04. 容器化 和 Dockerfile
 
-containerization
+容器化 containerization
+1. 将应用程序及其所有依赖项打包在一个称为容器的标准化单元中
+2. 应用程序可以在任何环境中一致地运行，开发、测试、生产
+3. 允许多个容器在同一主机上运行，每个容器相互隔离，但共享操作系统内核
 
 容器化三个步骤
 ![](Pics/docker013.png)
 
-Dockerfile - 文本文件 - 包含指令，告诉 docker 构建应用程序镜像所需要的步骤和配置
+**Dockerfile** - 文本文件
+1. 包含指令 - 告诉 docker 构建应用程序镜像所需要的步骤和配置
+2. 可以用于 安装依赖库、创建文件夹
 
 包含
-1. 精简版操作系统
-2. 应用程序的运行环境
-3. 应用程序
+1. 精简版操作系统 - alpine(轻量级的 Linux 发行版)
+2. 应用程序的运行环境 - python、java、nodejs
+3. 应用程序 - jar包
 4. 第三方依赖
 5. 配置文件
 6. 环境变量
 
 
-## 实践环节
+## 05. 实践环节
 
 Dockerfile (D大写，无后缀)
 
-```docker
-FROM baseImage
-<!-- 指定基础镜像 -->
+```Dockerfile
+# 指定基础镜像
+FROM ubuntu:22.04
 
-COPY source dest
-<!-- 复制文件 源路径（相对Dockerfile） 目标路径（相对镜像） -->
+RUN apt update
 
-CMD 
-<!--  -->
+RUN apt install -y nodejs npm
+
+RUN npm install
+
+WORKDIR /home/lzy
+
+# 复制文件
+COPY index.js WORKDIR/index.js
+# 源路径 - 相对Dockerfile
+# 目标路径 - 相对镜像
+
+# 暴露应用程序运行的端口
+EXPOSE 3000
+
+CMD ["node", "WORKDIR/index.js"]
 ```
+
+`RUN` - 用于在镜像构建时执行命令，生成新的镜像层
+1. 安装软件包
+2. 修改文件系统
+3. 下载和解压文件
+
+
+`CMD` - 用于在容器启动时指定默认执行的命令
+1. CMD 指令在容器启动时执行
+2. 每个 Dockerfile 只能有一个 CMD 指令
+   1. 如果定义了多个，则只有最后一个生效
 
 ```bash
-docker build -t [name] .
-# .表示当前目录
+docker build -t ImageName[:Version] .
+# . 表示当前目录
+# version 可以不写，默认 latest
 ```
 
-查看镜像位置
+查看镜像 Repository
 ```bash
 docker image ls
 # 或
@@ -169,23 +301,94 @@ docker run [name]
 
 可以使用命令行运行
 
-## Docker Desktop
+## 06. Docker Desktop (图形化界面)
 
-volumes - 逻辑卷
+**volumes - 逻辑卷**
 
-docker容器中的数据不会持久化，容器停止后，所有数据会丢失
+docker 容器中的数据不会持久化，容器停止后，所有数据会丢失
 
-如果想要持久化，则使用逻辑卷，可以将容器中的目录或指定路径映射到宿主机，保存在宿主机的磁盘中
+想要持久化，则使用**逻辑卷**
+
+将容器中的目录或指定路径映射到宿主机，保存在宿主机的磁盘中
 
 Dev Environments 用于配置开发环境
 
-## Docker Compose
+## 07. Docker Compose
+
+![](Pics/docker023.png)
+
+Docker 官方 开源
 
 ![](Pics/docker014.png)
 
+多个服务独立 但 需要相互配合
+
 ![](Pics/docker015.png)
 
+docker-compose.yaml 配置文件 将容器组合，形成项目
 
+写明 部署哪些？部署顺序？占用CPU&内存信息？
+
+用一条命令 启动、停止、重建 项目
+
+```bash
+docker compose up
+```
+
+## 08. VPS & ECS
+
+VPS - virtual private server
+1. 物理机 分割出 多个虚拟机
+2. 包含 OS、CPU、Memory、Disk、Network
+3. 不支持自主升降级
+4. 资源预先分配，不易动态调整
+
+ECS - Elastic Compute Service
+1. VPS + 自主升降级功能
+
+物理机 运行 ECS，ECS 运行 容器
+
+多个 Docker 容器 共享一个 ECS实例
+
+## 09. Namespace & Cgroup
+
+在容器技术 (Docker、Kubernetes) 中，namespace 和 cgroup 被结合使用以提供强大的隔离和资源管理功能
+1. Namespace 提供了不同容器之间的系统资源隔离，使得每个容器拥有独立的文件系统、网络环境和进程空间
+2. Cgroup 提供了资源使用的限制和监控，确保不同容器之间的资源分配公平且受控
+
+
+**namespace** 是一种内核功能，用于隔离不同进程之间的全局系统资源，使得容器之间相互独立
+1. PID namespace - 隔离进程 ID，确保不同容器中的进程可以拥有相同的 PID
+2. NET namespace - 隔离网络资源，如网络接口、IP 地址和路由表
+3. IPC namespace - 隔离进程间通信资源，如信号量、消息队列和共享内存
+4. USER namespace - 隔离用户和组 ID，允许在容器内部映射不同的用户和组 ID
+5. CGROUP namespace - 隔离和控制 cgroup 名字空间，使容器对资源的使用更加独立
+
+
+**cgroup** (Control Group) 是 Linux 内核的一个特性，用于限制、记录和隔离进程组所使用的资源
+1. CPU
+2. 内存
+3. 磁盘 I/O
+4. 网络带宽
+
+## 10. Docker Swarm (K8s 竞品)
+
+![](Pics/docker024.png)
+
+解决服务 在 服务器集群 的部署
+
+## 11. K8s
+
+**容器编排引擎** (以API编程的方式管理安排各个容器的引擎)
+
+在多台node的服务器上调度 Pod 进行部署 & 扩缩容
+
+Pod 内含有 多个 container
+
+Pod 类似与 Docker Compose 的结果
+
+
+---
 
 # [Docker 1小时快速上手教程，无废话纯干货](https://www.bilibili.com/video/BV11L411g7U1/)
 
@@ -425,7 +628,7 @@ docker pull nvidia/cuda:12.3.2-base-ubuntu22.04
 
 lzy@Razer:/media/lzy/(main)$ sudo docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
 
-Sun Mar  3 13:33:13 2024       
+Sun Mar  3 13:33:13 2024
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 545.23.06              Driver Version: 545.23.06    CUDA Version: 12.3     |
 |-----------------------------------------+----------------------+----------------------+
@@ -437,7 +640,7 @@ Sun Mar  3 13:33:13 2024
 | N/A   46C    P8               3W /  70W |      6MiB /  6144MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
-                                                                                         
+
 +---------------------------------------------------------------------------------------+
 | Processes:                                                                            |
 |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |

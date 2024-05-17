@@ -6,7 +6,9 @@
     ],
     "markdown-preview-enhanced.usePandocParser": false,
     "cSpell.words": [
+        "containerd",
         "onsistency",
+        "runc",
         "solation",
         "tomicity",
         "urability"
