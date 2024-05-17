@@ -41,16 +41,56 @@ GQL - Graph Query Language (a peer, complementary language to SQL)
 
 ## 主流开源 GraphDB
 
-[图数据库比较：Neo4j、OrientDB、ArangoDB等 - 百度开发者中心](https://developer.baidu.com/article/details/3047134)
 
 主流开源图数据库
-1. [Neo4j](https://neo4j.com/)
+1. [Neo4j - Community](https://neo4j.com/)
    ![](Pics/graph001.png)
+   1. 类型 - **`Graph DB`**
+   2. 数据模型
+      1. Graph DBMS
+   3. 语言 - Cypher
+   4. 支持 csv 导入
+   5. 免费版只支持单实例(不是单机，可以远程连接)
+   6. 社区活跃
+   7. 提供可视化界面(网页 & Desktop)
 2. [OrientDB](https://www.orientdb.org/)
    ![](Pics/graph002.png)
-3. JanusGraph
-4. HugeGraph
-5. ArangoDB
+   1. 类型 - **`multi-model DBMS`**
+   2. 数据模型
+      1. Document store
+      2. Graph DBMS
+      3. Key-value store
+   3. 开源的分布式图数据库
+   4. 兼具文挡数据库的灵活性和图形数据库管理链接能力的可深层次扩展的文档-图形数据库管理系统
+   5. 性能和可扩展性不好
+3. [ArangoDB](https://arangodb.com/)
+   ![](Pics/graph005.png)
+   1. 类型 - **`multi-model DBMS`**
+   2. 数据模型
+      1. Document store
+      2. Graph DBMS
+      3. Key-value store
+   3. 多模型数据库，支持图、文档和集合类型的数据模型
+   4. 图查询性能方面可能略有不足
+   5. 有 neo4j->ArangoDB 迁移工具
+4. [JanusGraph](https://janusgraph.org/)
+   ![](Pics/graph007.png)
+   1. 语言 - Gremlin
+   2. 开源的分布式图数据库
+   3. 可扩展的存储和查询能力
+   4. 支持多种数据模型 : 属性图 & RDF
+5. [HugeGraph](https://hugegraph.apache.org/cn/)
+   ![](Pics/graph006.png)
+   1. 语言 - Gremlin
+6. [HyperGraphDB](https://hypergraphdb.org/)
+   ![](Pics/graph009.png)
+7. [FlockDB](https://github.com/twitter-archive/flockdb)
+   1. This repository has been archived by the owner on Sep 18, 2021. It is now read-only.
+   2. Twitter is no longer maintaining this project or responding to issues or PRs.
+   3. 轻量级的图数据库，适用于实时分析和流数据处理场景，功能相对有限
+8. [TigerGraph](https://www.tigergraph.com/)
+   ![](Pics/graph008.png)
+   1. 企业级的图数据库
 
 
 
