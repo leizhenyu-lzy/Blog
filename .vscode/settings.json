@@ -10,5 +10,6 @@
         "solation",
         "tomicity",
         "urability"
-    ]
+    ],
+    "files.trimTrailingWhitespace": true
 }
