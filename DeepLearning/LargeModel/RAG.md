@@ -13,6 +13,9 @@
   - [What is a Vector Database?](#what-is-a-vector-database)
 - [Retrieval-Augmented Generation for Large Language Models: A Survey](#retrieval-augmented-generation-for-large-language-models-a-survey)
   - [Links](#links)
+- [RAG \& KnowledgeGraph](#rag--knowledgegraph)
+  - [GraphRAG - Microsoft](#graphrag---microsoft)
+  - [LLM \& KnowledgeGraph](#llm--knowledgegraph)
 - [Advanced RAG Techniques : an Illustrated Overview](#advanced-rag-techniques--an-illustrated-overview)
   - [Vector Search - 向量搜索](#vector-search---向量搜索)
   - [LLM 产品](#llm-产品)
@@ -98,7 +101,7 @@ content source (Internet/Documents/Policies)
 LLMs are instructed to pay attention to source data before respond
 
 **Pros:**
-1. less likely to hallucinate(幻觉) 
+1. less likely to hallucinate(幻觉)
 2. less likely to leak data(数据隔离、访问控制)
 3. know when to say "I don't know"
 
@@ -163,6 +166,35 @@ Database
 
 
 
+---
+
+# RAG & KnowledgeGraph
+
+## GraphRAG - Microsoft
+
+[Project GraphRAG - LLM-Derived Knowledge Graphs](https://www.microsoft.com/en-us/research/project/graphrag/)
+
+[arxiv - From Local to Global: A Graph RAG Approach to Query-Focused Summarization](https://arxiv.org/pdf/2404.16130v1)
+
+GraphRAG (Graphs + Retrieval Augmented Generation)
+
+![](Pics/rag010.webp)
+
+
+
+## LLM & KnowledgeGraph
+
+知识图谱 - 结构化的知识表示方式，能通过符号推理产生**可解释的结果**，具备精确可靠的领域知识
+
+![](Pics/rag010.webp)
+
+![](Pics/rag011.webp)
+
+三类路线
+1. 基于知识图谱增强的大模型
+2. 基于大模型增强的知识图谱
+3. 大模型和知识图谱的融合
+
 
 
 
@@ -197,7 +229,7 @@ LLM(**brain** for **RAG pipeline**)
 2. [Claude - Anthropic](https://www.anthropic.com/product) - a family of foundational AI models that can be used in a variety of applications
 3. [Mixtral form Mistral](https://mistral.ai/news/mixtral-of-experts/) - A high quality Sparse Mixture-of-Experts
 4. [Phi-2 from Microsoft](https://www.microsoft.com/en-us/research/blog/phi-2-the-surprising-power-of-small-language-models/)
-5. [Llama2](https://huggingface.co/blog/zh/llama2) - a family of state-of-the-art open-access large language models 
+5. [Llama2](https://huggingface.co/blog/zh/llama2) - a family of state-of-the-art open-access large language models
 6. [OpenLLaMA - UC Berkelely](https://huggingface.co/openlm-research) - open source reproduction of Meta AI’s LLaMA model trained on the RedPajama dataset
 7. [Falcon](https://huggingface.co/tiiuae) - TII's flagship series of large language models, built from scratch using a custom data pipeline and distributed training library
 
@@ -209,7 +241,7 @@ LLM(**brain** for **RAG pipeline**)
 2. [LlamaIndex 🦙](https://docs.llamaindex.ai/en/stable/) - a framework for building context-augmented LLM applications
    ![](Pics/rag004.png)
 3. [Dify](https://dify.ai/zh) - **开源的** LLM 应用开发平台。提供从 Agent 构建到 AI workflow 编排、RAG 检索、模型管理等能力，轻松构建和运营生成式 AI 原生应用
-   ![](Pics/rag005.png)   
+   ![](Pics/rag005.png)
 4. [BiSheng](https://bisheng.dataelem.com/) - 便捷、灵活、可靠的企业级大模型应用开发平台
    ![](Pics/rag006.png)
 
@@ -228,7 +260,7 @@ LLM(**brain** for **RAG pipeline**)
       prompt = f"""
                   Give the answer to the user query delimited by triple backticks ```{query}```\
                   using the information given in context delimited by triple backticks ```{context}```.\
-                  If there is no relevant information in the provided context, try to answer yourself, 
+                  If there is no relevant information in the provided context, try to answer yourself,
                   but tell user that you did not have any relevant context to base your answer on.
                   Be concise and output the answer of size less than 80 tokens.
                   """
@@ -367,7 +399,7 @@ Pain Point
       2. Prompt Compression
       3. LongContextReorder - the best performance typically arises when crucial data is positioned at the start or conclusion of the input context
 5. **Wrong Format (格式错误)**
-   1. an instruction to extract information in a specific format(table & list) is overlooked 
+   1. an instruction to extract information in a specific format(table & list) is overlooked
    2. **SOLUTION**
       1. Better prompting - Clarify the instructions、Simplify the request and use keywords、Give examples、Iterative prompting and asking follow-up questions
       2. Output parsing - to provide “parsing” for LLM outputs、provide formatting instructions
