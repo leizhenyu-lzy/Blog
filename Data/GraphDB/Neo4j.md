@@ -7,9 +7,9 @@
 
 [Neo4j - Github](https://github.com/neo4j/neo4j)
 
+**[Neo4j Docs](https://neo4j.com/docs/)**
 
-[Neo4j Docs](https://neo4j.com/docs/)
-
+[Neo4j Sandbox](https://sandbox.neo4j.com/)
 
 ---
 
@@ -30,7 +30,11 @@
 - [Neo4j Desktop](#neo4j-desktop)
   - [Install](#install)
   - [Visual Tour](#visual-tour)
-  - [Desktop Operations](#desktop-operations)
+- [Neo4j Desktop 操作](#neo4j-desktop-操作)
+  - [Neo4j Desktop](#neo4j-desktop-1)
+  - [本地 Neo4j-Browser (对应 单个 DBMS)](#本地-neo4j-browser-对应-单个-dbms)
+  - [网页 Neo4j-Browser (对应 单个 DBMS)](#网页-neo4j-browser-对应-单个-dbms)
+- [Neo4j x Python](#neo4j-x-python)
 - [Cypher](#cypher)
 - [Generative AI](#generative-ai)
 - [Neo4j Operations Manual v5](#neo4j-operations-manual-v5)
@@ -40,7 +44,7 @@
   - [Configuration](#configuration)
 - [Install](#install-1)
   - [Neo4j](#neo4j-1)
-  - [Neo4j Desktop](#neo4j-desktop-1)
+  - [Neo4j Desktop](#neo4j-desktop-2)
   - [Neo4j AuraDB](#neo4j-auradb)
 - [Problem Shooting](#problem-shooting)
   - [01 Unsupported Java Version](#01-unsupported-java-version)
@@ -53,12 +57,7 @@
 
 [Neo4j in 100 Seconds](https://www.youtube.com/watch?v=T6L9EoBy8Zk)
 
-**CRUD**
-1. Create
-2. Read
-3. Update
-4. Delete
-
+CRUD - **Create Read Update Delete**
 
 **Acid compliant** (描述数据库事务正确性的术语)
 1. **A**tomicity 原子性 - 所有操作要么全部成功，要么全部失败。如果事务中的某个操作失败，整个事务将被回滚
@@ -69,19 +68,34 @@
 RelationalDB -> **Tabular Model**(表格模型)
 
 GraphDB -> **Property Graph Model**(属性图模型)
-1. node -> entity
-2. edge -> relationship
-3. property -> Key-Value Pair
+1. node -> **entity**
+2. edge -> **relationship**
+3. property -> **Key-Value Pair**
 
-创始人 - Emil Eifrem
+创始人 - **Emil Eifrem**
 
-Neo4j 核心数据库引擎 用 Java 编写
+Neo4j 核心数据库引擎 用 **Java** 编写
 
-查询语句 编程语言 - **Cypher**(声明式图形查询语言) (**.cyp 文件**)
+查询 & 编程 语言 - **Cypher**(声明式图形查询语言)
 
 ![](Pics/neo4j004.png)
 
-可以安装插件
+**项目结构**(三个层次 - Project、DBMS、Database)
+
+```text
+Project: My Project
+├── DBMS Instance: DBMS1
+│   ├── Database: DatabaseA
+│   ├── Database: DatabaseB
+│   └── Database: DatabaseC
+└── DBMS Instance: DBMS2
+    ├── Database: DatabaseX
+    ├── Database: DatabaseY
+    └── Database: DatabaseZ
+```
+![](Pics/neo4j012.png) ![](Pics/neo4j013.png)
+
+可以安装插件(第一个不知道咋用)
 
 ![](Pics/neo4j005.png)
 
@@ -122,6 +136,9 @@ dedicated **memory management** and **memory-efficient operations**
 
 ## Connect to Neo4j
 
+
+
+
 ## Data Science with Neo4j
 
 ## Visualize Data with Neo4j
@@ -149,10 +166,34 @@ Proxy Setup
 
 ![](Pics/neo4j008.png)
 
-## Desktop Operations
+# Neo4j Desktop 操作
+
+## Neo4j Desktop
+
+![](Pics/neo4j016.png)
 
 
 
+## 本地 Neo4j-Browser (对应 单个 DBMS)
+
+通过 Desktop -> Project -> DBMS -> Open -> Neo4j Browser 进入
+
+![](Pics/neo4j015.png)
+
+功能 和 网页端 一样
+
+![](Pics/neo4j017.png)
+
+
+## 网页 Neo4j-Browser (对应 单个 DBMS)
+
+网页端打开 DBMS 管理平台
+
+> [127.0.0.1:7474](http://127.0.0.1:7474/browser/) - 不是 driver 要用的 URI (本地打开了那个 DBMS 就显示 哪个 DBMS 的内容)
+
+![](Pics/neo4j014.png)
+
+功能 和 本地端 一样
 
 
 
@@ -160,13 +201,151 @@ Proxy Setup
 
 ---
 
+# Neo4j x Python
+
+[Using Neo4j from Python](https://neo4j.com/docs/getting-started/languages-guides/neo4j-python/)
+
+[Build applications with Neo4j and Python](https://neo4j.com/docs/python-manual/current/)
+
+[Building Neo4j Applications with Python](https://graphacademy.neo4j.com/courses/app-python/)
+
+
+```bash
+pip3 install neo4j
+```
+
+> The **Driver** object is immutable, **thread-safe**, **application-wide** & **fairly expensive to create**
+
+> The **Driver** API is **topology independent**, can run the same code against a **Neo4j cluster** or a **single DBMS**.
+
+**Driver 对应 DBMS实例**，database 的选择在 session 中控制
+
+```python
+with self.driver.session(database=database) as session:
+    result = session.run(query, parameters)
+```
+
+![](Pics/neo4j012.png)
+
+
+```python
+from neo4j import GraphDatabase
+
+# URI examples: "neo4j://localhost", "neo4j+s://xxx.databases.neo4j.io"
+URI = "<URI for Neo4j database>"
+AUTH = ("<Username>", "<Password>")
+
+with GraphDatabase.driver(URI, auth=AUTH) as driver:
+    driver.verify_connectivity()
+```
+
+可以采用更安全的 URI、USER、PASSWORD 方式，需要 `.env` 文件
+
+
+```python
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+NEO4J_URI=os.getenv('NEO4J_URI')
+NEO4J_USERNAME=os.getenv('NEO4J_USERNAME')
+NEO4J_PASSWORD=os.getenv('NEO4J_PASSWORD')
+
+with GraphDatabase.driver(uri=NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as driver:
+    driver.verify_connectivity()
+```
+
+如果没有使用 **with** 代码块，则需要 手动 **driver.close()**
+
+
+
+
+**scheme**
+1. neo4j, neo4j+s, neo4j+ssc
+2. bolt,  bolt+s,  bolt+ssc
+
+![](Pics/neo4j011.png)
+
+**Connection String** 结构
+
+![](Pics/neo4j010.png)
+
+
+
+**Session**
+1. Session 是 **与数据库交互的会话**，提供了一种上下文，用于执行查询、事务和管理连接的生命周期
+2. **每个 Session 是独立的**，提供了一种隔离机制，确保不同的会话之间互不影响
+3. 功能
+   1. 执行查询 - 执行 Cypher 查询，读取或写入数据
+   2. 管理事务 - 显式事务的支持，可以在一个事务中执行多个查询，并在事务结束时提交或回滚
+   3. 链接管理 - 管理与数据库的连接，确保连接的生命周期与会话一致
+
+
+
+
+
+
+
+
+Neo4j Driver (officially supported) 支持语言
+1. Python
+2. Java
+3. JavaScript
+4. DotNet
+5. Go
+
+
+**Sandbox Credentials**
+```bash
+Browser URL
+https://070ba802c8a8d909e1ecb0aafed466fd.neo4jsandbox.com/browser/
+--------------------
+Bolt URI
+bolt://44.204.38.141:7687
+--------------------
+Websocket Bolt URI
+bolt+s://070ba802c8a8d909e1ecb0aafed466fd.neo4jsandbox.com:7687
+--------------------
+Username
+neo4j
+--------------------
+Password
+pails-opinions-fluids
+```
+
+[clone the repository](https://github.com/neo4j-graphacademy/app-python)
+
+
+
+
+
+
+
+
+
+
+
+**Authentication Token**
+
+```python
+auth = (username, password)
+```
+
+driver will attempt to connect to the DBMS using the supplied credentials
+
+
+
+
+
+
 # Cypher
 
 [Cypher](https://neo4j.com/docs/cypher-manual) - Learn about Cypher; the graph query language for Neo4j and AuraDB.
 
 [Cypher Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet)
 
-[Cypher Personal Note](./Cypher.md)
+[Cypher Personal Note - 个人笔记](./Cypher.md)
+
 
 ---
 

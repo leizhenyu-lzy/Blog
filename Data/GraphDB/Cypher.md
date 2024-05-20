@@ -456,4 +456,4 @@ RETURN p
 
 ![](Pics/cypher011.png)
 
-[Next Step](https://graphacademy.neo4j.com/courses/cypher-fundamentals/summary/)
+**[Next Step](https://graphacademy.neo4j.com/courses/cypher-fundamentals/summary/)**

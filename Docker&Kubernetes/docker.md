@@ -68,7 +68,6 @@ Products
 
 [【GeekHour】30分钟Docker入门教程](https://www.bilibili.com/video/BV14s4y1i7Vf)
 
-[docker容器和传统虚拟机有什么区别？ - 小白debug]()
 
 ## 00. Docker 简介
 
