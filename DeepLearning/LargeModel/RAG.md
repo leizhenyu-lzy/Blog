@@ -174,11 +174,46 @@ Database
 
 [Project GraphRAG - LLM-Derived Knowledge Graphs](https://www.microsoft.com/en-us/research/project/graphrag/)
 
+![](Pics/rag012.png)
+
 [arxiv - From Local to Global: A Graph RAG Approach to Query-Focused Summarization](https://arxiv.org/pdf/2404.16130v1)
 
-GraphRAG (Graphs + Retrieval Augmented Generation)
+[ReadPaper - Paper & Note](https://readpaper.com/pdf-annotate/note?pdfId=4881783320383324161&noteId=2323244243193266176)
 
-![](Pics/rag010.webp)
+[GraphRAG: LLM-Derived Knowledge Graphs for RAG - YouTube](https://www.youtube.com/watch?v=r09tJfON6kE&list=WL)
+
+LLM(GPT) 构建 Graph, Graph 用于 RAG
+
+RAG
+1. excellent at performing retrieval for highly specific facts (Vector similarity approach)
+2. poor at performing any operation that require higher order reasoning and understanding
+
+Graph
+1. aggregate semantic concepts and derive holistic understanding of the whole sources
+2. guide content discovery to provide the llm diverse comprehensive and topically relevant content
+
+**Two Step Process**
+1. indexing process on private data to create LLM-Derived Knowledge Graphs (LLM memory representation)
+2. LLM Orchestration to utilize memory constructs in RAG operations
+
+**Differentiators**
+1. enhance search relevance
+2. enable new scenarios that require large context
+
+![](Pics/rag013.png)
+
+Graph Machine Learning
+1. semantic aggregation
+2. hierarchy extraction
+
+create sub-partitions
+
+
+
+
+
+
+
 
 
 
@@ -186,7 +221,7 @@ GraphRAG (Graphs + Retrieval Augmented Generation)
 
 知识图谱 - 结构化的知识表示方式，能通过符号推理产生**可解释的结果**，具备精确可靠的领域知识
 
-![](Pics/rag010.webp)
+![](Pics/rag010.png)
 
 ![](Pics/rag011.webp)
 

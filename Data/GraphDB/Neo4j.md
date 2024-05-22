@@ -220,6 +220,13 @@ pip3 install neo4j
 
 **Driver 对应 DBMS实例**，database 的选择在 session 中控制
 
+Neo4j Driver 支持语言
+1. Python
+2. Java
+3. JavaScript
+4. DotNet
+5. Go
+
 ```python
 with self.driver.session(database=database) as session:
     result = session.run(query, parameters)
@@ -252,13 +259,10 @@ NEO4J_USERNAME=os.getenv('NEO4J_USERNAME')
 NEO4J_PASSWORD=os.getenv('NEO4J_PASSWORD')
 
 with GraphDatabase.driver(uri=NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as driver:
-    driver.verify_connectivity()
+    driver.verify_connectivity()  # 检查链接
 ```
 
 如果没有使用 **with** 代码块，则需要 手动 **driver.close()**
-
-
-
 
 **scheme**
 1. neo4j, neo4j+s, neo4j+ssc
@@ -270,8 +274,6 @@ with GraphDatabase.driver(uri=NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) 
 
 ![](Pics/neo4j010.png)
 
-
-
 **Session**
 1. Session 是 **与数据库交互的会话**，提供了一种上下文，用于执行查询、事务和管理连接的生命周期
 2. **每个 Session 是独立的**，提供了一种隔离机制，确保不同的会话之间互不影响
@@ -280,19 +282,166 @@ with GraphDatabase.driver(uri=NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) 
    2. 管理事务 - 显式事务的支持，可以在一个事务中执行多个查询，并在事务结束时提交或回滚
    3. 链接管理 - 管理与数据库的连接，确保连接的生命周期与会话一致
 
+**`driver.execute_query`** 方法实际上是一个高层次的辅助方法，它会在内部自动创建一个 **会话 session**，执行查询并处理结果，简化在单次操作中使用会话和事务的过程
+
+**`driver.execute_query`** 中 configuration parameters are suffixed(后缀) with _
+1. Database selection - `database_="neo4j"`
+2. Request routing(cluster environment) - `routing_="r"`
+3. Transform query result - `result_transformer_`
+   1. Result as a list
+   2. Transform to pandas DataFrame
+   3. Transform to graph
+
+
+
+```python
+with GraphDatabase.driver(uri=NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as driver:
+    # DB Property
+    records, summary, keys = driver.execute_query(
+        database_="neo4j",
+        query_="CALL db.propertyKeys()")
+    for record in records:
+        print(record.data())
+    # SET Label
+    labels = "Teacher"
+    records, summary, keys = driver.execute_query(
+        database_="neo4j",
+        # Neo4j 不允许在 SET 子句中使用参数来设置标签
+        query_=f"MATCH (p:Person{{name:$name}}) \
+            SET p:{labels} \
+            RETURN p", name="Alice")
+    for record in records:
+        print(record.data())
+        print(record)
+    # ADD Relationship
+    records, summary, keys = driver.execute_query(
+        database_="neo4j",
+        query_="MERGE (p1:Person{name:$name1})\
+            MERGE (p2:Person{name:$name2})\
+            MERGE (p1)-[:Knows]->(p2)\
+            RETURN p1, p2", name1="lzy", name2="Alice")
+    for record in records:
+        print(record.data())
+        print(record)
+    # DELETE
+    records, summary, keys = driver.execute_query(
+        database_="neo4j",
+        query_="MATCH (p:Person)\
+            WHERE p.name=$name\
+            DETACH DELETE p",
+        name="alice")
+    for record in records:
+        print(record.data())
+```
+
+**Query Parameters** - Do not hardcode or concatenate parameters directly into queries, use placeholders and specify the Cypher parameters
+1. **performance** benefits
+2. protect against **Cypher injection注入**
+   ```cypher
+   CREATE (s:Student)
+   SET s.name = 'Robby'
+   // 用于将查询的上下文(变量&结果)传递给后续的查询部分
+   WITH true as ignored  // 并没有传递有用的数据
+   MATCH (s:Student) DETACH DELETE s;
+   //'; // 注释掉任何后续的代码，确保注入的删除操作能顺利执行
+   ```
+
+[parameterized querying - 参数化查询](https://neo4j.com/docs/cypher-manual/current/syntax/parameters/)
+1. 字面量 和 表达式
+2. 节点和关系的 ID
+
+**Neo4j 不允许在 SET 子句中使用参数来设置标签**
+
+**参数不能用于**
+1. **property keys**
+   ```cypher
+   MATCH (n) WHERE n.$param = 'something'
+   ```
+2. **relationship types**
+   ```cypher
+   MATCH (n)-[:$param]→(m)
+   ```
+3. **labels**
+   ```cypher
+   MATCH (n:$param)
+   ```
+
+```cypher
+// String literal
+{
+  "name": "John"
+}
+MATCH (n:Person)
+WHERE n.name = $name
+RETURN n
+
+MATCH (n:Person {name: $name})
+RETURN n
+
+// Regular expression
+{
+  "regex": ".*h.*"
+}
+MATCH (n:Person)
+WHERE n.name =~ $regex
+RETURN n.name
+
+// Create node with properties
+{
+  "props": {
+    "name": "Andy",
+    "position": "Developer"
+  }
+}
+CREATE ($props)
+
+// Create multiple nodes with properties
+{
+  "props": [ {
+    "awesome": true,
+    "name": "Andy",
+    "position": "Developer"
+  }, {
+    "children": 3,
+    "name": "Michael",
+    "position": "Developer"
+  } ]
+}
+
+UNWIND $props AS properties
+CREATE (n:Person)
+SET n = properties
+RETURN n
+
+// Setting all properties on a node
+{
+  "props": {
+    "name": "Andy",
+    "position": "Developer"
+  }
+}
+MATCH (n:Person)
+WHERE n.name = 'Mike'
+SET n = $props
+
+// Multiple node ids
+{
+  "ids" : [ "4:1fd57deb-355d-47bb-a80a-d39ac2d2bcdb:0", "4:1fd57deb-355d-47bb-a80a-d39ac2d2bcdb:1" ]
+}
+MATCH (n)
+WHERE elementId(n) IN $ids
+RETURN n.name
+```
+
+**`class neo4j.EagerResult(records, summary, keys)`**
+1. **records** - list of records returned by the query (list of Record objects)
+2. **summary** - summary of the query execution (ResultSummary object)
+3. **keys** - list of keys returned by the query (see AsyncResult.keys and Result.keys)
 
 
 
 
 
-
-
-Neo4j Driver (officially supported) 支持语言
-1. Python
-2. Java
-3. JavaScript
-4. DotNet
-5. Go
 
 
 **Sandbox Credentials**
@@ -325,17 +474,9 @@ pails-opinions-fluids
 
 
 
-**Authentication Token**
-
-```python
-auth = (username, password)
-```
-
-driver will attempt to connect to the DBMS using the supplied credentials
 
 
-
-
+---
 
 
 # Cypher

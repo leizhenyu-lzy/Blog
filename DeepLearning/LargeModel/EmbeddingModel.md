@@ -7,7 +7,7 @@
 - [Embedding Model](#embedding-model)
   - [Table of Contents](#table-of-contents)
 - [Embedding 排行榜](#embedding-排行榜)
-- [FlagEmbedding(BAAI)](#flagembeddingbaai)
+- [FlagEmbedding (BAAI)](#flagembedding-baai)
 - [word2vec](#word2vec)
 
 ---
@@ -22,8 +22,9 @@ embedding是一种将数据（如文本）转化为高维向量的表示方法�
 
 
 
+# FlagEmbedding (BAAI)
 
-# FlagEmbedding(BAAI)
+BAAI - Beijing Academy of Artificial Intelligence
 
 RAG 开发时 会涉及到向量数据库，需要使用 Embedding 模型对文本进行 向量化 处理
 
