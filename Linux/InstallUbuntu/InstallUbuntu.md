@@ -357,7 +357,7 @@ set -g mode-keys vi
 
 set -g @plugin 'tmux-plugins/tpm'  # tmux package manager
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-resurrect'  # persist tmux sessions after restart computer 
+set -g @plugin 'tmux-plugins/tmux-resurrect'  # persist tmux sessions after restart computer
 set -g @plugin 'tmux-plugins/tmux-continuum'  # automatically saves sessions every 15 mins
 
 set -g @resurrect-capture-pane-contents 'on'
@@ -514,8 +514,8 @@ sudo bash VIDIA-Linux.xxx.run
 
 如果遇到 x server 问题
 ```
-ERROR: 
-You appear to be running an X server; please exit X before installing. 
+ERROR:
+You appear to be running an X server; please exit X before installing.
 For further details, please see the section INSTALLING THE NVIDIA DRIVER in the README available on the Linux driver download page at www.nvidia.com.
 ```
 
@@ -583,7 +583,7 @@ Popular SDKs
    2. 可以选择 runfile 或者 deb (完成后，会出现安装总结，警告说没有安装完全，不用管)
       1. 用deb方式安装CUDA，会附带安装显卡驱动，默认会安装
       2. 用run方式安装CUDA，会附带安装显卡驱动，可选不安装
-   3. 或者直接试试看 
+   3. 或者直接试试看
       ```bash
       sudo apt install cuda-toolkit-xx
       ```
@@ -595,8 +595,8 @@ Popular SDKs
 
       ```bash
       tar -xvf cudnn-linux-x86_64-8.x.x.x_cudaX.Y-archive.tar.xz
-      sudo cp cudnn-*-archive/include/cudnn*.h /usr/local/cuda/include 
-      sudo cp -P cudnn-*-archive/lib/libcudnn* /usr/local/cuda/lib64 
+      sudo cp cudnn-*-archive/include/cudnn*.h /usr/local/cuda/include
+      sudo cp -P cudnn-*-archive/lib/libcudnn* /usr/local/cuda/lib64
       sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
       ```
    5. [NVIDIA cuDNN v8 deb方法安装和卸载教程(Linux/Ubuntu)](https://zhuanlan.zhihu.com/p/126997172)
@@ -694,7 +694,7 @@ pip.conf 如下，已经换源+添加clash代理
 ```text
 [global]
 index-url = http://pypi.douban.com/simple/
-extra-index-url = 
+extra-index-url =
 	https://pypi.tuna.tsinghua.edu.cn/simple
 	http://mirrors.aliyun.com/pypi/simple/
 	https://pypi.mirrors.ustc.edu.cn/simple/
@@ -703,7 +703,7 @@ https_proxy = https://127.0.0.1:7890
 http_proxy = http://127.0.0.1:7890
 
 [install]
-trusted-host = 
+trusted-host =
 	http://pypi.douban.com/simple/
 	https://pypi.tuna.tsinghua.edu.cn/simple
 	http://mirrors.aliyun.com/pypi/simple/
@@ -807,18 +807,18 @@ sudo apt install inkscape
 sudo snap install python3-pip
 ```
 
-# 新立得包管理 
+# 新立得包管理
 
 ```bash
 sudo apt install -y synaptic
 ```
 
-# net-tools 
+# net-tools
 
 用于ifconfig
 
 ```bash
-sudo apt net-tools 
+sudo apt net-tools
 ```
 
 # ubuntu-restricted-extras(基本的媒体编解码器)
@@ -869,7 +869,7 @@ xhost +SI:localuser:root
 最好加上 sudo ，否则后续安装可能选择位置受限
 
 ```shell
-lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install 
+lzy@legion:/media/lzy/MATHWORKS_R2021B$ sudo ./install
 ```
 
 稍微等一下会弹出窗口
@@ -963,7 +963,7 @@ cfw即为应用程序入口，运行
 
 还需要设置代理
 
-系统 Settings -> Network -> VPN -> Network Proxy 
+系统 Settings -> Network -> VPN -> Network Proxy
 
 设为 Manual
 
@@ -1231,10 +1231,13 @@ sudo apt install libnvidia-gl-550:i386  # 不一定有
 
 [Install the Unity Hub on Linux](https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux)
 
+# electerm
+
+[](https://electerm.github.io/electerm/)
+
 # unreal
 
-[
-安装虚幻引擎](https://docs.unrealengine.com/5.0/zh-CN/installing-unreal-engine/)
+[安装虚幻引擎](https://docs.unrealengine.com/5.0/zh-CN/installing-unreal-engine/)
 
 # WPS Office
 
@@ -1285,7 +1288,7 @@ gpustat
 ```bash
 sudo apt install psensor
 # Psensor 是一个图形化工具，能显示硬件的温度信息，包括CPU和硬盘
-# sudo apt install gsmartcontrol 
+# sudo apt install gsmartcontrol
 # 没啥用 GSmartControl 是一个图形用户界面的硬盘健康检查工具
 sudo apt install hardinfo
 # Hardinfo能提供一个系统信息的图形概览
@@ -1503,7 +1506,7 @@ sudo snap install blender --classic
 
 
 ```bash
-unzip 
+unzip
 
 sudo apt install libqt5multimedia5
 # sudo apt install qtcreator
@@ -1584,15 +1587,15 @@ sudo snap install freecad
 缺点：就是无法共享屏幕(有时候可以，有时候不行)
 
 ```bash
-sudo gedit /opt/wemeet/wemeetapp.sh 
+sudo gedit /opt/wemeet/wemeetapp.sh
 ```
 
 ```bash
 # force x11 instead of Wayland
 export XDG_SESSION_TYPE=x11
-export EGL_PLATFORM=x11 
+export EGL_PLATFORM=x11
 export QT_QPA_PLATFORM=xcb
-unset WAYLAND_DISPLAY 
+unset WAYLAND_DISPLAY
 unset WAYLAND_DISPLAYCOPY
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ];
@@ -1607,7 +1610,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ];
 [Obsidian](https://obsidian.md/)
 
 ```bash
-sudo snap install obsidian --classic 
+sudo snap install obsidian --classic
 ```
 
 同步需要钱
@@ -1891,7 +1894,7 @@ Snap应用程序的快捷方式和图标通常存储在
 ppa 文件位置
 
 ```bash
-ls /etc/apt/sources.list.d 
+ls /etc/apt/sources.list.d
 ```
 
 图形化操作
@@ -1914,7 +1917,7 @@ sudo apt install gtkhash
 ### 命令行
 
 ```bash
-lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz 
+lzy@legion:~$ sha256sum /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
 a58954ed6732eb799502e14b250ead8b21e00c3f064e196ada34dcd6a3a3f399  /mnt/sda1/Ubuntu/Intellij/ideaIU-2023.1.3.tar.gz
 ```
 
@@ -1976,7 +1979,7 @@ Ctrl+Alt+F2
 会无法开机
 
 ```bash
-sudo gedit /etc/gdm3/custom.conf 
+sudo gedit /etc/gdm3/custom.conf
 ```
 
 ```text

@@ -4,6 +4,8 @@
 
 [Docker - Official Website](https://www.docker.com/)
 
+[Docker - Docs](https://docs.docker.com/)
+
 Products
 1. Docker Desktop
    1. Docker 引擎
@@ -41,11 +43,12 @@ Products
   - [08. VPS \& ECS](#08-vps--ecs)
   - [09. Namespace \& Cgroup](#09-namespace--cgroup)
   - [10. Docker Swarm (K8s 竞品)](#10-docker-swarm-k8s-竞品)
-  - [11. K8s](#11-k8s)
+  - [11. Kubernetes(k8s)](#11-kubernetesk8s)
 - [Docker 1小时快速上手教程，无废话纯干货](#docker-1小时快速上手教程无废话纯干货)
   - [Docker 简介](#docker-简介)
   - [镜像加速源](#镜像加速源)
   - [用 Docker 快速安装软件](#用-docker-快速安装软件)
+- [Docker最新超详细版教程通俗易懂 - 狂神说Java](#docker最新超详细版教程通俗易懂---狂神说java)
 - [安装 Docker \& Docker Desktop](#安装-docker--docker-desktop)
   - [官方安装教程](#官方安装教程)
   - [测试与 Docker Hub 的连通性](#测试与-docker-hub-的连通性)
@@ -132,6 +135,8 @@ Ubuntu 镜像**包含了独立于宿主机的 Ubuntu 操作系统的用户空间
 ## 02. 基本原理和概念
 
 ![](Pics/docker012.png)
+
+![](Pics/docker025.webp)
 
 Docker **容器 是由 镜像 启动的**，**镜像 包含了运行应用程序所需的所有文件和依赖**
 1. 镜像是分层的，每一层都代表镜像的一次变更
@@ -376,7 +381,7 @@ ECS - Elastic Compute Service
 
 解决服务 在 服务器集群 的部署
 
-## 11. K8s
+## 11. Kubernetes(k8s)
 
 **容器编排引擎** (以API编程的方式管理安排各个容器的引擎)
 
@@ -443,7 +448,15 @@ docker volume ls                 查看 volume 列表
 docker network ls                查看网络列表
 ```
 
+---
 
+# Docker最新超详细版教程通俗易懂 - 狂神说Java
+
+[Docker最新超详细版教程通俗易懂 - 狂神说Java](https://www.bilibili.com/video/BV1og4y1q7M4/)
+
+
+
+---
 
 # 安装 Docker & Docker Desktop
 
