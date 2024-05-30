@@ -39,6 +39,46 @@ GQL - Graph Query Language (a peer, complementary language to SQL)
 5. Milvus、Faiss、Elasticsearch
 
 
+图模型
+1. PropertyGraph 属性图
+   1. Node、Edge、Property(key-value)
+   2. Neo4j
+   ![](Pics/graph012.png)
+2. RDF 资源描述框架 三元组
+   1. 适用于表示语义网络中的数据
+   2. 主语subject、谓语、宾语object
+3. HyperGraph 超图
+   1. 一条超边(HyperEdge)可以连接多个节点，而不仅仅是两个节点
+   2. 更灵活地表示多方关系，而不是通过多个二元关系来间接表示
+   3. HyperGraphDB
+   ![](Pics/graph011.png)
+
+
+**GraphDB VS RelationalDB 区别**
+1. 关系型数据库不擅长处理数据之间的关系(查询是低效的)
+2. 对于图数据库，数据量越大，越复杂的关联查询，约能体现其优势
+3. 灵活性、敏捷性 是 图数据库的重要优势(图天生就是灵活可扩展)
+4. 关系型数据库，查找时
+   1. 先要通过员工信息表找到工号
+   2. 使用工号去关系表中找到其对应的部门ID
+   3. 使用部门ID在部门信息表中找到部门名称等
+   ![](Pics/graph013.png)
+5. 在图数据库中，就不需要那么复杂的查询，员工和部门都在同一张图中，通过边直接建立关系
+   ![](Pics/graph014.png)
+
+主流的图查询语言是 Cypher 和 Gremlin
+
+场景
+1. 社交网络应用
+   ![](Pics/graph015.webp)
+2. 实时推荐
+3. 地理空间管理
+   ![](Pics/graph016.webp)
+4. 网络和数据中心管理
+5. 授权和访问控制
+
+
+
 ## 主流开源 GraphDB
 
 
@@ -77,8 +117,9 @@ GQL - Graph Query Language (a peer, complementary language to SQL)
    ![](Pics/graph007.png)
    1. 语言 - Gremlin
    2. 开源的分布式图数据库
-   3. 可扩展的存储和查询能力
-   4. 支持多种数据模型 : 属性图 & RDF
+   3. 使用Java开发
+   4. 可扩展的存储和查询能力
+   5. 支持多种数据模型 : 属性图 & RDF
 5. [HugeGraph](https://hugegraph.apache.org/cn/)
    ![](Pics/graph006.png)
    1. 语言 - Gremlin

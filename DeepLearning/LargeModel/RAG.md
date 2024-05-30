@@ -1,10 +1,18 @@
-# RAG
+# RAG(Retrieval-Augmented Generation) - 检索增强生成
+
+解决 LLM 问题
+1. 信息滞后 - 静态知识
+2. 模型幻觉 - **hallucination**
+3. 私有数据匮乏 - 训练数据来自互联网公开数据，构建私有知识库
 
 ---
 
 ## Table of Content
-- [RAG](#rag)
+- [RAG(Retrieval-Augmented Generation) - 检索增强生成](#ragretrieval-augmented-generation---检索增强生成)
   - [Table of Content](#table-of-content)
+- [RAG 高效应用指南](#rag-高效应用指南)
+  - [文档智能解析](#文档智能解析)
+  - [文本分块 Text Chunking/Splitting](#文本分块-text-chunkingsplitting)
 - [IBM Technology - Introductions](#ibm-technology---introductions)
   - [How Large Language Models Work?](#how-large-language-models-work)
   - [Why Are There So Many Foundation Models?](#why-are-there-so-many-foundation-models)
@@ -22,12 +30,13 @@
   - [LLM-based pipelines \& applications](#llm-based-pipelines--applications)
   - [Naive RAG](#naive-rag)
   - [Advanced RAG](#advanced-rag)
-    - [01 - Chunking \& vectorisation](#01---chunking--vectorisation)
+    - [01 - Chunking \& vectorization](#01---chunking--vectorization)
     - [02 - Index](#02---index)
-      - [02.01 - Vector store index](#0201---vector-store-index)
-      - [02.02 - Hierarchical indices](#0202---hierarchical-indices)
-      - [02.03 - Hypothetical Questions and HyDE](#0203---hypothetical-questions-and-hyde)
-      - [02.04 - Context enrichment](#0204---context-enrichment)
+      - [Vector store index\*\*](#vector-store-index)
+      - [Hierarchical indices](#hierarchical-indices)
+      - [Hypothetical Questions and HyDE](#hypothetical-questions-and-hyde)
+      - [Context enrichment](#context-enrichment)
+        - [](#)
       - [02.05 - Fusion retrieval or hybrid search](#0205---fusion-retrieval-or-hybrid-search)
     - [03 - Reranking \& filtering](#03---reranking--filtering)
     - [04 - Query transformations](#04---query-transformations)
@@ -36,6 +45,69 @@
     - [07 - Agents in RAG](#07---agents-in-rag)
     - [08 - Response synthesiser](#08---response-synthesiser)
 - [12 RAG Pain Points and Proposed Solutions-Solving the core challenges of Retrieval-Augmented Generation](#12-rag-pain-points-and-proposed-solutions-solving-the-core-challenges-of-retrieval-augmented-generation)
+
+
+# RAG 高效应用指南
+
+![](Pics/rag015.webp)
+
+RAG 应用的基本架构，可以分为离线和在线两部分
+1. 离线 - 对知识库文档进行解析、拆分、索引构建和入库
+2. 在线 - query分析、召回检索、联网搜索、重拍、query回答
+
+## 文档智能解析
+
+从 非结构化数据(PDF, Word, PPT, Excel, 图像, 图表) 中 提取出内容
+
+[版面分析那些事 - 一些传统实现](https://zhuanlan.zhihu.com/p/35910823)
+
+Layout Analysis - 布局分析
+1. 文本 - 标题、副标题、正文文本
+   1. OCR引擎 - Optical Character Recognition
+2. 图像 - 图片、图表、公式
+3. 表格
+   1. 表格识别 - TSR，Table Structure Recognition
+
+相关模型
+1. [微软 LayoutLM 微软亚研院](https://www.msra.cn/zh-cn/news/features/layoutlmv3)
+   1. [Github](https://github.com/microsoft/unilm/tree/master/layoutlmv3)
+   2. [论文](https://arxiv.org/pdf/2204.08387)
+2. 微软 Table Transformer
+3. [Donut 模型](https://arxiv.org/pdf/2111.15664v5)
+4. [RAGFlow](https://github.com/infiniflow/ragflow)
+   1. [检索增强生成引擎 RAGFlow 正式开源 - InfoQ](https://www.infoq.cn/article/hjjm3kv620idoyyobtps)
+5. [Unstructured](https://github.com/Unstructured-IO/unstructured) - 专门用于处理非结构化数据
+6. [旷世 OneChart](https://onechartt.github.io/)
+7. [百度 PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
+
+
+## 文本分块 Text Chunking/Splitting
+
+将长文本分解为较小的文本块(分解成易于管理的部分(章节、段落、句子))
+
+块被嵌入、索引、存储，然后用于后续的检索
+
+优点
+1. 增加准确性
+2. 提升性能 - LLM 在处理过长的文本时可能会遇到性能瓶颈
+
+方式
+1. 按大小分块 - 将文本按固定字符数或单词数进行分割
+   1. 最直接、最经济
+   2. 语义不连贯、不完整
+2. 特定格式分块
+3. 递归分块 - 以一组分隔符为参数，以递归的方式将文本分成更小的块
+4. 语义分块(Semantic Chunking) - 在句子之间进行分割，使用 Embedding 表征句子，相似的句子组合在一起形成块，保持句子的顺序
+5. 命题分块(Propositional Chunking) - 语义分块的一种，将句子分解为命题(主谓宾，表达一个完整思想的最小信息单元)
+
+
+文本分块并没有固定的最佳策略，选择哪种方式取决于具体的需求和场景
+
+
+
+
+
+
 
 ---
 
@@ -243,10 +315,6 @@ create sub-partitions
 
 [高级 RAG 技术 : 图解概览 [译]](https://baoyu.io/translations/rag/advanced-rag-techniques-an-illustrated-overview)
 
-RAG provides LLMs with the information retrieved from some data source to ground its generated answer on
-
-RAG = Search + LLM prompting(query and the retrieved context)
-
 ## Vector Search - 向量搜索
 
 **Vector Search - 向量搜索**
@@ -290,22 +358,9 @@ LLM(**brain** for **RAG pipeline**)
 2. **embed chunks into vectors** with some Transformer Encoder model
 3. put all those vectors into an index
 4. create **prompt** for LLM that tells the model to answers user’s query(given the context found)
-   ```python
-   def question_answering(context, query):
-      prompt = f"""
-                  Give the answer to the user query delimited by triple backticks ```{query}```\
-                  using the information given in context delimited by triple backticks ```{context}```.\
-                  If there is no relevant information in the provided context, try to answer yourself,
-                  but tell user that you did not have any relevant context to base your answer on.
-                  Be concise and output the answer of size less than 80 tokens.
-                  """
-      response = get_completion(instruction, prompt, model="gpt-3.5-turbo")
-      answer = response.choices[0].message["content"]
-      return answer
-   ```
 
 **Runtime**
-1. **vectorize user’s query** with the same Encoder model
+1. **vectorize user’s query** with the **same Encoder model**
 2. execute search of this query vector against the index
 3. find the top-k results
 4. retrieve the corresponding text chunks from our database
@@ -320,7 +375,7 @@ Prompt engineering is the **cheapest** thing you can try to improve your RAG pip
 
 ![](Pics/rag008.webp)
 
-### 01 - Chunking & vectorisation
+### 01 - Chunking & vectorization
 
 Procedure
 1. create an index of vectors(向量索引), representing our document contents
@@ -335,43 +390,74 @@ Procedure
 
 
 **Chunking** - split documents in chunks without loosing meaning
-1. Transformer models have fixed input sequence length
-2. 相比于几页文本的平均向量，一句话或几句话的向量更能准确地代表其语义含义
-3. size of the chunk depends on the embedding model and its capacity in tokens
-4. [Chunking Strategies for LLM Applications](https://www.pinecone.io/learn/chunking-strategies/)
+1. 相比于几页文本的平均向量，一句话或几句话的向量更能准确地代表其语义含义
+2. size of the chunk depends on the embedding model and its capacity in tokens
+3. [Chunking Strategies for LLM Applications](https://www.pinecone.io/learn/chunking-strategies/)
 
 
 **Vectorization**
-1. choose a model to embed our chunks
+1. embed chunks
 2. search optimized models(为搜索优化的模型)
    1. [bge-large](https://huggingface.co/BAAI/bge-large-en-v1.5)
-      1. [FlagEmbedding - Github](https://github.com/FlagOpen/FlagEmbedding/blob/master/README_zh.md)
    2. [E5](https://huggingface.co/intfloat/multilingual-e5-large)
 3. [Overall MTEB English leaderboard](https://huggingface.co/spaces/mteb/leaderboard) - Massive Text Embedding Benchmark
+4. [FlagEmbedding - Github](https://github.com/FlagOpen/FlagEmbedding/blob/master/README_zh.md)
 
 
 
 ### 02 - Index
 
-#### 02.01 - Vector store index
+#### Vector store index**
 
 ![](Pics/rag009.webp)
 
 (omit the Encoder block)
 
-the crucial part of the RAG pipeline is the **search index 搜索索引**, storing your vectorized content
+**search index 搜索索引**, store vectorized content
 
-most naive implementation uses **flat index**(a brute force 暴力 distance calculation between the **query vector** and **all the chunks’ vectors**)
+most naive implementation uses **flat index**(a brute force 暴力 distance calculation)
 
-a vector index like faiss, nmslib or annoy - optimized for efficient retrieval, using **Approximate Nearest Neighbours** implementation(clustring, trees or HNSW algorithm)
+vector index - optimized for efficient retrieval, using **Approximate Nearest Neighbours**(clustering, trees or HNSW algorithm)
 
 [Vector Search - Hierarchical Navigable Small World (HNSW) graphs](https://www.pinecone.io/learn/series/faiss/hnsw/)
 
-#### 02.02 - Hierarchical indices
+<center class='img'><img src="Pics/rag016.webp" width=50%></center>
 
-#### 02.03 - Hypothetical Questions and HyDE
+LlamaIndex 支持多种向量存储索引
 
-#### 02.04 - Context enrichment
+#### Hierarchical indices
+
+![](Pics/rag017.webp)
+
+create two indices
+1. summaries
+2. document chunks
+
+procedure
+1. filter out the relevant docs by summaries
+2. search inside this relevant group
+
+#### Hypothetical Questions and HyDE
+
+**Hypothetical Questions - 假设性问题**
+1. let LLM **generate a question for each chunk** and embed questions in vectors
+2. at runtime performing query search against this index of question vectors
+
+**HyDE**
+1. ask an LLM to **generate a hypothetical response given the query**
+2. use its vector along with the query vector to enhance search quality
+
+#### Context enrichment
+
+retrieve smaller chunks for better search quality(检索更小的信息块来提高搜索质量)
+
+add up surrounding context for LLM to reason upon(为大语言模型增加更多周围语境以便其进行推理)
+
+#####
+
+
+
+
 
 #### 02.05 - Fusion retrieval or hybrid search
 

@@ -6,6 +6,8 @@
 
 - [大模型公司 调研](#大模型公司-调研)
 - [Table of Contents](#table-of-contents)
+- [Ollama](#ollama)
+- [AnythingLLM](#anythingllm)
 - [Minimax](#minimax)
   - [技术能力](#技术能力)
     - [MoE LLM abab-6.5](#moe-llm-abab-65)
@@ -17,12 +19,33 @@
 
 ---
 
+# Ollama
+
+<!-- ![](Pics/ollama001.png) -->
+
+![](Pics/ollama002.png)
+
+[Ollama - Github](https://github.com/ollama)
+
+[Ollama 模型支持](https://ollama.com/library) - `llama3`, `mistral`, `qwen`, `embedding models`
+
+Ollama 是一个开源的框架，专门设计用于在本地机器上便捷地部署和运行大型语言模型
+
+
+
+# AnythingLLM
+
+[AnythingLLM 官网](https://useanything.com/)
+
+AnythingLLM is all-in-one AI application that can do RAG, AI Agents, and much more with no code or infrastructure headaches.
+
+---
 
 # Minimax
 
 ![](Pics/company001.webp)
 
-[minimaxi 官网](https://www.minimaxi.com/)
+[minimax 官网](https://www.minimaxi.com/)
 
 MiniMax 是一家专注于人工智能大模型的创业公司，成立于2021年11月，由前商汤科技副总裁、通用智能技术负责人闫俊杰创立
 

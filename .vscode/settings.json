@@ -7,11 +7,20 @@
     "markdown-preview-enhanced.usePandocParser": false,
     "cSpell.words": [
         "containerd",
+        "firejail",
+        "inputrc",
         "onsistency",
+        "rbash",
         "runc",
+        "Snapcraft",
         "solation",
         "tomicity",
         "urability"
     ],
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "cSpell.ignoreWords": [
+        "Qdrant",
+        "nmslib",
+        "weavaite"
+    ]
 }
