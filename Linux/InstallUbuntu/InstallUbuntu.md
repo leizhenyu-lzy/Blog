@@ -1231,9 +1231,11 @@ sudo apt install libnvidia-gl-550:i386  # 不一定有
 
 [Install the Unity Hub on Linux](https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux)
 
-# electerm
+# electerm 终端
 
-[](https://electerm.github.io/electerm/)
+![](Pics/electerm001.png)
+
+[electerm](https://electerm.github.io/electerm/)
 
 # unreal
 
@@ -1736,6 +1738,12 @@ sudo snap install pomatez
 ```bash
 ~/.bashrc
 ```
+# pavucontrol 音频控制
+
+```bash
+sudo apt install pavucontrol
+```
+
 
 # 网易云音乐
 
