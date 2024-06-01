@@ -36,14 +36,19 @@
       - [Hierarchical indices](#hierarchical-indices)
       - [Hypothetical Questions and HyDE](#hypothetical-questions-and-hyde)
       - [Context enrichment](#context-enrichment)
-        - [](#)
-      - [02.05 - Fusion retrieval or hybrid search](#0205---fusion-retrieval-or-hybrid-search)
+        - [Sentence Window Retrieval](#sentence-window-retrieval)
+        - [Auto-merging Retriever (Parent Document Retriever)](#auto-merging-retriever-parent-document-retriever)
+        - [Fusion Retrieval or Hybrid Search](#fusion-retrieval-or-hybrid-search)
     - [03 - Reranking \& filtering](#03---reranking--filtering)
     - [04 - Query transformations](#04---query-transformations)
-    - [05 - Chat Engine](#05---chat-engine)
-    - [06 - Query Routing](#06---query-routing)
-    - [07 - Agents in RAG](#07---agents-in-rag)
-    - [08 - Response synthesiser](#08---response-synthesiser)
+    - [05 - Reference citations](#05---reference-citations)
+    - [06 - Chat Engine](#06---chat-engine)
+    - [07 - Query Routing](#07---query-routing)
+    - [08 - Agents in RAG](#08---agents-in-rag)
+    - [09 - Response synthesizer](#09---response-synthesizer)
+    - [10 - Encoder and LLM fine-tuning](#10---encoder-and-llm-fine-tuning)
+    - [11 - Evaluation](#11---evaluation)
+    - [12 - Conclusion](#12---conclusion)
 - [12 RAG Pain Points and Proposed Solutions-Solving the core challenges of Retrieval-Augmented Generation](#12-rag-pain-points-and-proposed-solutions-solving-the-core-challenges-of-retrieval-augmented-generation)
 
 
@@ -112,6 +117,9 @@ Layout Analysis - 布局分析
 ---
 
 ![](Pics/rag002.png)
+
+![](Pics/rag024.png)
+
 
 ---
 
@@ -417,7 +425,7 @@ Procedure
 
 most naive implementation uses **flat index**(a brute force 暴力 distance calculation)
 
-vector index - optimized for efficient retrieval, using **Approximate Nearest Neighbours**(clustering, trees or HNSW algorithm)
+vector index - optimized for efficient retrieval, using **Approximate Nearest Neighbour**(clustering, trees or HNSW algorithm)
 
 [Vector Search - Hierarchical Navigable Small World (HNSW) graphs](https://www.pinecone.io/learn/series/faiss/hnsw/)
 
@@ -453,30 +461,178 @@ retrieve smaller chunks for better search quality(检索更小的信息块来提
 
 add up surrounding context for LLM to reason upon(为大语言模型增加更多周围语境以便其进行推理)
 
-#####
+##### Sentence Window Retrieval
+
+![](Pics/rag018.webp)
+
+each sentence is embedded(provides great accuracy)
+
+extend the context window by **k sentences before and after** the retrieved sentence
 
 
+##### Auto-merging Retriever (Parent Document Retriever)
+
+![](Pics/rag019.webp)
+
+documents are split into **smaller child chunks** referring to **larger parent chunks**
+
+if more than n chunks in top k retrieved chunks are linked to the same parent node, replace the context fed to the LLM by this parent node
+
+##### Fusion Retrieval or Hybrid Search
+
+take into account both semantic similarity and keyword matching
+
+![](Pics/rag020.webp)
+
+take the best from
+1. keyword-based old school search (词频 & 倒排索引)
+   1. TF-IDF (`Term Frequency` - `Inverse Document Frequency`)
+   2. BM25 (一种改进的基于概率模型的检索算法，结合词频、逆文档频率以及文档长度等)
+2. modern semantic or vector search
 
 
+[Reciprocal Rank Fusion algorithm](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf)
+1. properly combine the retrieved results with different similarity scores
+2. re-ranking the retrieved results
 
-#### 02.05 - Fusion retrieval or hybrid search
 
 
 ### 03 - Reranking & filtering
 
+final step before feeding our retrieved context to LLM
+
+refine retrieval results through **filtering**, **re-ranking**, **transformation**
+
 
 ### 04 - Query transformations
 
+modify user input in order to improve retrieval quality
 
-### 05 - Chat Engine
+![](Pics/rag021.webp)
+
+LLM decompose complex query into several sub queries
+1. Step-back prompting - uses LLM to **generate a more general query**(obtain a more general or high-level context)
+2. Query Re-writing - uses LLM to **reformulate initial query**
 
 
-### 06 - Query Routing
+### 05 - Reference citations
 
-### 07 - Agents in RAG
+back reference sources
+1. Insert referencing task into prompt
+2. Match the parts of generated response to the original text chunks
+   1. Fuzzy Citation Query
 
-### 08 - Response synthesiser
 
+
+
+### 06 - Chat Engine
+
+![](Pics/rag022.webp)
+
+chat logic - taking into account the dialogue context
+
+follow up **questions, anaphora(照应，eg:代词), or arbitrary user commands relating to the previous dialogue context**
+
+solved by **query compression technique** - taking chat context into account along with the user query
+1. ContextChatEngine
+   1. retrieve context relevant to user’s query
+   2. send **retrieved context** to LLM along with **chat history** from the memory buffer
+2. CondensePlusContextMode
+   1. in each interaction the chat history and last message are condensed into a new query
+   2.  this query goes to the index
+
+
+### 07 - Query Routing
+
+Query routing is the step of **LLM-powered decision making** upon what to do next given the user query
+1. summarize
+2. perform search against some data index
+3. try a number of different routes
+4. synthesize their output in a single answer
+
+Query routers are also used to select where to send user query
+1. classic vector store
+2. hierarchy of indices
+3. graph DB
+4. relational DB
+
+Defining the query router includes **setting up the choices LLM can make**
+
+selection of a routing option is performed with an LLM call
+
+
+### 08 - Agents in RAG
+
+provide an LLM, capable of reasoning, with a set of tools and a task to be completed
+
+tools include functions like
+1. code function
+2. chat history
+3. knowledge storage
+4. document uploading interface
+5. function calling API(external API) - capabilities to convert natural language into API calls to external tools or database queries
+6. other agents
+
+LLM chaining idea
+
+![](Pics/rag023.webp)
+1. Each **document agent** has two tools — a vector store index and a summary index
+2. For the **top agent**, all document agents are tools
+
+a lot of routing decisions made by each involved agent
+
+**Drawback**
+1. slow due to multiple back and forth iterations with the LLMs inside our agents
+2. **LLM call** is always the longest operation in a RAG pipeline
+3. **search** is optimized for speed by design
+
+
+
+### 09 - Response synthesizer
+
+the final step of RAG pipeline
+
+generate an answer based on all the context retrieved
+
+more sophisticated options involving multiple(多次) LLM calls to refine retrieved context and generate a better answer
+
+main approaches
+1. iteratively refine the answer
+2. summarize the retrieved context
+3. generate multiple answers (based on different context chunks) and summarize
+
+
+### 10 - Encoder and LLM fine-tuning
+
+
+2 DL models
+1. Encoder - responsible for **embeddings quality** and thus **context retrieval quality**
+2. LLM - responsible for the best usage of the provided context to answer user query
+
+LLM is a good few shot learner
+
+FineTuning
+1. Encoder fine-tuning
+2. Ranker fine-tuning
+3. LLM fine-tuning
+   1. OpenAI started providing LLM fine-tuning API
+   2. LlamaIndex has a tutorial on fine-tuning GPT-3.5-turbo in RAG setting to distill蒸馏 some of the GPT-4 knowledge
+
+### 11 - Evaluation
+
+frameworks
+1. answer relevance
+2. answer groundedness - 根据
+3. faithfulness - 真实性
+4. retrieved context relevance
+
+### 12 - Conclusion
+
+other things to consider
+1. web search
+2. agent architectures
+3. LLMs Long-term memory
+4. **speed**
 
 
 
