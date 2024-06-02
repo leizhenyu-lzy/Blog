@@ -33,7 +33,10 @@ L40S
 
 昇腾芯片
 1. **昇腾910** for **训练**
+   1. 910支持8卡链接，910B支持16卡的链接
 2. **昇腾310** for **推理**
+
+![](Pics/huawei005.png)
 
 Domain Specific Architecture，DSA
 
