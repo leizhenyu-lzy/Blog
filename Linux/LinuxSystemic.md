@@ -15,7 +15,7 @@
   - [第03章 安装 CentOS7.x](#第03章-安装-centos7x)
   - [第04章 首次登陆与线上求助](#第04章-首次登陆与线上求助)
   - [第05章 Linux 的文件权限与目录配置](#第05章-linux-的文件权限与目录配置)
-    - [补充阅读 - root \& sudo / su](#补充阅读---root--sudo--su)
+    - [Linux 目录配置](#linux-目录配置)
   - [第06章 Linux 文件与目录管理](#第06章-linux-文件与目录管理)
   - [第07章 Linux 磁盘与文件系统管理](#第07章-linux-磁盘与文件系统管理)
   - [第08章 文件与文件系统的压缩,打包与备份](#第08章-文件与文件系统的压缩打包与备份)
@@ -51,6 +51,7 @@
     - [AppImage](#appimage)
   - [02 SSH](#02-ssh)
     - [SSH 隧道](#ssh-隧道)
+    - [解决端口占用](#解决端口占用)
 
 ---
 
@@ -179,7 +180,7 @@ Linux的核心原型是1991年由托瓦兹 Linus Torvalds 写出来的
 
 ## 第05章 Linux 的文件权限与目录配置
 
-权限管理
+**权限管理**
 1. rwx - 读写执行
    1. read     - r - 4
    2. write    - w - 2
@@ -189,7 +190,7 @@ Linux的核心原型是1991年由托瓦兹 Linus Torvalds 写出来的
    2. chgrp - 修改组
    3. chmod - 修改权限
 
-### 补充阅读 - root & sudo / su
+**root & sudo / su**
 
 **/root** 是系统根用户的根目录，通常对普通用户是不开放的，只有 root 用户或者有相应权限的用户可以访问
 
@@ -231,6 +232,73 @@ sudo(superuser do) & root
 3. 权限控制 - 通过 /etc/sudoers 文件精细地控制哪些用户可以使用 sudo
 4. sudo 命令用来以其他身份来执行命令，预设的身份为 root
 5. Linux 系统中的 超级用户 root 账号通常 用于系统的维护和管理，对操作系统的所有资源 具有所有访问权限
+
+### Linux 目录配置
+
+**FHS标准** - filesystem hierarchy standard - 目录配置的依据
+
+FHS的 重点 在于规范每个特定的目录下应该要放置什么样子的数据，让使用者可以了解到已安装软件通常放置于那个目录下
+
+![](Pics/linux014.png)
+
+
+
+![](Pics/linux010.png)
+
+![](Pics/linux011.png)
+
+![](Pics/linux012.png)
+
+![](Pics/linux013.png)
+
+
+
+|DIR    |USAGE              |
+|-------|-------------------|
+| /bin  | user binaries - ls, cat, rm |
+| /sbin | system binaries - ifconfig, reboot |
+| /lib  | system libraries - 支持/bin和/sbin目录中的二进制文件运行 |
+| /etc  | config files - 系统配置文件，控制系统的各种参数和初始设置    |
+| /dev  | device files - 硬件设备，硬盘、终端、打印机 |
+| /proc | process files - 提供对内核和进程信息的接口，系统内存、CPU信息、正在运行的进程 |
+| /var  | variable files - 日志文件、打印队列 |
+| /tmp  | temporary files - 临时文件，重启时情况  |
+| /usr  | user program - 存储用户程序和数据     |
+| /home | home directories - 为每个用户提供一个目录，用于存储个人文件、配置文件 |
+| /boot | boot loader files - 启动Linux系统所需的文件，包括Linux内核、引导加载程序的配置文件|
+| /opt  | optional apps - 安装 可选 的应用程序    |
+| /mnt  | 临时挂载文件系统的位置 |
+| /media| 自动挂载可移动存储设备的标准位置 - USB驱动器、外部硬盘等 `/media/[username]/device`|
+| /srv  | service data - 存储本地服务器提供的数据，如网站数据、FTP文件 |
+| /run  | runtime program data |
+| /root | home of the root user|
+
+
+
+
+
+**/ & /root**
+1. / 根目录
+   1. 整个文件系统的根目录，包含所有其他目录和文件(`/bin`、`/etc`、`/usr`、`/var`)，文件系统层次结构的起点
+   2. 系统启动和运行的核心
+2. /root 超级用户主目录
+   1. root 用户的专用主目录，存储 root 用户的个人文件和配置，只有 root 用户有访问权限
+   2. 需要`su`后，成为`root`才能进入
+      ```bash
+      lzy@legion:~ $ su
+      Password:
+      root@legion:/home/lzy# cd /root
+      root@legion:~# ls
+      Desktop  Downloads  snap  Templates  模板
+      root@legion:~# exit
+      exit
+      lzy@legion:~ $ cd /root
+      bash: cd: /root: Permission denied
+      ```
+
+
+
+
 
 ## 第06章 Linux 文件与目录管理
 
@@ -448,10 +516,19 @@ SSH服务的标准端口，默认为 22
 客户端使用 SSH 远程登录系统
 
 ```bash
+# 查看安装
+dpkg -l | grep ssh
+
+sudo apt install openssh-client
+sudo apt install openssh-server
+```
+
+```bash
 ssh -V  # 查看版本
 OpenSSH_8.9p1 Ubuntu-3ubuntu0.7, OpenSSL 3.0.2 15 Mar 2022
 
 ps -e | grep ssh
+#   PID TTY          TIME CMD
    1154 ?        00:00:00 sshd
  271939 ?        00:00:00 ssh-agent
  330145 pts/3    00:00:00 ssh
@@ -511,13 +588,25 @@ ssh -L [local_port]:[remote_address]:[remote_port] [user@remote_server] -p [ssh_
 
 ```bash
 ssh -L [local_port]:[remote_address]:[remote_port] -L [local_port]:[remote_address]:[remote_port] [user@remote_server] -p [ssh_port]
-```
 
-eg
-
-```bash
 ssh -L 20088:127.0.0.1:80 -L 7474:127.0.0.1:80 dreamsoft@125.69.82.54 -p 20088
 ```
+
+### 解决端口占用
+
+```bash
+# Linux
+sudo lsof -i :80
+sudo kill -9 <PID>
+
+
+# Windows
+netstat -ano | findstr :80
+taskkill /PID <PID> /F
+```
+
+关闭占用端口的 进程 & 应用
+
 
 
 

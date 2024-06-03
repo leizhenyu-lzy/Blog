@@ -1,6 +1,21 @@
+![](Pics/ros000.png)
+
 # ROS2
 
-![](Pics/ros000.png)
+
+[Open Robotics](https://www.openrobotics.org/)
+![](Pics/ros018.png)
+1. [ROS](https://www.ros.org/)
+   ![](Pics/ros020.png)
+2. [Gazebo](https://gazebosim.org/home)
+   ![](Pics/gazebo002.png)
+3. [Open-RMF(Open Robotics Middleware Framework)](https://www.open-rmf.org/)
+   ![](Pics/ros019.png)
+
+
+
+
+
 
 ---
 
@@ -14,10 +29,13 @@
 - [常用命令](#常用命令)
 - [常见问题](#常见问题)
 - [The Construct](#the-construct)
+  - [Unit 1 - Introduction to the Course](#unit-1---introduction-to-the-course)
 - [【鱼香ROS】动手学ROS2](#鱼香ros动手学ros2)
   - [第 01 章 - ROS2 介绍 与 安装](#第-01-章---ros2-介绍-与-安装)
     - [Linux 基础](#linux-基础)
     - [ROS2 介绍与安装](#ros2-介绍与安装)
+  - [ROS 1 问题举例](#ros-1-问题举例)
+  - [ROS1 与 ROS2 架构对比](#ros1-与-ros2-架构对比)
   - [第 02 章 - ROS2 第一个节点](#第-02-章---ros2-第一个节点)
   - [第 03 章 - ROS2 节点通信之话题与服务](#第-03-章---ros2-节点通信之话题与服务)
     - [话题](#话题)
@@ -43,6 +61,10 @@
   - [第 23 章 - Moveit2真机控制](#第-23-章---moveit2真机控制)
 - [扩展阅读](#扩展阅读)
   - [DDS 数据分发服务](#dds-数据分发服务)
+    - [DDS 简介](#dds-简介)
+    - [DDS 架构](#dds-架构)
+    - [DDS 核心概念](#dds-核心概念)
+    - [通信中间件模型 四代演变](#通信中间件模型-四代演变)
 
 
 ---
@@ -94,7 +116,29 @@
 
 # The Construct
 
-[ROS2 Basics in 5 Days (C++)](https://app.theconstruct.ai/courses/ros2-basics-in-5-days-humble-c-133/)
+[ROS2 Basics in 5 Days (Python)](https://app.theconstruct.ai/courses/132)
+
+[ROS2 Basics in 5 Days (C++)](https://app.theconstruct.ai/courses/133)
+
+[C++ for Robotics](https://app.theconstruct.ai/courses/59)
+
+[Linux for Robotics](https://app.theconstruct.ai/courses/185)
+
+[OpenCV Basics for Robotics](https://app.theconstruct.ai/courses/65)
+
+## Unit 1 - Introduction to the Course
+
+simulated robots
+1. [Neobotix](https://www.neobotix-robots.com/) MP-400
+   <left><img src="Pics/construct003.png" width=40%></left>
+   <left><img src="Pics/construct001.png" width=40%></left>
+2. TurtleBot 3 Waffle
+   <left><img src="Pics/construct002.png" width=40%></left>
+
+
+
+
+
 
 
 ---
@@ -125,7 +169,6 @@
 
 
 
-
 ---
 
 ### ROS2 介绍与安装
@@ -136,7 +179,8 @@
 
 设计了一整套 **通信机制** (话题、服务、参数、动作)，解决机器人各组件之间通信问题
 
-**ROS 1 问题举例**
+## ROS 1 问题举例
+
 1. ROS 1 通信机制 包含 ROS Master的东西，所有节点(激光雷达、避障、底盘驱动等)的通信建立必须经过这个主节点。主节点挂掉后，就会造成整个系统通信的异常(避障策略等)，影响 ROS 做商业化机器人
 2. 通信基于TCP实现，实时性差、系统开销大
 3. 对Python3支持不友好，需要重新编译
@@ -145,20 +189,25 @@
 6. 生命周期管理不完善
 
 
-**ROS1 与 ROS2 架构对比**
+
+## ROS1 与 ROS2 架构对比
+
 1. **架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://readpaper.com/pdf-annotate/note?pdfId=4546269770222821377&noteId=2274943744417993728)
-   ![](Pics/ros003.png)
-   ![](Pics/ros005.png)
+2.
+   <center><img src="Pics/ros003.png" width=70%></center>
+
+   <center><img src="Pics/ros005.png" width=60%></center>
+
    1. **OS Layer - 操作系统层**
       1. 原来的只支持 linux 平台，现在支持 Windows、MAC 甚至是 嵌入式RTOS 平台
    2. **MiddleWare - 中间件层**
       1. 特点
-         1. 去中心化 - ROS2 取消 master 节点(基于DDS的互相发现协议)，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 1对1、1对n、n对n 进行互相通信
+         1. **去中心化** - ROS2 取消 master 节点(基于DDS的互相发现协议)，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 **1对1、1对n、n对n** 进行互相通信
          2. 提供多个节点中间通信
          3. 通信更换为 **DDS** - 使得ROS2的实时性、可靠性和连续性上都有了增强
          4. ROS1 的中间件是 ROS组织 基于TCP/UDP 建立的
       2. **DDS Implementation Layer - DSS实现层**
-         1. 对不同常见的DDS接口进行再次的封装，让其保持统一性，为DDS抽象层提供统一的API
+         1. 对不同常见的DDS接口进行**再次的封装**，让其**保持统一性**，**为DDS抽象层提供统一的API**
          2. ROS2 为每家 DDS供应商 开发对应的 DDS_Interface 即 DDS接口层
       3. **Abstract DDS Layer - DDS抽象层 RMW**
          1. 通过 DDS Abstract 抽象层来 **统一 DDS 的 API**
@@ -170,8 +219,8 @@
          2. 不同语言对应不同 RCL - **Python:rclpy** - **C++:rclcpp** - 操作ROS2的节点话题服务
          3. RMW(中间件接口)层 是对各家 DDS 的抽象层，基于 RMW 实现 rclc，基于 rclc 实现了 rclpy 和 rclcpp
    3. **Application Layer - 应用层**
-      1. 写代码以及ROS2开发的各种常用的机器人相关开发工具所在的层
-2. **整体改进**
+      1. 写代码 & ROS2 开发的各种常用的机器人相关开发工具所在的层
+3. **整体改进**
    1. python2 到 python3 的支持
    2. 编译系统的改进 catkin 到 ament
    3. C++ 标准更新到 C++11
@@ -200,29 +249,29 @@
    sudo apt remove ros-humble-*
    sudo apt autoremove
    ```
-4. 安装位置 - ROS安装的默认目录在/opt/ros/下，根据版本的名字进行区分
+4. **安装位置** - ROS安装的默认目录在/opt/ros/下，根据版本的名字进行区分
    ```bash
    cd /opt/ros/humble/ && ls
    ```
 
 **HelloWorld**
-1. 话题通信 - listener & talker
+1. **话题通信 - listener & talker**
    ```bash
    ros2 run demo_nodes_py listener
    # 一开始无output，需要等talker运行，可以同时收听多个talker
    ros2 run demo_nodes_py talker
    ros2 run demo_nodes_cpp talker
    ```
-2. turtle
+2. **turtle**
    ```bash
    ros2 run turtlesim turtlesim_node
    ros2 run turtlesim turtle_teleop_key
    # Velocity command received during rotation goal. Aborting goal
    ```
-3. rqt
+3. **rqt**
    1. rqt is a framework for graphical user interfaces.
    2. It is extensible with plugins which can be written in either Python or C++.
-   3. 选择插件 - introspection - node graph
+   3. 插件 - **introspection** - **node graph**
    4. 也可以直接 rqt_graph
 
 
@@ -349,9 +398,12 @@
 
 [What is DDS? - DDS-Foundation](https://www.dds-foundation.org/what-is-dds-3/)
 
+### DDS 简介
+
 中间件 是位于 操作系统 和 应用程序 之间的 软件层，使系统的各个组件能够更轻松地 通信 和 共享数据
 
-![](Pics/ros009.png)
+<center><img src="Pics/ros009.png" width=70%></center>
+
 
 从操作系统、网络传输、低级数据格式的细节中 抽象出 应用程序
 
@@ -359,7 +411,7 @@
 
 数据线格式、发现、连接、可靠性、协议、传输选择、QoS、安全 等 低级细节由中间件管理
 
-![](Pics/ros011.png)
+<left><img src="Pics/ros011.png" width=15%></left>
 
 **eProsima** is a company specializing in high-performance **middleware** solutions
 
@@ -368,15 +420,19 @@
 **DDS (Data Distribution Service - 数据分发服务)**
 1. 一种 **中间件协议标准**，旨在为 实时系统 提供 高性能、可扩展的 数据交换
 2. 由 **OMG (Object Management Group)** 制定
+   <left class='img'><img src="Pics/ros014.svg" width=50%></left>
 3. 使用 **发布-订阅 (Pub/Sub) 模式**，发布者不需要知道谁是接收者，订阅者也不需要知道谁是发送者 - **解耦**
 4. 技术核心 - 基于 **数据为中心的发布/订阅模型 Data-Centric Publish-Subscribe DCPS** 的一种中间件协议和API标准，创建 **全域数据空间 Global Data Space** 概念，所有独立的应用都可访问
 5. 数据通过定义好的 **主题** 来发布，订阅者可以订阅一个或多个主题，从而接收相关的数据
 6. 通信模型 - 多对多 & 单向 数据交换
 7. 核心协议&拓展协议 包括 - **DDSI-RTPS, DDS-XTypes, DDS-Security, DDS-RPC**
 
-![](Pics/ros008.png)
 
-![](Pics/ros015.png)
+### DDS 架构
+
+<center><img src="Pics/ros008.png" width=70%></center>
+
+<center><img src="Pics/ros015.png" width=70%></center>
 
 **架构**
 1. **DLRL**
@@ -395,18 +451,19 @@
    3. RTPS 具有容错性、可扩展性、即插即用连接、可配置性、模块化、伸缩性和类型安全等特性
    4. DDSI-RTPS **使用 TCP 或 UDP 作为 传输层协议** 来处理数据包的发送和接收，灵活应对不同的网络通信需求，无论是追求高可靠性还是低延迟
 
+### DDS 核心概念
+
 **DDS Domain 信息流动概念图** - Only **entities belonging to the same domain** can **discover each other** through matching topics, and consequently **exchange data** between publishers and subscribers
 
 ![](Pics/ros010.svg)
 
-
 ![](Pics/ros013.png)
 
 **DDS 架构 关键概念**
-1. Domain : 代表一个通信平面，由Domain ID唯一标识(用于隔离不同的工作空间)，**只有在同一个域内的通信实体才可以通信**，Different DDS Domains are **completely independent from each other**. There is **no data-sharing across DDS domains**.
-2. Domain Participant : 通信成员，可以包含多个 DataReader & DataWriter
-3. Topic : **数据的抽象概念**，由 TopicName 标识，在DDS Domain中唯一，在进程之间交换的数据的消息
-   ![](Pics/ros016.png)
+1. `Domain` : 代表一个**通信平面**，由 **Domain ID** 唯一标识(用于隔离不同的工作空间)，**只有在同一个域内的通信实体才可以通信**，Different DDS Domains are **completely independent from each other**. There is **no data-sharing across DDS domains**.
+2. `Domain Participant` : 通信成员，可以包含多个 **DataReader** & **DataWriter**
+3. `Topic` : **数据的抽象概念**，由 TopicName 标识，在DDS Domain中唯一，在进程之间交换的数据的消息
+   <left><img src="Pics/ros016.png" width=70%></left>
    1. **Topic 负责绑定 DataWriter 和 DataReader** (当一个 DataWriter 和 DataReader 有相同的主题名和兼容的数据类型时，就可以绑定，形成一个通信通道)，**实际的数据交换和匹配是在 DataWriter 和 DataReader 之间进行的**
    2. 所有Topic集合在一起，这样就形成一个虚拟的全局数据空间 **Global Data Space**(针对单个域而言的，数据不能跨域)
    3. Topic 的管理和匹配、Publisher和Subscriber连接事件的通知 都由 **GDS** 来完成
@@ -417,31 +474,33 @@
       3. 发布数据缓冲区 - 优化数据传输和处理可能的网络延迟或订阅者处理能力不足的情况
       4. 订阅失败队列 - 系统可以配置策略来决定如何处理这些队列中的数据，比如重新发送、发送警告或丢弃数据
    6. 全局数据空间是一个虚拟的概念，**允许分布在不同物理位置的应用程序共享数据**，**就好像这些数据存储在本地一样**，没有一个中央位置存储所有数据
-4. DataWriter : **负责发布消息的实体**，把需要发布的主题数据从应用层写入到 DataWriter 中，类似缓存
-5. DataReader : **订阅主题以接收发布的实体**，从订阅者得到主题数据，随之传给应用层，类似缓存
-6. Publisher : 管理 一个或多个 DataWriter (由中间件匹配)
-7. Subscriber : 管理 一个或多个 DataReader (由中间件匹配)
+4. `DataWriter` : **负责发布消息的实体**，把需要发布的主题数据从应用层写入到 DataWriter 中，类似缓存
+5. `DataReader` : **订阅主题以接收发布的实体**，从订阅者得到主题数据，随之传给应用层，类似缓存
+6. `Publisher` : 管理 一个或多个 DataWriter (由中间件匹配)
+7. `Subscriber` : 管理 一个或多个 DataReader (由中间件匹配)
 
 
 
-**Dynamic Discovery**
+**Dynamic Discovery** 动态发现
 1. DDS provides **Dynamic Discovery of publishers and subscribers**(extensible)
-2. means the application does not have to know or configure the endpoints for communications
+2. application does not have to know or configure the endpoints for communications
 3. can be completed at runtime and not necessarily at design or compile time, enabling real “plug-and-play” for DDS applications
-4. participants can be on the same machine or across a network
+4. participants can be on the **same machine** or **across a network**
 5. the application uses the same DDS API for communications
 
 
-**DDS的定位** - Real-Time - Mission/Business Critical
+**DDS的定位**
+1. Real-Time
+2. Mission/Business Critical
 
 
 
 **优劣**
 1. **优势**
-   1. 实现系统解耦
-   2. 延迟更低，吞吐量更高
-   3. 远程参与者的自动发现
-   4. 丰富的 QoS 参数集，允许调整通信各方面(靠性、持久性、冗余、寿命、传输设置、资源)
+   1. 实现系统**解耦**
+   2. 延迟低，吞吐量高
+   3. 远程参与者的自动发现 - 通信是匿名的、解耦的
+   4. 丰富的 QoS 参数集，调整通信各方面(靠性、持久性、冗余、寿命、传输设置、资源)
    5. 实时发布订阅协议 (RTPS) 几乎可以通过任何传输实现(UDP、TCP、共享内存 等)
    6. DDS 有定义好的 行为和规范，有完善的文档
 2. **劣势**
@@ -450,9 +509,10 @@
 
 
 
-通信中间件采用的模型四代演变
+### 通信中间件模型 四代演变
+
 1. 点对点模型
-   1. 常见的**服务器/客户端(Client/Server)**模式
+   1. 常见的 **服务器/客户端 (Client/Server)** 模式
    2. 服务器和客户端的耦合程度过高
    3. 服务器的异常会直接影响到客户端
 2. Broker 模型
