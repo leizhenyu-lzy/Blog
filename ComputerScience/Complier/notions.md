@@ -7,7 +7,7 @@
   - [Table of Contents](#table-of-contents)
 - [编译器 compiler](#编译器-compiler)
 - [解释器 interpreter](#解释器-interpreter)
-- [语言运行机制(Python, Java, C++)](#语言运行机制python-java-c)
+- [编译 \& 解释 (Python, Java, C++)](#编译--解释-python-java-c)
 - [库文件](#库文件)
 
 ---
@@ -18,7 +18,8 @@
 
 1. 将高级语言(C、C++、Java) 转换为 机器语言
 2. 工作流程
-   ![](Pics/ros002.png)
+   ![](Pics/compiler001.png)
+   ![](Pics/compiler002.png)
    1. 预处理 Preprocessing - 将头文件、宏进行展开
    2. 编译 Compilation - 编译程序的过程中调用不同的工具，执行语法分析、语义分析、生成抽象语法树(AST)，然后从AST生成中间代码
    3. 汇编 Assembly - 转换为机器语言的对象代码，二进制格式，还不能直接运行，还需要和其他对象文件或库一起被链接
@@ -47,7 +48,7 @@
    2. JavaScript解释器 - 在Web浏览器或Node.js环境中执行JavaScript代码
    3. Bash解释器 - 执行Shell脚本，用于自动化命令行任务
 
-# 语言运行机制(Python, Java, C++)
+# 编译 & 解释 (Python, Java, C++)
 
 **Java** : 编译并解释 - 首先被 Java 编译器 javac 编译成字节码(.class，中间形式，既不是完全的机器语言，也不是原始的源代码)，字节码在运行时由 Java 虚拟机 JVM 解释执行
 
