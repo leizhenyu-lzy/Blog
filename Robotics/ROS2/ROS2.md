@@ -13,10 +13,6 @@
    ![](Pics/ros019.png)
 
 
-
-
-
-
 ---
 
 # 目录
@@ -26,6 +22,7 @@
 - [Link](#link)
   - [文档教程](#文档教程)
   - [视频教程](#视频教程)
+  - [Linux 安装](#linux-安装)
 - [常用命令](#常用命令)
 - [常见问题](#常见问题)
 - [The Construct](#the-construct)
@@ -100,13 +97,25 @@
 
 [【布兰自动驾驶】ROS2机器人基础教程：理论与实战](https://www.bilibili.com/video/BV1TS4y1B7cQ)
 
+## Linux 安装
+
+[Windows 和 Ubuntu 双系统的安装和卸载 --- 机器人工匠阿杰](https://www.bilibili.com/video/BV1554y1n7zv)
+
+[Linux 安装指南 - 个人笔记](../../Linux/InstallUbuntu/InstallUbuntu.md)
+
 ---
 
 # 常用命令
 
-命令
-1. **查看ROS版本** : printenv ROS_DISTRO  **result** : humble
+1. **查看ROS版本**
+   ```bash
+   printenv ROS_DISTRO
+   humble
+   ```
 2.
+
+
+
 
 # 常见问题
 1. **sh: 0: getcwd() failed: No such file or directory** - 切换到其他目录 如 ~/
@@ -192,8 +201,8 @@ simulated robots
 
 ## ROS1 与 ROS2 架构对比
 
-1. **架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://readpaper.com/pdf-annotate/note?pdfId=4546269770222821377&noteId=2274943744417993728)
-2.
+1. **架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://scholar.google.com/scholar?oi=gsb20&q=Exploring%20the%20performance%20of%20ROS2&lookup=0&hl=en)
+
    <center><img src="Pics/ros003.png" width=70%></center>
 
    <center><img src="Pics/ros005.png" width=60%></center>
