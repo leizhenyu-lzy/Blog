@@ -28,5 +28,20 @@
 24. $\omega$ - omega - ω
 
 
+# 标点符号
+1. `@` - at
+2. `/` - slash
+3. `*` - asterisk
+4. `-` - hyphen
+5. `_` - underscore
+6. `.` - dot
+7. `,` - comma
+8. `:` - colon
+9. `;` - semicolon
+10. `()` - parenthesis
 
-
+# 论文缩写
+1. `e.g.` - for example
+2. `etc.` - et cetera (and other things)
+3. `vs.` - versus
+4. `i.e.` - in other words
