@@ -1,9 +1,162 @@
 #  Hardware
 
-[toc]
+---
+
+## Table of Contents
+
+- [Hardware](#hardware)
+  - [Table of Contents](#table-of-contents)
+- [BIOS \& UEFI](#bios--uefi)
+  - [BIOS](#bios)
+  - [EFI \& UEFI](#efi--uefi)
+  - [实模式 \& 保护模式](#实模式--保护模式)
+- [拓展坞 - Docking Station](#拓展坞---docking-station)
+- [内存](#内存)
+  - [DDR4 \& DDR5](#ddr4--ddr5)
+- [硬盘](#硬盘)
+  - [固态硬盘 SSD](#固态硬盘-ssd)
+  - [【硬核科普】硬盘的SATA M.2 NGFF NVME是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](#硬核科普硬盘的sata-m2-ngff-nvme是什么意思详解硬盘的总线协议与接口---硬件茶谈)
+    - [协议-总线-接口 总图](#协议-总线-接口-总图)
+    - [SATA 接口](#sata-接口)
+    - [mSATA 接口](#msata-接口)
+    - [SATA Express 接口](#sata-express-接口)
+    - [M.2 接口 (别名 NGFF)](#m2-接口-别名-ngff)
+    - [PCIe 接口](#pcie-接口)
+    - [SAS 接口](#sas-接口)
+    - [U.2 接口](#u2-接口)
+- [主板](#主板)
+- [南桥 \& 北桥](#南桥--北桥)
+
+---
+
+# BIOS & UEFI
+
+两种类型
+1. 守旧派 - `BIOS`/**`Legacy BIOS`**/`传统 BIOS`
+   [Phoenix](https://www.phoenix.com/) - **守旧派**
+   <left><img src="Pics/hardware034.png" width=50%></left>
+2. 维新派 - `UEFI`/**`UEFI BIOS`**
+   [![](Pics/hardware032.webp) American Megatrends Inc.](https://www.ami.com/) - **维新派**
+   <left><img src="Pics/hardware033.png" width=50%></left>
 
 
-# 拓展坞 - Dcoking Station
+## BIOS
+
+BIOS (Basic Input/Output System)
+
+**BIOS 使用 汇编语言**
+
+是计算机系统中的基本输入输出系统，固化在计算机主板上的软件
+
+BIOS 对计算机来说至关重要，帮助启动计算机，并在操作系统加载之前提供底层的、基本的硬件操作和控制
+
+主要功能
+1. 启动引导 - BIOS 是计算机启动过程中的第一个软件程序
+   1. 自检 (**POST** - Power-On Self Test)
+   2. 检查和初始化系统硬件组件
+2. 硬件配置 & 管理 - 提供一个固件界面，允许用户配置硬件设备的设置
+   1. 硬件设置
+   2. 启动顺序
+3. 低级驱动程序 - 第一层驱动程序，提供基础的操作控制
+   1. 键盘控制
+   2. 屏幕显示
+   3. 磁盘读写
+4. 系统安全
+5. 电源管理 - 电源状态监测、温度控制和风扇速度控制
+
+操作系统本身也是程序，需要将其从磁盘引入内存
+
+
+**BIOS芯片** - 存储器芯片，它存储了BIOS固件
+1. **ROM(Read-Only Memory)** 芯片
+2. ROM 断电后程序依然存在
+   ![](Pics/hardware028.png)![](Pics/hardware029.png)
+   1. Phoenix 公司
+   2. AMI 公司 - American Megatrends Inc.
+
+
+**CMOS芯片** - 主要用于存储BIOS设置和系统时间等信息，这些设置通过BIOS设置界面进行配置，并保存在CMOS芯片
+1. **RAM(Random Access Memory)** 芯片，通常集成在主板南桥芯片中，所以从主板上看不到
+2. RAM 断电后数据就会丢失，需要加个电源(锂电池)
+
+
+**BIOS芯片** 和 **CMOS芯片** 在计算机启动和配置过程中互相配合
+1. BIOS芯片 负责硬件的初始化和系统启动的基本程序
+2. CMOS芯片 存储的设置信息则指导 BIOS 如何对硬件进行配置
+3. 进入BIOS设置界面调整配置时，设置被保存在 CMOS 芯片中
+
+![](Pics/hardware030.png)
+
+BIOS 监测 & 加载顺序
+1. 计算机上电，集线器PCH 通过 高速总线 DMI 通知 CPU 初始化，进入**保护模式**，读取 CMOS芯片 & BIOS 芯片中的程序
+2. BIOS 进行 硬件自检，连接 南桥，南桥与所连接的部件进行通信
+1. 连接 北桥，处理 CPU 与系统内存之间的数据通信，若有错，BIOS 将错误代码输出至屏幕
+2. 若正常，CPU 回到 **实模式**，读取磁盘第一个分区的引导文件，启动管理程序
+3. 将引导文件加载至内存，并将控制权交给内存
+4. CPU 切换回 **保护模式**，加载操作系统 内核
+
+由于实模式 1MB 内存限制，加载厂商驱动困难，需要切换实模式 & 保护模式，而且使用汇编语言
+
+传统的 BIOS 正逐渐被 UEFI(统一可扩展固件接口) 所替代
+
+
+
+## EFI & UEFI
+
+<left><img src="Pics/hardware031.gif" width=100></left>
+
+[UEFI Forum](https://uefi.org/)
+
+EFI - Extensible Firmware Interface - 可扩展固件接口
+
+UEFI - Unified Extensible Firmware Interface - 统一可扩展固件接口
+
+**使用 C语言编写**
+
+替代 传统 BIOS
+
+UEFI 提供了更多的安全功能、更快的启动时间和对大容量硬盘(超过2TB)的支持，提供了一个更加现代化的界面和更丰富的系统配置选项
+
+
+[![](Pics/hardware032.webp) American Megatrends Inc.](https://www.ami.com/) - **维新派**
+
+[Aptio - American Megatrends Inc.](https://www.ami.com/aptio/)
+
+![](Pics/hardware035.png)
+
+类似于 雷蛇电脑 上的
+
+
+
+## 实模式 & 保护模式
+
+1. 实模式 - Real Mode
+   1. Intel 8086和后续处理器的初始运行模式，提供了对原始8086处理器特性的完全访问
+   2. 包括一个简单的线性地址空间
+   3. 处理器只能访问1MB的内存空间(实地址空间)，地址是通过20位地址线实现的
+   4. 没有 内存保护功能
+   5. 所有程序都运行在同一地址空间中
+   6. 用于 **兼容旧软件** 和 **在系统启动时初始化硬件**
+2. 保护模式 - Protected Mode (功能更强大)
+   1. 首次引入于Intel 80286处理器
+   2. 支持更高级的功能，处理器可以使用扩展的内存
+      1. **内存保护** - 防止程序相互干扰，提高系统稳定性和安全性
+      2. 硬件级别的**多任务** - 允许操作系统更有效地管理多个同时运行的程序
+      3. **虚拟内存** - 使程序能够使用比物理内存更大的地址空间
+
+
+处理器在启动时首先进入实模式，以兼容旧的8086程序
+
+随后，操作系统通常会将处理器切换到保护模式以使用其高级功能
+
+系统启动时很快就会从实模式切换到保护模式，并在大部分时间里运行在保护模式下
+
+
+---
+
+
+
+# 拓展坞 - Docking Station
 
 
 
@@ -304,10 +457,14 @@ SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
 
 通过高速总线(如 DMI、HyperTransport)连接起来，形成了整个系统的芯片组架构
 
-两个主要芯片
+南桥 & 北桥
 1. 北桥 - NorthBridge
-   1. 负责处理与 CPU 直接通信的高速组件，比如内存控制器、PCI Express 总线、显卡接口等。
-   2. 随着技术的发展，现代处理器已经集成了内存控制器和 PCIe 控制器，因此北桥的作用逐渐减弱。
+   1. 负责处理与 CPU 直接通信的高速组件，比如内存控制器、PCI Express 总线、显卡 等
+   2. 随着技术的发展，现代处理器已经集成了内存控制器和 PCIe 控制器，因此北桥的作用逐渐减弱
 2. 南桥 - SorthBridge
-   1. 负责处理与 CPU 间接通信的低速组件，如硬盘接口（SATA、IDE）、USB、网卡、音频接口等。
+   1. 负责处理与 CPU 间接通信的低速组件
+      1. 硬盘接口 - SATA、IDE
+      2. USB
+      3. 网卡
+      4. 音频接口
    2. 通常也包含了一些辅助功能，如电源管理、时钟、GPIO（通用输入输出）等。

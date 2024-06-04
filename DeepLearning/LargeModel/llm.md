@@ -1,5 +1,3 @@
-# LLM
-
 # [Stanford - CS324 - Large Language Models](https://stanford-cs324.github.io/winter2022/)
 
 
@@ -16,4 +14,3 @@
 
 
 # [DataWhale - 大模型理论基础](https://github.com/datawhalechina/so-large-lm)
-

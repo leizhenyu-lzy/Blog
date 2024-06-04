@@ -32,7 +32,7 @@
   - [Advanced RAG](#advanced-rag)
     - [01 - Chunking \& vectorization](#01---chunking--vectorization)
     - [02 - Index](#02---index)
-      - [Vector store index\*\*](#vector-store-index)
+      - [Vector store index](#vector-store-index)
       - [Hierarchical indices](#hierarchical-indices)
       - [Hypothetical Questions and HyDE](#hypothetical-questions-and-hyde)
       - [Context enrichment](#context-enrichment)
@@ -415,7 +415,7 @@ Procedure
 
 ### 02 - Index
 
-#### Vector store index**
+#### Vector store index
 
 ![](Pics/rag009.webp)
 
