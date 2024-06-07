@@ -235,43 +235,76 @@ sudo(superuser do) & root
 
 ### Linux 目录配置
 
-**FHS标准** - filesystem hierarchy standard - 目录配置的依据
+**[FHS 标准 (filesystem hierarchy standard)](https://www.pathname.com/fhs/)** - 目录配置的依据
 
 FHS的 重点 在于规范每个特定的目录下应该要放置什么样子的数据，让使用者可以了解到已安装软件通常放置于那个目录下
 
+```bash
+ls /
+
+bin   cdrom  etc   lib    lib64   lost+found  mnt  proc  run   snap  sys  usr
+boot  dev    home  lib32  libx32  media       opt  root  sbin  srv   tmp  var
+```
+
 ![](Pics/linux014.png)
 
+使用 `ls -l [path]` 查看链接关系
+
+```bash
+ls -l /lib
+lrwxrwxrwx 1 root root 7 Mar  9 18:23 /lib -> usr/lib
+
+ls -l /bin
+lrwxrwxrwx 1 root root 7 Mar  9 18:23 /bin -> usr/bin
+
+ls -l /sbin
+lrwxrwxrwx 1 root root 8 Mar  9 18:23 /sbin -> usr/sbin
+
+# 具体含义:
+
+# lrwxrwxrwx - 文件的权限字符串
+# 1. l 表示 链接文件
+# 2. rwx - 可读read、可写write、可执行execute
+
+# 1 - 硬链接数
+
+# root root
+# 1. 文件的所有者是用户 root
+# 2. 文件属于 root 用户组
+
+# 8 - 链接指向的路径字符串的长度 usr/sbin 共有 8 个字符
+
+# Mar 9 18:23 文件的最后修改时间(链接被创建或最后修改的时间)
+```
 
 
 ![](Pics/linux010.png)
 
-![](Pics/linux011.png)
+<!-- ![](Pics/linux011.png) -->
 
-![](Pics/linux012.png)
+<!-- ![](Pics/linux012.png) -->
 
-![](Pics/linux013.png)
+<!-- ![](Pics/linux013.png) -->
 
-
-
-|DIR    |USAGE              |
-|-------|-------------------|
-| /bin  | user binaries - ls, cat, rm |
-| /sbin | system binaries - ifconfig, reboot |
-| /lib  | system libraries - 支持/bin和/sbin目录中的二进制文件运行 |
-| /etc  | config files - 系统配置文件，控制系统的各种参数和初始设置    |
-| /dev  | device files - 硬件设备，硬盘、终端、打印机 |
-| /proc | process files - 提供对内核和进程信息的接口，系统内存、CPU信息、正在运行的进程 |
-| /var  | variable files - 日志文件、打印队列 |
-| /tmp  | temporary files - 临时文件，重启时情况  |
-| /usr  | user program - 存储用户程序和数据     |
-| /home | home directories - 为每个用户提供一个目录，用于存储个人文件、配置文件 |
-| /boot | boot loader files - 启动Linux系统所需的文件，包括Linux内核、引导加载程序的配置文件|
-| /opt  | optional apps - 安装 可选 的应用程序    |
-| /mnt  | 临时挂载文件系统的位置 |
-| /media| 自动挂载可移动存储设备的标准位置 - USB驱动器、外部硬盘等 `/media/[username]/device`|
-| /srv  | service data - 存储本地服务器提供的数据，如网站数据、FTP文件 |
-| /run  | runtime program data |
-| /root | home of the root user|
+|DIR      |USAGE              |
+|---------|-------------------|
+| `/bin`  | user binaries - 常用命令 ls, cat, rm |
+| `/sbin` | system binaries - ifconfig, reboot |
+| `/lib`  | system libraries - 支持/bin和/sbin目录中的二进制文件运行 |
+| `/etc`  | config files - 系统配置文件，控制系统的各种参数和初始设置    |
+| `/dev`  | device files - 硬件设备，硬盘、终端、打印机 |
+| `/proc` | process files - 提供对内核和进程信息的接口，系统内存、CPU信息、正在运行的进程 |
+| `/var`  | variable files - 日志文件、打印队列 |
+| `/tmp`  | temporary files - 临时文件，重启时情况  |
+| `/usr ` | Unix/User System Resources - 存储用户程序和数据     |
+| `/home` | home directories - 为每个用户提供一个目录，用于存储个人文件、配置文件 |
+| `/boot` | boot loader files - 启动Linux系统所需的文件，包括Linux内核、引导加载程序的配置文件|
+| `/opt`  | optional apps - 安装 可选 的应用程序    |
+| `/mnt`  | 临时挂载文件系统的位置 |
+| `/media`| 自动挂载可移动存储设备的标准位置 - USB驱动器、外部硬盘等 `/media/[username]/device`|
+| `/srv`  | service data - 存储本地服务器提供的数据，如网站数据、FTP文件 |
+| `/run`  | runtime program data |
+| `/root` | home of the root user|
 
 
 
