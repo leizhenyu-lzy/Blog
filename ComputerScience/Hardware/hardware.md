@@ -15,7 +15,7 @@
   - [DDR4 \& DDR5](#ddr4--ddr5)
 - [硬盘](#硬盘)
   - [固态硬盘 SSD](#固态硬盘-ssd)
-  - [【硬核科普】硬盘的SATA M.2 NGFF NVME是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](#硬核科普硬盘的sata-m2-ngff-nvme是什么意思详解硬盘的总线协议与接口---硬件茶谈)
+  - [【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](#硬核科普硬盘的sata-m2-ngff-nvme-是什么意思详解硬盘的总线协议与接口---硬件茶谈)
     - [协议-总线-接口 总图](#协议-总线-接口-总图)
     - [SATA 接口](#sata-接口)
     - [mSATA 接口](#msata-接口)
@@ -26,6 +26,8 @@
     - [U.2 接口](#u2-接口)
 - [主板](#主板)
 - [南桥 \& 北桥](#南桥--北桥)
+
+
 
 ---
 
@@ -214,7 +216,7 @@ DDR4 延迟相对较低
 
 [M.2、SATA、PCI-E、NVMe都是啥？看看这个就知道了 - 啃芝士](https://www.bilibili.com/video/BV1cx411X7xA/)
 
-[【硬核科普】硬盘的SATA M.2 NGFF NVME是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](https://www.bilibili.com/video/BV1Qv411t7ZL/)
+[【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](https://www.bilibili.com/video/BV1Qv411t7ZL/)
 
 [【拯点攻略】2021拯救者全系笔记本内存更换&硬盘加装教程](https://www.bilibili.com/video/BV1RL4y1E7t8/)
 
@@ -240,9 +242,9 @@ DDR4 延迟相对较低
 3. M.2 - 物理接口
    1. 直接插到主板接口上并用螺丝固定
    2. 一种小型化的接口规格，可以跑**SATA和PCIe通道**，M.2插槽可以支持基于SATA和基于PCIe的设备，这意味着一个M.2插槽可能兼容多种类型的SSD
-   3. M.2 SSDs可通过**PCIe通道**提供更高的速度，特别是当配合**NVMe协议**时
+   3. M.2 SSD 可通过**PCIe通道**提供更高的速度，特别是当配合**NVMe协议**时
    4. 适合笔记本和紧凑型设备，具有不同长度和宽度的规格
-   5. 插槽两种类型 - B型 & M型 - 有些固态硬盘两种插槽都支持（两个缺口） - M型支持更高的总线标准(拿到一个m key的ssd，就可以直接判定它是支持nvme的，拿到一个b&m key的ssd则无法判定，我只能说绝大多数b&m key都是不支持nvme协议的)
+   5. 插槽两种类型 - B型 & M型 - 有些固态硬盘两种插槽都支持（两个缺口） - M型支持更高的总线标准(拿到一个m key的ssd，就可以直接判定它是支持 NVMe 的，拿到一个b&m key的ssd则无法判定，我只能说绝大多数b&m key都是不支持 NVMe 协议的)
       ![](Pics/hardware003.png)
       ![](Pics/hardware009.png)
       ![](Pics/hardware010.png)
@@ -274,7 +276,7 @@ DDR4 延迟相对较低
 
 按传输协议
 1. AHCI - Advanced Host Controller Interface - 协议
-   1. 主要用于SATA接口的一种旧协议，虽然主要与HDDs相关联，但也适用于SSD
+   1. 主要用于SATA接口的一种旧协议，虽然主要与 HDD 相关联，但也适用于SSD
 2. NVMe - Non-Volatile Memory Express - 协议
    1. 一种优化的协议，**专为SSD通过PCIe接口设计**，提高速度和效率
    2. 提供极低的延迟和高IOPS（输入/输出操作每秒）
@@ -301,7 +303,9 @@ SATA & NVMe 对比
 AHCI还是基于传统的块传输。而NVMe使用了一种叫做“Doorbell”的机制来充分利用了极长的队列，大大减小了延迟。
 
 
-## [【硬核科普】硬盘的SATA M.2 NGFF NVME是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](https://www.bilibili.com/video/BV1Qv411t7ZL/)
+## 【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈
+
+[【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](https://www.bilibili.com/video/BV1Qv411t7ZL/)
 
 ### 协议-总线-接口 总图
 
@@ -366,7 +370,7 @@ PCIe × 2 总线，可以走 AHCI协议 或 NVMe协议
 
 ![](Pics/hardware020.png)
 
-不够前瞻性，接口体积过于庞大，后被tao'tai
+不够前瞻性，接口体积过于庞大，后被淘汰
 
 ### M.2 接口 (别名 NGFF)
 
@@ -425,7 +429,7 @@ SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
 
 尺寸
 1. ATX - 大板 - 7条PCIe
-2. MATX - 4条PCIe
+2. M-ATX - 4条PCIe
 3. ITX - 1条PCIe
 
 价格区别
@@ -461,10 +465,10 @@ SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
 1. 北桥 - NorthBridge
    1. 负责处理与 CPU 直接通信的高速组件，比如内存控制器、PCI Express 总线、显卡 等
    2. 随着技术的发展，现代处理器已经集成了内存控制器和 PCIe 控制器，因此北桥的作用逐渐减弱
-2. 南桥 - SorthBridge
+2. 南桥 - SouthBridge
    1. 负责处理与 CPU 间接通信的低速组件
       1. 硬盘接口 - SATA、IDE
       2. USB
       3. 网卡
       4. 音频接口
-   2. 通常也包含了一些辅助功能，如电源管理、时钟、GPIO（通用输入输出）等。
+   2. 通常也包含了一些辅助功能，如电源管理、时钟、GPIO(通用输入输出)等

@@ -442,6 +442,8 @@ DETACH DELETE n
 
 **Deleting labels**
 
+在Cypher中，关系不能拥有多个类型或标签
+
 use new label
 
 ```cypher
