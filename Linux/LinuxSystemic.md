@@ -364,6 +364,8 @@ FHS的 重点 在于规范每个特定的目录下应该要放置什么样子的
 
 ## 01 包管理 Snap & Flatpak & AppImage
 
+<center><img src="Pics/linux006.png" width=50%></center>
+
 distro-native packaging formats
 1. `.deb` - Ubuntu 和其他 Debian 发行版
    1. 包管理工具
@@ -389,7 +391,7 @@ containerized application packaging formats
 
 Snap, Flatpak, AppImage 有自己的包存储库系统
 
-![](Pics/linux006.png)
+
 
 <!-- ![](Pics/linux007.webp) -->
 
