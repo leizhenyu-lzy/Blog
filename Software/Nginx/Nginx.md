@@ -23,6 +23,7 @@
   - [HTTPS 配置](#https-配置)
   - [虚拟主机](#虚拟主机)
 - [Trouble Shooting](#trouble-shooting)
+  - [关闭Nginx自启动](#关闭nginx自启动)
   - [bind() to 0.0.0.0:80 failed](#bind-to-000080-failed)
 
 ---
@@ -164,6 +165,13 @@ sudo gedit /var/www/html/index.nginx-debian.html
 
 
 # Trouble Shooting
+
+## 关闭Nginx自启动
+
+```bash
+sudo systemctl disable nginx
+```
+
 
 ## bind() to 0.0.0.0:80 failed
 

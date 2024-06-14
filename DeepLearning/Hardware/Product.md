@@ -1,10 +1,10 @@
-# 产品调研
+# Products of DeepLearning Hardware
 
 ---
 
 ## Table of Contents
 
-- [产品调研](#产品调研)
+- [Products of DeepLearning Hardware](#products-of-deeplearning-hardware)
   - [Table of Contents](#table-of-contents)
 - [Nvidia](#nvidia)
 - [Huawei](#huawei)

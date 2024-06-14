@@ -32,40 +32,35 @@ Record What I Learned
 ├── ComputerScience
 │   ├── ASCII
 │   ├── Cloud
+│   ├── Complier
+│   ├── ComputerNetwork
 │   ├── ComputerOrganization
 │   ├── Cpp
 │   ├── Cryptology
 │   ├── DesignPattern
-│   ├── DLL&LIB
 │   ├── Git
 │   ├── Hardware
-│   ├── LLM
+│   ├── InstructionSet
 │   ├── Multithreading
-│   ├── Network&CyberSecurity
 │   ├── NP问题
 │   ├── OOP
-│   ├── Pipeline
-│   ├── PseudoInstruction
 │   ├── reCAPTCHA
 │   ├── Regex
-│   ├── 信创
 │   ├── 字节序
 │   └── 浮点数
 ├── ComputerVision
-│   ├── FFmpeg
 │   ├── OpenCV
-│   ├── OpticalFlow
-│   ├── 分辨率&像素
-│   └── 抗锯齿
-├── DataBase
-│   ├── LearnDataBase
-│   ├── MySQL
-│   └── PostgreSQL
-├── DataScience
+│   ├── Paper
+│   └── Pics
+├── Data
 │   ├── DataLake
 │   ├── DataWarehouse
+│   ├── GraphDB
 │   ├── HadoopHiveSparkNoob
-│   └── RecommendationSystem
+│   ├── KnowledgeGraph
+│   ├── RecommendationSystem
+│   ├── RelationalDB
+│   └── SearchEngine
 ├── DeepLearning
 │   ├── BEV
 │   ├── D2L
@@ -101,8 +96,8 @@ Record What I Learned
 │   └── Pics
 ├── English
 │   ├── BackgroundKnowledge
+│   ├── EnglishRabbit
 │   ├── GoodSentence
-│   ├── Grammar
 │   ├── GRE
 │   ├── HotWords
 │   ├── Magazine
@@ -113,6 +108,7 @@ Record What I Learned
 │   └── Pics
 ├── Geography
 │   └── Pics
+├── Idea&Thought
 ├── Java
 │   ├── BackgroundKnowledge
 │   ├── JavaBasic
@@ -127,21 +123,22 @@ Record What I Learned
 │   ├── LearnSwagger
 │   ├── LearnVue
 │   ├── LearnWeb
+│   ├── Pics
 │   ├── Thread
 │   └── Timer
+├── Kubernetes
+│   └── Pics
 ├── Latex
 │   ├── Pics
 │   ├── Test1
 │   ├── Test4
 │   └── 素材
 ├── Linux
-│   ├── AccessAuthority
-│   ├── Bash
 │   ├── CommonCommand
-│   ├── Hosts
 │   ├── InstallUbuntu
-│   ├── LinuxSystemic
-│   └── SSH
+│   └── Pics
+├── LittleTricks
+│   └── Pics
 ├── MachineLearning
 │   └── PracticalMachineLearning
 ├── Math
@@ -149,6 +146,7 @@ Record What I Learned
 │   ├── MachineLearing
 │   ├── Optimization
 │   ├── PatternRecognition
+│   ├── Pics
 │   ├── Probability
 │   └── Quaternion
 ├── Matlab
@@ -157,20 +155,24 @@ Record What I Learned
 ├── Modeling
 │   ├── 3D
 │   └── Blender
-├── PictureEditor
+├── Physics
+│   └── Pics
+├── PictureVideoEditor
+│   └── Pics
 ├── Python
 │   ├── AdvancedPython
 │   ├── Basic
-│   ├── JupyterNotebook
+│   ├── Flask
 │   ├── LearnPython
 │   ├── Matplotlib
 │   ├── OS
 │   ├── Pandas
-│   ├── PIL
+│   ├── Pics
 │   ├── PythonSTL
 │   ├── Selenium
 │   ├── Sklearn
 │   ├── Socket
+│   ├── Test
 │   ├── WebCrawler
 │   └── XML
 ├── PyTorch
@@ -179,6 +181,7 @@ Record What I Learned
 ├── Qt
 │   └── Pics
 ├── Robotics
+│   ├── Paper
 │   ├── ROS1
 │   ├── ROS2
 │   └── SLAM
@@ -189,18 +192,23 @@ Record What I Learned
 │   ├── Politics
 │   ├── ProductManager
 │   ├── TetraPak
+│   ├── 信创
 │   ├── 军队
 │   ├── 创业
 │   ├── 商业计划书
 │   └── 生产模式
+├── Software
+│   ├── CSS
+│   ├── HTML
+│   ├── JS
+│   ├── Nginx
+│   └── Pics
 ├── Tongji
 │   ├── 人工智能基础
 │   ├── 模式识别
 │   ├── 系统编程
 │   └── 自动控制原理
 ├── Unity
-├── VideoEditor
-│   └── Pics
 ├── Windows
 │   ├── 修改PowerShell编码
 │   └── 重装系统
@@ -217,6 +225,6 @@ Record What I Learned
 └── 证书
     └── Pics
 
-205 directories
+213 directories
 ```
 
