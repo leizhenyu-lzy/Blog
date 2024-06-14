@@ -1,10 +1,10 @@
-#  Hardware
+#  Computer Hardware
 
 ---
 
 ## Table of Contents
 
-- [Hardware](#hardware)
+- [Computer Hardware](#computer-hardware)
   - [Table of Contents](#table-of-contents)
 - [BIOS \& UEFI](#bios--uefi)
   - [BIOS](#bios)
@@ -24,8 +24,10 @@
     - [PCIe 接口](#pcie-接口)
     - [SAS 接口](#sas-接口)
     - [U.2 接口](#u2-接口)
+  - [RAID](#raid)
 - [主板](#主板)
 - [南桥 \& 北桥](#南桥--北桥)
+- [注册表 Registry](#注册表-registry)
 
 
 
@@ -159,6 +161,7 @@ UEFI 提供了更多的安全功能、更快的启动时间和对大容量硬盘
 
 
 # 拓展坞 - Docking Station
+
 
 
 
@@ -419,6 +422,8 @@ SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
 额外提供 PCIe × 4 总线 支持
 
 
+## RAID
+
 
 
 
@@ -472,3 +477,38 @@ SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
       3. 网卡
       4. 音频接口
    2. 通常也包含了一些辅助功能，如电源管理、时钟、GPIO(通用输入输出)等
+
+
+# 注册表 Registry
+
+早期，Windows 将程序的配置文件存储在各自的 `.ini`文件(通常较小，远小于当时FAT16文件系统磁盘格式化的簇/扇区)中，将导致大量空间浪费
+
+在Windows操作系统中，注册表是一个重要的数据库，用于存储系统、应用程序和用户的配置信息，不当的修改注册表可能导致系统不稳定或崩溃
+
+注册表数据库位置
+
+Windows 注册表没有注释功能
+
+```bash
+/media/lzy/Windows-SSD/Windows/System32/config
+C:\Windows\System32\config
+```
+
+Linux 没有统一的注册表
+
+Linux 存在 `/etc` 文件夹，用于存放配置文件
+
+[Linux 目录配置](../../Linux/LinuxSystemic.md#linux-目录配置)
+
+现如今，对于存储的 KB级 浪费已经不在乎
+
+去中心化的配置管理还有利于卸载
+
+
+
+
+
+
+
+
+

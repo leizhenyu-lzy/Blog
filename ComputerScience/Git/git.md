@@ -1,4 +1,4 @@
-![](/Pics/git_icon.jpg)
+![](Pics/git_icon.jpg)
 
 # Learn Git
 
@@ -15,7 +15,7 @@
 [猴子都能懂的git入门](https://backlog.com/git-tutorial/cn/)
 
 
-
+![](Pics/git03.png)
 
 
 # VSCode 插件
@@ -194,7 +194,7 @@ git commit -m <comments> //告诉Git，把文件提交到仓库
 
 ```git
 查看配置       -l 表示list
-git config -l 
+git config -l
 
 查看系统配置的信息
 git config --system --list
@@ -217,7 +217,7 @@ Git的3个本地工作区域+1个远程仓库：
 1. 工作目录(Working Directory)：存放项目代码的地方
 2. 暂存区(Stage/Index)：暂存区，用于临时存放改动（只是一个文件，保存即将提交的文件列表信息）
 3. 资源库(Repository/Git Directory)：安全存放数据的位置，这里面有提交到所有版本的数据。HEAD指向最新存放入仓库的版本
-4. 
+4.
 5. 远程Git仓库(Remote Directory)：远程仓库，托管代码的服务器，用于远程数据交换
 
 ![](Pics/git_command.png)
@@ -330,7 +330,7 @@ doc/*.txt   忽略文件夹中的某个文件
 
 # 报错及解决
 
-## 
+##
 
 ```
 error: failed to push some refs to ‘xxx’
@@ -363,13 +363,13 @@ git config
 git clone
 1. xxx.git
 
-git branch 
+git branch
 1. -vv   # 查看本地分支&对应远程分支 (对应关系)
 2. -a    # 查看所有分支(本地+远程)
 3. --set-upstream-to=origin/xxx  # 切换推送分支
 4. -d    # 删除本地分支，不能是当前分支(需要先切换checkout为其他分支)
 
-git checkout 
+git checkout
 1. -b xxx   # 新建xxx分支
 2. xxx      # 切换至xxx分支
 3. .        # 若还未add，则可以恢复修改
@@ -402,7 +402,7 @@ git reset
 4. --hard HEAD^   # 一步完成上条两步操作，并且修改也没有了 (慎用)
 5. --hard xxxID   # 回退到该对应ID位置(可能无法push，因为远程版本更高，需要git push -f)
 
-git log  
+git log
 1. 后面不跟内容   # 查看最近提交记录，会显示唯一ID(可用于恢复)
 2. --graph --oneline # 图形化展示分支情况
 3. --oneline -5   # 查看最近5条
