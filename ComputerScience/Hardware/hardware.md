@@ -15,7 +15,7 @@
   - [DDR4 \& DDR5](#ddr4--ddr5)
 - [硬盘](#硬盘)
   - [固态硬盘 SSD](#固态硬盘-ssd)
-  - [【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](#硬核科普硬盘的sata-m2-ngff-nvme-是什么意思详解硬盘的总线协议与接口---硬件茶谈)
+  - [详解硬盘的总线\&协议\&接口 - 硬件茶谈](#详解硬盘的总线协议接口---硬件茶谈)
     - [协议-总线-接口 总图](#协议-总线-接口-总图)
     - [SATA 接口](#sata-接口)
     - [mSATA 接口](#msata-接口)
@@ -24,10 +24,18 @@
     - [PCIe 接口](#pcie-接口)
     - [SAS 接口](#sas-接口)
     - [U.2 接口](#u2-接口)
-  - [RAID](#raid)
+  - [机械硬盘](#机械硬盘)
+  - [RAID - Redundant Array of Independent Disks 独立磁盘冗余阵列](#raid---redundant-array-of-independent-disks-独立磁盘冗余阵列)
+  - [NAS - Network Attached Storage 网络附加存储](#nas---network-attached-storage-网络附加存储)
+    - [DAS](#das)
+    - [NAS](#nas)
+    - [SMB](#smb)
+    - [NAS \& SAN](#nas--san)
+    - [NAS \& RAID](#nas--raid)
 - [主板](#主板)
 - [南桥 \& 北桥](#南桥--北桥)
 - [注册表 Registry](#注册表-registry)
+
 
 
 
@@ -166,6 +174,8 @@ UEFI 提供了更多的安全功能、更快的启动时间和对大容量硬盘
 
 
 
+---
+
 # 内存
 
 内存品牌只代表售后服务，决定品质的是内存颗粒(黑色)
@@ -212,7 +222,9 @@ DDR4 延迟相对较低
 三大种类
 1. 固态硬盘 - SSD - solid state drive
 2. 混合硬盘 - HHD - hybrid hard drive
-3. 传统硬盘 - HDD - hard disk drive
+3. 传统硬盘(机械硬盘) - HDD - hard disk drive
+
+
 
 
 ## 固态硬盘 SSD
@@ -306,7 +318,7 @@ SATA & NVMe 对比
 AHCI还是基于传统的块传输。而NVMe使用了一种叫做“Doorbell”的机制来充分利用了极长的队列，大大减小了延迟。
 
 
-## 【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈
+## 详解硬盘的总线&协议&接口 - 硬件茶谈
 
 [【硬核科普】硬盘的SATA M.2 NGFF NVMe 是什么意思，详解硬盘的总线、协议与接口 - 硬件茶谈](https://www.bilibili.com/video/BV1Qv411t7ZL/)
 
@@ -315,13 +327,12 @@ AHCI还是基于传统的块传输。而NVMe使用了一种叫做“Doorbell”�
 ![](Pics/hardware008.png)
 
 **常用接口**
-1. 民用：SATA、mSATA、SATA Express、M.2(B-Key & M-Key)、PCIe
-2. 企业：U.2、 SAS
+1. 民用 - SATA、mSATA、SATA Express、M.2(B-Key & M-Key)、PCIe
+2. 企业 - U.2、 SAS
 
 其中，**PCIe 总线的硬盘之间的接口大部分可以相互转换**
 
 ![](Pics/hardware025.png)
-
 
 SATA 3.0 普及较广
 
@@ -422,7 +433,127 @@ SAS 总线可以 一分多，以满足服务器硬盘柜多硬盘要求
 额外提供 PCIe × 4 总线 支持
 
 
-## RAID
+## 机械硬盘
+
+容量缩水
+1. 厂商标称 1000 进制
+2. 电脑查看 1024 进制
+3. $厂商1TB = 1000^4 B = 0.91 * 1024^4 B = 0.91 * 电脑1TB$
+
+氦气盘 (V.S. 空气盘)
+1. 提高硬盘的稳定性和寿命
+2. 恢复困难
+
+叠瓦盘(SMR - Shingled Magnetic Recording)
+1. 容量大、缓存大，但 **速度慢**
+2. 叠瓦技术牺牲 **读写速度**
+3. 磁块密度高
+
+
+MTBF - Mean Time Between Failure 平均无故障时间
+1. 不等于寿命
+2. $MTBF = \frac{1}{平均故障率}$
+3. 代表可靠性，越大越好
+
+
+
+## RAID - Redundant Array of Independent Disks 独立磁盘冗余阵列
+
+通过 多磁盘配置 提高存储性能和可靠性
+
+将多个独立磁盘 组合成 一个逻辑单元 来工作，数据被分散存储以实现 冗余 & 容错 & 性能提升
+
+分类
+1. 硬件 RAID
+   1. 磁盘阵列(贵)
+      ![](Pics/hardware042.png)
+   2. RAID 卡
+      ![](Pics/hardware043.png)
+2. 软件 RAID
+   1. 硬件辅助磁盘阵列
+   2. 操作系统的RAID功能
+
+
+
+
+常见 RAID
+1. RAID 0  (条带化)           通过并行存储数据来提高性能，但不提供冗余
+2. RAID 1  (镜像)             数据被完全复制到两个磁盘上，提供高可靠性，但存储效率为50%
+3. RAID 5  (带奇偶校验的条带化) 至少需要三个磁盘，一个磁盘的容量用于存储奇偶校验信息
+4. RAID 10 (镜像+条带化)
+
+RAID 2、3、4 较少实际应用，因为RAID0、RAID1、RAID5、RAID6和混合RAID已经涵盖所需的功能
+
+RAID F1
+RAID Z
+UNRAID
+JBOD (Just a Bunch Of Disks)
+SHR
+混合RAID
+
+
+
+## NAS - Network Attached Storage 网络附加存储
+
+[NAS究竟是什么东西？你需要一台NAS吗？ - 硬件茶谈](https://www.bilibili.com/video/BV1kZ4y1F733/)
+
+[群晖 Synology](https://www.synology.cn/zh-cn)
+
+<center><img src="Pics/hardware039.png" width=300></center>
+
+### DAS
+
+**DAS - Direct Attached Storage**，硬盘 & 电脑 连接，以SATA为例
+1. 物理层 - 主机的SATA控制器确认硬盘速度并建立连线
+2. 链路层 - 建立编解码流程
+3. 传输层 - 建立资料封包
+4. 应用层 - 与系统交互
+
+![](Pics/hardware036.png)
+
+DAS 使用 **硬盘线** 连接电脑&硬盘，NAS 使用 **网线**
+
+### NAS
+
+**NAS - Network Attached Storage** 网络附加存储，通过网络 给多个用户和客户端设备 提供数据访问
+
+由于硬盘不能直接用 网线、光纤 接驳，需要低功耗电脑装载硬盘，将其接入家庭局域网，并开放电脑的局域网磁盘共享
+
+可以 通过端口映射挂载到公网，则可以通过外网访问电脑硬盘(私有云盘)
+
+仅需给 NAS 升级存储即可，无需为局域网内所有机器加装内存。可以将 手机、电脑 上的 照片、视频 存储在NAS中，减轻压力，数据无需来回传输，相当于私有云
+
+普通电脑虽然具有文件共享功能，但配置未针对需求进行优化，缺少
+1. 万兆网卡
+2. 冗余电源
+3. 远程控制
+4. 阵列卡
+5. 硬盘热插拔
+6. 机箱设计(多硬盘可能导致共振)
+
+NAS 系统
+
+![](Pics/hardware040.png)
+
+
+### SMB
+
+**SMB - server message block**，一种 网络文件共享协议，由IBM开发，后来由微软进一步扩展并普及
+
+![](Pics/hardware037.png)
+
+### NAS & SAN
+
+![](Pics/hardware041.png)
+
+SAN - Storage Area Network
+
+NAS - Network Attached Storage
+
+### NAS & RAID
+
+**NAS 和 RAID** 经常被结合使用，一个NAS设备可以内置一个或多个RAID阵列，以提供数据冗余和性能优化
+
 
 
 
