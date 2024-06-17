@@ -1,6 +1,9 @@
 ![](Pics/ros000.png)
 
+![](Pics/ros001.png)
+
 # ROS2
+
 
 
 [Open Robotics](https://www.openrobotics.org/)
@@ -112,7 +115,6 @@
    printenv ROS_DISTRO
    humble
    ```
-2.
 
 
 
@@ -139,10 +141,10 @@
 
 simulated robots
 1. [Neobotix](https://www.neobotix-robots.com/) MP-400
-   <left><img src="Pics/construct003.png" width=40%></left>
-   <left><img src="Pics/construct001.png" width=40%></left>
+   <img src="Pics/construct003.png" width=40%>
+   <img src="Pics/construct001.png" width=40%>
 2. TurtleBot 3 Waffle
-   <left><img src="Pics/construct002.png" width=40%></left>
+   <img src="Pics/construct002.png" width=40%>
 
 
 
@@ -166,7 +168,7 @@ simulated robots
 
 ## 第 01 章 - ROS2 介绍 与 安装
 
-![](Pics/ros001.png)
+
 
 ### Linux 基础
 
@@ -175,8 +177,6 @@ simulated robots
 [Linux 权限管理](../../Linux/LinuxSystemic.md#第05章-linux-的文件权限与目录配置)
 
 [编译器、解释器、语言运行机制、库文件 笔记](../../ComputerScience/Complier/notions.md)
-
-
 
 ---
 
@@ -301,18 +301,19 @@ simulated robots
    1. 在同一计算机系统内的不同进程之间进行通信
    2. `ipcs` 和 `ipcrm` 命令来管理共享内存段
 
-通信中间件 **FastDDS** & **ZeroMQ** & **PyZmq**
-1. FastDDS 是 ROS2 的通信中间件
-2. ZeroMQ非常的轻量，也就是小巧，占用资源少
-3. [PyZmq](https://pyzmq.readthedocs.io/en/latest/)
 
-
-
-节点间交互
+节点(功能模块)交互
 1. 话题(发布/订阅) - topic 单向
 2. 服务 - service 双向
 3. 动作 - action
 4. 参数 - parameter
+
+
+
+
+
+
+
 
 
 
