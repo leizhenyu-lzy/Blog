@@ -1,5 +1,52 @@
-# 面向对象程序设计
-# (Object Oriented Programming , OOP)
+# 面向对象程序设计 (Object Oriented Programming , OOP)
+
+## Table of Contents
+
+- [面向对象程序设计 (Object Oriented Programming , OOP)](#面向对象程序设计-object-oriented-programming--oop)
+  - [Table of Contents](#table-of-contents)
+- [侯捷 C++面向对象编程](#侯捷-c面向对象编程)
+  - [01.编程简介](#01编程简介)
+  - [02.头文件与类的声明](#02头文件与类的声明)
+    - [C++代码的基本形式](#c代码的基本形式)
+    - [头文件中的防卫式声明](#头文件中的防卫式声明)
+    - [头文件的布局](#头文件的布局)
+    - [class的声明(declaration)](#class的声明declaration)
+    - [class template(模板)简介](#class-template模板简介)
+  - [03.构造函数](#03构造函数)
+    - [inline内联函数](#inline内联函数)
+    - [access level(访问级别)](#access-level访问级别)
+    - [constructor(ctor,构造函数)](#constructorctor构造函数)
+    - [ctor(构造函数)可以有重载(overloading)](#ctor构造函数可以有重载overloading)
+  - [04.参数传递与返回值](#04参数传递与返回值)
+    - [常量成员函数](#常量成员函数)
+    - [参数传递 passbyvalue passbyreference](#参数传递-passbyvalue-passbyreference)
+    - [返回值传递 returnbyvalue returnbyreference](#返回值传递-returnbyvalue-returnbyreference)
+    - [友元 friend](#友元-friend)
+    - [小结](#小结)
+    - [class body外的各种definition](#class-body外的各种definition)
+  - [05.操作符重载与临时变量](#05操作符重载与临时变量)
+    - [①写成成员函数](#写成成员函数)
+    - [②写成非成员函数](#写成非成员函数)
+    - [临时变量](#临时变量)
+  - [06.复习complex类的实现过程](#06复习complex类的实现过程)
+  - [07.拷贝构造，拷贝赋值，析构](#07拷贝构造拷贝赋值析构)
+  - [08.堆、栈与内存管理](#08堆栈与内存管理)
+  - [09.复习String类的实现过程](#09复习string类的实现过程)
+  - [10.类模板、函数模板及其他](#10类模板函数模板及其他)
+    - [static](#static)
+    - [cout](#cout)
+    - [class template 类模板](#class-template-类模板)
+    - [function template 函数模板](#function-template-函数模板)
+    - [namespace](#namespace)
+    - [其他](#其他)
+  - [11.组合与继承](#11组合与继承)
+    - [Composition 复合](#composition-复合)
+    - [Delegation 委托 composition by reference](#delegation-委托-composition-by-reference)
+    - [Inheritance 继承](#inheritance-继承)
+  - [12.虚函数与多态](#12虚函数与多态)
+  - [13.委托相关设计](#13委托相关设计)
+
+---
 
 
 # 侯捷 C++面向对象编程
@@ -18,7 +65,7 @@
    2. 复合(composition)
    3. 委托(delegation)
 
-![](Houjie/houjie001.png)
+![](Pics/houjie001.png)
 
 
 <br>
@@ -26,13 +73,13 @@
 
 ## 02.头文件与类的声明
 
-![](Houjie/houjie002.png)
+![](Pics/houjie002.png)
 
 将数据和处理数据的函数包在一起。
 
 <br>
 
-![](Houjie/houjie003.png)
+![](Pics/houjie003.png)
 
 数据有很多份，函数只有一份。
 
@@ -45,10 +92,10 @@
 
 ### C++代码的基本形式
 
-![](Houjie/houjie004.png)
+![](Pics/houjie004.png)
 
 
-![](Houjie/houjie005.png)
+![](Pics/houjie005.png)
 
 <br>
 
@@ -63,21 +110,21 @@
 
 保证第二次include不会重复包含
 
-![](Houjie/houjie006.png)
+![](Pics/houjie006.png)
 
 ### 头文件的布局
 
-![](Houjie/houjie007.png)
+![](Pics/houjie007.png)
 
 先写①和②，最后判断需要写什么前置声明
 
 ### class的声明(declaration)
 
-![](Houjie/houjie008.png)
+![](Pics/houjie008.png)
 
 ### class template(模板)简介
 
-![](Houjie/houjie009.png)
+![](Pics/houjie009.png)
 
 最后用
 ```cpp
@@ -93,7 +140,7 @@ complex<double>
 
 ### inline内联函数
 
-![](Houjie/houjie010.png)
+![](Pics/houjie010.png)
 
 函数过于复杂，编译器不会将函数认定为inline
 
@@ -101,7 +148,7 @@ complex<double>
 
 数据部分一般作为private
 
-![](Houjie/houjie011.png)
+![](Pics/houjie011.png)
 
 左边是直接取data，显然数据是private，所以是错误的
 
@@ -109,7 +156,7 @@ complex<double>
 
 创建一个对象，构造函数被自动调用
 
-![](Houjie/houjie012.png)
+![](Pics/houjie012.png)
 
 构造函数特点
 1. 函数名称和类相同
@@ -122,7 +169,7 @@ complex<double>
 
 ### ctor(构造函数)可以有重载(overloading)
 
-![](Houjie/houjie013.png)
+![](Pics/houjie013.png)
 
 其实函数名称并不相同，只有编译器看得懂
 
@@ -134,17 +181,17 @@ complex<double>
 
 ## 04.参数传递与返回值
 
-![](Houjie/houjie014.png)
+![](Pics/houjie014.png)
 
 如果将构造函数放在private中，则下面两行都是无法执行的
 
 但是在singleton设计模式中会用到，不允许外界创建，外界只能用一份
 
-![](Houjie/houjie015.png)
+![](Pics/houjie015.png)
 
 ### 常量成员函数
 
-![](Houjie/houjie016.png)
+![](Pics/houjie016.png)
 
 在成员函数小括号后加const
 
@@ -154,7 +201,7 @@ complex<double>
 
 ### 参数传递 passbyvalue passbyreference
 
-![](Houjie/houjie017.png)
+![](Pics/houjie017.png)
 
 如果是pass by value对于大数据量效率不高，要压栈
 
@@ -169,15 +216,15 @@ C可以用指针，C++可以用引用（形式漂亮）
 
 ### 返回值传递 returnbyvalue returnbyreference
 
-![](Houjie/houjie018.png)
+![](Pics/houjie018.png)
 
 ### 友元 friend
 
-![](Houjie/houjie019.png)
+![](Pics/houjie019.png)
 
 相同class的各个objects互为友元
 
-![](Houjie/houjie020.png)
+![](Pics/houjie020.png)
 
 ### 小结
 
@@ -190,7 +237,7 @@ C可以用指针，C++可以用引用（形式漂亮）
 
 ### class body外的各种definition
 
-![](Houjie/houjie021.png)
+![](Pics/houjie021.png)
 
 __doapl<=>do assignment plus做赋值加法
 
@@ -202,7 +249,7 @@ __doapl<=>do assignment plus做赋值加法
 
 下面是全局函数
 
-![](Houjie/houjie024.png)
+![](Pics/houjie024.png)
 
 <br>
 <br>
@@ -211,7 +258,7 @@ __doapl<=>do assignment plus做赋值加法
 
 ### ①写成成员函数
 
-![](Houjie/houjie022.png)
+![](Pics/houjie022.png)
 
 所有的成员函数都带有隐藏的参数——this，谁调用函数，就是谁
 
@@ -219,13 +266,13 @@ __doapl<=>do assignment plus做赋值加法
 
 对于上图c2是this，c1是r
 
-![](Houjie/houjie023.png)
+![](Pics/houjie023.png)
 
 返回引用可以连串使用，如果void只能做一步
 
 ### ②写成非成员函数
 
-![](Houjie/houjie025.png)
+![](Pics/houjie025.png)
 
 全局函数，没有this指针
 
@@ -233,7 +280,7 @@ __doapl<=>do assignment plus做赋值加法
 
 ### 临时变量
 
-![](Houjie/houjie026.png)
+![](Pics/houjie026.png)
 
 不能returnbyreference
 
@@ -241,18 +288,18 @@ typename加()创建临时变量
 
 黄色部分也是临时对象
 
-![](Houjie/houjie027.png)
+![](Pics/houjie027.png)
 
 这里的+-代表的是正负号
 
 编译器通过参数的不同将他们和加减区分
 
-![](Houjie/houjie028.png)
+![](Pics/houjie028.png)
 
-![](Houjie/houjie029.png)
+![](Pics/houjie029.png)
 
 
-![](Houjie/houjie030.png)
+![](Pics/houjie030.png)
 
 流插入运算符<<一定不能写成成员函数
 
@@ -280,7 +327,7 @@ cout的数据类型是ostream
 
 class with pointer member
 
-![](Houjie/houjie031.png)
+![](Pics/houjie031.png)
 
 防卫式声明
 
@@ -294,7 +341,7 @@ s3先以s1为初值，拷贝构造
 
 带指针的，会指向同一个地方，所以不能用编译器默认的
 
-![](Houjie/houjie032.png)
+![](Pics/houjie032.png)
 
 不要用数组，不够灵活
 
@@ -311,7 +358,7 @@ char* get_c_str()const {return m_data}
 //返回指针，inline_function，注意加const
 ```
 
-![](Houjie/houjie033.png)
+![](Pics/houjie033.png)
 
 带有hello的临时对象会自动释放空间，但是p需要手动释放
 
@@ -327,7 +374,7 @@ alias：别名，是释放危险的
 
 申请用中括号释放也需要中括号
 
-![](Houjie/houjie034.png)
+![](Pics/houjie034.png)
 
 这里是 **浅拷贝** 动作，我们需要实现深拷贝
 
@@ -335,19 +382,19 @@ a、b两个对象的data只有指针
 
 导致内存泄漏，而且改变a或b会相互影响
 
-![](Houjie/houjie035.png)
+![](Pics/houjie035.png)
 
 传进来的蓝本不会改变，所以加const
 
 蓝色的两个语句意思完全相同
 
-![](Houjie/houjie036.png)
+![](Pics/houjie036.png)
 
 先将自己清空，重新分配空间，然后拷贝
 
 比较难考虑到的是自我赋值，如果不写会导致自己被清空
 
-![](Houjie/houjie037.png)
+![](Pics/houjie037.png)
 
 判断自我赋值不仅提高效率，而且保证正确性
 
@@ -356,45 +403,45 @@ a、b两个对象的data只有指针
 
 ## 08.堆、栈与内存管理
 
-![](Houjie/houjie038.png)
+![](Pics/houjie038.png)
 
 重载流插入运算符<<的时候一定不能写成成员函数，否则cout的位置会与类对象的位置颠倒，这是不令人习惯的
 
 调用函数，返回成员的数据（指针）
 
-![](Houjie/houjie039.png)
+![](Pics/houjie039.png)
 
 普通的变量在栈中，离开作用域则会被自动释放
 
 用new动态申请的空间在堆空间，有责任释放
 
-![](Houjie/houjie040.png)
+![](Pics/houjie040.png)
 
 auto->析构函数会被自动调用
 
-![](Houjie/houjie041.png)
+![](Pics/houjie041.png)
 
 析构函数在整个程序结束被调用
 
-![](Houjie/houjie042.png)
+![](Pics/houjie042.png)
 
 写在全局作用域之中，所有大括号之外
 
 比main更早就存在
 
-![](Houjie/houjie043.png)
+![](Pics/houjie043.png)
 
 new的需要delete该指针，会调用析构函数
 
-![](Houjie/houjie044.png)
+![](Pics/houjie044.png)
 
 转型->强制类型转换 static_cast<>
 
-调用构造函数 
+调用构造函数
 
-![](Houjie/houjie045.png)
+![](Pics/houjie045.png)
 
-![](Houjie/houjie046.png)
+![](Pics/houjie046.png)
 
 红色的是cookie，用于记录回收空间大小，41中40代表64个byte，1表示是申请了空间。最后一位可以用于表示收回或者获得是因为，分配空间是以16byte为一个单位，空间一定是16byte的整数倍。
 
@@ -402,7 +449,7 @@ pad是表示为了凑整为16byte的填充空间
 
 长的是调试模式Debug，短的是发表模式Release
 
-![](Houjie/houjie047.png)
+![](Pics/houjie047.png)
 
 也是以16byte为一个单元分配
 
@@ -410,7 +457,7 @@ pad是表示为了凑整为16byte的填充空间
 
 中间有四个字节用于记录数组元素个数
 
-![](Houjie/houjie048.png)
+![](Pics/houjie048.png)
 
 加了中括号才知道是数组，调用多次析构，否则只会调用一次，内存泄漏的部分是?!
 
@@ -419,17 +466,17 @@ pad是表示为了凑整为16byte的填充空间
 
 ## 09.复习String类的实现过程
 
-![](Houjie/houjie049.png)
+![](Pics/houjie049.png)
 
-![](Houjie/houjie050.png)
+![](Pics/houjie050.png)
 
 函数很简单，建议编译器做成inline
 
-![](Houjie/houjie051.png)
+![](Pics/houjie051.png)
 
 拷贝构造也是构造，没有返回类型
 
-![](Houjie/houjie052.png)
+![](Pics/houjie052.png)
 
 返回类型不是void是为了可以执行一连串赋值
 
@@ -440,7 +487,7 @@ pad是表示为了凑整为16byte的填充空间
 
 ### static
 
-![](Houjie/houjie053.png)
+![](Pics/houjie053.png)
 
 两种调用real的方式只有左边是可以运行的，右边表示的含义是公用同一个函数，传入不同的this指针，对不同的对象进行操作
 
@@ -450,19 +497,19 @@ pad是表示为了凑整为16byte的填充空间
 
 静态函数，加上static的成员函数，**没有this指针**，不能像一般的成员函数存取类对象中的数据，只能存取静态数据成员
 
-![](Houjie/houjie054.png)
+![](Pics/houjie054.png)
 
 黄色是定义，静态数据需要在类外写黄色部分（定义），在类之中的只是声明
 
 有两种调用static函数的方式，如果还没有类对象，可以通过class name调用
 
-![](Houjie/houjie055.png)
+![](Pics/houjie055.png)
 
 将构造函数放在private中
 
 a本身已经存在
 
-![](Houjie/houjie056.png)
+![](Pics/houjie056.png)
 
 更好的实现方式
 
@@ -470,7 +517,7 @@ a本身已经存在
 
 ### cout
 
-![](Houjie/houjie057.png)
+![](Pics/houjie057.png)
 
 cout 的类是从 ostream 继承
 
@@ -478,7 +525,7 @@ ostream 进行一系列的重载
 
 ### class template 类模板
 
-![](Houjie/houjie058.png)
+![](Pics/houjie058.png)
 
 template和typename是关键字
 
@@ -486,7 +533,7 @@ template和typename是关键字
 
 ### function template 函数模板
 
-![](Houjie/houjie059.png)
+![](Pics/houjie059.png)
 
 template和class是关键字
 
@@ -498,7 +545,7 @@ typename和class相通的
 
 ### namespace
 
-![](Houjie/houjie060.png)
+![](Pics/houjie060.png)
 
 namespace是一个关键字，后面跟名称
 
@@ -512,26 +559,26 @@ using declaration是一条一条打开
 
 ### 其他
 
-![](Houjie/houjie061.png)
+![](Pics/houjie061.png)
 
-![](Houjie/houjie062.png)
+![](Pics/houjie062.png)
 
 <br>
 <br>
 
 ## 11.组合与继承
 
-![](Houjie/houjie063.png)
+![](Pics/houjie063.png)
 
 类和类之间的关系
 
 ### Composition 复合
 
-![](Houjie/houjie064.png)
+![](Pics/houjie064.png)
 
 将Sequence替换
 
-![](Houjie/houjie065.png)
+![](Pics/houjie065.png)
 
 一个类里面有另外一种类，在结构体中也类似
 
@@ -541,11 +588,11 @@ using declaration是一条一条打开
 
 这是Adapter设计模式，进行改造，本例中queue为adapter
 
-![](Houjie/houjie066.png)
+![](Pics/houjie066.png)
 
 计算大小
 
-![](Houjie/houjie067.png)
+![](Pics/houjie067.png)
 
 省略号表示自己类本身执行的内容
 
@@ -559,7 +606,7 @@ using declaration是一条一条打开
 
 ### Delegation 委托 composition by reference
 
-![](Houjie/houjie068.png)
+![](Pics/houjie068.png)
 
 不管是用指针还是引用都说by reference
 
@@ -575,7 +622,7 @@ pimpl：pointer to implementation
 
 ### Inheritance 继承
 
-![](Houjie/houjie069.png)
+![](Pics/houjie069.png)
 
 用空心三角形，从子类指向父类
 
@@ -591,7 +638,7 @@ T表示模板，type
 
 与虚函数搭配
 
-![](Houjie/houjie070.png)
+![](Pics/houjie070.png)
 
 子类（派生类）中有父类的部分
 
@@ -604,7 +651,7 @@ T表示模板，type
 
 ## 12.虚函数与多态
 
-![](Houjie/houjie071.png)
+![](Pics/houjie071.png)
 
 在成员函数前加virtual则成为虚函数
 
@@ -616,11 +663,11 @@ override这一动词只能用在重写虚函数上
 
 加了virtual而且后面=0，是pure virtual，一定要子类定义
 
-![](Houjie/houjie072.png)
+![](Pics/houjie072.png)
 
 PPT例子，其中只有Open File无法事先写好
 
-![](Houjie/houjie073.png)
+![](Pics/houjie073.png)
 
 Serialize()在这里就是读文件，可以写成纯虚函数，也可也写成虚函数空函数体
 
@@ -634,19 +681,19 @@ eg:MFC microsoft foundation classes
 
 在子类中写Serialize()
 
-![](Houjie/houjie074.png)
+![](Pics/houjie074.png)
 
-![](Houjie/houjie075.png)
+![](Pics/houjie075.png)
 
-![](Houjie/houjie076.png)
+![](Pics/houjie076.png)
 
 上一张图的上半部分，构造和析构的执行顺序
 
 上一张图的下半部分，构造析构的执行顺序不会有歧义
 
-![](Houjie/houjie077.png)
+![](Pics/houjie077.png)
 
-![](Houjie/houjie078.png)
+![](Pics/houjie078.png)
 
 指针，delegation
 
@@ -668,7 +715,7 @@ notify函数遍历vector中的所有Observer，并调用update函数
 5. Delegation + Inheritance -> Prototype
 
 
-![](Houjie/houjie079.png)
+![](Pics/houjie079.png)
 
 Primitive代表文件，Composite代表文件夹
 
@@ -678,7 +725,7 @@ Primitive代表文件，Composite代表文件夹
 
 component的add函数只能为空虚函数，不能是纯虚函数，因为单个文件不能add
 
-![](Houjie/houjie080.png)
+![](Pics/houjie080.png)
 
 创建未来才会派生的子类
 
