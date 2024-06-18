@@ -20,7 +20,6 @@
   - [Why Large Language Models Hallucinate?](#why-large-language-models-hallucinate)
   - [What is a Vector Database?](#what-is-a-vector-database)
 - [Retrieval-Augmented Generation for Large Language Models: A Survey](#retrieval-augmented-generation-for-large-language-models-a-survey)
-  - [Links](#links)
 - [RAG \& KnowledgeGraph](#rag--knowledgegraph)
   - [GraphRAG - Microsoft](#graphrag---microsoft)
   - [LLM \& KnowledgeGraph](#llm--knowledgegraph)
@@ -238,11 +237,37 @@ Database
 
 # Retrieval-Augmented Generation for Large Language Models: A Survey
 
-## Links
-
 [Retrieval-Augmented Generation for Large Language Models: A Survey](https://arxiv.org/abs/2312.10997)
 
 [RAG-Survey - Github](https://github.com/Tongji-KGLLM/RAG-Survey)
+
+[RAG-Survey - ReadPaper](https://readpaper.com/pdf-annotate/note?pdfId=2244532135023698688&noteId=2298121563230725632)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
