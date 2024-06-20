@@ -176,7 +176,7 @@ simulated robots
 
 [Linux 权限管理](../../Linux/LinuxSystemic.md#第05章-linux-的文件权限与目录配置)
 
-[编译器、解释器、语言运行机制、库文件 笔记](../../ComputerScience/Complier/notions.md)
+[编译器、解释器、语言运行机制、库文件 笔记](../../ComputerScience/Compiler/Compiler&Interpreter.md)
 
 ---
 

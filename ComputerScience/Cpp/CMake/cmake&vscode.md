@@ -98,7 +98,7 @@ vscode 通过调用 gcc 编译器
 1. gcc 编译 C
 2. g++ 编译 C++
 
-[编译器详解](../../Complier/Complier&Interpreter.md#编译器compiler)
+[编译器详解](../../Compiler/Compiler&Interpreter.md#编译器compiler)
 
 
 
@@ -107,6 +107,8 @@ vscode 通过调用 gcc 编译器
 GNU Debugger，用来调试 `C/C++`
 
 vscode 通过调用 GDB 调试器实现 `C/C++` 调试工作
+
+编译程序是需要加上 `-g` 才能使用 gdb 调试
 
 GDB主要功能
 1. 设置**断点**(断点可以是条件表达式)
@@ -120,8 +122,8 @@ GDB主要功能
 调试命令参数，使用 `gdb [可执行文件名]` 进入 gdb 调试程序
 1. `help + [命令]` - `h` - 查看帮助命令
 2. `run` - `r` - 重新开始运行文件
-3. `start` - 单步执行
-4. `list` - `l` - 查看源代码
+3. `start` - 单步执行，运行程序，停在第一行执行语句
+4. `list` - `l` - 查看源代码(默认显示上下5行)
 5. `set` - 设置变量值
 6. `next` - `n` - 单步调试(逐过程，不跳入函数)
 7. `step` - `s` - 单步调试(逐语句，跳入函数)
@@ -131,9 +133,79 @@ GDB主要功能
 11. `finish` - 结束当前函数，返回函数调用点
 12. `continue` - `c` - 继续运行
 13. `print` - `p` - 打印值&地址
+14. `quit` - `q` - 退出 GDB (exit 也可以)
+15. `break+num` - `b` - 在第num行设置断点
+16. `info breakpoints` - 查看设置的所有断点
+17. `delete breakpoints num` - `d` - 删除第num个断点
+18. `display` - 追踪查看具体变量值
+19. `undisplay` - 取消追踪查看具体变量值
+20. `watch` - 被设置观察点的变量发生改变时，打印显示
+21. `i watch` - 显示观察点
+22. `enable breakpoints` - 启用断点
+23. `disable breakpoints` - 禁用断点
+24. `x` - 查看内存，显示20个单元，16进制，4字节/单元
+25. `run argv[1] argv[2]` - 调试时，命令行传参
+26. `set follow-fork-mode child` - Makefile项目管理：选择跟踪父子进程
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char **argv)
+{
+    int N = 100;
+    int sum = 0;
+    int i = 1;
+
+    while (i <= N)
+    {
+        sum = sum + i;
+        i = i + 1;
+    }
+
+    cout << "sum = " << sum << endl;
+
+    return 0;
+}
+```
+
+包含了更多调试信息，所以 使用 `-g` 编译的可执行文件体积更大
 
 
+```bash
+g++ -g  sum.cpp -o sumWithGDB
+g++     sum.cpp -o sumWithoutGDB
 
+ls -l
+
+total 60
+-rw-rw-r-- 1 lzy lzy   258 Jun 20 17:19 sum.cpp
+-rwxrwxr-x 1 lzy lzy 33464 Jun 20 17:36 sumWithGDB
+-rwxrwxr-x 1 lzy lzy 16568 Jun 20 17:36 sumWithoutGDB
+```
+
+对于 没有 使用 `-g` 进行编译的可执行文件会提示 `no debugging symbols`，表明不能被 GDB 调试
+```bash
+gdb sumWithoutGDB
+
+(No debugging symbols found in sumWithoutGDB)
+```
+
+```bash
+run
+break 11
+continue
+break 13
+info breakpoints
+delete breakpoints 1
+run
+print i, sum
+continue
+print i, sum
+list
+display sum
+```
 
 
 

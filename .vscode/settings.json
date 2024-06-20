@@ -23,5 +23,8 @@
         "Qdrant",
         "nmslib",
         "weavaite"
+    ],
+    "clangd.fallbackFlags": [
+        "-I/usr/include/c++/11",
     ]
 }
