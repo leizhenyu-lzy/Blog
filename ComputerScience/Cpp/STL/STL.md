@@ -1,6 +1,47 @@
+# STL
+
+## Table of Contents
+
+- [STL](#stl)
+  - [Table of Contents](#table-of-contents)
+- [全面理解STL标准库 - 双笙子佯谬](#全面理解stl标准库---双笙子佯谬)
+- [C++标准库体系结构与内核分析](#c标准库体系结构与内核分析)
+  - [01.认识headers、版本、重要资源](#01认识headers版本重要资源)
+    - [C++ Standard Library VS Standard Template Library](#c-standard-library-vs-standard-template-library)
+  - [02.](#02)
+  - [03.](#03)
+  - [04.](#04)
+  - [05.](#05)
+- [Understanding the C++ Standard Template Library](#understanding-the-c-standard-template-library)
+  - [01.模板观念与函数模板](#01模板观念与函数模板)
+    - [C++模板简介](#c模板简介)
+    - [C++函数模板](#c函数模板)
+  - [02.类模板与操作符重载](#02类模板与操作符重载)
+    - [类模板](#类模板)
+    - [操作符重载](#操作符重载)
+  - [03.](#03-1)
+  - [04.](#04-1)
+  - [05.](#05-1)
+
+---
+
+# 全面理解STL标准库 - 双笙子佯谬
+
+[全面理解STL标准库 vector容器 精讲](https://www.bilibili.com/video/BV1qF411T7sd/)
+
+
+
+
+
+
+---
+
+
 # C++标准库体系结构与内核分析
 
 ![](Pics/HoujieSTL001.png)
+
+![](Pics/HoujieSTL003.png)
 
 ## 01.认识headers、版本、重要资源
 
@@ -8,7 +49,6 @@ C++标准库和C标准库不同，C标准库是一个个单一的函数，C++标
 
 ![](Pics/HoujieSTL002.png)
 
-![](Pics/HoujieSTL003.png)
 
 ![](Pics/HoujieSTL004.png)
 
@@ -35,26 +75,19 @@ using namespace std;将std命名空间全部打开
 ## 02.
 
 
-<br>
-<br>
 
 
 ## 03.
 
 
-<br>
-<br>
 
 ## 04.
 
 
 
 
-## 05. 
+## 05.
 
-<br>
-<br>
-<br>
 
 # Understanding the C++ Standard Template Library
 

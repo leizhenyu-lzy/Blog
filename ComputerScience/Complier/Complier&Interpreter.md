@@ -5,8 +5,14 @@
 
 - [Compiler 编译器](#compiler-编译器)
   - [Table of Contents](#table-of-contents)
-- [编译器 compiler](#编译器-compiler)
-- [解释器 interpreter](#解释器-interpreter)
+- [编译器(compiler)](#编译器compiler)
+  - [编译过程](#编译过程)
+  - [主流编译器](#主流编译器)
+  - [G++ 编译参数](#g-编译参数)
+  - [编译测试](#编译测试)
+    - [小项目](#小项目)
+    - [生成库文件并编译](#生成库文件并编译)
+- [解释器(interpreter)](#解释器interpreter)
 - [编译 \& 解释 (Python, Java, C++)](#编译--解释-python-java-c)
 - [库文件](#库文件)
 
@@ -14,26 +20,182 @@
 
 
 
-# 编译器 compiler
+# 编译器(compiler)
 
-1. 将高级语言(C、C++、Java) 转换为 机器语言
-2. 工作流程
-   ![](Pics/compiler001.png)
-   ![](Pics/compiler002.png)
-   1. 预处理 Preprocessing - 将头文件、宏进行展开
-   2. 编译 Compilation - 编译程序的过程中调用不同的工具，执行语法分析、语义分析、生成抽象语法树(AST)，然后从AST生成中间代码
-   3. 汇编 Assembly - 转换为机器语言的对象代码，二进制格式，还不能直接运行，还需要和其他对象文件或库一起被链接
-   4. 链接 Linking - 将程序所需要的目标文件进行链接成可执行文件
-3. 代表
-   1. gcc - GNU Compiler Collection - 原先是 GNU C Compiler，现在除了c语言，还支持C++、java、Pascal等
-   2. g++ - GCC套件中的C++编译器部分
-   3. msvc - Microsoft Visual C++ - 微软提供的一个C和C++编译器和开发环境，是Visual Studio IDE的一部分
-   4. mingw - Minimalist GNU for Windows - 将GCC编译器和相关工具移植到Windows平台
-   5. clang - C、C++、Objective-C和Objective-C++编程语言的编译器前端，它使用LLVM作为其后端
-   6. llvm - Low Level Virtual Machine
+##  编译过程
+
+![](Pics/compiler001.png)
+
+![](Pics/compiler002.png)
+
+![](Pics/compiler005.png)
+
+**编译过程**
+1. 预处理 Pre-Processing `.i文件`
+   1. 预处理器处理源代码文件(`.c`/`.cpp`)
+   2. 宏替换、条件编译和文件包含(`#include`)
+   3. 输出的文件通常是 `.i` 文件，仍为**文本文件**
+   4. > g++ -E test.cpp -o test.i
+2. 编译 compiling `.s文件`
+   1. 词法分析，语法分析，语义分析，优化
+   2. 得到 **汇编语言** 文件
+   3. > g++ -S test.i -o test.s
+3. 汇编 assembling `.o文件`(可重定位目标文件)
+   1. 汇编器取得 `.s` 文件中的汇编代码，将其转换为机器语言
+   2. 包含了机器代码但还不是完全可以执行的程序
+   3. > g++ -c test.s -o test.o
+4. 链接 linking `bin文件`
+   1. 链接器取得一个或多个 `.o` 文件，将它们与库文件(标准库 & 外部库)合并
+   2. 解决程序中的外部依赖，最终生成可执行文件 bin，可以加载进内存执行
+   3. > g++ test.o -o test
+
+![](Pics/compiler006.png)
+
+## 主流编译器
+
+**主流编译器**
+1. `gcc` - GNU Compiler Collection - 原先是 GNU C Compiler，现在除了c语言，还支持C++、java、Pascal等
+2. `g++` - GCC套件中的C++编译器部分
+3. `msvc` - Microsoft Visual C++ - 微软提供的一个C和C++编译器和开发环境，是Visual Studio IDE的一部分
+4. `mingw` - Minimalist GNU for Windows - 将GCC编译器和相关工具移植到Windows平台
+5. `clang` - C、C++、Objective-C和Objective-C++编程语言的编译器前端，它使用LLVM作为其后端
+6. `llvm` - Low Level Virtual Machine
 
 
-# 解释器 interpreter
+## G++ 编译参数
+
+编译参数
+1. `-E` - PreProcess only; do not compile, assemble or link.
+2. `-S` - Compile only; do not assemble or link.
+3. `-c` - Compile and assemble, but do not link.
+4. `-o` - Place the output into <file>.
+5. `-g` - 产生能被 GDB 使用的调试信息，以调试程序
+6. `-o` - 指定输出文件名
+7. `-O[n]` - 优化源代码，提高运行效率，省略未使用的变量，常量表达式用结果值代替
+   1. `-O0` - 不做优化
+   2. `-O1` - 默认优化
+   3. `-O2`、`-O3`
+8. `-l` - 指定**库文件** (link file)
+   1. `/lib`, `/usr/lib`, `/usr/local/lib` 中的库直接 `-l` 链接
+   2. eg - `g++ -lglog test.cpp` 链接 glog 库
+9. `-L` - 指定**库文件路径** (link folder)
+   1. 对于不在 `/lib`, `/usr/lib`, `/usr/local/lib` 中的库，使用 `-L` 指定库文件所在目录
+   2. eg - `g++ -L/path/to/folder -lmylib test.cpp`
+10. `-I` - 指定**头文件**搜索目录 (include)
+   1. `/usr/include` 无需指定
+   2. eg - `g++ -I/myinclude test.cpp`
+11. `-Wall` - 打印警告信息
+12. `-w` - 关闭警告信息
+13. `-std=c++11` - 设置编译标准(使用新特性)
+14. `-D` - 定义宏 (代码内部 `#ifdef` ,`#endif`)
+    1.  `#ifdef DEBUG`, `g++ -DDEBUG hello.cpp -o hello`
+    2.  如果单独要写，需要在PreProcess的时候添加 `g++ -E hello.cpp -DDEBUG -o hello.i`
+
+```bash
+gcc [-c|-S|-E] [-std=standard]
+    [-g] [-pg] [-Olevel]
+    [-Wwarn...] [-Wpedantic]
+    [-Idir...] [-Ldir...]
+    [-Dmacro[=defn]...] [-Umacro]
+    [-foption...] [-mmachine-option...]
+    [-o outfile] [@file] infile...
+```
+
+## 编译测试
+
+### 小项目
+
+目录结构
+```bash
+.
+├── include
+│   └── swap.h
+├── main
+├── main.cpp
+└── src
+    └── swap.cpp
+```
+
+```bash
+g++ main.cpp src/swap.cpp -o main            # 需要在各个文件中明确写明头文件位置，否则 fatal error: No such file or directory
+g++ main.cpp src/swap.cpp -o main -Iinclude  # 不需要写明头文件位置
+```
+
+`main.cpp`
+
+```cpp
+#include <iostream>
+#include "swap.h"
+// #include "./include/swap.h"  // 如果编译时，命令行不添加 -Iinclude，则需要明确写明位置
+
+using namespace std;
+
+int main()
+{
+    int a = 1;
+    int b = 2;
+    swap(a, b);
+    cout << "a = " << a << endl;
+    cout << "b = " << b << endl;
+    return 0;
+}
+```
+
+`./include/swap.h`
+```cpp
+void swap(int& a, int& b);
+```
+
+`./src/swap.h`
+```cpp
+#include "swap.h"
+// #include "../include/swap.h"  // 如果编译时，命令行不添加 -Iinclude，则需要明确写明位置
+
+void swap(int& a, int& b)
+{
+    int t = a;
+    a = b;
+    b = t;
+}
+```
+
+### 生成库文件并编译
+
+前缀 `lib` 和后缀 `.a` 或 `.so` 是约定的库文件命名格式
+
+**静态库** (需要先生成 `.o` 文件，静态库本质上是 归档)
+1. 进入 src
+2. `g++ -c swap.cpp -I ../include -o myswap.o`
+3. `ar rs libmyswap.a myswap.o` 出现 `libmyswap.a`
+   1. `ar` - archive，用于创建、修改以及从静态库(`.a`文件)中提取文件
+   2. `rs` - r(replace or insert) - s(create an archive index)
+   3. 静态库的**命名**遵循 **`lib<name>.a`**，链接器会自动寻找完整名称的静态库
+4. 回到 上级目录
+5. `g++ main.cpp -I include -L src -l myswap -o TestStaticLib`
+   1. `-l` 不能直接指定库文件的完整名称
+
+
+
+当你指定-lSwap时，链接器会自动寻找名为libSwap.a（对于静态库）或libSwap.so（对于动态库）的文件。
+前缀lib和后缀.a或.so是约定的库文件命名格式。lib是库文件的标准前缀，而.a和.so分别表示静态库和共享库（动态库）的后缀
+
+**动态库**
+1. 进入 src
+2. `g++ swap.cpp -I ../include -fPIC -shared -o libmyswap.so` 出现 `libmyswap.so`，相当于两步命令
+   1. `g++ -c swap.cpp -I ../include -fPIC -o myswap.o`，(PIC=Position Independent Code，生成位置无关代码)
+   2. `g++ -shared myswap.o -o libmyswap.so`，`-shared`告诉编译器生成共享库(动态库)而不是可执行文件
+3. 回到 上级目录
+4. `g++ main.cpp -I include -L src -l myswap -o TestSharedLib`
+5. 运行 `LD_LIBRARY_PATH=src ./TestSharedLib`，不像静态库编译时已被包含，自己的动态库不在系统的默认搜索路径下，需要手动指定动态库搜索路径
+
+如果没有指定特定的链接选项，链接器通常倾向于使用动态库，因为动态链接可以减少最终程序的大小并允许库在多个程序之间共享
+
+如果强制使用 静态库，最后一步生成 bin 文件步骤中 使用 `-static`，eg `g++ -static main.cpp -I include -L src -l myswap -o TestStaticLib`
+
+
+---
+
+# 解释器(interpreter)
 
 1. 工作流程
    1. 读取代码
