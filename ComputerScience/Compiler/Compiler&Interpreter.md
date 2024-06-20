@@ -77,13 +77,13 @@
    3. `-O2`、`-O3`
 8. `-l` - 指定**库文件** (link file)
    1. `/lib`, `/usr/lib`, `/usr/local/lib` 中的库直接 `-l` 链接
-   2. eg - `g++ -lglog test.cpp` 链接 glog 库
+   2. eg - `g++ -l glog test.cpp` 链接 glog 库
 9. `-L` - 指定**库文件路径** (link folder)
    1. 对于不在 `/lib`, `/usr/lib`, `/usr/local/lib` 中的库，使用 `-L` 指定库文件所在目录
-   2. eg - `g++ -L/path/to/folder -lmylib test.cpp`
+   2. eg - `g++ -L/path/to/folder -l mylib test.cpp`
 10. `-I` - 指定**头文件**搜索目录 (include)
    1. `/usr/include` 无需指定
-   2. eg - `g++ -I/myinclude test.cpp`
+   2. eg - `g++ -I myinclude test.cpp`
 11. `-Wall` - 打印警告信息
 12. `-w` - 关闭警告信息
 13. `-std=c++11` - 设置编译标准(使用新特性)

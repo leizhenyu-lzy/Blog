@@ -19,9 +19,6 @@ Record What I Learned
 │   └── UnSystematicLearning
 ├── Android
 │   └── GoogleFrame
-├── C#
-│   ├── Pics
-│   └── TestInstall
 ├── Company
 │   ├── 公司调研
 │   ├── 可行性研究报告
@@ -31,10 +28,11 @@ Record What I Learned
 │   └── 面试
 ├── ComputerScience
 │   ├── ASCII
+│   ├── C#
 │   ├── Cloud
-│   ├── Complier
+│   ├── Compiler
 │   ├── ComputerNetwork
-│   ├── ComputerOrganization
+│   ├── ComputerSystem
 │   ├── Cpp
 │   ├── Cryptology
 │   ├── DesignPattern
@@ -100,6 +98,7 @@ Record What I Learned
 │   ├── GoodSentence
 │   ├── GRE
 │   ├── HotWords
+│   ├── Idioms
 │   ├── Magazine
 │   ├── SimilarWords
 │   ├── TOEFL
@@ -225,6 +224,6 @@ Record What I Learned
 └── 证书
     └── Pics
 
-213 directories
+212 directories
 ```
 

@@ -18,7 +18,7 @@
 
 # 第0部分 - 计算机系统漫游
 
-[编译器详解](../Complier/Complier&Interpreter.md#编译器compiler)
+[编译器详解](../Compiler/Compiler&Interpreter.md#编译器compiler)
 
 
 
