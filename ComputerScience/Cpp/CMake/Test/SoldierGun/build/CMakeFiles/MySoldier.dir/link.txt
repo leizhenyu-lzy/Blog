@@ -1,0 +1,2 @@
+/usr/bin/ar qc libMySoldier.a CMakeFiles/MySoldier.dir/src/soldier.cpp.o
+/usr/bin/ranlib libMySoldier.a

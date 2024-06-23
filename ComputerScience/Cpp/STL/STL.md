@@ -8,11 +8,11 @@
 - [C++ 标准库 体系结构 与 内核分析 - 侯捷](#c-标准库-体系结构-与-内核分析---侯捷)
   - [01 认识headers、版本、重要资源](#01-认识headers版本重要资源)
   - [02 STL体系结构基础介绍](#02-stl体系结构基础介绍)
-  - [03 容器之分类与各种测试 1](#03-容器之分类与各种测试-1)
-  - [04 容器之分类与各种测试 2](#04-容器之分类与各种测试-2)
-  - [05 容器之分类与各种测试 3](#05-容器之分类与各种测试-3)
-  - [06 容器之分类与各种测试 4](#06-容器之分类与各种测试-4)
-  - [07 分配器之测试](#07-分配器之测试)
+  - [03 容器 分类与各种测试 1](#03-容器-分类与各种测试-1)
+  - [04 容器 分类与各种测试 2](#04-容器-分类与各种测试-2)
+  - [05 容器 分类与各种测试 3](#05-容器-分类与各种测试-3)
+  - [06 容器 分类与各种测试 4](#06-容器-分类与各种测试-4)
+  - [07 分配器 测试](#07-分配器-测试)
   - [08 源代码之分布 VC, GCC](#08-源代码之分布-vc-gcc)
   - [09 OOP 面向对象编程 vs GP 泛型编程](#09-oop-面向对象编程-vs-gp-泛型编程)
   - [10 技术基础：操作符重载and模板泛化, 全特化, 偏特化](#10-技术基础操作符重载and模板泛化-全特化-偏特化)
@@ -28,11 +28,30 @@
   - [20 RB tree 深度探索](#20-rb-tree-深度探索)
   - [21 set、multiset 深度探索](#21-setmultiset-深度探索)
   - [22 map、multimap 深度探索](#22-mapmultimap-深度探索)
-  - [23 hashtable深度探索 (上)](#23-hashtable深度探索-上)
-  - [24 hashtable深度探索 (下)](#24-hashtable深度探索-下)
+  - [23 hashtable 深度探索 (上)](#23-hashtable-深度探索-上)
+  - [24 hashtable 深度探索 (下)](#24-hashtable-深度探索-下)
   - [25 hash set、hash multiset, hash map、hash multimap 概念](#25-hash-sethash-multiset-hash-maphash-multimap-概念)
   - [26 unordered 容器概念](#26-unordered-容器概念)
   - [27 算法的形式](#27-算法的形式)
+  - [28 迭代器的分类 category](#28-迭代器的分类-category)
+  - [29 迭代器分类 category 对算法的影响](#29-迭代器分类-category-对算法的影响)
+  - [30 算法源代码剖析 11个例子](#30-算法源代码剖析-11个例子)
+  - [31 仿函数 和 函数对象](#31-仿函数-和-函数对象)
+  - [32 存在多种Adapter](#32-存在多种adapter)
+  - [33 Binder2nd](#33-binder2nd)
+  - [34 not1](#34-not1)
+  - [35 bind](#35-bind)
+  - [36 reverse iterator](#36-reverse-iterator)
+  - [37 inserter](#37-inserter)
+  - [38 ostream iterator](#38-ostream-iterator)
+  - [39 istream iterator](#39-istream-iterator)
+  - [40 一个万用的 hash function](#40-一个万用的-hash-function)
+  - [41 Tuple 用例](#41-tuple-用例)
+  - [42 type traits](#42-type-traits)
+  - [43 type traits 实现](#43-type-traits-实现)
+  - [44 cout](#44-cout)
+  - [45 movable 元素对于 deque 速度效能的影响](#45-movable-元素对于-deque-速度效能的影响)
+  - [46 测试函数](#46-测试函数)
 - [Understanding the C++ Standard Template Library](#understanding-the-c-standard-template-library)
   - [01.模板观念与函数模板](#01模板观念与函数模板)
     - [C++模板简介](#c模板简介)
@@ -66,6 +85,10 @@
 
 [侯捷 - Bilibili](https://www.bilibili.com/video/BV19u4y1J7dB/)
 
+[侯捷 - Github](https://github.com/ZachL1/Bilibili-plus)
+
+[STL 源码剖析 - 侯捷 - libgen](https://libgen.is/book/index.php?md5=6537AB49A4188713DD279012B0064A59)
+
 ## 01 认识headers、版本、重要资源
 
 Generic Programming 泛型编程 使用 模板 template 为主要工具
@@ -85,7 +108,7 @@ STL 即为 泛型编程最成功的作品
 2. [CppReference.com](https://CppReference.com)
 3. [gcc.gnu.org](https://gcc.gnu.org)
 
-[STL 源码剖析 - 侯捷 - libgen](https://libgen.is/book/index.php?md5=6537AB49A4188713DD279012B0064A59)
+
 
 ## 02 STL体系结构基础介绍
 
@@ -107,19 +130,69 @@ STL 即为 泛型编程最成功的作品
 
 ![](Pics/houjie006.png)
 
+`count_if` 允许指定一个 predicate (谓词，判断式)，这个 predicate 是一个函数或者函数对象，用来检查元素是否满足某个条件
 
-## 03 容器之分类与各种测试 1
+`bind2nd` 接受这个函数对象 `less<int>()` 和一个值 40，然后创建一个新的一元函数对象
+
+`bind2nd` 的基本作用是将 二元函数对象 和 特定的值 绑定，从而创建 新的一元函数对象，二元函数的第二个参数被固定为一个特定值，而第一个参数保持开放，新生成的一元函数对象在调用时只需要提供一个参数
+
+`less<int>()` 是一个函数对象，用于比较两个 int 类型的值
+
+**时间复杂度 Big-O**
+
+![](Pics/houjie007.png)
+
+**前闭后开区间** `[)`
+
+所有容器都提供 `c.begin()` & `c.end()`
+
+![](Pics/houjie008.png)
+
+**C++11 新的遍历写法** coll = collection
+
+使用 `auto&` 表示取出的是引用，可以用于修改值
+
+![](Pics/houjie009.png)
+
+**auto 关键词**
+
+当 `::` 前面没有任何前缀时，它表示全局命名空间
+
+![](Pics/houjie010.png)
 
 
-## 04 容器之分类与各种测试 2
+## 03 容器 分类与各种测试 1
 
-## 05 容器之分类与各种测试 3
+![](Pics/houjie011.png)
+
+分类
+1. **Sequence Container 序列式**
+   1. Array   数组，前后都无法扩充
+   2. Vector  向量，前不可扩充，后可扩充，分配器负责自动增长
+   3. Deque   双向队列，两端可进可出
+   4. List    双向链表
+   5. Forward-List  单向链表，内存消耗比 List 少
+2. **Associative Container 关联式**(元素有 key&value, 适合查找)，内部使用 红黑树(高度平衡二叉树，避免查找最坏情况)
+   1. Set/Multiset
+      1. 只存储 键key，不区分 key&value
+      2. Set 内部 元素 不能重复，Multiset 可以重复
+   2. Map/Multimap
+      1. 每个节点有 key&value
+      2. Map 内部 key 不能重复，Multimap 可以重复
+3. **Unordered Container 不定序**(也属于 **Associative Container**)，内部使用 HashTable(Separate Chaining) 实现
+   1. Unordered Set/Multiset
+   2. Unordered Map/Multimap
 
 
-## 06 容器之分类与各种测试 4
 
 
-## 07 分配器之测试
+## 04 容器 分类与各种测试 2
+
+## 05 容器 分类与各种测试 3
+
+## 06 容器 分类与各种测试 4
+
+## 07 分配器 测试
 
 
 
@@ -153,9 +226,9 @@ STL 即为 泛型编程最成功的作品
 
 ## 22 map、multimap 深度探索
 
-## 23 hashtable深度探索 (上)
+## 23 hashtable 深度探索 (上)
 
-## 24 hashtable深度探索 (下)
+## 24 hashtable 深度探索 (下)
 
 
 ## 25 hash set、hash multiset, hash map、hash multimap 概念
@@ -163,183 +236,50 @@ STL 即为 泛型编程最成功的作品
 ## 26 unordered 容器概念
 
 ## 27 算法的形式
-aizhi li
-•
-1384次观看 • 4年前
 
-28
+## 28 迭代器的分类 category
 
-31:13
-正在播放
-28 迭代器的分类（category）
-aizhi li
-•
-1823次观看 • 4年前
+## 29 迭代器分类 category 对算法的影响
 
-29
+## 30 算法源代码剖析 11个例子
 
-44:58
-正在播放
-29 迭代器分类（category）对算法的影响
-aizhi li
-•
-1808次观看 • 4年前
+## 31 仿函数 和 函数对象
 
-30
+## 32 存在多种Adapter
 
-49:03
-正在播放
-30 算法源代码剖析（11个例子）
-aizhi li
-•
-1705次观看 • 4年前
+## 33 Binder2nd
 
-31
+## 34 not1
 
-28:28
-正在播放
-31 仿函数和函数对象
-aizhi li
-•
-1561次观看 • 4年前
+## 35 bind
 
-32
+## 36 reverse iterator
 
-9:53
-正在播放
-32 存在多种Adapter
-aizhi li
-•
-1211次观看 • 4年前
+## 37 inserter
 
-33
+## 38 ostream iterator
 
-34:52
-正在播放
-33 Binder2nd
-aizhi li
-•
-1429次观看 • 4年前
+## 39 istream iterator
 
-34
+## 40 一个万用的 hash function
 
-7:09
-正在播放
-34 not1
-aizhi li
-•
-964次观看 • 4年前
+## 41 Tuple 用例
 
-35
+## 42 type traits
 
-24:30
-正在播放
-35 bind
-aizhi li
-•
-1171次观看 • 4年前
+## 43 type traits 实现
 
-36
+## 44 cout
 
-8:58
-正在播放
-36 reverse iterator
-aizhi li
-•
-1246次观看 • 4年前
+## 45 movable 元素对于 deque 速度效能的影响
 
-37
-
-13:35
-正在播放
-37 inserter
-aizhi li
-•
-1160次观看 • 4年前
-
-38
-
-14:54
-正在播放
-38 ostream iterator
-aizhi li
-•
-1206次观看 • 4年前
-
-39
-
-20:02
-正在播放
-39 istream iterator
-aizhi li
-•
-1079次观看 • 4年前
-
-40
-
-45:09
-正在播放
-40 一个万用的hash function
-aizhi li
-•
-1552次观看 • 4年前
-
-41
-
-41:20
-正在播放
-41 Tuple 用例
-aizhi li
-•
-1283次观看 • 4年前
-
-42
-
-36:00
-正在播放
-42 type traits
-aizhi li
-•
-1432次观看 • 4年前
-
-43
-
-20:23
-正在播放
-43 type traits 实现
-aizhi li
-•
-1057次观看 • 4年前
-
-44
-
-9:06
-正在播放
-44 cout
-aizhi li
-•
-928次观看 • 4年前
-
-45
-
-26:22
-正在播放
-45 movable元素对于deque速度效能的影响
-aizhi li
-•
-1067次观看 • 4年前
-
-46
-
-26:34
-正在播放
-46 测试函数
+## 46 测试函数
 
 
 
 
 
-
+---
 
 # Understanding the C++ Standard Template Library
 

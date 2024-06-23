@@ -1,0 +1,4 @@
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/TestSmallProject/build/CMakeFiles/mySwap.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/TestSmallProject/build/CMakeFiles/main.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/TestSmallProject/build/CMakeFiles/edit_cache.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/TestSmallProject/build/CMakeFiles/rebuild_cache.dir

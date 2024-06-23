@@ -1,0 +1,3 @@
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/VSCodeCMake/build/CMakeFiles/hello.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/VSCodeCMake/build/CMakeFiles/edit_cache.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/VSCodeCMake/build/CMakeFiles/rebuild_cache.dir
