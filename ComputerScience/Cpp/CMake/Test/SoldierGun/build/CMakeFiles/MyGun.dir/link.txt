@@ -1,0 +1,2 @@
+/usr/bin/ar qc libMyGun.a CMakeFiles/MyGun.dir/src/gun.cpp.o
+/usr/bin/ranlib libMyGun.a

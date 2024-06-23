@@ -11,7 +11,14 @@
   - [04 - GDB 调试器](#04---gdb-调试器)
   - [05 - VSCode](#05---vscode)
   - [06 - CMake](#06---cmake)
+    - [语法特性](#语法特性)
+    - [重要指令](#重要指令)
+    - [常用变量](#常用变量)
+    - [编译工程](#编译工程)
   - [07 - 项目开发](#07---项目开发)
+    - [配置 json文件 并 调试项目](#配置-json文件-并-调试项目)
+      - [`launch.json`](#launchjson)
+      - [`tasks.json`](#tasksjson)
 
 ---
 
@@ -100,7 +107,7 @@ vscode 通过调用 gcc 编译器
 
 [编译器详解](../../Compiler/Compiler&Interpreter.md#编译器compiler)
 
-
+[生成动态库 & 静态库](../../Compiler/Compiler&Interpreter.md#生成库文件并编译)
 
 ## 04 - GDB 调试器
 
@@ -207,16 +214,252 @@ list
 display sum
 ```
 
-
-
 ## 05 - VSCode
 
+插件
+1. C/C++
+   1. 内置了基于 Clang 的 IntelliSense 支持
+   2. 可能需要修改 `compiler path` 来解决报错
+   3. 可以添加多个 `include path`
+   4. 进入设置方式 - 点击报错小灯泡
+2. CMake
+3. CMake Tools
+
+快捷键
+1. **Ctrl+Shift+P** 命令面板 或者 **Ctrl+P**再输入`>`
+2. **Ctrl+`** 打开终端
+3. **F12** 转到定义
+4. **F2** 变量统一重命名
+
+
+```cpp
+#pragma once
+```
 
 
 ## 06 - CMake
 
+CMake 是一个 跨平台的 安装编译工具
+
+**without CMake**
+
+不同平台使用不同的 构建文件
+
+![](Pics/vscode002.png)
+
+如果需要添加 cpp 文件，需要对各个 构建文件 进行修改
+
+![](Pics/vscode003.png)
+
+
+**with CMake**
+
+写 CMakeLists
+
+![](Pics/vscode004.png)
+
+仅需修改 CMakeLists
+
+![](Pics/vscode005.png)
+
+### 语法特性
+
+参数使用 `()` 包括，参数之间 使用 `空格`/`;` 间隔
+
+指令 **大小写无关**，参数和变量 **大小写相关**
+
+变量使用 `${}` 方法取值，在 `IF` 控制语句中 直接使用变量名
+
+```cmake
+set(HELLO hello.cpp)
+
+add_executable(hello main.cpp hello.cpp)
+
+ADD_EXECUTABLE(hello main.cpp ${HELLO})
+```
+
+### 重要指令
+
+重要指令
+1. **==cmake_minimum_required==** - 指定CMake的最小版本要求
+   1. `cmake_minimum_required(VERSION versionNumber [FATAL_ERROR])`
+   2. `cmake_minimum_required(VERSION 2.8.3)` - 指定 CMake最小版本要求为2.8.3
+
+2. **==project==** - 定义工程名称，并可指定工程支持的语言
+   1. `project(projectName [CXX] [C] [Java])`
+   2. `project(HELLOWORLD)` - 指定工程名为HELLOWORLD
+
+3. **==set==** - 显式的定义变量
+   1. `set(VAR [VALUE] [CACHE TYPE DOCSTRING [FORCE]])`
+   2. `set(SRC sayHello.cpp hello.cpp)` - 定义SRC变量，其值为main.cpp hello.cpp
+
+4. **==include_directories==** - 向工程添加多个特定的**头文件**搜索路径
+   1. `include_directories([AFTER|BEFORE] [SYSTEM] dir1 dir2 ...)`
+   2. `include_directories(/usr/include/folder ./include)` - 添加到头文件搜索路径，相当于 g++ 的 `-I` 参数
+
+5. **==link_directories==** - 向工程添加多个特定的**库文件**搜索路径，相当于 g++ 的 `-L` 参数
+   1. `link_directories(dir1 dir2 ...)`
+
+6. **==add_library==** - 生成库文件
+   1. `add_library(libName [SHARED|STATIC|MODULE] [EXCLUDE_FROM_ALL] source1 source2 ...)`
+   2. `add_library(hello SHARED ${SRC})` - 通过变量 SRC 生成 共享库
+
+7. **==add_compile_options==** - 添加编译参数
+   1. `add_compile_options(-Wall -std=c++11 -O2)`
+
+8. **==add_executable==** - 生成可执行文件
+   1. `add_library(executeFile source1 source2 ... sourceN)`
+   2. `target_link_libraries(main hello)` - 编译 main.cpp 生成可执行文件 main
+
+9. **==target_link_libraries==** - 为 target 添加需要链接的 库，相当于指定 g++ 编译器 `-l` 参数
+    1. `target_link_libraries(target library1 library2)`
+    2. `target_link_libraries(main hello)` - 将 hello 动态库文件链接到可执行文件main
+
+10. **==add_subdirectory==** - 向当前工程添加存放源文件的子目录，并可以指定中间二进制和目标二进制存放的位置
+    1. `add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])`
+    2. `add_subdirectory(src)` - src中需有一个CMakeLists.txt
+
+11. **==aux_source_directory==** - 发现一个目录下所有的源代码文件并将列表存储在一个变量中，这个指令临时被用来自动构建源文件列表
+    1. `aux_source_directory(dirPath VARIABLE)`
+    2. `aux_source_directory(. SRC)  add_executable(main ${SRC})` - 定义SRC变量，其值为当前目录下所有的源代码文件，编译SRC变量所代表的源代码文件，生成main可执行文件
+
+```cmake
+add_executable(MyApp main.cpp)
+add_library(MyStaticLib STATIC my_static_lib.cpp)
+add_library(MySharedLib SHARED my_shared_lib.cpp)
+
+target_link_libraries(MyApp MyStaticLib MySharedLib)
+```
+
+### 常用变量
+
+常用变量
+1. **==CMAKE_C_FLAGS==** - gcc 编译选项
+2. **==CMAKE_CXX_FLAGS==** - g++ 编译选项
+   1. `set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")` - 在CMAKE_CXX_FLAGS编译选项后追加-std=c++11
+3. **==CMAKE_BUILD_TYPE==** - 编译类型(Debug, Release)
+   1. `set(CMAKE_BUILD_TYPE Debug)` - 调试时需要选择 debug
+   2. `set(CMAKE_BUILD_TYPE Release)` - 发布时需要选择 release
+4. **==CMAKE_BINARY_DIR==** | **==PROJECT_BINARY_DIR==** | **==ProjectName_BINARY_DIR==** - 三个变量指代的内容是一致的
+   1. 如果是 in source build，指的就是工程顶层目录
+   2. 如果是 out-of-source 编译，指的是工程编译发生的目录
+5. **==CMAKE_SOURCE_DIR==** | **==PROJECT_SOURCE_DIR==** | **==ProjectName_SOURCE_DIR==** - 三个变量指代的内容是一致的
+   1. 不论采用何种编译方式，都是工程顶层目录
+   2. 在 in source build 时，他跟 CMAKE_BINARY_DIR 等变量一致
+6. **==CMAKE_C_COMPILER==** - 指定C编译器
+7. **==CMAKE_CXX_COMPILER==** - 指定C++编译器
+8. **==EXECUTABLE_OUTPUT_PATH==** - 可执行文件输出的存放路径
+9.  **==LIBRARY_OUTPUT_PATH==** - 库文件输出的存放路径
+
+### 编译工程
+
+CMake目录结构：项目主目录存在一个CMakeLists.txt文件
+
+两种方式设置编译规则
+1. 包含源文件的 子文件夹 包含 CMakeLists.txt 文件，主目录的 CMakeLists.txt 通过 add_subdirectory 添加 子目录
+2. 包含源文件的 子文件夹 未包含 CMakeLists.txt 文件，子目录编译规则 体现在主目录的 CMakeLists.txt
+
+步骤
+1. 手动编写 `CMakeLists.txt`
+2. 执行命令 `cmake PATH` 生成 `Makefile` (PATH 是顶层CMakeLists.txt 所在的目录)
+3. 执行命令 `make` 进行编译
+
+两种构建方式
+1. 内部构建(in-source build) - 不推荐
+   1. 会在同级目录下产生一大堆中间文件，这些中间文件并不是我们最终所需要的，和工程源文件放在一起会显得杂乱无章
+   2. `cmake .`
+   3. `make`
+2. 外部构建(out-of-source build) - 推荐
+   1. 将编译输出文件与源文件放到不同目录中，可执行文件生成在 build文件夹中
+   2. `mkdir build`
+   3. `cd build`
+   4. `cmake ..`  编译上级目录的CMakeLists.txt，生成Makefile和其他文件
+   5. `make`
+
+在同一个 CMake 项目中构建的库，不需要显式地使用 link_directories() 来指定库目录
+
 
 
 ## 07 - 项目开发
+
+```cmake
+cmake_minimum_required(VERSION 3.0)
+
+project(SoldierGun)
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")  # 追加编译选项
+
+set (CMAKE_BUILD_TYPE Debug)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_library(MyGun src/gun.cpp)
+
+add_library(MySoldier src/soldier.cpp)
+
+add_executable(main_cmake main.cpp)
+
+target_link_libraries(main_cmake MyGun MySoldier)
+```
+
+### 配置 json文件 并 调试项目
+
+两个 json
+1. `launch.json`
+2. `tasks.json`
+
+#### `launch.json`
+
+创建 `.vscode`
+
+点击 调试 并生成 `launch.json`
+
+![](Pics/vscode006.png)
+
+选择 `C++ (GDB/LLDB)`
+
+![](Pics/vscode007.png)
+
+需要添加 Configuration，点击右下角 `Add Configuration` 选择添加的 Configuration
+
+![](Pics/vscode009.png)
+
+还需添加
+
+```json
+"preLaunchTask": "",
+"miDebuggerPath": "/usr/bin/gdb"
+```
+
+点击后，效果如下
+
+![](Pics/vscode010.png)
+
+重要参数
+1. `program` - 需要调试的 **可执行文件** 的绝对路径
+   1. Full path to program executable.
+   2. `${workspaceFolder}/build/[exeName]`
+2. `preLaunchTask` - 调试 launch 前的任务
+   1. Task to run before debug session starts.
+   2. `C/C++: g++ build active file`
+
+
+`F5` 进行调试
+
+#### `tasks.json`
+
+![](Pics/vscode011.png)
+
+[taskss.json 模板](./Test/SoldierGun/.vscode/launch.json)
+
+修改 源文件
+
+`options` 的 `cwd` 相当于进入文件夹
+
+`label` 表示 tasks 的 名字
+
+`launch.json`  文件 中的 `preLaunchTask` 中的 名字 改为 `build` (目标 `task` 名词) 即可进行 **自动化调试**
+
+不需要重新手动进行 cmake，直接进行调试，会自动进行编译
 
 

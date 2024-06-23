@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -g -rdynamic CMakeFiles/main_cmake.dir/main.cpp.o -o main_cmake  libMyGun.a libMySoldier.a 

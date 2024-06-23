@@ -51,6 +51,12 @@
 
 # 侯捷 C++面向对象编程
 
+[侯捷 - Github](https://github.com/ZachL1/Bilibili-plus)
+
+[侯捷 OOP 上 - YouTube](https://www.youtube.com/playlist?list=PLH_SiDrNHIUT21l0wIknOLNYymBeLYX0s)
+
+[侯捷 OOP 下 - YouTube](https://www.youtube.com/playlist?list=PLH_SiDrNHIUQoNtrzMmGZ74VQZ80MTIaa)
+
 ## 01.编程简介
 
 培养正规大气的编程习惯

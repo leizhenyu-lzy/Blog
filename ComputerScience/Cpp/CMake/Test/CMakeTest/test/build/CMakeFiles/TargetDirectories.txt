@@ -1,3 +1,0 @@
-/media/lzy/10A5073E10A5073E/Project/Blog/CMake/CMakeTest/test/build/CMakeFiles/rebuild_cache.dir
-/media/lzy/10A5073E10A5073E/Project/Blog/CMake/CMakeTest/test/build/CMakeFiles/edit_cache.dir
-/media/lzy/10A5073E10A5073E/Project/Blog/CMake/CMakeTest/test/build/CMakeFiles/hello.dir
