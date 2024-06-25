@@ -3,3 +3,6 @@
 /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles/main_cmake.dir
 /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles/edit_cache.dir
 /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles/rebuild_cache.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/hellolib/CMakeFiles/hellolib.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/hellolib/CMakeFiles/edit_cache.dir
+/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/hellolib/CMakeFiles/rebuild_cache.dir

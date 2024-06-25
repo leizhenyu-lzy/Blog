@@ -53,15 +53,29 @@
 
 ![](Pics/compiler006.png)
 
+使用 `ldd [executableFile]` 可以查看链接的 **动态链接库** `.so` 文件，无法查看 **静态链接库** `.a` 文件
+
+```bash
+ldd main_cmake
+      linux-vdso.so.1 (0x00007ffd77ff2000)
+      libMyGun.so (0x0000731b18762000)       # 自定义的 .so 文件
+      libMySoldier.so (0x0000731b1875d000)   # 自定义的 .so 文件
+      libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x0000731b18400000)
+      libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000731b1870f000)
+      libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000731b18000000)
+      libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000731b18319000)
+      /lib64/ld-linux-x86-64.so.2 (0x0000731b1876f000)
+```
+
+
 ## 主流编译器
 
 **主流编译器**
-1. `gcc` - GNU Compiler Collection - 原先是 GNU C Compiler，现在除了c语言，还支持C++、java、Pascal等
-2. `g++` - GCC套件中的C++编译器部分
-3. `msvc` - Microsoft Visual C++ - 微软提供的一个C和C++编译器和开发环境，是Visual Studio IDE的一部分
-4. `mingw` - Minimalist GNU for Windows - 将GCC编译器和相关工具移植到Windows平台
-5. `clang` - C、C++、Objective-C和Objective-C++编程语言的编译器前端，它使用LLVM作为其后端
-6. `llvm` - Low Level Virtual Machine
+1. `GCC` - **GNU Compiler Collection** - 原先是 GNU C Compiler，现在除了C，还支持 C++、java、Pascal等
+   1. `G++` - GCC套件中的C++编译器部分，会自动链接 C++ 标准库
+2. `MSVC` - **Microsoft Visual C++** - **微软**提供的一个 C 和 C++ 编译器和开发环境，是Visual Studio IDE 的一部分
+3. `MinGW` - **Minimalist GNU for Windows** - 将 GCC编译器 和 相关工具 移植到Windows平台
+4. `Clang/LLVM` - 是 LLVM 项目的一部分，主要聚焦于 C, C++ 和 Objective-C 的编译。Clang 完全兼容 GCC，可以作为 GCC 的替代品
 
 
 ## G++ 编译参数

@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/MyGun.dir/src/gun.cpp.o"
   "CMakeFiles/MyGun.dir/src/gun.cpp.o.d"
-  "libMyGun.a"
   "libMyGun.pdb"
+  "libMyGun.so"
 )
 
 # Per-language clean rules from dependency scanning.

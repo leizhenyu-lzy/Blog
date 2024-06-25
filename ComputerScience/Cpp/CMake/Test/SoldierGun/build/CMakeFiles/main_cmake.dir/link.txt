@@ -1,1 +1,1 @@
-/usr/bin/c++  -Wall -g -rdynamic CMakeFiles/main_cmake.dir/main.cpp.o -o main_cmake  libMyGun.a libMySoldier.a 
+/usr/bin/c++  -Wall -g -rdynamic CMakeFiles/main_cmake.dir/main.cpp.o -o main_cmake  -Wl,-rpath,/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build libMyGun.so libMySoldier.so hellolib/libhellolib.a 

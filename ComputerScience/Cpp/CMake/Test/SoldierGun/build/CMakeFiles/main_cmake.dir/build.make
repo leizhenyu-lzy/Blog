@@ -92,8 +92,9 @@ main_cmake_EXTERNAL_OBJECTS =
 
 main_cmake: CMakeFiles/main_cmake.dir/main.cpp.o
 main_cmake: CMakeFiles/main_cmake.dir/build.make
-main_cmake: libMyGun.a
-main_cmake: libMySoldier.a
+main_cmake: libMyGun.so
+main_cmake: libMySoldier.so
+main_cmake: hellolib/libhellolib.a
 main_cmake: CMakeFiles/main_cmake.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable main_cmake"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main_cmake.dir/link.txt --verbose=$(VERBOSE)

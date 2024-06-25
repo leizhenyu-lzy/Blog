@@ -4,11 +4,19 @@
 
 - [CMake](#cmake)
   - [Table of Contents](#table-of-contents)
-- [Portals](#portals)
-  - [视频](#视频)
 - [基于 VSCode 和 CMake 实现 C/C++ 开发](#基于-vscode-和-cmake-实现-cc-开发)
-- [学C++从CMake学起 双笙子佯谬](#学c从cmake学起-双笙子佯谬)
-- [现代CMake高级教程 双笙子佯谬](#现代cmake高级教程-双笙子佯谬)
+- [学 C++ 从 CMake 学起 - 双笙子佯谬](#学-c-从-cmake-学起---双笙子佯谬)
+  - [01](#01)
+  - [02](#02)
+  - [03 Makefile](#03-makefile)
+  - [04 CMake](#04-cmake)
+  - [05 动态库\&静态库](#05-动态库静态库)
+  - [06 声明](#06-声明)
+  - [07 头文件](#07-头文件)
+  - [08 子模块](#08-子模块)
+  - [09 第三方库](#09-第三方库)
+- [现代CMake高级教程 - 双笙子佯谬](#现代cmake高级教程---双笙子佯谬)
+- [现代CMake模块化项目管理指南 - 双笙子佯谬](#现代cmake模块化项目管理指南---双笙子佯谬)
 - [CMake进阶之初识CMake - Blog](#cmake进阶之初识cmake---blog)
 - [CMake进阶之CMake原理与关键概念](#cmake进阶之cmake原理与关键概念)
 - [CMake简明教程以及现代CMake](#cmake简明教程以及现代cmake)
@@ -26,17 +34,9 @@
     - [语法注意事项](#语法注意事项)
   - [CMake内部构建和外部构建](#cmake内部构建和外部构建-1)
   - [让HelloWorld更像一个工程](#让helloworld更像一个工程)
-- [Conan Center](#conan-center)
 
 
 
-# Portals
-
-## 视频
-
-
-
-[现代CMake模块化项目管理指南 双笙子佯谬](https://www.bilibili.com/video/BV1V84y117YU/)
 
 
 # 基于 VSCode 和 CMake 实现 C/C++ 开发
@@ -52,19 +52,19 @@
 
 
 
-# 学C++从CMake学起 双笙子佯谬
+# 学 C++ 从 CMake 学起 - 双笙子佯谬
 
 [学C++从CMake学起 双笙子佯谬](https://www.bilibili.com/video/BV1fa411r7zp/)
 
-**01**
+[学C++从CMake学起(01课)- Github](https://github.com/parallel101/course/)
+
+[学C++从CMake学起-双笙子佯谬.pptx](./学C++从CMake学起-双笙子佯谬.pptx)
+
+## 01
 
 ![](Pics/cmake001.png)
 
-GNU
-
-LLVM
-
-MSVC
+[编译器个人笔记](../../Compiler/Compiler&Interpreter.md)
 
 ```cpp
 // 01
@@ -81,7 +81,8 @@ int main()
 // ./hello.out
 ```
 
-**02**
+## 02
+
 ```cpp
 // 02
 // hello.cpp
@@ -133,12 +134,9 @@ int main()
 // g++ -c main.cpp -o main.o
 // g++  main.o hello.o -o main.out
 // ./main.out
-
-// 也可以
-// ./maincpp.out
 ```
 
-**03 Makefile**
+## 03 Makefile
 
 ![](Pics/cmake003.png)
 
@@ -176,7 +174,7 @@ main.o   : main.cpp
 ```
 
 
-**04 CMake**
+## 04 CMake
 
 ![](Pics/cmake004.png)
 
@@ -199,7 +197,8 @@ add_executable(main.out main.cpp hello.cpp)
 // ./main.out
 ```
 
-**05 动态库&静态库**
+## 05 动态库&静态库
+
 ![](Pics/cmake006.png)
 
 lib 静态库 .a 类似于 .o 编译后，删了 .o main.out 仍能使用
@@ -232,25 +231,39 @@ target_link_libraries(main.out PUBLIC helloA)  # 用 .so 也行
 // ldd main.out 可以查看链接信息
 ```
 
-**06 声明**
+## 06 声明
 
 ![](Pics/cmake008.png)
 
-**07 头文件**
+防止歧义出现，例如 `hello();` 到底是创建对象，还是一个函数
+
+## 07 头文件
 
 ![](Pics/cmake009.png)
 
+预处理器会将 `#include` 进行替换
+
+**尖括号 & 引号的区别**
+1. `#include <file.h>` - 不在当前目录下搜索，只在系统目录下搜索
+2. `#include "file.h"` - 优先搜索当前目录，如果没有再搜索系统目录
+
 ![](Pics/cmake010.png)
 
-hello.cpp 最好也写上 #include <hello.h>
+hello.cpp 最好也写上 `#include <hello.h>`，这样如果修改**实现方式**，而忘记修改**声明**也能及时发现
 
 ![](Pics/cmake011.png)
 
+递归使用头文件可能导致 **菱形引用**
+
 ![](Pics/cmake012.png)
+
+使用 **#pragma once**
 
 ![](Pics/cmake013.png)
 
-**08 子模块**
+
+
+## 08 子模块
 
 ![](Pics/cmake014.png)
 
@@ -342,6 +355,8 @@ add_library(hellolibSO SHARED hello.cpp)
 
 ![](Pics/cmake016.png)
 
+在 subdirectory 中如果添加 `target_include_directories` 即可不用在外部的 `CMakeLists.txt` 中重复 `target_include_directories`，使用 `PUBLIC` 即可保证这个头文件被传播
+
 ```cpp
 // 08
 // main.cpp
@@ -384,7 +399,25 @@ target_include_directories(hellolibSO PUBLIC .)
 
 ![](Pics/cmake017.png)
 
-**09 第三方库**
+
+## 09 第三方库
+
+三种类型
+1. 纯头文件
+   1. 函数实现直接在头文件中
+   2. 下载后放在 `/include` 目录中，在 `CMakeLists.txt` 中 `include_directories()` 添加
+2. 子模块引入
+   1. 在 `CMakeLists.txt` 中 `add_subdirectory()` 添加
+3. 系统预安装的库
+   1. 使用 `find_package(xxx REQUIRED)` 自动查找指定库的头文件和库文件的路径
+   2. 加载库提供的 CMake 配置文件(如果有)，根据找到的库自动设置编译器和链接器的选项
+   3. 利用 **缓存机制**
+      1. 首次 `find_package` 在指定的路径中查找库，并将找到的库的详情存储在 CMake 的缓存中
+      2. 后续 `find_package` 调用会首先检查这个缓存，如果之前已找到相应的库，则直接使用缓存中的信息，而不需要重新搜索
+   4. 可以解决 菱形依赖(diamond dependency)
+      1. **缓存机制** 确保了一旦一个库被找到，其路径和重要配置就会被存储在 CMake 缓存中
+      2. 避免了因为多次查找和配置相同库而可能引入的错误
+
 
 ![](Pics/cmake018.png)
 
@@ -392,24 +425,39 @@ target_include_directories(hellolibSO PUBLIC .)
 
 ![](Pics/cmake020.png)
 
+没有官方 包管理器
+
+linux 可以使用系统自带的包管理 (eg: apt) 来安装 C++ 包，不是下载源码，而是根据架构(eg: x86)下载编译好的
+
+vcpkg 下载的是源码，并编译
+
 ![](Pics/cmake021.png)
-
-**感谢小彭老师**
-
-![](Pics/cmake022.png)
 
 ---
 
-# 现代CMake高级教程 双笙子佯谬
+# 现代CMake高级教程 - 双笙子佯谬
 
 [现代CMake高级教程 双笙子佯谬](https://www.bilibili.com/video/BV16P4y1g7MH/)
 
+[学C++从CMake学起(11课)- Github](https://github.com/parallel101/course/)
+
+命令行调用 简化
+CMakeLists.txt文件 简化
+
 ![](Pics/cmake023.png)
+1. `cmake -B build` 会自动创建 build 目录以及 Makefile 等
+2. `cmake --build build --parallel 4` 会自动调用 build 中的 make
 
-cmake -B build 会自动创建 build 目录以及 Makefile等
-cmake --build build --parallel 4 会自动调用 build 中的 make
 
 
+
+
+
+---
+
+# 现代CMake模块化项目管理指南 - 双笙子佯谬
+
+[现代CMake模块化项目管理指南 双笙子佯谬](https://www.bilibili.com/video/BV1V84y117YU/)
 
 
 ---
@@ -608,10 +656,6 @@ EXCLUDE_FROM_ALL函数将写的目录从编译中排除
 在那里进行cmake的二进制bin目录就在哪里
 
 
-
-
-
-# Conan Center
 
 
 

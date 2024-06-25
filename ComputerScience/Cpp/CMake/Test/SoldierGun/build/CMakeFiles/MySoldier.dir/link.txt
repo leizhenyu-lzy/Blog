@@ -1,2 +1,1 @@
-/usr/bin/ar qc libMySoldier.a CMakeFiles/MySoldier.dir/src/soldier.cpp.o
-/usr/bin/ranlib libMySoldier.a
+/usr/bin/c++ -fPIC  -Wall -g -shared -Wl,-soname,libMySoldier.so -o libMySoldier.so CMakeFiles/MySoldier.dir/src/soldier.cpp.o 
