@@ -1,2 +1,1 @@
-/usr/bin/ar qc libMyGun.a CMakeFiles/MyGun.dir/src/gun.cpp.o
-/usr/bin/ranlib libMyGun.a
+/usr/bin/c++ -fPIC  -Wall -g -shared -Wl,-soname,libMyGun.so -o libMyGun.so CMakeFiles/MyGun.dir/src/gun.cpp.o 

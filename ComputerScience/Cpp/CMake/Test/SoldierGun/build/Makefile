@@ -155,6 +155,19 @@ main_cmake/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_cmake.dir/build.make CMakeFiles/main_cmake.dir/build
 .PHONY : main_cmake/fast
 
+#=============================================================================
+# Target rules for targets named hellolib
+
+# Build rule for target.
+hellolib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hellolib
+.PHONY : hellolib
+
+# fast build rule for target.
+hellolib/fast:
+	$(MAKE) $(MAKESILENT) -f hellolib/CMakeFiles/hellolib.dir/build.make hellolib/CMakeFiles/hellolib.dir/build
+.PHONY : hellolib/fast
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -237,6 +250,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... MyGun"
 	@echo "... MySoldier"
+	@echo "... hellolib"
 	@echo "... main_cmake"
 	@echo "... main.o"
 	@echo "... main.i"

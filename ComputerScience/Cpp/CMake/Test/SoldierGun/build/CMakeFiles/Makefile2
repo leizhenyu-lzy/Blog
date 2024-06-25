@@ -66,17 +66,34 @@ CMAKE_BINARY_DIR = /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/Soldie
 all: CMakeFiles/MyGun.dir/all
 all: CMakeFiles/MySoldier.dir/all
 all: CMakeFiles/main_cmake.dir/all
+all: hellolib/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: hellolib/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/MyGun.dir/clean
 clean: CMakeFiles/MySoldier.dir/clean
 clean: CMakeFiles/main_cmake.dir/clean
+clean: hellolib/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory hellolib
+
+# Recursive "all" directory target.
+hellolib/all: hellolib/CMakeFiles/hellolib.dir/all
+.PHONY : hellolib/all
+
+# Recursive "preinstall" directory target.
+hellolib/preinstall:
+.PHONY : hellolib/preinstall
+
+# Recursive "clean" directory target.
+hellolib/clean: hellolib/CMakeFiles/hellolib.dir/clean
+.PHONY : hellolib/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/MyGun.dir
@@ -136,14 +153,15 @@ CMakeFiles/MySoldier.dir/clean:
 # All Build rule for target.
 CMakeFiles/main_cmake.dir/all: CMakeFiles/MyGun.dir/all
 CMakeFiles/main_cmake.dir/all: CMakeFiles/MySoldier.dir/all
+CMakeFiles/main_cmake.dir/all: hellolib/CMakeFiles/hellolib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_cmake.dir/build.make CMakeFiles/main_cmake.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_cmake.dir/build.make CMakeFiles/main_cmake.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles --progress-num=5,6 "Built target main_cmake"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles --progress-num=7,8 "Built target main_cmake"
 .PHONY : CMakeFiles/main_cmake.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/main_cmake.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/main_cmake.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles 0
 .PHONY : CMakeFiles/main_cmake.dir/rule
@@ -156,6 +174,32 @@ main_cmake: CMakeFiles/main_cmake.dir/rule
 CMakeFiles/main_cmake.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_cmake.dir/build.make CMakeFiles/main_cmake.dir/clean
 .PHONY : CMakeFiles/main_cmake.dir/clean
+
+#=============================================================================
+# Target rules for target hellolib/CMakeFiles/hellolib.dir
+
+# All Build rule for target.
+hellolib/CMakeFiles/hellolib.dir/all:
+	$(MAKE) $(MAKESILENT) -f hellolib/CMakeFiles/hellolib.dir/build.make hellolib/CMakeFiles/hellolib.dir/depend
+	$(MAKE) $(MAKESILENT) -f hellolib/CMakeFiles/hellolib.dir/build.make hellolib/CMakeFiles/hellolib.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles --progress-num=5,6 "Built target hellolib"
+.PHONY : hellolib/CMakeFiles/hellolib.dir/all
+
+# Build rule for subdir invocation for target.
+hellolib/CMakeFiles/hellolib.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hellolib/CMakeFiles/hellolib.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles 0
+.PHONY : hellolib/CMakeFiles/hellolib.dir/rule
+
+# Convenience name for target.
+hellolib: hellolib/CMakeFiles/hellolib.dir/rule
+.PHONY : hellolib
+
+# clean rule for target.
+hellolib/CMakeFiles/hellolib.dir/clean:
+	$(MAKE) $(MAKESILENT) -f hellolib/CMakeFiles/hellolib.dir/build.make hellolib/CMakeFiles/hellolib.dir/clean
+.PHONY : hellolib/CMakeFiles/hellolib.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

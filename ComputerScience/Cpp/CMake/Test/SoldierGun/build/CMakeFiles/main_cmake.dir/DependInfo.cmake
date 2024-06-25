@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles/MyGun.dir/DependInfo.cmake"
   "/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/CMakeFiles/MySoldier.dir/DependInfo.cmake"
+  "/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/build/hellolib/CMakeFiles/hellolib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

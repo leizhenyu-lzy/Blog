@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/include
+CXX_INCLUDES = -I/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/include -I/home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/hellolib/.
 
 CXX_FLAGS =  -Wall -g
 

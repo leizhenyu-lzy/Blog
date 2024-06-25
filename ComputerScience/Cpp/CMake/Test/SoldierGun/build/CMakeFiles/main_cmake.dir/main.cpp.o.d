@@ -147,4 +147,5 @@ CMakeFiles/main_cmake.dir/main.cpp.o: \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
  /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/include/gun.h \
- /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/include/soldier.h
+ /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/include/soldier.h \
+ /home/lzy/Projects/Blog/ComputerScience/Cpp/CMake/Test/SoldierGun/hellolib/./hellolib.h

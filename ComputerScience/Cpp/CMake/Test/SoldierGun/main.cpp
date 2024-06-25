@@ -1,6 +1,7 @@
 #include <iostream>
 #include "gun.h"
 #include "soldier.h"
+#include "hellolib.h"
 
 
 void test()
@@ -14,6 +15,7 @@ void test()
 int main()
 {
     std::cout << "Hello!" << std::endl;
+    hello();
     test();
     return 0;
 }
