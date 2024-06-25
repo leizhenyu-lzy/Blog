@@ -27,6 +27,7 @@
   - [视频教程](#视频教程)
   - [Linux 安装](#linux-安装)
 - [常用命令](#常用命令)
+- [ROS2 安装](#ros2-安装)
 - [常见问题](#常见问题)
 - [The Construct](#the-construct)
   - [Unit 1 - Introduction to the Course](#unit-1---introduction-to-the-course)
@@ -34,11 +35,16 @@
   - [第 01 章 - ROS2 介绍 与 安装](#第-01-章---ros2-介绍-与-安装)
     - [Linux 基础](#linux-基础)
     - [ROS2 介绍与安装](#ros2-介绍与安装)
-  - [ROS 1 问题举例](#ros-1-问题举例)
-  - [ROS1 与 ROS2 架构对比](#ros1-与-ros2-架构对比)
+    - [ROS 1 问题举例](#ros-1-问题举例)
+    - [ROS1 与 ROS2 架构对比](#ros1-与-ros2-架构对比)
   - [第 02 章 - ROS2 第一个节点](#第-02-章---ros2-第一个节点)
-    - [编译报错](#编译报错)
+    - [Node 节点 分类](#node-节点-分类)
+    - [ROS2 工作空间 \& 功能包](#ros2-工作空间--功能包)
+    - [ROS2 pkg](#ros2-pkg)
+    - [ROS2 构建工具 colcon](#ros2-构建工具-colcon)
+    - [编译/运行 报错](#编译运行-报错)
     - [CMake 依赖查找流程](#cmake-依赖查找流程)
+    - [Python 包查找流程](#python-包查找流程)
   - [第 03 章 - ROS2 节点通信之话题与服务](#第-03-章---ros2-节点通信之话题与服务)
     - [话题](#话题)
     - [服务](#服务)
@@ -112,17 +118,30 @@
 
 # 常用命令
 
-1. **查看ROS版本**
-   ```bash
-   printenv ROS_DISTRO
-   humble
-   ```
+1. 查看ROS版本 - `printenv ROS_DISTRO`
+2. 运行节点 - `ros2 run <pkg> <executable>`
+3. 查看节点列表 - `ros2 node list`
+4. 查看节点信息 - `ros2 node info <node_name>` - `/`开头，可以用 `Tab` 补全
+5. 重映射节点名称 - `ros2 run <pkg> <executable> --ros-args --remap __node:=<new_name>`
+   1. `--ros-args` 用于明确接下来的参数是 ROS 参数，而非可执行文件本身的命令行参数
+   2. `__node` 用于设置节点的名称
+6. 运行节点时设置参数 - `ros2 run <pkg> <executable> --ros-args -p <parameter_name>:=<val>`
+   1. `-p` 用于指定参数(parameter)
+7. 功能包 - [ros2 pkg {create/executable/list/prefix/xml}](#ros2-pkg)
 
+---
 
+# ROS2 安装
 
+**Path**
+1. `/opt/ros/humble/lib` - 库文件(静态库`.a`, 动态库`.so`)、可执行文件
+2. `/opt/ros/humble/include` - 头文件(类定义、函数原型和宏定义等)，用于编译时包含
+3. `/opt/ros/humble/share` - 配置文件、launch文件、帮助文档、示例代码、环境设置脚本、包的元数据，用于支持软件包的运行和用户的使用，不直接参与编译过程
+
+---
 
 # 常见问题
-1. **sh: 0: getcwd() failed: No such file or directory** - 切换到其他目录 如 ~/
+1. **sh: 0: getcwd() failed: No such file or directory** - 切换到其他目录 如 `~/`
 
 
 ---
@@ -190,7 +209,7 @@ simulated robots
 
 设计了一整套 **通信机制** (话题、服务、参数、动作)，解决机器人各组件之间通信问题
 
-## ROS 1 问题举例
+### ROS 1 问题举例
 
 1. ROS 1 通信机制 包含 ROS Master的东西，所有节点(激光雷达、避障、底盘驱动等)的通信建立必须经过这个主节点。主节点挂掉后，就会造成整个系统通信的异常(避障策略等)，影响 ROS 做商业化机器人
 2. 通信基于TCP实现，实时性差、系统开销大
@@ -201,7 +220,7 @@ simulated robots
 
 
 
-## ROS1 与 ROS2 架构对比
+### ROS1 与 ROS2 架构对比
 
 1. **架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://scholar.google.com/scholar?oi=gsb20&q=Exploring%20the%20performance%20of%20ROS2&lookup=0&hl=en)
 
@@ -233,7 +252,7 @@ simulated robots
       1. 写代码 & ROS2 开发的各种常用的机器人相关开发工具所在的层
 3. **整体改进**
    1. python2 到 python3 的支持
-   2. 编译系统的改进 catkin 到 ament
+   2. 编译系统的改进 `catkin` 到 `ament`
    3. C++ 标准更新到 C++11
    4. 相同 API 的 进程间 和 进程内 通信
 
@@ -282,41 +301,229 @@ simulated robots
 3. **rqt**
    1. rqt is a framework for graphical user interfaces.
    2. It is extensible with plugins which can be written in either Python or C++.
-   3. 插件 - **introspection** - **node graph**
+   3. 插件 - **`introspection`** - **`node graph`**
    4. 也可以直接 rqt_graph
 
-
-
-
-
+---
 
 ## 第 02 章 - ROS2 第一个节点
 
-节点(功能模块)交互
-1. topic       话题(发布/订阅) - 单向
-2. service     服务 - 双向
-3. action      动作
-4. parameter   参数
+[ROS2命令行工具 - Github](https://github.com/ros2/ros2cli)
 
-ROS2相关 库 地址 - `/opt/ros/humble/lib`
+### Node 节点 分类
 
-ROS2相关 头文件 地址 - `/opt/ros/humble/include`
+**Node 节点(功能模块) 交互**
+1. **topic**     话题 - **Publisher/Subscriber** - ==单向==(可以是 **一对多、多对一、多对多**)
+   <img src="Pics/ros022.gif" width=50%>
+2. **service**   服务 - **Server/Client** - ==双向==(**Client 发起请求，Server 返回响应**)
+   <img src="Pics/ros023.gif" width=50%>
+   1. ==可以有多个 Client 但只能有一个 Server==
+3. **action**    动作
+   <img src="Pics/ros024.gif" width=50%>
+4. **parameter** 参数
 
-### 编译报错
+### ROS2 工作空间 & 功能包
 
+一个 **工作空间** 可有 多个 **功能包**，一个 **功能包** 可有 多个 **节点**
+
+**工作空间** - 工作空间是包含若干个功能包的目录，下有文件夹 `./src`
+
+**功能包** - 存放节点
+1. 根据编译方式的不同分为三种类型
+   1. `ament_python` - 适用于 python 程序
+   2. `cmake` - 适用于 C++
+   3. `ament_cmake` - 适用于 C++ 程序，cmake 的增强版
+2. 获取方式
+   1. 安装 `sudo apt install ros-<version>-<pkg_name>`
+   2. 手动编译(如果需要 修改 源码)，编译之后，需要手动 `source` 工作空间的 `install` 目录
+
+```bash
+WorkSpace --- 自定义的工作空间。
+    |--- build：存储中间文件的目录，该目录下会为每一个功能包创建一个单独子目录。
+    |--- install：安装目录，该目录下会为每一个功能包创建一个单独子目录。
+    |--- log：日志目录，用于存储日志文件。
+    |--- src：用于存储功能包源码的目录。
+        |-- C++功能包
+            |-- package.xml：包信息，比如:包名、版本、作者、依赖项。
+            |-- CMakeLists.txt：配置编译规则，比如源文件、依赖项、目标文件。
+            |-- src：C++源文件目录。
+            |-- include：头文件目录。
+            |-- msg：消息接口文件目录。
+            |-- srv：服务接口文件目录。
+            |-- action：动作接口文件目录。
+        |-- Python功能包
+            |-- package.xml：包信息，比如:包名、版本、作者、依赖项。
+            |-- setup.py：与C++功能包的CMakeLists.txt类似。
+            |-- setup.cfg：功能包基本配置文件。
+            |-- resource：资源目录。
+            |-- test：存储测试相关文件。
+            |-- 功能包同名目录：Python源文件目录。
+```
+
+### ROS2 pkg
+
+**`ros2 pkg`**
+1. `create`      - 创建功能包 Create a new ROS2 package
+   1. `ros2 pkg create <pkg_name>  --build-type  {cmake, ament_cmake, ament_python}  --dependencies <depend_name>`
+2. `executables` - 列出可执行文件 Output a list of package specific executables
+   1. `ros2 pkg executables <pkg_name>`
+   2. 正好对应 `ros2 run <pkg> <executable>`
+3. `list`        - 列出所有的包 Output a list of available packages
+   1. `ros2 pkg list`
+4. `prefix`      - 输出某个包所在路径的前缀(包的 所有内容(库`lib`、头文件`include`、资源`share`等)存储的顶级目录) Output the prefix path of a package
+   1. `ros2 pkg prefix <pkg_name>`
+5. `xml`         - 列出包的清单描述文件(包的 名字、构建工具(buildtool_depend)、编译信息、拥有者、用途、依赖(exec_depend)) Output the XML of the package manifest or a specific tag
+   1. `ros2 pkg xml <pkg_name>`
+
+### ROS2 构建工具 colcon
+
+![](Pics/colcon.svg)
+
+**[colcon - collective construction](https://colcon.readthedocs.io/en/released/index.html)**
+1. 功能包构建工具(用来编译代码)
+2. 替代 早期版本中的 **catkin_make** & **ament_tools**
+3. 优势 - 多语言支持(C、C++、Python、Java 等)、多系统兼容(Linux、macOS、Windows)、依赖管理、扩展性(插件)、灵活性(**支持各种构建系统**，如 `CMake`、`Python setuptools`、`Gradle`)
+4. `colcon` 和 `CMake` 在项目构建中扮演不同但互补的角色
+   1. `CMake` 是直接负责编译代码的工具
+   2. `colcon` 为项目级的构建管理工具(更高层次)，负责协调和优化整个多包项目的构建过程，提供一致的接口来构建、测试和安装项目中的所有软件包
+
+ROS2 默认没有安装 colcon，安装命令如下
+
+```bash
+sudo apt install python3-colcon-common-extensions
+```
+编译命令
+1. `colcon build` - 编译所有功能包
+2. `colcon build --packages-select <pkg_name>` - 只编译一个功能包
+3. `colcon build --packages-select <pkg_name>  --cmake-args -DBUILD_TESTING=0` - 不编译单元测试
+4. `colcon test` - 运行编译的包的测试
+5. `colcon build --symlink-install` - 允许通过更改 src 下的部分文件来改变install，每次调整 python 脚本时都不必重新 build 了
+   1. 编译完成后，`./src` 和 `./install` 两个目录没有关系，如果修改 `./src` 则 `./install` 下的文件不会自动修改，需要重新 `colcon build` 编译
+   2. 使用 `--symlink-instal` 后，两个文件夹中的
+
+
+**源码构建 & 运行 示例**
+
+```bash
+mkdir xxx & cd xxx
+
+git clone https://github.com/ros2/examples src/examples -b humble
+
+colcon build  # 使用 colcon 进行构建
+
+tree -L 1  # 查看目录结构(深度=1)
+.
+├── build
+├── install
+├── log
+└── src
+4 directories, 0 files
+
+ros2 pkg executables examples_rclcpp_minimal_publisher
+
+source install/setup.bash  # 表明功能包位置
+# 在终端会话中临时的。每次打开一个新的终端窗口或会话时，都需要重新运行这个命令来设置正确的环境变量
+# 想要持久化需要将该命令添加到 ~/.bashrc
+ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function
+
+
+source install/setup.bash
+ros2 run examples_rclcpp_minimal_publisher publisher_member_function
+```
+
+python 程序是直接 从 `./src` 复制到 `./install` 中对应目录下的
+
+```bash
+tree ./src/examples/rclpy/executors/examples_rclpy_executors/
+
+./src/examples/rclpy/executors/examples_rclpy_executors/
+├── callback_group.py
+├── composed.py
+├── custom_callback_group.py
+├── custom_executor.py
+├── __init__.py
+├── listener.py
+└── talker.py
+
+
+tree ./install/examples_rclpy_executors/lib/examples_rclpy_executors/
+
+./install/examples_rclpy_executors/lib/examples_rclpy_executors/
+├── callback_group
+├── composed
+├── custom_callback_group
+├── custom_executor
+├── listener
+└── talker
+```
+
+
+
+
+
+
+
+
+
+
+
+### 编译/运行 报错
+
+**C++**
 1. `No such file or directory`   - 预处理器 找不到 头文件
    1. `g++` 中 使用 `-I [IncludePath]` 参数
 2. `undefined reference to xxx`  - 链接器 找不到 函数或对象的定义，即找不到 对应的库文件 或 代码实现
    1. `g++` 中 使用 `-L [LibPath]` 和 `-l [LibNameWithoutPrefix&Suffix]`
 
+**Python**
+1. `ModuleNotFoundError: No module named 'xxx'`
+   1. 路径没有添加进环境
+
 ### CMake 依赖查找流程
 
+使用 `find_package()` 简化 `CMakeLists.txt`，将自动设置 CMake 变量，无需手动添加
+
+查找路径对应的环境变量
+1. `PATH` - ROS相关 `/opt/ros/humble/bin`
+2. `<PackageName>_DIR`
+3. `CMAKE_PREFIX_PATH`
+4. `CMAKE_FRAMEWORK_PATH`
+5. `CMAKE_APPBUNDLE_PATH`
 
 
+`find_package()` 命令进行包查找时应用的一种 **路径回退和搜索机制**
+1. 如果以 `bin` 或 `sbin` 结尾，则自动回退到上一级目录，检查这些目录下的
+   1. `<prefix>/(lib/<arch>|lib|share)/cmake/<name>*/`
+   2. `<prefix>/(lib/<arch>|lib|share)/<name>*/`
+   3. `<prefix>/(lib/<arch>|lib|share)/<name>*/(cmake|CMake)/`
 
+cmake找到这些目录后，会开始依次找`<package>Config.cmake`或`Find<package>.cmake`文件，找到后即可执行该文件并生成相关链接信息
 
+```bash
+lzy@legion:/opt/ros/humble/share/rclcpp/cmake $ ll
 
+# ...
+-rw-r--r-- 1 root root 1382 May 24 06:18 rclcppConfig.cmake  # 借此文件生成链接信息
+-rw-r--r-- 1 root root  433 May 24 06:18 rclcppConfig-version.cmake
+# ...
+```
 
+### Python 包查找流程
+
+通过环境变量 `PYTHONPATH`，让 Python3 找到 `rclpy`
+
+```bash
+lzy@legion:/opt/ros/humble $ echo $PYTHONPATH
+/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages
+```
+
+寻找 `rclpy`
+
+```bash
+lzy@legion:/opt/ros/humble $ ls -l /opt/ros/humble/local/lib/python3.10/dist-packages/ | grep rclpy
+drwxr-xr-x 5 root root  4096 May 27 01:58 rclpy
+drwxr-xr-x 2 root root  4096 May 27 01:58 rclpy-3.3.13-py3.10.egg-info
+```
 
 ---
 
