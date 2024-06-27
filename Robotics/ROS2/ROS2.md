@@ -42,9 +42,13 @@
     - [ROS2 工作空间 \& 功能包](#ros2-工作空间--功能包)
     - [ROS2 pkg](#ros2-pkg)
     - [ROS2 构建工具 colcon](#ros2-构建工具-colcon)
+    - [使用 RCLCPP 编写节点](#使用-rclcpp-编写节点)
+    - [使用 RCLPY 编写节点](#使用-rclpy-编写节点)
     - [编译/运行 报错](#编译运行-报错)
     - [CMake 依赖查找流程](#cmake-依赖查找流程)
     - [Python 包查找流程](#python-包查找流程)
+    - [Python 打包工具 setup](#python-打包工具-setup)
+    - [面向对象 OOP](#面向对象-oop)
   - [第 03 章 - ROS2 节点通信之话题与服务](#第-03-章---ros2-节点通信之话题与服务)
     - [话题](#话题)
     - [服务](#服务)
@@ -118,16 +122,28 @@
 
 # 常用命令
 
-1. 查看ROS版本 - `printenv ROS_DISTRO`
-2. 运行节点 - `ros2 run <pkg> <executable>`
-3. 查看节点列表 - `ros2 node list`
-4. 查看节点信息 - `ros2 node info <node_name>` - `/`开头，可以用 `Tab` 补全
-5. 重映射节点名称 - `ros2 run <pkg> <executable> --ros-args --remap __node:=<new_name>`
-   1. `--ros-args` 用于明确接下来的参数是 ROS 参数，而非可执行文件本身的命令行参数
-   2. `__node` 用于设置节点的名称
-6. 运行节点时设置参数 - `ros2 run <pkg> <executable> --ros-args -p <parameter_name>:=<val>`
-   1. `-p` 用于指定参数(parameter)
-7. 功能包 - [ros2 pkg {create/executable/list/prefix/xml}](#ros2-pkg)
+1. `printenv ROS_DISTRO` - 查看 ROS 版本
+2. `rqt` - 查看 rqt 图
+3. `ros2 run <pkg> <executable>` - 运行节点
+   1. `ros2 run <pkg> <executable> --ros-args --remap __node:=<new_name>` - 重映射节点名称
+      1. `--ros-args` 用于明确接下来的参数是 ROS 参数，而非可执行文件本身的命令行参数
+      2. `__node` 用于设置节点的名称
+   2. `ros2 run <pkg> <executable> --ros-args -p <parameter_name>:=<val>` - 运行节点时设置参数
+      1. `-p` 用于指定参数(parameter)
+4. `ros2 node {list/info}` - 节点
+5. `ros2 pkg {create/executable/list/prefix/xml}` - 功能包
+   1. `create` - 创建功能包 Create a new ROS2 package
+      1. `ros2 pkg create <pkg_name>  --build-type  {cmake, ament_cmake, ament_python}  --dependencies <depend_name>`
+      2. `--build-type` 默认为 `ament_cmake`
+   2. `executables` - 列出可执行文件 Output a list of package specific executables
+      1. `ros2 pkg executables <pkg_name>`
+      2. 正好对应 `ros2 run <pkg> <executable>`
+   3. `list` - 列出所有的包 Output a list of available packages
+      1. `ros2 pkg list`
+   4. `prefix` - 输出某个包所在路径的前缀(包的 所有内容(库`lib`、头文件`include`、资源`share`等)存储的顶级目录) Output the prefix path of a package
+      1. `ros2 pkg prefix <pkg_name>`
+   5. `xml` - 列出包的清单描述文件(包的 名字、构建工具(buildtool_depend)、编译信息、拥有者、用途、依赖(exec_depend)) Output the XML of the package manifest or a specific tag
+      1. `ros2 pkg xml <pkg_name>`
 
 ---
 
@@ -222,35 +238,37 @@ simulated robots
 
 ### ROS1 与 ROS2 架构对比
 
-1. **架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://scholar.google.com/scholar?oi=gsb20&q=Exploring%20the%20performance%20of%20ROS2&lookup=0&hl=en)
+**架构图 & 对比** - 论文 [Exploring the Performance of ROS2](https://scholar.google.com/scholar?oi=gsb20&q=Exploring%20the%20performance%20of%20ROS2&lookup=0&hl=en)
 
-   <center><img src="Pics/ros003.png" width=70%></center>
+<center><img src="Pics/ros003.png" width=70%></center>
 
-   <center><img src="Pics/ros005.png" width=60%></center>
+<center><img src="Pics/ros005.png" width=60%></center>
 
-   1. **OS Layer - 操作系统层**
-      1. 原来的只支持 linux 平台，现在支持 Windows、MAC 甚至是 嵌入式RTOS 平台
-   2. **MiddleWare - 中间件层**
-      1. 特点
-         1. **去中心化** - ROS2 取消 master 节点(基于DDS的互相发现协议)，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 **1对1、1对n、n对n** 进行互相通信
-         2. 提供多个节点中间通信
-         3. 通信更换为 **DDS** - 使得ROS2的实时性、可靠性和连续性上都有了增强
-         4. ROS1 的中间件是 ROS组织 基于TCP/UDP 建立的
-      2. **DDS Implementation Layer - DSS实现层**
-         1. 对不同常见的DDS接口进行**再次的封装**，让其**保持统一性**，**为DDS抽象层提供统一的API**
-         2. ROS2 为每家 DDS供应商 开发对应的 DDS_Interface 即 DDS接口层
-      3. **Abstract DDS Layer - DDS抽象层 RMW**
-         1. 通过 DDS Abstract 抽象层来 **统一 DDS 的 API**
-         2. 将DDS实现层进一步的封装，使得DDS更容易使用
-         3. DDS需要大量的设置和配置(分区，主题名称，发现模式，消息创建,...)
-      4. **ROS2 Client Layer - ROS2客户端库 RCL**
-         ![](Pics/ros007.webp)
-         1. RCL (ROS Client Library) ROS客户端库，其实就是ROS的一种API，提供对ROS话题、服务、参数、Action等接口
-         2. 不同语言对应不同 RCL - **Python:rclpy** - **C++:rclcpp** - 操作ROS2的节点话题服务
-         3. RMW(中间件接口)层 是对各家 DDS 的抽象层，基于 RMW 实现 rclc，基于 rclc 实现了 rclpy 和 rclcpp
-   3. **Application Layer - 应用层**
-      1. 写代码 & ROS2 开发的各种常用的机器人相关开发工具所在的层
-3. **整体改进**
+1. **OS Layer - 操作系统层**
+   1. 原来的只支持 linux 平台，现在支持 Windows、MAC 甚至是 嵌入式RTOS 平台
+2. **MiddleWare - 中间件层**
+   1. 特点
+      1. **去中心化** - ROS2 取消 master 节点(基于DDS的互相发现协议)，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 **1对1、1对n、n对n** 进行互相通信
+      2. 提供多个节点中间通信
+      3. 通信更换为 **DDS** - 使得ROS2的实时性、可靠性和连续性上都有了增强
+      4. ROS1 的中间件是 ROS组织 基于TCP/UDP 建立的
+   2. **DDS Implementation Layer - DSS实现层**
+      1. 对不同常见的DDS接口进行**再次的封装**，让其**保持统一性**，**为DDS抽象层提供统一的API**
+      2. ROS2 为每家 DDS供应商 开发对应的 DDS_Interface 即 DDS接口层
+   3. **Abstract DDS Layer - DDS抽象层 RMW**
+      1. 通过 DDS Abstract 抽象层来 **统一 DDS 的 API**
+      2. 将DDS实现层进一步的封装，使得DDS更容易使用
+      3. DDS需要大量的设置和配置(分区，主题名称，发现模式，消息创建,...)
+   4. **ROS2 Client Layer - ROS2客户端库 RCL**
+      ![](Pics/ros007.webp)
+      1. **RCL (ROS Client Library)** ROS客户端库，其实就是ROS的一种API，提供对ROS 话题、服务、参数、Action 等接口
+      2. 不同语言对应不同 RCL
+         1. **`Python:rclpy`**
+         2. **`C++:rclcpp`**
+      3. RMW(中间件接口)层 是对各家 DDS 的抽象层，基于 RMW 实现 `rclc`，基于 `rclc` 实现了 `rclpy` 和 `rclcpp`
+3. **Application Layer - 应用层**
+   1. 写代码 & ROS2 开发的各种常用的机器人相关开发工具所在的层
+4. **整体改进**
    1. python2 到 python3 的支持
    2. 编译系统的改进 `catkin` 到 `ament`
    3. C++ 标准更新到 C++11
@@ -339,25 +357,25 @@ simulated robots
 
 ```bash
 WorkSpace --- 自定义的工作空间。
-    |--- build：存储中间文件的目录，该目录下会为每一个功能包创建一个单独子目录。
-    |--- install：安装目录，该目录下会为每一个功能包创建一个单独子目录。
-    |--- log：日志目录，用于存储日志文件。
-    |--- src：用于存储功能包源码的目录。
-        |-- C++功能包
-            |-- package.xml：包信息，比如:包名、版本、作者、依赖项。
-            |-- CMakeLists.txt：配置编译规则，比如源文件、依赖项、目标文件。
-            |-- src：C++源文件目录。
-            |-- include：头文件目录。
-            |-- msg：消息接口文件目录。
-            |-- srv：服务接口文件目录。
-            |-- action：动作接口文件目录。
-        |-- Python功能包
-            |-- package.xml：包信息，比如:包名、版本、作者、依赖项。
-            |-- setup.py：与C++功能包的CMakeLists.txt类似。
-            |-- setup.cfg：功能包基本配置文件。
-            |-- resource：资源目录。
-            |-- test：存储测试相关文件。
-            |-- 功能包同名目录：Python源文件目录。
+    |--- build : 存储中间文件的目录，该目录下会为每一个功能包创建一个单独子目录
+    |--- install : 安装目录，该目录下会为每一个功能包创建一个单独子目录
+    |--- log : 日志目录，用于存储日志文件
+    |--- src : 功能包源码的目录
+        |-- C++ 功能包
+            |-- package.xml : 包信息，比如:包名、版本、作者、依赖项
+            |-- CMakeLists.txt : 配置编译规则，比如源文件、依赖项、目标文件
+            |-- src : C++源文件目录
+            |-- include : 头文件目录
+            |-- msg : 消息接口文件目录
+            |-- srv : 服务接口文件目录
+            |-- action : 动作接口文件目录
+        |-- Python 功能包
+            |-- package.xml : 包信息，比如:包名、版本、作者、依赖项
+            |-- setup.py : 与C++功能包的CMakeLists.txt类似
+            |-- setup.cfg : 功能包基本配置文件
+            |-- resource : 资源目录
+            |-- test : 存储测试相关文件
+            |-- 功能包同名目录 : Python源文件目录
 ```
 
 ### ROS2 pkg
@@ -365,6 +383,7 @@ WorkSpace --- 自定义的工作空间。
 **`ros2 pkg`**
 1. `create`      - 创建功能包 Create a new ROS2 package
    1. `ros2 pkg create <pkg_name>  --build-type  {cmake, ament_cmake, ament_python}  --dependencies <depend_name>`
+   2. `--build-type` 默认为 `ament_cmake`
 2. `executables` - 列出可执行文件 Output a list of package specific executables
    1. `ros2 pkg executables <pkg_name>`
    2. 正好对应 `ros2 run <pkg> <executable>`
@@ -374,6 +393,15 @@ WorkSpace --- 自定义的工作空间。
    1. `ros2 pkg prefix <pkg_name>`
 5. `xml`         - 列出包的清单描述文件(包的 名字、构建工具(buildtool_depend)、编译信息、拥有者、用途、依赖(exec_depend)) Output the XML of the package manifest or a specific tag
    1. `ros2 pkg xml <pkg_name>`
+
+
+如果忘记在 `ros2 pkg create <pkg_name>` 添加 `--dependencies` 的补救步骤
+1. 在包的 `package.xml` 中的 `<package>` 标签内添加 `<depend>xxx</depend>`，eg: `<depend>rclcpp</depend>`
+2. 在包的 `CMakeLists.txt` 添加 `find_package(xxx REQUIRED)` eg: `find_package(rclcpp REQUIRED)`
+
+
+
+
 
 ### ROS2 构建工具 colcon
 
@@ -457,12 +485,96 @@ tree ./install/examples_rclpy_executors/lib/examples_rclpy_executors/
 └── talker
 ```
 
+### 使用 RCLCPP 编写节点
+
+```bash
+cd WorkspaceName/src
+ros2 pkg create example_cpp --build-type ament_cmake --dependencies rclcpp
+```
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+
+int main(int argc, char **argv)
+{
+    // 初始化 ROS 2 的客户端库 rclcpp，设置了ROS 2程序所需的资源，并解析命令行参数
+    rclcpp::init(argc, argv);
+    // 产生一个node_01的节点
+    // std::make_shared 是为了创建一个智能指针，这种指针可以自动管理节点对象的内存，确保在不再使用时正确地释放资源
+    auto node = std::make_shared<rclcpp::Node>("node_01");
+    // 打印一句自我介绍
+    // 使用节点的日志器来输出一条信息，表明节点已经启动
+    // RCLCPP_INFO 是一个宏，用于在 ROS 2 的日志中记录信息级别的消息
+    RCLCPP_INFO(node->get_logger(), "node_01节点已经启动.");
+    // 运行节点，处理所有到来的消息，并检测退出信号(ROS 的中断信号) Ctrl+C
+    rclcpp::spin(node);
+    // 负责关闭 ROS 2 的客户端库，清理由 rclcpp::init 设置的资源
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+在 CMakeLists.txt 中添加
+
+```cmake
+add_executable(node_01 src/node_01.cpp)
+ament_target_dependencies(node_01 rclcpp)
+
+install(
+  TARGETS node_01
+  DESTINATION lib/${PROJECT_NAME}
+  # ${PROJECT_NAME}：用于引用 CMake project() 命令中定义的项目名称
+)
+```
+
+`ament_target_dependencies` - 为 ROS 2 开发的宏，不是 CMake 的标准命令，封装了 CMake 的 `target_link_libraries` 和其他相关命令，以便自动处理 `ROS2` 包的依赖关系
+
+
+```bash
+colcon build  # 编译节点
+source install/setup.bash
+
+ros2 run example_cpp node_01
+ros2 node list  # 在另一窗口
+```
 
 
 
+### 使用 RCLPY 编写节点
 
+```bash
+cd WorkspaceName/src
+ros2 pkg create example_py  --build-type ament_python --dependencies rclpy
 
+cd example_py/example_py
+touch node02.py
+```
 
+```python
+import rclpy
+from rclpy.node import Node
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = Node("node02")
+    node.get_logger().info("node02 start running")
+    rclpy.spin(node)
+    rclpy.shutdown()
+```
+
+修改 `setup.py`，声明一个ROS2的节点，声明后使用colcon build才能检测到，从而将其添加到install
+
+```python
+entry_points={
+   'console_scripts': [
+      "node02=example_py.node02.py:main"
+   ],
+}
+```
+
+```bash
+source install/setup.sh
+```
 
 
 
@@ -523,6 +635,101 @@ lzy@legion:/opt/ros/humble $ echo $PYTHONPATH
 lzy@legion:/opt/ros/humble $ ls -l /opt/ros/humble/local/lib/python3.10/dist-packages/ | grep rclpy
 drwxr-xr-x 5 root root  4096 May 27 01:58 rclpy
 drwxr-xr-x 2 root root  4096 May 27 01:58 rclpy-3.3.13-py3.10.egg-info
+```
+
+### Python 打包工具 setup
+
+Python的依赖并不是靠 setup 来查找的，但是 C++ 却靠着 CmakeLists.txt 进行查找
+
+打包，就是将你的源代码进一步封装，并且将所有的项目部署工作都事先安排好，这样使用者拿到后即装即用，不用再操心如何部署的问题
+
+始祖 - **distutils** (distribute + utils)，Python 的一个标准库，Python 官方开发的一个分发打包工具
+
+升级 - **setuptools**，增强版，不包括在标准库中
+
+`setup.py`，它是模块分发与安装的指导
+
+```python
+from setuptools import find_packages, setup
+
+package_name = 'example_py'
+
+setup(
+    name=package_name,  # 指定项目名称，我们在后期打包时，这就是打包的包名称
+    version='0.0.0',  # 指定版本号
+    packages=find_packages(exclude=['test']),  # 通过 setuptools.find_packages 找到当前目录下有哪些包
+    data_files=[  # 打包时需要打包的数据文件，如图片，配置文件等
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],  # 应用于指定项目正确运行所需的最低要求
+    zip_safe=True,  # 不压缩包，而是以目录的形式安装
+    maintainer='lzy',
+    maintainer_email='lzy20190501@gmail.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
+    tests_require=['pytest'],  # 在测试时需要使用的依赖包
+    entry_points={  # 动态发现服务和插件
+        'console_scripts': [
+            "node02=example_py.node02:main"
+        ],
+    },
+)
+```
+
+### 面向对象 OOP
+
+编程范式
+1. POP - Procedure-Oriented Programming - 面向过程编程
+2. OOP - Object-Oriented Programming - 面向对象编程 - 对象=属性+方法
+   1. `类 & 对象` - **抽象 & 具体** - eg: DDS抽象层 & DDS具体实现
+   2. `封装` - 隐藏对象的内部状态和复杂性，只暴露必要的操作接口
+   3. `继承` - 通过继承现有类来创建新类，支持代码重用并实现层次化的设计
+   4. `多态` - 同一操作作用于不同的对象，可以有不同的解释
+3. FP  - Functional Programming - 函数式编程
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+
+// 继承的访问修饰符 - public/private/protected
+class Node03 : public rclcpp::Node
+{
+public:
+    // 构造函数，Node(name) 是初始化列表
+    Node03(std::string name) : Node(name)
+    {
+        RCLCPP_INFO(this->get_logger(), "%s is running", name.c_str());
+    }
+
+private:
+
+};
+
+int main(int argc, char** argv)
+{
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<Node03>("node3");
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+```python
+import rclpy
+from rclpy.node import Node
+
+class Node04(Node):
+    def __init__(self, name):
+        super().__init__(name)
+        self.get_logger().info(f"{name} start running")
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = Node04("node04")
+    rclpy.spin(node)
+    rclpy.shutdown()
 ```
 
 ---
