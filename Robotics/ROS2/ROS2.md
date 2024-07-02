@@ -40,8 +40,9 @@
   - [第 02 章 - ROS2 第一个节点](#第-02-章---ros2-第一个节点)
     - [Node 节点 分类](#node-节点-分类)
     - [ROS2 工作空间 \& 功能包](#ros2-工作空间--功能包)
+    - [ROS2 run](#ros2-run)
     - [ROS2 pkg](#ros2-pkg)
-    - [ROS2 构建工具 colcon](#ros2-构建工具-colcon)
+    - [colcon - ROS2 构建工具](#colcon---ros2-构建工具)
     - [使用 RCLCPP 编写节点](#使用-rclcpp-编写节点)
     - [使用 RCLPY 编写节点](#使用-rclpy-编写节点)
     - [编译/运行 报错](#编译运行-报错)
@@ -49,9 +50,12 @@
     - [Python 包查找流程](#python-包查找流程)
     - [Python 打包工具 setup](#python-打包工具-setup)
     - [面向对象 OOP](#面向对象-oop)
+    - [ROS2节点发现与多机通信](#ros2节点发现与多机通信)
   - [第 03 章 - ROS2 节点通信之话题与服务](#第-03-章---ros2-节点通信之话题与服务)
-    - [话题](#话题)
-    - [服务](#服务)
+    - [中间件 \& 通信 基础](#中间件--通信-基础)
+    - [话题 (Publisher/Subscriber)](#话题-publishersubscriber)
+      - [ROS2 Topic 命令](#ros2-topic-命令)
+    - [服务 (Client/Server)](#服务-clientserver)
   - [第 04 章 - ROS2 通信之参数与动作](#第-04-章---ros2-通信之参数与动作)
   - [第 05 章 - ROS2 常用工具](#第-05-章---ros2-常用工具)
   - [第 06 章 - 运动学基础](#第-06-章---运动学基础)
@@ -72,11 +76,14 @@
   - [第 21 章 - Moveit2进阶](#第-21-章---moveit2进阶)
   - [第 23 章 - Moveit2真机控制](#第-23-章---moveit2真机控制)
 - [扩展阅读](#扩展阅读)
-  - [DDS 数据分发服务](#dds-数据分发服务)
+  - [DDS - 数据分发服务](#dds---数据分发服务)
     - [DDS 简介](#dds-简介)
     - [DDS 架构](#dds-架构)
     - [DDS 核心概念](#dds-核心概念)
+    - [DomainID \& UDP Port 转换](#domainid--udp-port-转换)
+    - [DDS 优劣](#dds-优劣)
     - [通信中间件模型 四代演变](#通信中间件模型-四代演变)
+  - [rosdep](#rosdep)
 
 
 ---
@@ -112,6 +119,8 @@
 
 [【布兰自动驾驶】ROS2机器人基础教程：理论与实战](https://www.bilibili.com/video/BV1TS4y1B7cQ)
 
+[手把手学ROS2 Humble - GundaSmart](https://www.bilibili.com/video/BV1zH4y1C7uo/)
+
 ## Linux 安装
 
 [Windows 和 Ubuntu 双系统的安装和卸载 --- 机器人工匠阿杰](https://www.bilibili.com/video/BV1554y1n7zv)
@@ -122,28 +131,15 @@
 
 # 常用命令
 
-1. `printenv ROS_DISTRO` - 查看 ROS 版本
-2. `rqt` - 查看 rqt 图
-3. `ros2 run <pkg> <executable>` - 运行节点
-   1. `ros2 run <pkg> <executable> --ros-args --remap __node:=<new_name>` - 重映射节点名称
-      1. `--ros-args` 用于明确接下来的参数是 ROS 参数，而非可执行文件本身的命令行参数
-      2. `__node` 用于设置节点的名称
-   2. `ros2 run <pkg> <executable> --ros-args -p <parameter_name>:=<val>` - 运行节点时设置参数
-      1. `-p` 用于指定参数(parameter)
-4. `ros2 node {list/info}` - 节点
-5. `ros2 pkg {create/executable/list/prefix/xml}` - 功能包
-   1. `create` - 创建功能包 Create a new ROS2 package
-      1. `ros2 pkg create <pkg_name>  --build-type  {cmake, ament_cmake, ament_python}  --dependencies <depend_name>`
-      2. `--build-type` 默认为 `ament_cmake`
-   2. `executables` - 列出可执行文件 Output a list of package specific executables
-      1. `ros2 pkg executables <pkg_name>`
-      2. 正好对应 `ros2 run <pkg> <executable>`
-   3. `list` - 列出所有的包 Output a list of available packages
-      1. `ros2 pkg list`
-   4. `prefix` - 输出某个包所在路径的前缀(包的 所有内容(库`lib`、头文件`include`、资源`share`等)存储的顶级目录) Output the prefix path of a package
-      1. `ros2 pkg prefix <pkg_name>`
-   5. `xml` - 列出包的清单描述文件(包的 名字、构建工具(buildtool_depend)、编译信息、拥有者、用途、依赖(exec_depend)) Output the XML of the package manifest or a specific tag
-      1. `ros2 pkg xml <pkg_name>`
+1. `printenv ROS_DISTRO` or `echo $ROS_DISTRO`- 查看 ROS 版本
+2. `rqt`/`rqt_graph` - 查看 rqt 图 (详细/简单) - `introspection`|`node graph`
+3. `ros2 run <pkg> <executable>` - [ros2 run 命令详细](#ros2-run)
+4. `ros2 node {list/info}`
+5. `ros2 pkg {create[build-type, dependencies]/executable/list/prefix/xml}` - [ros2 pkg 命令详细](#ros2-pkg)
+6. `colcon build` - [colcon 命令详细](#colcon-使用进阶)
+7. `ros2 topic/service` - []() - []()
+
+
 
 ---
 
@@ -246,7 +242,7 @@ simulated robots
 
 1. **OS Layer - 操作系统层**
    1. 原来的只支持 linux 平台，现在支持 Windows、MAC 甚至是 嵌入式RTOS 平台
-2. **MiddleWare - 中间件层**
+2. **MiddleWare - 中间件层** - [DDS 详解](#dds---数据分发服务)
    1. 特点
       1. **去中心化** - ROS2 取消 master 节点(基于DDS的互相发现协议)，各个节点之间可以通过 DDS 的节点相互发现，各个节点都是平等的，且可以 **1对1、1对n、n对n** 进行互相通信
       2. 提供多个节点中间通信
@@ -328,6 +324,7 @@ simulated robots
 
 [ROS2命令行工具 - Github](https://github.com/ros2/ros2cli)
 
+
 ### Node 节点 分类
 
 **Node 节点(功能模块) 交互**
@@ -378,20 +375,30 @@ WorkSpace --- 自定义的工作空间。
             |-- 功能包同名目录 : Python源文件目录
 ```
 
+### ROS2 run
+
+`ros2 run <pkg> <executable>` - 运行节点
+1. `ros2 run <pkg> <executable> --ros-args --remap __node:=<new_name>` - 重映射节点名称
+   1. `--ros-args` 用于明确接下来的参数是 ROS 参数，而非可执行文件本身的命令行参数
+   2. `__node` 用于设置节点的名称
+2. `ros2 run <pkg> <executable> --ros-args -p <parameter_name>:=<val>` - 运行节点时设置参数
+   1. `-p` 用于指定参数(parameter)
+
+
 ### ROS2 pkg
 
 **`ros2 pkg`**
-1. `create`      - 创建功能包 Create a new ROS2 package
+1. `create` - 创建功能包 Create a new ROS2 package
    1. `ros2 pkg create <pkg_name>  --build-type  {cmake, ament_cmake, ament_python}  --dependencies <depend_name>`
    2. `--build-type` 默认为 `ament_cmake`
 2. `executables` - 列出可执行文件 Output a list of package specific executables
    1. `ros2 pkg executables <pkg_name>`
    2. 正好对应 `ros2 run <pkg> <executable>`
-3. `list`        - 列出所有的包 Output a list of available packages
+3. `list` - 列出所有的包 Output a list of available packages
    1. `ros2 pkg list`
-4. `prefix`      - 输出某个包所在路径的前缀(包的 所有内容(库`lib`、头文件`include`、资源`share`等)存储的顶级目录) Output the prefix path of a package
+4. `prefix` - 输出某个包所在路径的前缀(包的 所有内容(库`lib`、头文件`include`、资源`share`等)存储的顶级目录) Output the prefix path of a package
    1. `ros2 pkg prefix <pkg_name>`
-5. `xml`         - 列出包的清单描述文件(包的 名字、构建工具(buildtool_depend)、编译信息、拥有者、用途、依赖(exec_depend)) Output the XML of the package manifest or a specific tag
+5. `xml` - 列出包的清单描述文件(包的 名字、构建工具(buildtool_depend)、编译信息、拥有者、用途、依赖(exec_depend)) Output the XML of the package manifest or a specific tag
    1. `ros2 pkg xml <pkg_name>`
 
 
@@ -403,7 +410,7 @@ WorkSpace --- 自定义的工作空间。
 
 
 
-### ROS2 构建工具 colcon
+### colcon - ROS2 构建工具
 
 ![](Pics/colcon.svg)
 
@@ -414,20 +421,39 @@ WorkSpace --- 自定义的工作空间。
 4. `colcon` 和 `CMake` 在项目构建中扮演不同但互补的角色
    1. `CMake` 是直接负责编译代码的工具
    2. `colcon` 为项目级的构建管理工具(更高层次)，负责协调和优化整个多包项目的构建过程，提供一致的接口来构建、测试和安装项目中的所有软件包
+5. ROS2 默认没有安装 colcon，安装命令 - `sudo apt install python3-colcon-common-extensions`
 
-ROS2 默认没有安装 colcon，安装命令如下
 
-```bash
-sudo apt install python3-colcon-common-extensions
-```
-编译命令
-1. `colcon build` - 编译所有功能包
-2. `colcon build --packages-select <pkg_name>` - 只编译一个功能包
-3. `colcon build --packages-select <pkg_name>  --cmake-args -DBUILD_TESTING=0` - 不编译单元测试
-4. `colcon test` - 运行编译的包的测试
-5. `colcon build --symlink-install` - 允许通过更改 src 下的部分文件来改变install，每次调整 python 脚本时都不必重新 build 了
-   1. 编译完成后，`./src` 和 `./install` 两个目录没有关系，如果修改 `./src` 则 `./install` 下的文件不会自动修改，需要重新 `colcon build` 编译
-   2. 使用 `--symlink-instal` 后，两个文件夹中的
+colcon 作为**构建工具**，通过调用 CMake、Python setuptools 完成构建
+
+**构建工具** - 面向用户，**管理构建过程**和**调用构建系统**
+1. colcon
+2. ament_tools - 早期被ROS2广泛使用，后续被 colcon 代替
+3. catkin_make - 仅调用 CMake 一次，并使用 CMake 的函数在单个上下文中处理所有包
+4. catkin_make_isolated
+
+**构建系统** - **提供底层的构建逻辑和规则**，定义如何编译和链接项目
+1. CMake - 跨平台构建系统生成器
+2. ament
+3. catkin - 基于CMake，自动生成 CMake 配置文件以及 pkg 配置文件
+4. Python setuptools - Python包的打包常用工具
+
+
+
+`colcon`
+1. `build`
+   1. `无参数` - 编译所有功能包
+   2. `--packages-select <pkg_name>` - 只编译一个功能包，忽略其他的包
+   3. `--packages-up-to` - 构建指定包及其所有依赖，确保某个包及其所有依赖都是最新
+   4. `--packages-above` - 构建所有依赖于指定包的包，与 `--packages-up-to` 相反
+   5. `--build-base` - 指定构建目录
+   6. `--install-base` - 指定安装目录
+   7. `-symlink-install` - 构建时使用 **符号链接**(symlinks)，而不是复制文件 - 节省空间，快速更新，用于开发，不适用与 生产/发布 - `/src` & `/install` 目录之间创建 symlinks
+   8. `--continue-on-error` - 当发生错误的时候继续进行编译
+   9.  `--merge-install` - 将所有包的安装文件合并到 `/install` 文件夹中，而不是默认的为每个包创建单独的子目录
+   10. `--cmake-args` - 将任意参数传递给CMake - eg: `colcon build --packages-select <pkg_name>  --cmake-args -DBUILD_TESTING=0` - 不编译单元测试
+   11. `--log-level <level>` - 设置 日志级别 - eg: `--log-level info`
+2.  `test` - 运行编译的包的测试
 
 
 **源码构建 & 运行 示例**
@@ -453,8 +479,7 @@ source install/setup.bash  # 表明功能包位置
 # 在终端会话中临时的。每次打开一个新的终端窗口或会话时，都需要重新运行这个命令来设置正确的环境变量
 # 想要持久化需要将该命令添加到 ~/.bashrc
 ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function
-
-
+# 打开另一个窗口
 source install/setup.bash
 ros2 run examples_rclcpp_minimal_publisher publisher_member_function
 ```
@@ -463,7 +488,6 @@ python 程序是直接 从 `./src` 复制到 `./install` 中对应目录下的
 
 ```bash
 tree ./src/examples/rclpy/executors/examples_rclpy_executors/
-
 ./src/examples/rclpy/executors/examples_rclpy_executors/
 ├── callback_group.py
 ├── composed.py
@@ -473,9 +497,7 @@ tree ./src/examples/rclpy/executors/examples_rclpy_executors/
 ├── listener.py
 └── talker.py
 
-
 tree ./install/examples_rclpy_executors/lib/examples_rclpy_executors/
-
 ./install/examples_rclpy_executors/lib/examples_rclpy_executors/
 ├── callback_group
 ├── composed
@@ -484,6 +506,11 @@ tree ./install/examples_rclpy_executors/lib/examples_rclpy_executors/
 ├── listener
 └── talker
 ```
+
+
+
+
+
 
 ### 使用 RCLCPP 编写节点
 
@@ -732,32 +759,81 @@ def main(args=None):
     rclpy.shutdown()
 ```
 
+### ROS2节点发现与多机通信
+
+
 ---
 
 ## 第 03 章 - ROS2 节点通信之话题与服务
 
-通信方式
-1. TCP/UDP 网络通信
-   1. TCP - `ping`
+### 中间件 & 通信 基础
+
+**通信方式**
+1. TCP/UDP **网络通信**
+   1. `ping` - ICMP(Internet Control Message Protocol)
       1. 用于测试网络连接的可达性以及确定网络的响应时间
       2. 通过向目标主机发送ICMP (Internet Control Message Protocol) 回显请求并等待回显应答来工作
-   2. UDP - `nc` (netcat)
+   2. `nc`/`nc -u`(netcat) - TCP(Transmission Control Protocol)/UDP(User Datagram Protocol)
       1. 用于读写网络连接，可以用于端口扫描、文件传输、创建服务器等多种网络操作
-2. 共享内存 进程间通信 IPC(Inter-Process Communication)
+      2. 默认 TCP，加上 `-u` 为 UDP
+         ![](Pics/ros026.png)
+2. 共享内存 **进程间通信** IPC(Inter-Process Communication)
    1. 在同一计算机系统内的不同进程之间进行通信
-   2. `ipcs` 和 `ipcrm` 命令来管理共享内存段
-
-### 话题
-
+   2. `ipcs`(InterProcess Communication Status) - 系统当前 IPC资源的 状态信息
+   3. `ipcrm`(InterProcess Communication Remove) - 清理不再需要的 IPC 资源
 
 
+其他通信中间件
+1. [ZeroMQ (ØMQ, 0MQ, zmq)](https://zeromq.org/) - 轻量级
+   1. <img src="Pics/ros027.gif" width=100>
+2. [PyZmq (Python bindings for ZeroMQ)](https://pyzmq.readthedocs.io/en/latest/)
+   1. <img src="Pics/ros028.webp" width=130>
+
+### 话题 (Publisher/Subscriber)
+
+**订阅/发布 模型** - 节点 **发布**数据 到 某个话题，其他节点 **订阅**话题 拿到数据
+
+**n 对 n**
+
+```mermaid
+graph LR
+A[node 1] --发布--> B[Topic]
+F[node 2] --发布--> B[Topic]
+G[node 3] --发布--> B[Topic]
+B -- 订阅 --> C[node 4]
+B -- 订阅 --> D[node 5]
+B -- 订阅 --> E[node 6]
+```
+
+ROS2 节点 可以 **订阅本身发布的话题**
+
+```mermaid
+graph LR
+A[node] --发布-->B[Topic]
+B -- 订阅 --> A[node]
+```
+
+ROS2 在数据传递时 做好 消息 **序列化** 和 **反序列化**
+
+可以做到 跨编程语言、跨平台、跨设备(**定义消息接口文件**)
+
+**同一个话题，所有的 发布者 和 接收者 必须使用 相同消息接口**
+
+#### ROS2 Topic 命令
+
+`ros2 topic`
+1. `list` - 返回系统中 当前活动的 所有主题
+   1. `-t` - 增加消息类型
+2. `echo [TopicName]` - 打印实时话题内容
+3. `info [TopicName]` - 打印实时话题信息
+4. `pub` - 手动发布命令 - eg: `ros2 topic pub /chatter std_msgs/msg/String 'data: "123"'`
 
 
-### 服务
+`ros2 interface show [msgType]` - 查看消息接口 - eg: `std_msgs/msg/String`
 
 
 
-
+### 服务 (Client/Server)
 
 
 
@@ -826,7 +902,7 @@ def main(args=None):
 
 # 扩展阅读
 
-## DDS 数据分发服务
+## DDS - 数据分发服务
 
 [ROS2 的核心 - 数据分发服务DDS导论](https://www.bilibili.com/video/BV1sU4y1P7yn/)
 
@@ -836,10 +912,11 @@ def main(args=None):
 
 ### DDS 简介
 
+ROS2 节点发现 与 多机通信
+
 中间件 是位于 操作系统 和 应用程序 之间的 软件层，使系统的各个组件能够更轻松地 通信 和 共享数据
 
 <center><img src="Pics/ros009.png" width=70%></center>
-
 
 从操作系统、网络传输、低级数据格式的细节中 抽象出 应用程序
 
@@ -847,14 +924,14 @@ def main(args=None):
 
 数据线格式、发现、连接、可靠性、协议、传输选择、QoS、安全 等 低级细节由中间件管理
 
-<left><img src="Pics/ros011.png" width=15%></left>
+<img src="Pics/ros011.png" width=15%>
 
 **eProsima** is a company specializing in high-performance **middleware** solutions
 
 **eProsima Fast DDS** has been chosen as the **default middleware** supported by **ROS 2**
 
 **DDS (Data Distribution Service - 数据分发服务)**
-1. 一种 **中间件协议标准**，旨在为 实时系统 提供 高性能、可扩展的 数据交换
+1. 一种 **中间件协议标准**，旨在为 实时系统(Real-Time) 提供 高性能、可扩展的 数据交换
 2. 由 **OMG (Object Management Group)** 制定
    <left class='img'><img src="Pics/ros014.svg" width=50%></left>
 3. 使用 **发布-订阅 (Pub/Sub) 模式**，发布者不需要知道谁是接收者，订阅者也不需要知道谁是发送者 - **解耦**
@@ -896,7 +973,11 @@ def main(args=None):
 ![](Pics/ros013.png)
 
 **DDS 架构 关键概念**
-1. `Domain` : 代表一个**通信平面**，由 **Domain ID** 唯一标识(用于隔离不同的工作空间)，**只有在同一个域内的通信实体才可以通信**，Different DDS Domains are **completely independent from each other**. There is **no data-sharing across DDS domains**.
+1. `Domain` : 代表一个**通信平面**，由 **Domain ID** 唯一标识(用于隔离不同的工作空间)
+   1. **只有在同一个域内的通信实体才可以通信**
+   2. Different DDS Domains are **completely independent from each other**. There is **no data-sharing across DDS domains**
+   3. ROS2 节点默认使用 域ID 0
+   4. DDS 使用 DomainID 计算 用于发现 和 通讯的 UDP 端口(网络中，UDP 端口是 无符号16位整型)
 2. `Domain Participant` : 通信成员，可以包含多个 **DataReader** & **DataWriter**
 3. `Topic` : **数据的抽象概念**，由 TopicName 标识，在DDS Domain中唯一，在进程之间交换的数据的消息
    <left><img src="Pics/ros016.png" width=70%></left>
@@ -925,11 +1006,37 @@ def main(args=None):
 5. the application uses the same DDS API for communications
 
 
-**DDS的定位**
-1. Real-Time
-2. Mission/Business Critical
+### DomainID & UDP Port 转换
+
+对于计算机上运行的每个 ROS2 进程，将创建一个 DDS participant
+
+每个DDS参与者占用计算机上的2个端口
+1. Discovery Port - 用于参与者之间的发现过程
+2. User Data Port - 用于发送普通用户数据
+
+因此在一台计算机上运行120个以上的 ROS2 进程可能会溢出到其他 DomainID 或 临时端口
+
+> PortBase = 7400 (default)
+> DomainGain = 250 (default)
+> ParticipantGain = 2 (default)
+
+转换公式
+1. **DiscoveryMulticastPort**(多播发现)
+   1. > PortBase + (DomainGain * DomainID) + 0
+2. **UserMulticastPort**(用户多播)
+   1. > PortBase + (DomainGain * DomainID) + 1
+3. **DiscoveryUnicastPort**(单播发现)
+   1. > PortBase + (DomainGain * DomainID) + (ParticipantGain * ParticipantID) + 10
+4. **UserUnicastPort**(用户单播)
+   1. > PortBase + (DomainGain * DomainID) + (ParticipantGain * ParticipantID) + 11
+
+Linux
+1. 默认情况下，linux内核 使用端口 32768 - 60999 作为临时端口
+2. 域ID 0-101 和 215-232 可以安全使用，而不会与临时端口发生冲突
 
 
+
+### DDS 优劣
 
 **优劣**
 1. **优势**
@@ -942,7 +1049,6 @@ def main(args=None):
 2. **劣势**
    1. API复杂，灵活性以复杂性为代价
    2. 系统开销相对较大
-
 
 
 ### 通信中间件模型 四代演变
@@ -965,3 +1071,26 @@ def main(args=None):
    2. 但是这个 总线 根据数据不同划分了很多数据空间
    3. 每个通信实体在数据空间内**只收到和自己关联的信号**
 
+---
+
+## rosdep
+
+rosdep 是 ROS(机器人操作系统) 中的工具，用于安装系统依赖项
+
+使用步骤
+1. 初始化
+   1. `sudo rosdep init`
+   2. `rosdep update` - 无需 `sudo`
+2. 安装依赖
+   1. `rosdep install --from-paths your_package_directory --ignore-src --rosdistro $ROS_DISTRO`
+      1. `--from-paths src`  从 src 目录中查找包，分析包的 `package.xml`，找出包声明的`依赖`
+      2. `--ignore-src `     指示 rosdep 忽略 src 目录中已存在的`源码包`
+      3. `--rosdistro $ROS_DISTRO`   这指定了使用哪个 ROS 发行版的依赖信息
+      4. 确保使用特定版本的依赖，而不是 rosdep 解析的版本
+      5. 防止 rosdep 试图重新安装这些本地已存在的依赖
+      6. 确保 rosdep 不会干扰 已经有的依赖管理策略
+      7. 确保 rosdep 仅关注 需要从**外部源(如ROS官方仓库/系统包管理器)安装的依赖**，而不会重新处理或覆盖已经在开发环境中**手动管理的依赖**
+
+在某些情况下，你可以使用 apt(Advanced Package Tool)来安装ROS软件包的系统依赖项，而不是依赖于 rosdep
+
+对于不在标准软件仓库中的软件包，rosdep 仍然可能是更好的选择
