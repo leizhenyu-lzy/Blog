@@ -316,6 +316,9 @@ VPN也不能隐藏自己对IP地址
 
 HTTP是无状态的
 
+GDPR - General Data Protection Regulation (欧盟) - 数据隐私法案 - 国外的网站总喜欢弹窗Cookie请求
+
+
 
 # IDC 机房
 
@@ -960,7 +963,7 @@ wireguard VPN加密协议
 **主要功能** (4A)
 1. 认证 authentication
 2. 账号 account
-3. 授权 authorization 
+3. 授权 authorization
 4. 审计 audit 事间监察
 
 事前授权、事间监察、事后审计

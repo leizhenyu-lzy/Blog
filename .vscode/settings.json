@@ -21,6 +21,8 @@
     "files.trimTrailingWhitespace": true,
     "cSpell.ignoreWords": [
         "Qdrant",
+        "Yosef",
+        "Zoil",
         "nmslib",
         "weavaite"
     ],
