@@ -66,6 +66,12 @@ TBH = to be honest
 
 IDK = i don't know
 
+IDC = i don't care
+
+IMO = in my opinion
+
+JK = just kidding
+
 NVM = never mind
 
 BTW = by the way
@@ -78,9 +84,13 @@ TTYL = talk to you later
 
 BFF = best friends forever
 
+NVM = never mind
+
 GG = good game
 
 WP = well played
+
+NP = no problem
 
 DM = direct message
 
@@ -93,5 +103,7 @@ TY = thank you
 THX = thanks
 
 YW = you're welcome
+
+ASAP = as soon as possible
 
 

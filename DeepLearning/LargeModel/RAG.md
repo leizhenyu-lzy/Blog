@@ -10,6 +10,7 @@
 ## Table of Content
 - [RAG(Retrieval-Augmented Generation) - 检索增强生成](#ragretrieval-augmented-generation---检索增强生成)
   - [Table of Content](#table-of-content)
+- [Prompt-Engineer \& RAG \& Fine-Tunning](#prompt-engineer--rag--fine-tunning)
 - [RAG 高效应用指南](#rag-高效应用指南)
   - [文档智能解析](#文档智能解析)
   - [文本分块 Text Chunking/Splitting](#文本分块-text-chunkingsplitting)
@@ -20,6 +21,7 @@
   - [Why Large Language Models Hallucinate?](#why-large-language-models-hallucinate)
   - [What is a Vector Database?](#what-is-a-vector-database)
 - [Retrieval-Augmented Generation for Large Language Models: A Survey](#retrieval-augmented-generation-for-large-language-models-a-survey)
+- [Unifying RAG and long context LLMs](#unifying-rag-and-long-context-llms)
 - [RAG \& KnowledgeGraph](#rag--knowledgegraph)
   - [GraphRAG - Microsoft](#graphrag---microsoft)
   - [LLM \& KnowledgeGraph](#llm--knowledgegraph)
@@ -50,6 +52,16 @@
     - [12 - Conclusion](#12---conclusion)
 - [12 RAG Pain Points and Proposed Solutions-Solving the core challenges of Retrieval-Augmented Generation](#12-rag-pain-points-and-proposed-solutions-solving-the-core-challenges-of-retrieval-augmented-generation)
 
+---
+
+# Prompt-Engineer & RAG & Fine-Tunning
+
+对于 错误回复
+1. Prompt-Engineer : 解决问题问不清楚(不改动LLM)
+2. RAG : 解决缺乏相关知识(不改动LLM)
+3. Fine-Tunning : 解决模型能力不足(改动LLM)，不建议一开始就进行模型微调
+
+---
 
 # RAG 高效应用指南
 
@@ -244,16 +256,21 @@ Database
 [RAG-Survey - ReadPaper](https://readpaper.com/pdf-annotate/note?pdfId=2244532135023698688&noteId=2298121563230725632)
 
 
+# Unifying RAG and long context LLMs
 
+[Unifying RAG and long context LLMs - GoogleDocs](https://docs.google.com/presentation/d/1mJUiPBdtf58NfuSEQ7pVSEQ2Oqmek7F1i4gBwR6JDss/edit?pli=1#slide=id.g26c0cb8dc66_0_0)
 
+[Unifying RAG and long context LLMs - PDF](./Paper/Unifying%20RAG%20and%20long%20context%20LLMs.pdf)
 
+Context Window - 上下文窗口
 
+T - trillion
 
+Needle in a Haystack
 
+recency bias 模型倾向于过分关注最近的tokens，而忽视了更远处的、可能同样重要的令牌
 
-
-
-
+RoPE - Rotary Positional Embedding - 旋转位置编码 - 对于远距离的注意力有减少的倾向 导致 recency bias
 
 
 
@@ -285,13 +302,19 @@ Database
 
 [ReadPaper - Paper & Note](https://readpaper.com/pdf-annotate/note?pdfId=4881783320383324161&noteId=2323244243193266176)
 
-[GraphRAG: LLM-Derived Knowledge Graphs for RAG - YouTube](https://www.youtube.com/watch?v=r09tJfON6kE&list=WL)
+[YouTube - GraphRAG: LLM-Derived Knowledge Graphs for RAG](https://www.youtube.com/watch?v=r09tJfON6kE&list=WL)
 
-LLM(GPT) 构建 Graph, Graph 用于 RAG
+对于宏观问题，需要 遍历整个知识库 并总结，Connect the Dot 找到散落在各处的信息，传统 RAG 效果不理想
+
+相当于提前将信息进行**整理(Pre-Processing)**，搭建 **知识图谱**(同时也构建了知识的层次结构(Community Detection))，通过查询知识图谱，很快能够获取关联信息
+
+更新知识图谱可能消耗资源过多
+
+使用 LLM(GPT) 构建 Graph, Graph 用于 RAG
 
 RAG
-1. excellent at performing retrieval for highly specific facts (Vector similarity approach)
-2. poor at performing any operation that require higher order reasoning and understanding
+1. **excellent** at performing retrieval for highly specific facts (Vector similarity approach)
+2. **poor** at performing any operation that require higher order reasoning and understanding
 
 Graph
 1. aggregate semantic concepts and derive holistic understanding of the whole sources
@@ -311,7 +334,8 @@ Graph Machine Learning
 1. semantic aggregation
 2. hierarchy extraction
 
-create sub-partitions
+
+
 
 
 
@@ -350,13 +374,7 @@ create sub-partitions
 
 ## Vector Search - 向量搜索
 
-**Vector Search - 向量搜索**
-1. [Faiss Wiki - Github](https://github.com/facebookresearch/faiss/wiki) - a library for efficient similarity search and clustering of dense vectors
-2. [Chroma - Github](https://github.com/chroma-core/chroma) - the open-source embedding database
-3. [weavaite.io](https://weaviate.io/) - an open source, AI-native vector database
-4. [pinecone](https://www.pinecone.io/) - a serverless vector database
-5. [nmslib](https://github.com/nmslib/nmslib) - an efficient cross-platform similarity search library and a toolkit for evaluation of similarity search methods
-6. [Qdrant](https://qdrant.tech/) - a vector similarity search engine and vector database
+[](../../Data/VectorDB/VectorDB.md#常用-向量数据库)
 
 ## LLM 产品
 

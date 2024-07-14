@@ -1,6 +1,6 @@
-# CSAPP - 深入理解计算机系统
-
 <img src="Pics/csapp001.png" width=50%><img src="Pics/csapp002.png" width=46.5%>
+
+# CSAPP - 深入理解计算机系统
 
 [CSAPP - 九曲阑干](https://space.bilibili.com/354767108/channel/collectiondetail?sid=373847)
 

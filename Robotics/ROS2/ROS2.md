@@ -54,6 +54,7 @@
   - [第 03 章 - ROS2 节点通信之话题与服务](#第-03-章---ros2-节点通信之话题与服务)
     - [中间件 \& 通信 基础](#中间件--通信-基础)
     - [话题 (Publisher/Subscriber)](#话题-publishersubscriber)
+      - [导入消息接口](#导入消息接口)
       - [ROS2 Topic 命令](#ros2-topic-命令)
     - [服务 (Client/Server)](#服务-clientserver)
   - [第 04 章 - ROS2 通信之参数与动作](#第-04-章---ros2-通信之参数与动作)
@@ -95,6 +96,8 @@
 
 [ROS 官网](https://www.ros.org/)
 
+[RCLCPP - C++ ROS Client Library API](https://docs.ros2.org/latest/api/rclcpp/)
+
 [ROS2 中文网](http://dev.ros2.fishros.com/)
 
 [鱼香社区](https://fishros.org.cn/forum/)
@@ -104,6 +107,7 @@
 [ROS Documentation 官方文档 英文](https://docs.ros.org/)
 
 [ROS2 Documentation(humble) 官方文档 英文](https://docs.ros.org/en/humble/index.html)
+
 
 ## 视频教程
 
@@ -120,6 +124,9 @@
 [【布兰自动驾驶】ROS2机器人基础教程：理论与实战](https://www.bilibili.com/video/BV1TS4y1B7cQ)
 
 [手把手学ROS2 Humble - GundaSmart](https://www.bilibili.com/video/BV1zH4y1C7uo/)
+
+---
+
 
 ## Linux 安装
 
@@ -791,6 +798,8 @@ def main(args=None):
 
 ### 话题 (Publisher/Subscriber)
 
+[publisher 相关 API](https://docs.ros2.org/latest/api/rclcpp/classrclcpp_1_1Node.html#ad1dfc9d04d67ab93353e04a7df72bc9a)
+
 **订阅/发布 模型** - 节点 **发布**数据 到 某个话题，其他节点 **订阅**话题 拿到数据
 
 **n 对 n**
@@ -819,17 +828,31 @@ ROS2 在数据传递时 做好 消息 **序列化** 和 **反序列化**
 
 **同一个话题，所有的 发布者 和 接收者 必须使用 相同消息接口**
 
+#### 导入消息接口
+
+`ament_cmake` 功能包 导入消息接口
+1. 在 `CMakeLists.txt` 中导入
+   1. **find_packages**
+   2. **ament_target_dependencies**
+2. 在 `packages.xml` 中导入，具体是添加 depend 标签
+3. 在代码中导入，C++ 中是 `#include [msg package]/xxx/xxx.hpp`
+
+
 #### ROS2 Topic 命令
 
 `ros2 topic`
 1. `list` - 返回系统中 当前活动的 所有主题
-   1. `-t` - 增加消息类型
+   1. `-t` - 增加消息类型(type)
 2. `echo [TopicName]` - 打印实时话题内容
 3. `info [TopicName]` - 打印实时话题信息
-4. `pub` - 手动发布命令 - eg: `ros2 topic pub /chatter std_msgs/msg/String 'data: "123"'`
-
+4. `pub` - 手动发布命令(没有 `-1`/`--once` 不会阻塞)
+   1. eg: `ros2 topic pub /chatter std_msgs/msg/String 'data: "123"'` 注意需要空格
+   2. `-1`/`--once` - 只发布一次，否则为持续发布，如果没有 listener/echo 则会被 阻塞
 
 `ros2 interface show [msgType]` - 查看消息接口 - eg: `std_msgs/msg/String`
+
+
+
 
 
 
