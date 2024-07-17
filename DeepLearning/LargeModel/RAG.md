@@ -280,14 +280,6 @@ RoPE - Rotary Positional Embedding - 旋转位置编码 - 对于远距离的注�
 
 
 
-
-
-
-
-
-
-
-
 ---
 
 # RAG & KnowledgeGraph
@@ -352,6 +344,8 @@ Graph Machine Learning
 
 ![](Pics/rag010.png)
 
+[知识图谱 + RAG](https://mp.weixin.qq.com/s/C5TY8wbrJLDb-jmLzGhbXg)
+
 ![](Pics/rag011.webp)
 
 三类路线
@@ -398,6 +392,11 @@ LLM(**brain** for **RAG pipeline**)
    ![](Pics/rag005.png)
 4. [BiSheng](https://bisheng.dataelem.com/) - 便捷、灵活、可靠的企业级大模型应用开发平台
    ![](Pics/rag006.png)
+
+知识库 横评
+
+![](Pics/rag026.png)
+
 
 
 ## Naive RAG
