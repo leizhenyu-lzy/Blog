@@ -11,7 +11,7 @@
 
 # 数据集网站
 
-[前言数据集](https://www.luge.ai/#/)
+[千言数据集](https://www.luge.ai/#/)
 
 [OpenBayes - 公共数据集](https://openbayes.com/console/public/datasets)
 

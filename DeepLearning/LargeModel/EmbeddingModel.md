@@ -8,8 +8,9 @@
 
 - [Embedding Model](#embedding-model)
   - [Table of Contents](#table-of-contents)
-- [Embedding 模型 选择 \& 微调](#embedding-模型-选择--微调)
+- [Embedding 模型 选择 \& 微调 - AI花果山](#embedding-模型-选择--微调---ai花果山)
 - [Embedding 排行榜](#embedding-排行榜)
+- [Nomic Embed](#nomic-embed)
 - [FlagEmbedding (BAAI)](#flagembedding-baai)
 - [word2vec](#word2vec)
 
@@ -25,7 +26,7 @@ embedding 将 数据(文本、图片) 转化为 高维向量
 
 ---
 
-# Embedding 模型 选择 & 微调
+# Embedding 模型 选择 & 微调 - AI花果山
 
 [RAG 高效应用指南 02：Embedding 模型的选择和微调](https://mp.weixin.qq.com/s/UiU-NdoqlZzWxyS6fwsl4A)
 
@@ -61,6 +62,17 @@ Embedding 是文本的固定长度数值表示
 [HuggingFace - MTEB(Massive Text Embedding Benchmark)](https://huggingface.co/spaces/mteb/leaderboard)
 
 
+# Nomic Embed
+
+[Nomic Embed - 开源 Embedding Model](https://blog.nomic.ai/posts/nomic-embed-text-v1)
+
+[HuggingFace - nomic-embed-text-v1: A Reproducible Long Context (8192) Text Embedder](https://huggingface.co/nomic-ai/nomic-embed-text-v1)
+
+特点
+1. Open source
+2. Open data
+3. Open training code
+4. Fully reproducible and auditable
 
 
 # FlagEmbedding (BAAI)
