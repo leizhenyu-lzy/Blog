@@ -1327,6 +1327,13 @@ sudo snap install krita
 /var/lib/snapd/desktop/icons
 ```
 
+# Z-Library
+
+[Z-Library最新可用官方网址及镜像](https://discuss.sci-hub.org.cn/d/2548)
+
+[Z-Library APP](https://singlelogin.re/z-access#desktop_app_tab)
+
+![](Pics/zlib.png)
 
 
 # Remmina + FileZilla
@@ -1744,6 +1751,12 @@ sudo snap install pomatez
 sudo apt install pavucontrol
 ```
 
+# Agisoft
+
+[Agisoft - Downloads](https://www.agisoft.com/downloads/installer/)
+
+解压即可使用
+
 
 # 网易云音乐
 
@@ -1760,6 +1773,20 @@ sudo apt install pavucontrol
 [YesPlayMusic](https://github.com/qier222/YesPlayMusic)
 
 release 找 amd64.deb 然后 sudo apt install xxx.deb 即可
+
+![](Pics/netease.png)
+
+
+# Gnome-Clocks
+
+```bash
+sudo apt install gnome-clock
+```
+
+[Panel World Clock (Lite) - 顶部栏中显示时钟](https://extensions.gnome.org/extension/946/panel-world-clock-lite/)
+
+
+
 
 # 小技巧
 
@@ -1860,6 +1887,8 @@ Software & Updates -> Ubuntu Software -> Download from : http://mirrors.aliyun.c
 [如何使用 GNOME Shell 扩展](https://linux.cn/article-9447-1.html)
 
 [GNOME 桌面必备扩展推荐](https://www.cnblogs.com/keatonlao/p/12686234.html)
+
+应用商店安装 Extension Manager
 
 ```bash
 sudo apt install gnome-tweaks

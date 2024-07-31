@@ -11,7 +11,7 @@
 - [RAG(Retrieval-Augmented Generation) - 检索增强生成](#ragretrieval-augmented-generation---检索增强生成)
   - [Table of Content](#table-of-content)
 - [Prompt-Engineer \& RAG \& Fine-Tunning](#prompt-engineer--rag--fine-tunning)
-- [RAG 高效应用指南](#rag-高效应用指南)
+- [RAG 高效应用指南 - AI花果山](#rag-高效应用指南---ai花果山)
   - [文档智能解析](#文档智能解析)
   - [文本分块 Text Chunking/Splitting](#文本分块-text-chunkingsplitting)
 - [IBM Technology - Introductions](#ibm-technology---introductions)
@@ -54,6 +54,12 @@
 
 ---
 
+![](Pics/rag002.png)
+
+![](Pics/rag024.png)
+
+---
+
 # Prompt-Engineer & RAG & Fine-Tunning
 
 对于 错误回复
@@ -63,7 +69,7 @@
 
 ---
 
-# RAG 高效应用指南
+# RAG 高效应用指南 - AI花果山
 
 ![](Pics/rag015.webp)
 
@@ -92,6 +98,9 @@ Layout Analysis - 布局分析
 3. [Donut 模型](https://arxiv.org/pdf/2111.15664v5)
 4. [RAGFlow](https://github.com/infiniflow/ragflow)
    1. [检索增强生成引擎 RAGFlow 正式开源 - InfoQ](https://www.infoq.cn/article/hjjm3kv620idoyyobtps)
+   2. [RAGFlow 官网](https://ragflow.io/)
+   3. [Github - RAGFlow](https://github.com/infiniflow/ragflow/blob/main/README_zh.md)
+   4.
 5. [Unstructured](https://github.com/Unstructured-IO/unstructured) - 专门用于处理非结构化数据
 6. [旷世 OneChart](https://onechartt.github.io/)
 7. [百度 PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
@@ -125,11 +134,7 @@ Layout Analysis - 布局分析
 
 
 
----
 
-![](Pics/rag002.png)
-
-![](Pics/rag024.png)
 
 
 ---
