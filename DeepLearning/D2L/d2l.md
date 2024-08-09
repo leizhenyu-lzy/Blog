@@ -1,12 +1,18 @@
+<img src="Pics/d2l000.png" width=80%><img src="Pics/LiMu.avif" width=20%>
+
 # 动手学深度学习v2 - 李沐
 
 [D2L官网](https://zh.d2l.ai/)
 
-[d2l - 课程安排](https://courses.d2l.ai/zh-v2/)
+[d2l - 课程主页](https://courses.d2l.ai/zh-v2/)
 
 [d2l - Github](https://github.com/d2l-ai/d2l-zh)
 
-[动手学深度学习v2 - B站视频](https://www.bilibili.com/video/BV1if4y147hS/)
+[动手学深度学习 PyTorch版  - B站视频(合集)](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
+
+[PyTorch 论坛](https://discuss.pytorch.org/)
+
+[课程论坛讨论](https://discuss.d2l.ai/c/chinese-version/16)
 
 ---
 
@@ -40,14 +46,28 @@ LeNet - ResNet - LSTM - BERT
 7. **计算机视觉** - 目标检测,语义分割
 8. **自然语言处理** - 词嵌入,BERT
 
+下载 D2L Notebook
+
+```bash
+mkdir d2l-zh && cd d2l-zh
+curl https://zh-v2.d2l.ai/d2l-zh-2.0.0.zip -o d2l-zh.zip
+unzip d2l-zh.zip && rm d2l-zh.zip
+cd pytorch
+```
+
+安装d2l包，以方便调取本书中经常使用的函数和类
+
+```bash
+pip3 install d2l
+```
 
 ---
 
 ## 02 深度学习介绍
 
-<center class='img'><img src="Pics/d2l002.png" width=50%></center>
+<img src="Pics/d2l002.png">
 
-图片分类 - [imagenet](https://image-net.org/)
+图片分类 - [![](Pics/imagenet.jpg)](https://image-net.org/)
 
 物体检测&分割(精确到像素)
 
@@ -57,7 +77,7 @@ LeNet - ResNet - LSTM - BERT
 
 文生图
 
-文字生成
+文字生成(eg. GPT-3)
 
 无人驾驶
 
@@ -65,7 +85,7 @@ LeNet - ResNet - LSTM - BERT
 1. 触发 - 点击率预估 - 排序(点击率 × 竞价)
 2. 广告特征提取 -> 模型(训练数据 -> 特征和用户点击 -> 模型) -> 点击率预测
 
-<center class='img'><img src="Pics/d2l003.png" width=50%></center>
+<img src="Pics/d2l003.png">
 
 ---
 
@@ -82,7 +102,7 @@ LeNet - ResNet - LSTM - BERT
 
 主要的数据结构 - N维数组
 
-<center class='img'><img src="Pics/d2l004.png" width=50%></center>
+<img src="Pics/d2l004.png">
 
 
 **广播机制 - broadcasting mechanism**
@@ -126,11 +146,11 @@ torch.Tensor._is_view()
 
 ## 05 线性代数
 
-<center class='img'><img src="Pics/d2l005.png" width=50%></center>
+<img src="Pics/d2l005.png" width=50%>
 
-<center class='img'><img src="Pics/d2l006.png" width=50%></center>
+<img src="Pics/d2l006.png" width=50%>
 
-<center class='img'><img src="Pics/d2l007.png" width=50%></center>
+<img src="Pics/d2l007.png" width=50%>
 
 
 **范数不等式**
@@ -149,7 +169,7 @@ keepdim = True  # 保留维度
 
 **置换矩阵** - Permutation Matrix - 元素只有0和1，每行和每列只有一个元素是 1，箱单与单位矩阵行列变换，**置换矩阵 是 正交矩阵**，置换矩阵的逆是它的转置
 
-<center class='img'><img src="Pics/d2l009.png" width=50%></center>
+<img src="Pics/d2l009.png" width=50%>
 
 
 特征向量 & 特征值
@@ -160,25 +180,25 @@ keepdim = True  # 保留维度
 
 主要是求导数
 
-<center class='img'><img src="Pics/d2l010.png" width=50%></center>
+<img src="Pics/d2l010.png" width=50%>
 
 
 亚导数
 
-<center class='img'><img src="Pics/d2l011.png" width=40%></center>
+<img src="Pics/d2l011.png" width=40%>
 
 
 **梯度**
 
-<center class='img'><img src="Pics/d2l012.png" width=35%></center>
+<img src="Pics/d2l012.png" width=35%>
 
-<center class='img'><img src="Pics/d2l013.png" width=45%><img src="Pics/d2l014.png" width=53%></center>
+<img src="Pics/d2l013.png" width=45%><img src="Pics/d2l014.png" width=53%>
 
-<center class='img'><img src="Pics/d2l015.png" width=50%></center>
+<img src="Pics/d2l015.png" width=50%>
 
-<center class='img'><img src="Pics/d2l016.png"  width=50%><img src="Pics/d2l017.png"  width=49%></center>
+<img src="Pics/d2l016.png"  width=50%><img src="Pics/d2l017.png"  width=49%>
 
-<center class='img'><img src="Pics/d2l018.png" width=80%></center>
+<img src="Pics/d2l018.png" width=80%>
 
 
 
@@ -207,19 +227,19 @@ keepdim = True  # 保留维度
 
 **链式法则**
 
-<center class='img'><img src="Pics/d2l019.png" width=70%></center>
+<img src="Pics/d2l019.png" width=70%>
 
-<center class='img'><img src="Pics/d2l020.png" width=60%></center>
+<img src="Pics/d2l020.png" width=60%>
 
-<center class='img'><img src="Pics/d2l021.png" width=60%></center>
+<img src="Pics/d2l021.png" width=60%>
 
 **自动求导**计算一个函数在指定值上的导数
 
-<center class='img'><img src="Pics/d2l022.png" width=50%></center>
+<img src="Pics/d2l022.png" width=50%>
 
 计算图
 
-<center class='img'><img src="Pics/d2l023.png" width=60%></center>
+<img src="Pics/d2l023.png" width=60%>
 
 **自动求导的两种模式**
 1. **正向**(Forward Mode)
@@ -231,13 +251,13 @@ keepdim = True  # 保留维度
    2. 需要读取前向计算的中间结果(耗GPU资源)
    3. 可以一次性计算出所有输入变量的梯度
 
-<center class='img'><img src="Pics/d2l024.png" width=60%></center>
+<img src="Pics/d2l024.png" width=60%>
 
-<center class='img'><img src="Pics/d2l025.png" width=70%></center>
+<img src="Pics/d2l025.png" width=70%>
 
-<center class='img'><img src="Pics/d2l027.png" width=50%></center>
+<img src="Pics/d2l027.png" width=50%>
 
-<center class='img'><img src="Pics/d2l026.png" width=80%></center>
+<img src="Pics/d2l026.png" width=80%>
 
 深度学习中，**求导是求模型参数对损失函数的导数**，如权重和偏置，目的是为了优化这些参数以最小化损失函数
 
@@ -305,21 +325,21 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 ### 08.01 线性回归
 
-<center class='img'><img src="Pics/d2l028.png" width=60%></center>
+<img src="Pics/d2l028.png" width=60%>
 
 线性模型可以看做单层神经网络，仅有输入层和输出层(不算层数)
 
-<center class='img'><img src="Pics/d2l029.png" width=60%></center>
+<img src="Pics/d2l029.png" width=60%>
 
 收集训练数据集
 
-<center class='img'><img src="Pics/d2l030.png" width=40%></center>
+<img src="Pics/d2l030.png" width=40%>
 
-<center class='img'><img src="Pics/d2l031.png" width=60%></center>
+<img src="Pics/d2l031.png" width=60%>
 
 线性模型有**显式解**(损失函数是 **凸函数**)
 
-<center class='img'><img src="Pics/d2l032.png" width=60%></center>
+<img src="Pics/d2l032.png" width=60%>
 
 总结
 1. 线性回归是对n维输入的加权，外加偏差
@@ -332,7 +352,7 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 **梯度下降**
 
-<center class='img'><img src="Pics/d2l033.png" width=70%></center>
+<img src="Pics/d2l033.png" width=70%>
 
 梯度，是函数值上升最快的方向；负梯度，是函数值下降最快的方向
 
@@ -340,11 +360,11 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 1. 不能太小 - 计算梯度耗时
 2. 不能太大 - 模型难以收敛
 
-<center class='img'><img src="Pics/d2l034.png" width=60%></center>
+<img src="Pics/d2l034.png" width=60%>
 
 实际中，一般不直接使用梯度下降(损失函数是所有样本的平均损失)
 
-<center class='img'><img src="Pics/d2l035.png" width=70%></center>
+<img src="Pics/d2l035.png" width=70%>
 
 批量大小 **b** hyper-parameter
 1. 不能太小 - 每次计算量太小，不适合并行来最大利用计算资源
@@ -363,7 +383,7 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 ---
 
-## 10 多层感知机 + 代码实现 
+## 10 多层感知机 + 代码实现
 
 ---
 
@@ -624,11 +644,3 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 ---
 
-```bash
-mkdir d2l-zh && cd d2l-zh
-curl https://zh-v2.d2l.ai/d2l-zh-2.0.0.zip -o d2l-zh.zip
-unzip d2l-zh.zip && rm d2l-zh.zip
-cd pytorch
-
-pip3 install d2l
-```

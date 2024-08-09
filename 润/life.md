@@ -5,27 +5,41 @@
 - [Life](#life)
   - [Table of Contents](#table-of-contents)
 - [Travel](#travel)
-- [Car](#car)
+  - [Flight \& Airline](#flight--airline)
+  - [Train](#train)
+  - [Car](#car)
 - [Phone \& SIM Card](#phone--sim-card)
 - [Shopping](#shopping)
 - [Electricity](#electricity)
+
 
 ---
 
 # Travel
 
-**Flight & Airline**
+## Flight & Airline
+
 1. [星空联盟](https://flights.staralliance.com/zh/) <img src="./Pics/flight002.png" height=25>
    1. [土耳其航空](https://www.turkishairlines.com/) <img src="./Pics/flight001.webp" height=25>
 2. 廉价航空
    1. [美国边疆航空](https://www.flyfrontier.com/) <img src="./Pics/flight003.svg" height=25>
    2. [美国精神航空](https://www.spirit.com/) <img src="./Pics/flight004.svg" height=25>
 
-**Train**
+## Train
 
----
 
-# Car
+
+
+## Car
+
+**MTD (Mass Transit District)**
+1. iCard - free
+2. To CapStone - 22 Illini
+3. To McKinley - 22 Illini
+
+[hampaign-Urbana Mass Transit District (MTD) 说明](./MTD-Bus.pdf)
+
+
 
 
 ---
