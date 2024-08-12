@@ -13,7 +13,11 @@
 
 [乘坐飞机可能用到或可能在机场标志上见到的短句](https://zh.speaklanguages.com/%E8%8B%B1%E8%AF%AD/%E6%97%A5%E5%B8%B8%E7%94%A8%E8%AF%AD/%E4%B9%98%E9%A3%9E%E6%9C%BA)
 
-check in 值机/托运
+arrivals/departures/
+check-in 值机
+transfers 转机
+Customs 海关
+check in the suitcase 托运
 excess baggage charge 行李超重费
 window/aisle seat 窗边/走道 位置
 trolley 手推车
@@ -22,4 +26,4 @@ gate number xx xx号登机口
 boarding card 登机牌
 overhead locker 行李架
 food and refreshment
-
+baggage reclaim 领取行李
