@@ -6,12 +6,20 @@
 
 - [Products of DeepLearning Hardware](#products-of-deeplearning-hardware)
   - [Table of Contents](#table-of-contents)
+  - [TODO](#todo)
 - [Nvidia](#nvidia)
 - [Huawei](#huawei)
 
 
-
 ---
+
+## TODO
+
+[GPU 进阶笔记（一）：高性能 GPU 服务器硬件拓扑与集群组网（2023）](https://arthurchiao.art/blog/gpu-advanced-notes-1-zh/)
+[GPU 进阶笔记（二）：华为昇腾 910B GPU 相关（2023）](https://arthurchiao.art/blog/gpu-advanced-notes-2-zh/)
+[GPU 进阶笔记（三）：华为 NPU (GPU) 演进（2024）](https://arthurchiao.art/blog/gpu-advanced-notes-3-zh/)
+
+
 
 # Nvidia
 

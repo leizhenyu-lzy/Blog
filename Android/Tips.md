@@ -12,8 +12,9 @@
 
 # App Default Download Path
 
-**TIM** - Android/data/com.tencent.tim/Tencent/TIMfile_recv
+**TIM** - `Android/data/com.tencent.tim/Tencent/TIMfile_recv`
 
+**Moible QQ** - `Android/data/com.tencent.mobileqq/Tencent/QQfile_recv`
 
 # WeChat History Transfer
 

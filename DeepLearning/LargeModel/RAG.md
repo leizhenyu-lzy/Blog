@@ -279,7 +279,9 @@ RoPE - Rotary Positional Embedding - 旋转位置编码 - 对于远距离的注�
 
 
 
+TODO
 
+[大模型rag技术如此之多，如何选择，多看看论文和实验](https://www.bilibili.com/video/BV1vD421T7aR/)
 
 
 
@@ -298,6 +300,8 @@ RoPE - Rotary Positional Embedding - 旋转位置编码 - 对于远距离的注�
 [arxiv - From Local to Global: A Graph RAG Approach to Query-Focused Summarization](https://arxiv.org/pdf/2404.16130v1)
 
 [ReadPaper - Paper & Note](https://readpaper.com/pdf-annotate/note?pdfId=4881783320383324161&noteId=2323244243193266176)
+
+[WeChat 文章](https://mp.weixin.qq.com/s/JBQf8C-4KU8ot9G0-olSzA?poc_token=HDPWvGajAVZgIexn63pDnrb7e6NO4hjLV04azmLi)
 
 [YouTube - GraphRAG: LLM-Derived Knowledge Graphs for RAG](https://www.youtube.com/watch?v=r09tJfON6kE&list=WL)
 
@@ -337,10 +341,11 @@ Graph Machine Learning
 
 
 
+TODO
 
+[大模型研发核心 - 数据工程、自动化评估及与知识图谱的结合 - 智源社区](https://hub.baai.ac.cn/view/28740)
 
-
-
+[从传统RAG到GraphRAG](https://www.bilibili.com/video/BV1bm41117XN/)
 
 
 ## LLM & KnowledgeGraph
