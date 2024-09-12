@@ -86,10 +86,13 @@
 
 ## 1000 - 1999
 
+[1684 - Count the Number of Consistent Strings](https://leetcode.com/problems/count-the-number-of-consistent-strings/description) - `ord([char])`返回单个字符Unicode，`chr(int)`返回Unicode对应字符
 
 ## 2000 - 2999
 
 [2028 - Find Missing Observations](https://leetcode.com/problems/find-missing-observations/description/) - 先求平均数(向下取整)，然后把剩余差值一个个 +1 分配
+
+[2220 - Minimum Bit Flips to Convert Number](https://leetcode.com/problems/minimum-bit-flips-to-convert-number/description) - XOR-Operator(^) + BitwiseAnd(&) + RightShiftOperator(>>)
 
 [2326 - Spiral Matrix IV](https://leetcode.com/problems/spiral-matrix-iv/description) - 上下左右 4 ptr - [YouTube 题解](https://www.youtube.com/watch?v=sOV1nRhmsMQ)
 
