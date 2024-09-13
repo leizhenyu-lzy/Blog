@@ -1758,6 +1758,14 @@ sudo apt install pavucontrol
 解压即可使用
 
 
+# shotcut 视频剪辑
+
+[Shotcut 官网](https://shotcut.org/download/)
+
+```bash
+sudo snap install shotcut --classic
+```
+
 # 网易云音乐
 
 
