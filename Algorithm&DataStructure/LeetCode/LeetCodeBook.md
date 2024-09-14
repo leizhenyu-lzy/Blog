@@ -98,6 +98,8 @@
 
 [2326 - Spiral Matrix IV](https://leetcode.com/problems/spiral-matrix-iv/description) - 上下左右 4 ptr - [YouTube 题解](https://www.youtube.com/watch?v=sOV1nRhmsMQ)
 
+[2419 - Longest SubArray With Maximum Bitwise AND](https://leetcode.com/problems/longest-subarray-with-maximum-bitwise-and/description) - 位与 Bitwise AND，两个数按位与，只有两数相同时，结果才能等于最大值，否则都将小于两个数之间的最大值
+
 [2807 - Insert Greatest Common Divisors in Linked List](https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/description) - [Euclidean Algorithm 辗转相除法](https://en.wikipedia.org/wiki/Euclidean_algorithm) 求最大公约数(Greatest Common)
 
 ```python

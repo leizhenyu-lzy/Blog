@@ -6,8 +6,8 @@
   - [Table of Contents](#table-of-contents)
 - [傅里叶分析之掐死教程(直观理解) - 知乎](#傅里叶分析之掐死教程直观理解---知乎)
 - [Visualization of Fourier Transforms](#visualization-of-fourier-transforms)
-
-
+- [DR\_CAN - 纯干货数学推导\_傅里叶级数与傅里叶变换](#dr_can---纯干货数学推导_傅里叶级数与傅里叶变换)
+- [FS - FT - DFT - DTFT - FFT](#fs---ft---dft---dtft---fft)
 
 ---
 
@@ -85,6 +85,7 @@
 **Epicycle - 周转圆**
 1. 3D sine wave ≈ complex sinusoids ≈ spirals
 2. Drawing with/without **Time dimension**
+
    <img src="Pics/fourier012.gif" width=180><img src="Pics/fourier013.gif" width=180>
 
 **Image Processing with Fourier Transform**
@@ -119,3 +120,100 @@
    <img src="Pics/fourier022.png" width=550>
 
 8. $\text{Center of Mass} = \frac{1}{t_2 - t_1} \int_{t_1}^{t_2} g(t) e^{-i 2 \pi f t} dt$
+
+---
+
+# DR_CAN - 纯干货数学推导_傅里叶级数与傅里叶变换
+
+[DR_CAN - 纯干货数学推导_傅里叶级数与傅里叶变换](https://space.bilibili.com/230105574/channel/collectiondetail?sid=1814755)
+
+**三角函数正交性**
+1. 三角函数系 - {0 (sin 0x), **1** (cos 0x), sin x, cos x, sin 2x, cos 2x, ..., sin nx, cos nx, ...}
+
+2. 正交系满足性质
+
+   $$\left\{\begin{matrix}
+      \int_{-\pi}^{+\pi} f_m(x) f_n(x) dx = 0 (m \neq n) \\
+      \int_{-\pi}^{+\pi} f_m(x) f_n(x) dx = \pi (m = n)
+      \end{matrix}\right.$$
+
+
+**Euler Formula 欧拉公式 证明**
+1. 表达形式 $e^{i \theta} = \cos \theta + i \sin \theta$
+2. 任何复数可表示为 $z = r · e^{i \theta} = r \cos \theta + i r \sin \theta$
+3. 构造 分式 函数 (分子分母 分别为 公式左右)
+
+   $$f(\theta) = \frac{e^{i \theta}}{\cos \theta + i \sin \theta}$$
+
+4. 对 构造的函数 进行求导(分子可以抵消)
+
+   $$\begin{aligned}
+      f^{\prime}(\theta) & =\frac{i e^{i \theta}(\cos \theta + i \sin \theta)-e^{i \theta}(-\sin \theta + i \cos \theta)}{(\cos \theta + i \sin \theta)^{2}} \\
+      & =\frac{i e^{i \theta} \cos \theta - e^{i \theta} \sin \theta + e^{i \theta} \sin \theta - i e^{i \theta} \cos \theta}{(\cos \theta + i \sin \theta)^{2}} \text{ (分子抵消了)}\\
+      & = 0
+      \end{aligned}$$
+
+5. $f^{\prime}(\theta) = 0$ 说明 $f(\theta)$ 为常数。 将 $\theta = 0$ 带入 构造的函数 得 $f(\theta) == 1$，即证明成功
+
+
+**Fourier Series**
+1. 周期性函数 $f(t)$ 可以变换为 一系列 正(余)弦函数
+2. 变换后得到 : 频率、频域幅值、相位
+3. 标准正交基(与自己内积=1，与别人内积=0) : $1$, $\sin(n \omega t)$, $\cos(n \omega t)$
+4. **$T = 2 \pi$** 的 周期函数 展开为 傅里叶级数
+   1. $$f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty}a_n \cos(n x) + \sum_{n=1}^{\infty}b_n \sin(n x)$$
+   2. $$\left\{\begin{matrix}
+         a_n = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x) \cos(nx) dx \\
+         b_n = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x) \sin(nx) dx
+         \end{matrix}\right.$$
+
+5. **$T = 2 L$** 的 周期函数 展开为 傅里叶级数，使用换元法 令 $t = \frac{L}{\pi}x, x=\frac{\pi}{L}t$
+   1. $$\begin{align*}
+      f(t) = f(\frac{L}{\pi}x) & = g(x) \\
+      & = \frac{a_0}{2} + \sum_{n=1}^{\infty}a_n \cos(n x) + \sum_{n=1}^{\infty}b_n \sin(n x) \\
+      & = \frac{a_0}{2} + \sum_{n=1}^{\infty}a_n \cos(n \frac{\pi}{L} t) + \sum_{n=1}^{\infty}b_n \sin(n \frac{\pi}{L} t)
+      \end{align*}$$
+
+   2. $$\left\{\begin{matrix}
+            \begin{align*}
+            a_n =& \frac{1}{\pi} \int_{-\pi}^{\pi} g(x) \cos(nx) dx \\
+            =& \frac{1}{L} \int_{-L}^{L} f(t) \cos(n \frac{\pi}{L}t) dt
+            \end{align*}
+         \\
+            \begin{align*}
+            b_n =& \frac{1}{\pi} \int_{-\pi}^{\pi} g(x) \sin(nx) dx \\
+            =& \frac{1}{L} \int_{-L}^{L} f(t) \sin(n \frac{\pi}{L}t) dt
+            \end{align*}
+         \end{matrix}\right.$$
+
+6. 工程上 $T = 2L$, $\omega = \frac{\pi}{L} = \frac{2\pi}{T}$
+   1. $$f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty}a_n \cos(n \omega t) + \sum_{n=1}^{\infty}b_n \sin(n \omega t)$$
+   2. $$\left\{\begin{matrix}
+         a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos(n \omega t) dt \\
+         b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin(n \omega t) dt
+         \end{matrix}\right.$$
+7. 带入 Euler Formula
+   1. $$\begin{align*}
+         \cos \theta =& \frac{1}{2} (e^{i \theta} + e^{-i \theta}) \\
+         \sin \theta =& - i \frac{1}{2} (e^{i \theta} - e^{-i \theta})
+         \end{align*}$$
+
+
+**Fourier Transform**
+1. Euler Formula $\cos \theta + i \sin \theta = e^{i \theta}$
+2. 将非周期函数看做 周期为无穷大
+3. $$\hat{F_T}(\omega) = \int_{-\infty}^{+\infty} f(t) e^{-i \omega t} dt
+      \Rightarrow
+      \left\{\begin{align*}
+      &=0,不含 \omega 分量 \\
+      &\neq0,含 \omega 分量
+      \end{align*}\right.$$
+4. $$f(t) = \frac{1}{2 \pi} \int_{-\infty}^{+\infty} F_T(\omega) e^{i \omega t} dt$$
+5. 结果为 复数
+   1. 复数的模 = Magnitude 幅度
+   2. 复数角度 = Phase     相位
+
+---
+
+# FS - FT - DFT - DTFT - FFT
+
