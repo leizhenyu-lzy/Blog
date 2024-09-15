@@ -88,6 +88,8 @@
 
 [1310 - XOR Queries of a SubArray](https://leetcode.com/problems/xor-queries-of-a-subarray/description) - `XOR` **a^0=a, a^a=0**， 提前建立数组
 
+[1371 - Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/description) - TODO
+
 [1684 - Count the Number of Consistent Strings](https://leetcode.com/problems/count-the-number-of-consistent-strings/description) - `ord([char])`返回单个字符Unicode，`chr(int)`返回Unicode对应字符
 
 ## 2000 - 2999
