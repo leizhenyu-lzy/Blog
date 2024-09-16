@@ -84,6 +84,8 @@
 
 [438]
 
+[539 - Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/description) - BucketSort
+
 ## 1000 - 1999
 
 [1310 - XOR Queries of a SubArray](https://leetcode.com/problems/xor-queries-of-a-subarray/description) - `XOR` **a^0=a, a^a=0**， 提前建立数组
