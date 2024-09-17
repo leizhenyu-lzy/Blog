@@ -192,15 +192,60 @@
          a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos(n \omega t) dt \\
          b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin(n \omega t) dt
          \end{matrix}\right.$$
-7. 带入 Euler Formula
+7. 带入 **Euler Formula** 转为 **复数**形式
    1. $$\begin{align*}
          \cos \theta =& \frac{1}{2} (e^{i \theta} + e^{-i \theta}) \\
          \sin \theta =& - i \frac{1}{2} (e^{i \theta} - e^{-i \theta})
          \end{align*}$$
+   2. $$\begin{aligned}
+      f(t)
+      & =\frac{a_0}{2} \
+         +\sum_{n=1}^{\infty} \left[
+            a_n \frac{1}{2} (e^{i n \omega t} + e^{-i n \omega t})
+            - b_n i \frac{1}{2}  (e^{i n \omega t} - e^{-i n \omega t})
+         \right] \\
+      & =\frac{a_0}{2} \
+         +\sum_{n=1}^{\infty} \left[
+            \frac{a_n - i b_n}{2} e^{i n \omega t}
+            + \frac{a_n + i b_n}{2} e^{-i n \omega t}
+         \right] \\
+      & =\frac{a_0}{2} \
+         +\sum_{n=1}^{\infty} \frac{a_n - i b_n}{2} e^{ i n \omega t}
+         +\underbrace{\sum_{n=1}^{\infty} \frac{a_n + i b_n}{2} e^{-i n \omega t}}_{\text{令该部分 n = -n}}\\
+      & =\underbrace{\sum_{n=0}^{0} \frac{a_0}{2} e^{i n \omega t}}_{n=0, e^{i n \omega t}=1}
+         +\sum_{n=1}^{+\infty} \frac{a_{n}-i b_{n}}{2} e^{i n \omega t}
+         +\sum_{n=-\infty}^{-1} \frac{a_{-n} + i b_{-n}}{2} e^{i n \omega t} \\
+      & =\sum_{n=-\infty}^{+\infty} C_n e^{i n \omega t}
+      \end{aligned}$$
+   3. $$C_n=\left\{\begin{array}{ll}
+         \frac{a_0}{2},        & n=0 \\
+         \frac{a_n - i b_n}{2},  & n=1,2,3,4 \cdots \\
+         \frac{a_{-n} + i b_{-n}}{2},    & n=-1,-2,-3,-4 \cdots
+         \end{array}\right.$$
+      1. 将 $a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos(n \omega t) dt$ & $b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin(n \omega t) dt$ 带入
+      2. $$\begin{align*}
+            \underset{n=0}{C_n}
+               &=\frac{a_{0}}{2}\\
+               &=\frac{1}{2} \frac{2}{T} \int_{0}^{T} f(t) · 1 dt\\
+               &=\frac{1}{T} \int_{0}^{T} f(t) \underbrace{e^{-i n \omega t}}_{n=0, e^{-i n \omega t} = 1}dt \\
+            \underset{n=+1,+2,+3, \cdots}{C_n}
+               &=\frac{1}{2}\left(\frac{2}{T} \int_{0}^{T} f(t) \cos(n \omega t) dt
+                  - i \frac{2}{T} \int_{0}^{T} f(t) \sin(n \omega t) dt \right) \\
+               &=\frac{1}{T} \int_{0}^{T} f(t)\underbrace{(\cos(n \omega t) - i \sin(n \omega t))}_{=\cos (-n \omega t) + i \sin (- n \omega t)} dt \\
+               &=\frac{1}{T} \int_{0}^{T} f(t) e^{-i n \omega t} dt \\
+            \underset{n=-1,-2,-3, \cdots}{C_n}
+               &=\frac{1}{2}\left(\frac{2}{T} \int_{0}^{T} f(t) \cos (-n \omega t) dt
+                  + i \frac{2}{T} \int_{0}^{T} f(t) \sin (-n \omega t) dt\right)\\
+               &=\frac{1}{T} \int_{0}^{T} f(t)\underbrace{(\cos(n \omega t) - i \sin(n \omega t))}_{=\cos (-n \omega t) + i \sin (- n \omega t)} dt\\
+               &=\frac{1}{T} \int_{0}^{T} f(t) e^{-i n \omega t} dt
+            \end{align*}$$
+   4. 综上所述 复数形式的 Fourier Series (式中 $\omega = \frac{2 \pi}{T}$ 为 **基频率**)
+      1. $$f(t) = \sum_{n=-\infty}^{+\infty} C_n e^{i n \omega t}$$
+      2. $$C_n=\frac{1}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f(t) e^{-i n \omega t}$$
 
 
 **Fourier Transform**
-1. Euler Formula $\cos \theta + i \sin \theta = e^{i \theta}$
+1. Euler Formula - $\cos \theta + i \sin \theta = e^{i \theta}$
 2. 将非周期函数看做 周期为无穷大
 3. $$\hat{F_T}(\omega) = \int_{-\infty}^{+\infty} f(t) e^{-i \omega t} dt
       \Rightarrow

@@ -1,3 +1,6 @@
+import cv2
+import numpy as np
+
 def findMinDifference(timePoints) -> int:
     # a day has 60 * 24 min
     timeList = [0] * (60*24)
@@ -53,6 +56,8 @@ def findMinDifference(timePoints) -> int:
 
 
 if __name__ == '__main__':
-    timePoints = ["00:00","23:59"]
-    result = findMinDifference(timePoints)
-    print(result)
+    result1 = cv2.getGaussianKernel(ksize=20, sigma=5.0)
+    result2 = cv2.getGaussianKernel(ksize=40, sigma=15.0)
+    result3 = result1 @ result2.T
+    print(result3)
+    print(sum(sum(result3)))
