@@ -1,4 +1,4 @@
-# DROID-SLAM (NeurIPS 2021)
+# DROID-SLAM : Deep Visual SLAM for Monocular, Stereo, and RGB-D Cameras (NeurIPS 2021)
 
 [GitHub - DROID-SLAM](https://github.com/princeton-vl/DROID-SLAM)
 
@@ -6,9 +6,16 @@
 
 [Zachary Teed - Optimization Inspired Neural Networks for Multi-View 3D](https://www.youtube.com/watch?v=ul6pXRGKmco)
 
+[DROID-SLAM : 单目、双目、RGBD相机的端到端视觉SLAM - 知乎](https://zhuanlan.zhihu.com/p/434471738)
+
+[完美的深度学习slam框架 : Droid-slam](https://zhuanlan.zhihu.com/p/683210110)
+
+[DROID-SLAM 代码详解](https://zhuanlan.zhihu.com/p/685402154)
+
+
 ## Table of Contents
 
-- [DROID-SLAM (NeurIPS 2021)](#droid-slam-neurips-2021)
+- [DROID-SLAM : Deep Visual SLAM for Monocular, Stereo, and RGB-D Cameras (NeurIPS 2021)](#droid-slam--deep-visual-slam-for-monocular-stereo-and-rgb-d-cameras-neurips-2021)
   - [Table of Contents](#table-of-contents)
 - [Notes](#notes)
   - [01 Introduction](#01-introduction)

@@ -6,6 +6,7 @@
   - [Table of Contents](#table-of-contents)
 - [傅里叶分析之掐死教程(直观理解) - 知乎](#傅里叶分析之掐死教程直观理解---知乎)
 - [Visualization of Fourier Transforms](#visualization-of-fourier-transforms)
+- [3B1B - Fourier Transform? A visual introduction](#3b1b---fourier-transform-a-visual-introduction)
 - [DR\_CAN - 纯干货数学推导\_傅里叶级数与傅里叶变换](#dr_can---纯干货数学推导_傅里叶级数与傅里叶变换)
 - [FS - FT - DFT - DTFT - FFT](#fs---ft---dft---dtft---fft)
 
@@ -68,8 +69,6 @@
 
 # Visualization of Fourier Transforms
 
-[3B1B - Fourier Transform? A visual introduction](https://www.3blue1brown.com/lessons/fourier-transforms)
-
 [An Interactive Introduction to Fourier Transforms - Visualization](https://www.jezzamon.com/fourier/zh-cn.html)
 
 [An Interactive Introduction to Fourier Transforms - Github](https://github.com/Jezzamonn/fourier)
@@ -101,25 +100,34 @@
 
 <img src="Pics/fourier019.png" width=500>
 
+---
 
-**3B1B**
-1. 复数域缠绕机器
+# 3B1B - Fourier Transform? A visual introduction
 
-   <img src="Pics/fourier020.gif" width=640>
+[3B1B - Fourier Transform? A visual introduction](https://www.3blue1brown.com/lessons/fourier-transforms)
 
-2. 复数域 $e^{-i2\pi f t}$(注意 - 号)， $f$ 大小 表现为 缠绕速度(频率) 快慢，缠绕频率决定了缠绕图像的样子，$f$ 正/负 代表 顺/逆 时针 缠绕方向
-3. $e^{i2\pi \omega t}$ 乘以 原始信号 相当于是以不同速度(频率) 将原始信号缠绕在 复数域原点周围 。离原点远 表示 原始信号值大，离原点近 表示原始信号值小
-4. 求 缠绕图像的重心位置 相当于 求和再平均
-5. 所以找到 重心最远的位置 就是 Fourier Transform 后，对应频率分量的 能量 最大的地方
-6. 最开始的 重心大尖峰 是 直流分量(缠绕速度低，都挤在一起，相当于都×1) & 上移过的波函数(恒非负) 共同作用，当还原为正弦波函数时，尖峰消失
+
+复数域缠绕机器
+
+<img src="Pics/fourier020.gif" width=640>
+
+复数域 $e^{-i2\pi f t}$(注意 - 号)， $f$ 大小 表现为 缠绕速度(频率) 快慢，缠绕频率决定了缠绕图像的样子，$f$ 正/负 代表 顺/逆 时针 缠绕方向
+
+$e^{i2\pi \omega t}$ 乘以 原始信号 相当于是以不同速度(频率) 将原始信号缠绕在 复数域原点周围 。离原点远 表示 原始信号值大，离原点近 表示原始信号值小
+
+$$\text{Center of Mass} = \frac{1}{t_2 - t_1} \int_{t_1}^{t_2} g(t) e^{-i 2 \pi f t} dt$$
+
+求 缠绕图像的重心位置 相当于 求和再平均
+1. 所以找到 重心最远的位置 就是 Fourier Transform 后，对应频率分量的 能量 最大的地方
+2. 最开始的 重心大尖峰 是 直流分量(缠绕速度低，都挤在一起，相当于都×1) & 上移过的波函数(恒非负) 共同作用，当还原为正弦波函数时，尖峰消失
 
    <img src="Pics/fourier021.gif" width=500>
 
-7. 时域的 Sum 可以对应 频域的 Sum
+时域的 Sum 可以对应 频域的 Sum
 
-   <img src="Pics/fourier022.png" width=550>
+<img src="Pics/fourier022.png" width=550>
 
-8. $\text{Center of Mass} = \frac{1}{t_2 - t_1} \int_{t_1}^{t_2} g(t) e^{-i 2 \pi f t} dt$
+
 
 ---
 
@@ -192,11 +200,15 @@
          a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos(n \omega t) dt \\
          b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin(n \omega t) dt
          \end{matrix}\right.$$
-7. 带入 **Euler Formula** 转为 **复数**形式
-   1. $$\begin{align*}
+
+7. 复数形式 Fourier Series
+   1. 带入 **Euler Formula** 转为 **复数**形式
+      $$\left\{
+         \begin{align*}
          \cos \theta =& \frac{1}{2} (e^{i \theta} + e^{-i \theta}) \\
          \sin \theta =& - i \frac{1}{2} (e^{i \theta} - e^{-i \theta})
-         \end{align*}$$
+         \end{align*}
+         \right.$$
    2. $$\begin{aligned}
       f(t)
       & =\frac{a_0}{2} \
@@ -239,9 +251,34 @@
                &=\frac{1}{T} \int_{0}^{T} f(t)\underbrace{(\cos(n \omega t) - i \sin(n \omega t))}_{=\cos (-n \omega t) + i \sin (- n \omega t)} dt\\
                &=\frac{1}{T} \int_{0}^{T} f(t) e^{-i n \omega t} dt
             \end{align*}$$
-   4. 综上所述 复数形式的 Fourier Series (式中 $\omega = \frac{2 \pi}{T}$ 为 **基频率**)
-      1. $$f(t) = \sum_{n=-\infty}^{+\infty} C_n e^{i n \omega t}$$
-      2. $$C_n=\frac{1}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f(t) e^{-i n \omega t}$$
+   4. 综上所述 可得 复数形式的 Fourier Series
+      1. 复数形式的 Fourier Series (式中 $\omega = \frac{2 \pi}{T}$ 为 **基频率**)
+         $$f_T(t) = f(t + T) = \sum_{n=-\infty}^{+\infty} C_n e^{i n \omega t}$$
+      2. $C_n = a + i b$ 是 复数
+         $$C_n=\frac{1}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f_T(t) e^{-i n \omega t}dt$$
+
+8. **Fourier Series -> Fourier Transform**
+   1. 对于非周期，可以理解为 周期无限长 $T \rightarrow +\infty$， 同时 $\lim_{x \to 0} f_T(t) = f(t)$
+   2. 对于 Fourier Series，$\Delta \omega = \omega_0 = \frac{2 \pi}{T}$ 为 **基频率**，$\lim_{T \to +\infty} \Delta \omega = 0$，即 频谱之间的距离越来越小，离散 -> 连续
+   3. 复数形式的 傅里叶级数 将 $C_n$ 代入 $f_T(t)$
+
+      $$f_T(t) = \sum_{n=-\infty}^{+\infty} \frac{1}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f_T(t) e^{-i n \omega t} dt e^{i n \omega t}$$
+
+   4. 由 $\Delta \omega = \omega_0 = \frac{2 \pi}{T}$ 可得 $\frac{1}{T} = \frac{\Delta \omega}{2 \pi}$，代入上式
+
+      $$f_T(t) = \sum_{n=-\infty}^{+\infty} \frac{\Delta \omega}{2 \pi} \int_{-\frac{T}{2}}^{\frac{T}{2}} f_T(t) e^{-i n \omega t} dt e^{i n \omega t}$$
+
+   5. $T \rightarrow +\infty$ 时
+      1. $\int_{-\frac{T}{2}}^{\frac{T}{2}} dt$ 转为 $\int_{-\infty}^{+\infty} dt$
+      2. $n \omega_0$ = $\omega$ (频谱从离散变为连续)
+      3. $\sum_{n=-\infty}^{+\infty} \Delta \omega$ 转为 $\int_{-\infty}^{+\infty} d\omega$ (积分的意义)
+
+   5. 综上可得
+      $$f(t) = \frac{1}{2 \pi} \int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} f(t)e^{-i \omega t} \ dt \ e^{i \omega t} d\omega$$
+      1. **傅里叶 变换**
+         $$F(\omega) = \int_{-\infty}^{+\infty} f(t)e^{-i \omega t} \ dt$$
+      2. **傅里叶 逆变换**
+         $$f(t) = \frac{1}{2 \pi} \int_{-\infty}^{+\infty} F(\omega) \ e^{i \omega t} d\omega$$
 
 
 **Fourier Transform**
@@ -261,4 +298,6 @@
 ---
 
 # FS - FT - DFT - DTFT - FFT
+
+
 

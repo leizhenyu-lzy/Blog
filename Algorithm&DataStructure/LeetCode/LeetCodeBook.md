@@ -82,7 +82,12 @@
 
 ## 0000 - 0999
 
-[438]
+[179 - Largest Number](https://leetcode.com/problems/largest-number/description) - [YouTube 讲解](https://www.youtube.com/watch?v=WDx6Y4i4xJ8)
+1. **自定义比较函数** : 普通函数 返回 `+1/0/-1`，`+1`表示第一个元素应该排在第二个元素之后，`-1`表示第一个元素应该排在第二个元素之前，`0`表示两个元素相等，顺序无所谓
+2. **自定义排序** : `sorted(strNums, key=cmp_to_key(compare))`，`cmp_to_key` 是一个工具，将 比较函数 转换为 `Python 3` 中 `sorted()` 函数使用的 `键函数` - TODO(cmp_to_key 需要两个值，但是其他情况 只需要对原数进行一个映射，不需要两个数)
+3. `sorted()` 函数 使用的是 **TimSort 排序算法** - TODO
+
+[241 - Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/description) - [NeetCode](https://www.youtube.com/watch?v=cykVFFm5D3s) - [算法通关手册(LeetCode)](https://algo.itcharge.cn/Solutions/0200-0299/different-ways-to-add-parentheses/) - 分治算法 & 递归 - TODO
 
 [539 - Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/description) - BucketSort
 

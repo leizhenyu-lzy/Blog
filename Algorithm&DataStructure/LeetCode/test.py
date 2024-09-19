@@ -1,63 +1,23 @@
 import cv2
 import numpy as np
 
-def findMinDifference(timePoints) -> int:
-    # a day has 60 * 24 min
-    timeList = [0] * (60*24)
-    for timeStr in timePoints:
-        hh = int(timeStr[0:2])
-        mm = int(timeStr[3:5])
+def largestNumber(nums) -> str:
 
-        totalTime = hh*60+mm
+    strNums = [str(num) for num in nums]
 
-        timeList[totalTime] += 1
-        if timeList[totalTime] == 2:
-            return 0
+    maxNum = max(nums)
+    maxLength = len(str(maxNum))
 
-    lptr = 0
-    rptr = 1
+    sortedStrNums = sorted(strNums, key=lambda numStr: numStr.ljust(maxLength, numStr[-1]))
 
-    minGap = 24 * 60
-    minTime = None
-    maxTime = None
+    result = ""
 
-    print(sum(timeList))
+    for i in reversed(sortedStrNums):
+        result = result+i
 
-    while rptr < 60*24:
-        if timeList[lptr] == 0:
-            lptr += 1
-            rptr = lptr + 1
-            continue
-
-        if timeList[lptr] and minTime is None:
-            minTime = lptr
-            continue
-
-        if timeList[lptr] == 1 and timeList[rptr] == 0:
-            rptr += 1
-            continue
-
-        if timeList[lptr] == 1 and timeList[rptr] == 1:
-            tempGap = rptr - lptr
-            if tempGap < minGap:
-                minGap = tempGap
-            lptr = rptr
-            maxTime = rptr
-            rptr += 1
-            continue
-
-    # 还需比较 最大的时间 到第二天 最小的时间
-    crossDayGap = 24 * 60 + minTime - maxTime
-
-    if crossDayGap < minGap:
-        minGap = crossDayGap
-
-    return minGap
+    return result
 
 
 if __name__ == '__main__':
-    result1 = cv2.getGaussianKernel(ksize=20, sigma=5.0)
-    result2 = cv2.getGaussianKernel(ksize=40, sigma=15.0)
-    result3 = result1 @ result2.T
-    print(result3)
-    print(sum(sum(result3)))
+    result = largestNumber(nums = [34323,3432])
+    print(result)
