@@ -114,11 +114,38 @@ Rigid Body 状态描述
    2. <img src="Pics/lpq016.png" width=500>
 
 
-**Homogeneous Transformation Matrix (T)**
+**Homogeneous Transformation Matrix (T)** 齐次变换矩阵
 1. 将 Rotation & Translation 整合 - 16个元素，6 DoF
    1. <img src="Pics/lpq017.png" width=350>
 2. **移动 & 旋转** 复合 (向量 先旋转、再平移)
    1. <img src="Pics/lpq018.png" width=500>
+3. Homogeneous Matrix 好处 - 可以进行连续变换
+4. **Homogeneous Transformation Matrix (T)** 的三种用法(类似于 Rotation Matrix 的三种用法)
+   1. <img src="Pics/lpq023.png" width=550>
+5. Transformation Matrix 运算
+   1. 连续运算 : 要注意 每个 frame 之间的 原点向量 需要 逐级变换到 参考系
+   2. <img src="Pics/lpq024.png" width=550>
+6. 逆矩阵
+   1. 旋转部分 : 求逆，也就是 转置
+   2. 平移部分 : ${}^B P_{A \ org}$，要达到 反向操作的效果，需要将 原点间距向量 ${}^A P_{B \ org}$ 取反(反向移回)，并从 {B} frame 进行表示 $- {}^B_A R \  {}^A P_{B \ org} = - {}^A_B R^T \  {}^A P_{B \ org}$
+   3. <img src="Pics/lpq025.png" width=600>
+7. 连续运算
+   1. 注意 : 求逆部分不需要直接求，使用上述逆矩阵的特性即可方便得到
+   2. <img src="Pics/lpq026.png" width=550>
+   3. <img src="Pics/lpq027.png" width=600>
+
+
+
+**Operators 算子** : Translation & Rotation & Transformation
+1. single 移动 & 旋转
+   1. <img src="Pics/lpq019.png" width=550>
+2. combined 移动 & 旋转
+   1. 先转动再移动 ≠ 先移动再转动(移动的向量也会被转动)
+   2. <img src="Pics/lpq020.png" width=550>
+3. frame 中的点运动 = frame 做反向运动 (CCW = counter-clock-wise, CW = clock-wise)
+   1. <img src="Pics/lpq021.png" width=550>
+   2. 感觉有点类似于 内旋，需要根据当前 frame 进行反向操作，而不是针对原始 frame - TODO
+   3. <img src="Pics/lpq022.png" width=550>
 
 
 
