@@ -117,7 +117,7 @@ Rigid Body 状态描述
 **Homogeneous Transformation Matrix (T)**
 1. 将 Rotation & Translation 整合 - 16个元素，6 DoF
    1. <img src="Pics/lpq017.png" width=350>
-2. **移动 & 旋转** 复合 (先旋转、再平移)
+2. **移动 & 旋转** 复合 (向量 先旋转、再平移)
    1. <img src="Pics/lpq018.png" width=500>
 
 
