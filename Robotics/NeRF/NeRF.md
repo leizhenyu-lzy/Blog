@@ -1,5 +1,9 @@
 # NeRF
 
+[Paper Website](https://www.matthewtancik.com/nerf)
+
+[Github](https://github.com/bmild/nerf)
+
 目录
 [toc]
 
@@ -25,4 +29,4 @@ get_rays
 raw2outputs
 sample_pdf
 
- 
+
