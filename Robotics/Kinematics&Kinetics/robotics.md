@@ -102,7 +102,7 @@ Rigid Body 状态描述
             -1 & 0                     & 0
             \end{array}\right]
             \end{align*}$$
-5. **Z-Y-X Euler Angles - 由 Angles 推算 R** - 先转的后左乘，位置在前面(相当于一步步进行反向接力，解算回初始坐标系) - 和 Fixed Angles 顺序正好相反
+5. **Z-Y-X Euler Angles - 由 Angles 推算 R** - **先转的后左乘**，位置在前面(相当于一步步进行反向接力，解算回初始坐标系) - 和 Fixed Angles 顺序正好相反
    1. <img src="Pics/lpq013.png" width=550>
 6. **Z-Y-Z Euler Angles - 由 Angles 推算 R** - 先转的后左乘，位置在前面(相当于一步步进行反向接力，解算回初始坐标系) - 和 Fixed Angles 顺序正好相反
    1. <img src="Pics/lpq014.png" width=550>

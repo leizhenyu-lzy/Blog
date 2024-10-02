@@ -24,6 +24,7 @@
   - [0000 - 0999](#0000---0999)
   - [1000 - 1999](#1000---1999)
   - [2000 - 2999](#2000---2999)
+- [Appendix - 专题训练](#appendix---专题训练)
 
 ---
 
@@ -87,6 +88,8 @@
 2. **自定义排序** : `sorted(strNums, key=cmp_to_key(compare))`，`cmp_to_key` 是一个工具，将 比较函数 转换为 `Python 3` 中 `sorted()` 函数使用的 `键函数` - TODO(cmp_to_key 需要两个值，但是其他情况 只需要对原数进行一个映射，不需要两个数)
 3. `sorted()` 函数 使用的是 **TimSort 排序算法** - TODO
 
+[200. Number of Islands](https://leetcode.com/problems/number-of-islands/description/) - TODO 自己的写法对的，但是需要研究 DFS，BFS
+
 [241. Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/description) - [NeetCode](https://www.youtube.com/watch?v=cykVFFm5D3s) - [算法通关手册(LeetCode)](https://algo.itcharge.cn/Solutions/0200-0299/different-ways-to-add-parentheses/) - 分治算法 & 递归 - TODO
 
 [539. Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/description) - BucketSort
@@ -96,6 +99,8 @@
 ## 1000 - 1999
 
 [1310. XOR Queries of a SubArray](https://leetcode.com/problems/xor-queries-of-a-subarray/description) - `XOR` **a^0=a, a^a=0**， 提前建立数组
+
+[1331. Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/description) - TODO : Tim Sort
 
 [1371. Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/description) - TODO
 
@@ -123,8 +128,15 @@ return x
 ```
 
 
-
-
 ---
+
+# Appendix - 专题训练
+
+[Graph](https://leetcode.com/explore/featured/card/graph/)
+
+
+[Dynamic Programming](https://leetcode.com/explore/featured/card/dynamic-programming/)
+
+
 
 
