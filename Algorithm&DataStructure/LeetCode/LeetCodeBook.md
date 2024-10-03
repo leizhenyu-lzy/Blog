@@ -106,6 +106,9 @@
 
 [1497. Check If Array Pairs Are Divisible by k](https://leetcode.com/problems/check-if-array-pairs-are-divisible-by-k/description) - 根据 余数 不同 进行分类/计数，判断 对应数量是否 match
 
+[1590. Make Sum Divisible by P](https://leetcode.com/problems/make-sum-divisible-by-p/description) - TODO : 前缀余数列表
+
+
 [1684. Count the Number of Consistent Strings](https://leetcode.com/problems/count-the-number-of-consistent-strings/description) - `ord([char])`返回单个字符Unicode，`chr(int)`返回Unicode对应字符
 
 ## 2000 - 2999

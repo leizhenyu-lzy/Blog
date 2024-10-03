@@ -1,62 +1,31 @@
-def numIslands(grid) -> int:
-    rows = len(grid)
-    cols = len(grid[0])
+def minSubarray(nums, p: int) -> int:
+    sumNums = sum(nums)
+    lenNums= len(nums)
+    targetRemain = sumNums % p
 
-    mat = [[0]*cols for i in range(rows)]
+    if targetRemain == 0:
+        return 0
 
-    for i in range(rows):
-        for j in range(cols):
-            mat[i][j] = ord(grid[i][j]) - ord("0")
+    currentSum = 0
+    tempPos = 0
+    remainDict = {0: -1}
 
-    maxNum = rows * cols + 10
+    minLen = lenNums
 
-    dirs = [[-1, 0],
-            [ 1, 0],
-            [ 0,-1],
-            [ 0, 1]]
-    lenDir = 4
+    for i in nums:
+        currentSum += i
+        tempRemain = i % p
 
-    tempList = []
-    maxIslandIdx = 1
-    islandDict = {}
+        remainDict[tempRemain] = tempPos
 
-    for i in range(rows):
-        for j in range(cols):
-            if mat[i][j] == 0:
-                continue
-            connect = maxIslandIdx + 1
-            multiConnectList = []
-            for dir in dirs:
-                nexti = i + dir[0]
-                nextj = j + dir[1]
-                if nexti<0 or nexti>=rows:
-                    continue
-                if nextj<0 or nextj>=cols:
-                    continue
-                nextNum = mat[nexti][nextj]
-                if mat[nexti][nextj] > 1:
-                    connect = min(connect, nextNum)
-                    multiConnectList.append(nextNum)
-            mat[i][j] = connect
-            if connect == maxIslandIdx + 1:
-                maxIslandIdx += 1
-            if connect in islandDict.keys():
-                islandDict[connect].append([i,j])
-            else:
-                islandDict[connect] = [[i,j]]
+        aimKey = (tempRemain + p - targetRemain)%p
 
-            if len(multiConnectList) > 1:
-                minConnect = min(multiConnectList)
-                for tempConnect in multiConnectList:
-                    if tempConnect != minConnect:
-                        changeList = islandDict[tempConnect]
-                        for r,c in changeList:
-                            mat[r][c] = minConnect
-                        islandDict[minConnect].extend(changeList)
-                        islandDict.pop(tempConnect)
+        if aimKey in remainDict.keys():
+            minLen = min(minLen, tempPos - remainDict[aimKey])
 
-    return len(islandDict.keys())
+        tempPos += 1  # 更新位置
 
+    return minLen
 
 if __name__ == '__main__':
-    print(numIslands([["1","1","1"],["0","1","0"],["1","1","1"]]))
+    print(minSubarray([6,3,5,2], 9))

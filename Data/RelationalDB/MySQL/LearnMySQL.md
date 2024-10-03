@@ -8,9 +8,31 @@
 
 [狂神说 MySQL](https://www.bilibili.com/video/BV1NJ411J79W)
 
-[Python + MySQL](https://www.bilibili.com/video/av807094101)
+
 
 [MySQL创建用户与授权](https://www.cnblogs.com/zhongyehai/p/10695659.html)
+
+
+
+#
+
+[SQL的核心基础语法 | 快速入门MySQL - 技术蛋老师](https://www.bilibili.com/video/BV16D4y167TT/)
+
+[一小时MySQL教程 - GeekHour](https://www.bilibili.com/video/BV1AX4y147tA/)
+
+## 增
+
+## 删
+
+## 改
+
+## 查
+
+
+
+
+
+---
 
 # 宋红康 MySQL数据库
 
@@ -23,7 +45,7 @@
 ```test
 尚硅谷MySQL王炸版视频教程
 B站直达：https://www.bilibili.com/video/BV1iq4y1u7vj
-百度网盘：https://pan.baidu.com/s/1jUPQqXmk6x0YbSTvCu9ZRg 提取码：yyds 
+百度网盘：https://pan.baidu.com/s/1jUPQqXmk6x0YbSTvCu9ZRg 提取码：yyds
 阿里云盘：https://www.aliyundrive.com/s/wLemFNs4ApJ（教程配套资料请从百度网盘下载）
 
 更多尚硅谷视频教程请访问：http://www.atguigu.com/download.shtml
@@ -229,8 +251,8 @@ FLUSH PRIVILEGES;
 如果需要修改字符集可以通过alter语句
 
 ```sql
-alter table [tablename] charset [aim_charset];  
-alter database [dbname] charset [aim_charset];  
+alter table [tablename] charset [aim_charset];
+alter database [dbname] charset [aim_charset];
 例子：utf8
 ```
 
@@ -534,12 +556,12 @@ and的优先级高于or
 排列后，有相同的情况，需要再次进行排序。
 
 ```sql
-select employee_id , salary , department_id 
-from employees 
+select employee_id , salary , department_id
+from employees
 order by department_id desc , salary asc;
 
-select employee_id , salary , ifnull(department_id,-1) 
-from employees 
+select employee_id , salary , ifnull(department_id,-1)
+from employees
 order by department_id desc , salary asc;
 ```
 
@@ -571,7 +593,7 @@ mysql8.0新特性支持将逗号用OFFSET关键字进行替代（注意偏移量
 // 查询邮箱中包含e的员工信息，并按邮箱的字节数降序，再按部门号升序
 use atguigudb;
 
-select employee_id ,email ,department_id 
+select employee_id ,email ,department_id
 from employees
 where email like '%e%'  -- regexp '[e]'
 order by length(email) desc, department_id asc;
@@ -682,7 +704,7 @@ ORDER BY employees.employee_id ASC;
 
       SELECT e1.employee_id, e1.last_name, e2.employee_id, e2.last_name
       FROM employees e2 RIGHT OUTER JOIN employees e1
-      ON e1.manager_id = e2.employee_id; 
+      ON e1.manager_id = e2.employee_id;
 
       ```
 
@@ -742,7 +764,7 @@ UNION ALL多了一套公共的部分。但因为不用检查重复所以效率�
    FROM employees e
    LEFT OUTER JOIN departments d
    ON e.department_id = d.department_id
-   UNION ALL 
+   UNION ALL
    SELECT e.employee_id, d.department_name
    FROM employees e
    RIGHT OUTER JOIN departments d
@@ -758,7 +780,7 @@ UNION ALL多了一套公共的部分。但因为不用检查重复所以效率�
    LEFT OUTER JOIN departments d
    ON e.department_id = d.department_id
    WHERE d.department_id <=> NULL
-   UNION ALL 
+   UNION ALL
    SELECT e.employee_id, d.department_name
    FROM employees e
    RIGHT OUTER JOIN departments d
@@ -846,7 +868,7 @@ WHERE d.department_name = 'Executive';  -- 没有考虑其他地区有部门，�
 # 选择指定员工的姓名、员工号、及其管理者的姓名、员工号
 SELECT e.last_name "employees", e.employee_id "Emp", m.last_name "managers", m.employee_id "Mgr"
 FROM employees e
-LEFT OUTER JOIN employees m 
+LEFT OUTER JOIN employees m
 ON e.manager_id = m.employee_id;
 
 # 查询哪些部门没有员工
@@ -948,6 +970,8 @@ length与字符集有关，6是因为utf8中一个汉字三个字节。
 
 [Python + MySQL 0基础从入门到精通](https://www.bilibili.com/video/BV1B34y1R7in)
 
+[Python + MySQL](https://www.bilibili.com/video/av807094101)
+
 ## 安装pymysql
 
 需要安装pymysql十分方便：pip install pymysql
@@ -1023,7 +1047,7 @@ time_zone:用来设置每个连接会话的时区，默认为system时，使用�
 
 5. 其他
 ![](Pics/WithPython/withpython13.png)
- 
+
 
 ## 增删改查
 
