@@ -94,6 +94,8 @@
 
 [539. Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/description) - BucketSort
 
+[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/description) - Fixed Length Sliding Window
+
 [884 - Uncommon Words from Two Sentences](https://leetcode.com/problems/uncommon-words-from-two-sentences/description) - `str.split(" ")` - `dict.items()` - List1 & List2 don't matter
 
 ## 1000 - 1999
