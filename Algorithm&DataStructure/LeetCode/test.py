@@ -47,4 +47,10 @@ def areSentencesSimilar(sentence1: str, sentence2: str) -> bool:
 
 
 if __name__ == '__main__':
-    print(areSentencesSimilar("eTUny i b R UFKQJ EZx JBJ Q xXz", "eTUny i R EZx JBJ xXz"))
+    # print(areSentencesSimilar("eTUny i b R UFKQJ EZx JBJ Q xXz", "eTUny i R EZx JBJ xXz"))
+    s = "abc"
+    print(id(s))
+    s[2] = 'd'
+    print(s)
+    s[2] = 'd'
+
