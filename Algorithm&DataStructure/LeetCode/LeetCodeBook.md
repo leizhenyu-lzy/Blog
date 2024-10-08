@@ -114,6 +114,8 @@
 
 [1813. Sentence Similarity III](https://leetcode.com/problems/sentence-similarity-iii/description) - Deque / 2 Pointers
 
+[1963. Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/description) - Stack to eliminate paired brackets
+
 [1971. Find if Path Exists in Graph](https://leetcode.com/problems/find-if-path-exists-in-graph/description) - TODD : BFS & DFS
 
 
