@@ -1,56 +1,41 @@
-def areSentencesSimilar(sentence1: str, sentence2: str) -> bool:
+def maxWidthRamp(nums) -> int:
+    lenNums = len(nums)
+    maxRight = [-1]*lenNums
+    maxDict = {}
 
-    if len(sentence1) > len(sentence2):
-        sentence1, sentence2 = sentence2, sentence1
+    maxRight[-1] = nums[-1]
+    tempMax = maxRight[-1]
+    maxDict[nums[-1]] = lenNums - 1
 
+    for ptr in range(lenNums-2,-1,-1):
+        tempNum = nums[ptr]
+        if tempNum > tempMax:
+            maxDict[tempNum] = ptr
+            tempMax = tempNum
 
-    s1List = sentence1.split()
-    s1ListLen = len(s1List)
-    s2List = sentence2.split()
-    s2ListLen = len(s2List)
+        maxRight[ptr] = tempMax
 
-    if s1ListLen > s2ListLen:
-        return False
+    maxWidth=0
 
-    if s1ListLen == 1:  # 单个单词 不能被夹在中间
-        if s1List[0] == s2List[0] or s1List[0] == s2List[-1]:
-            return True
-        else:
-            return False
-
-    for word in s1List:
-        if word not in s2List:
-            return False
-
-    # check insert front
-    if s1List == s2List[s2ListLen - s1ListLen:s2ListLen]:
-        print("insert front")
-        return True
+    for ptr in range(lenNums-1):
+        nextPtr = ptr + 1
+        tempNum = nums[ptr]
+        if tempNum > maxRight[nextPtr]:
+            continue
 
 
-    # check insert end
-    if s1List == s2List[0:s1ListLen]:
-        print("insert end")
-        return True
+        while True:
+            nextPtr = maxDict[maxRight[nextPtr]]
+            maxWidth = max(maxWidth, nextPtr - ptr)
 
+            nextPtr += 1
+            if nextPtr == lenNums:
+                break
 
-    # check insert middle
-    wordPtr = 0
-    for word in s1List:
-        if word == s2List[wordPtr]:
-            wordPtr += 1
-        else:
-            break
+    return maxWidth
 
-    if s1List[wordPtr:s1ListLen] == s2List[s2ListLen-s1ListLen+wordPtr:s2ListLen]:
-        return True
 
 
 if __name__ == '__main__':
-    # print(areSentencesSimilar("eTUny i b R UFKQJ EZx JBJ Q xXz", "eTUny i R EZx JBJ xXz"))
-    s = "abc"
-    print(id(s))
-    s[2] = 'd'
-    print(s)
-    s[2] = 'd'
+    maxWidthRamp([6,0,8,2,1,5])
 

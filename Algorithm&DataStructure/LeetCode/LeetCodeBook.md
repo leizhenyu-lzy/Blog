@@ -96,7 +96,9 @@
 
 [567. Permutation in String](https://leetcode.com/problems/permutation-in-string/description) - Fixed Length Sliding Window
 
-[884 - Uncommon Words from Two Sentences](https://leetcode.com/problems/uncommon-words-from-two-sentences/description) - `str.split(" ")` - `dict.items()` - List1 & List2 don't matter
+[884. Uncommon Words from Two Sentences](https://leetcode.com/problems/uncommon-words-from-two-sentences/description) - `str.split(" ")` - `dict.items()` - List1 & List2 don't matter
+
+[962. Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/description) - Preprocessing(**从后往前构建最大值List**) & 提速核心(**长度更短的不用看**，不需要从相邻位置开始扩展)
 
 ## 1000 - 1999
 
