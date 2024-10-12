@@ -1,41 +1,24 @@
-def maxWidthRamp(nums) -> int:
-    lenNums = len(nums)
-    maxRight = [-1]*lenNums
-    maxDict = {}
+def minGroups(intervals) -> int:
+    events = []
+    for l, r in intervals:
+        events.append((l, 1))
+        events.append((r+1, -1))
 
-    maxRight[-1] = nums[-1]
-    tempMax = maxRight[-1]
-    maxDict[nums[-1]] = lenNums - 1
+    events.sort(key=lambda x:(x[0], +x[1]))
 
-    for ptr in range(lenNums-2,-1,-1):
-        tempNum = nums[ptr]
-        if tempNum > tempMax:
-            maxDict[tempNum] = ptr
-            tempMax = tempNum
+    print(events)
 
-        maxRight[ptr] = tempMax
+    currentIntervals = 0
+    maxIntervals = 0
 
-    maxWidth=0
+    for event in events:
+        currentIntervals += event[1]
+        maxIntervals = max(maxIntervals, currentIntervals)
 
-    for ptr in range(lenNums-1):
-        nextPtr = ptr + 1
-        tempNum = nums[ptr]
-        if tempNum > maxRight[nextPtr]:
-            continue
-
-
-        while True:
-            nextPtr = maxDict[maxRight[nextPtr]]
-            maxWidth = max(maxWidth, nextPtr - ptr)
-
-            nextPtr += 1
-            if nextPtr == lenNums:
-                break
-
-    return maxWidth
+    return maxIntervals
 
 
 
 if __name__ == '__main__':
-    maxWidthRamp([6,0,8,2,1,5])
+    print(minGroups([[5,10],[6,8],[1,4],[2,3]]))
 

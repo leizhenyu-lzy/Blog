@@ -100,6 +100,8 @@
 
 [962. Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/description) - Preprocessing(**从后往前构建最大值List**) & 提速核心(**长度更短的不用看**，不需要从相邻位置开始扩展)
 
+
+
 ## 1000 - 1999
 
 [1310. XOR Queries of a SubArray](https://leetcode.com/problems/xor-queries-of-a-subarray/description) - `XOR` **a^0=a, a^a=0**， 提前建立数组
@@ -119,6 +121,8 @@
 [1963. Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/description) - Stack to eliminate paired brackets
 
 [1971. Find if Path Exists in Graph](https://leetcode.com/problems/find-if-path-exists-in-graph/description) - TODD : BFS & DFS
+
+
 
 
 ## 2000 - 2999
