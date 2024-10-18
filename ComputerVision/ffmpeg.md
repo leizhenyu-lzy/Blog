@@ -2,7 +2,7 @@
 
 [100秒了解FFmpeg](https://www.bilibili.com/video/BV1HA4m1L7rH/)
 
-![](pics/ffmpeg001.png)
+![](Pics/ffmpeg001.png)
 
 FF - fast forward
 
