@@ -54,13 +54,16 @@ SH_C3 = [
 ]
 
 
-def computeColorFromSH(deg, pos, campos, sh):
+def computeColorFromSH(deg, # 阶数
+                       pos, # 3d gaussian 中心
+                       campos, # 相机位姿
+                       sh): # 球谐函数系数
     # The implementation is loosely based on code for
     # "Differentiable Point-Based Radiance Fields for
     # Efficient View Synthesis" by Zhang et al. (2022)
 
-    dir = pos - campos
-    dir = dir / np.linalg.norm(dir)
+    dir = pos - campos  # 相机指向Gaussian
+    dir = dir / np.linalg.norm(dir)  # 归一化
 
     result = SH_C0 * sh[0]
 

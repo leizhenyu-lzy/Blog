@@ -4,23 +4,47 @@
 
 [Github](https://github.com/graphdeco-inria/gaussian-splatting)
 
-```bibtex
-@Article{kerbl3Dgaussians,
-   author       = {Kerbl, Bernhard and Kopanas, Georgios and Leimk{\"u}hler, Thomas and Drettakis, George},
-   title        = {3D Gaussian Splatting for Real-Time Radiance Field Rendering},
-   journal      = {ACM Transactions on Graphics},
-   number       = {4},
-   volume       = {42},
-   month        = {July},
-   year         = {2023},
-   url          = {https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/}
-}
-```
+<img src="Pics/gs030.png" width=600>
+
+NeRF - ray-tracer
+
+3D Gaussian - Rasterizer
+
+
+<img src="Pics/gs034.png">
+
+[3D Gaussian Splatting: How's This The Future of 3D AI? - YouTube](https://www.youtube.com/watch?v=C708Mh7EHZM)
+
+[【论文讲解】用点云结合3D高斯构建辐射场](https://www.bilibili.com/video/BV1uV4y1Y7cA/)
+1. 没有用到 法向量
+2. 3D Gaussian - TODO 详细推导
+   1. 文章中的 3D Gaussian 表达式 没有 控制概率密度积分=1 的系数
+3. $\Sigma = AA^T = RSS^TR^T$, 变换矩阵$A$拆分为先缩放再旋转($A=RS$)
+4. Optimization
+   1. SGD 随机梯度下降
+   2. 不透明度 激活函数 Sigmoid
+   3. 协方差矩阵尺度 激活函数 Exponential
+   4. 损失函数 $Loss = (1-\lambda)L_1 + \lambda L_{D-SSIM}$ (SSIM 结构相似性损失)
+5. Adaptive Control of Gaussians 自适应密度控制
+   1. 移除透明度小于阈值的点(源码似乎是 用 mask)
+   2. 重建不充分的区域(反向传播的梯度较大，需要修正量大) - split(gaussian 方差大) & clone(gaussian 方差小)
+6. Tile-based Rasterizer 快速可微光栅化 - TODO
+
+
 
 ## Table of Contents
 
 - [3D Gaussian Splatting for Real-Time Radiance Field Rendering](#3d-gaussian-splatting-for-real-time-radiance-field-rendering)
   - [Table of Contents](#table-of-contents)
+- [3D Gaussian Splatting 源码 - Ubuntu](#3d-gaussian-splatting-源码---ubuntu)
+  - [Overview](#overview)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Dataset](#dataset)
+  - [Visualization](#visualization)
+  - [Colab](#colab)
+    - [下载文件](#下载文件)
+  - [Explanation](#explanation)
 - [Gaussian Splatting 原理速通 - 中恩实验室](#gaussian-splatting-原理速通---中恩实验室)
   - [01 - 三维高斯 概念](#01---三维高斯-概念)
   - [02 - 球谐函数(Spherical Harmonics) 概念](#02---球谐函数spherical-harmonics-概念)
@@ -29,9 +53,173 @@
 - [讲人话 3D Gaussian Splatting 全解](#讲人话-3d-gaussian-splatting-全解)
   - [捏雪球](#捏雪球)
   - [抛雪球 (3D -\> Pixel)](#抛雪球-3d---pixel)
-  - [抛雪球](#抛雪球)
   - [雪球颜色](#雪球颜色)
   - [高性能渲染 \& 机器学习](#高性能渲染--机器学习)
+- [Cite Info](#cite-info)
+- [Ideas from ShenLong Wang](#ideas-from-shenlong-wang)
+
+---
+
+# 3D Gaussian Splatting 源码 - Ubuntu
+
+[Gaussian Splatting - Github](https://github.com/graphdeco-inria/gaussian-splatting)
+
+## Overview
+
+The codebase has 4 main components:
+1. A **PyTorch-based optimizer** to produce a 3D Gaussian model from SfM inputs
+2. A **network viewer** that allows to connect to and visualize the optimization process
+3. An **OpenGL-based real-time viewer** to render trained models in real-time.
+4. A script to help you **turn your own images into optimization-ready SfM data sets**
+
+have been tested on **Windows 10** and **Ubuntu Linux 22.04**
+
+## Requirements
+
+[Your GPU Compute Capability - NVIDIA](https://developer.nvidia.com/cuda-gpus)
+
+Optimizer
+1. **Hardware Requirements**
+   1. CUDA-ready GPU with Compute Capability 7.0+
+   2. 24 GB VRAM (to train to paper evaluation quality)
+   3. I don't have 24 GB of VRAM for training, what do I do?
+      1. The VRAM consumption is **determined by the number of points that are being optimized**, which increases over time.
+      2. If you only want to train to 7k iterations, you will need significantly less.
+      3. To do the full training routine and avoid running out of memory, you can
+         1. increase `--densify_grad_threshold` : 增大该值会减少高斯点的密集化，减少显存使用
+         2. increase `--densification_interval` : 增大该值可以减少密集化的频率，从而降低显存需求
+         3. reduce `--densify_until_iter` : 减少该参数值，可以缩短密集化的持续时间，降低显存占用
+      4. Note however that this will affect the quality of the result.
+      5. Also try setting `--test_iterations` to -1 to avoid memory spikes during testing. 禁用整个训练过程中的测试阶段
+      6. If `--densify_grad_threshold` is very high, no densification should occur and training should complete if the scene itself loads successfully.
+2. **Software Requirements**
+   1. Conda (recommended for easy setup)
+   2. C++ Compiler for PyTorch extensions (we used Visual Studio 2019 for Windows)
+   3. CUDA SDK 11 for PyTorch extensions, install after Visual Studio (we used 11.8, known issues with 11.6)
+   4. C++ Compiler and CUDA SDK must be compatible
+
+Interactive Viewers
+1. Hardware Requirements
+   1. OpenGL 4.5-ready GPU and drivers (or latest MESA software)
+   2. 4 GB VRAM recommended
+   3. CUDA-ready GPU with Compute Capability 7.0+ (only for Real-Time Viewer)
+2. Software Requirements
+   1. Visual Studio or g++, not Clang (we used Visual Studio 2019 for Windows)
+   2. CUDA SDK 11, install after Visual Studio (we used 11.8)
+   3. CMake (recent version, we used 3.24)
+   4. 7zip (only on Windows)
+
+
+```python
+import torch
+if torch.cuda.is_available():
+    print(torch.cuda.get_device_properties(0).name)  # NVIDIA GeForce RTX 3050 Laptop GPU
+    print(torch.cuda.get_device_properties(0).major)  # 主版本号 : 8
+    print(torch.cuda.get_device_properties(0).minor)  # 次版本号 : 6
+else:
+    print("No CUDA-ready GPU found.")
+```
+
+```bash
+nvidia-smi --query-gpu=memory.total --format=csv
+# memory.total [MiB]
+# 4096 MiB
+
+gcc --version  # 检查 C++ 编译器
+# gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+# Copyright (C) 2021 Free Software Foundation, Inc.
+
+g++ --version
+# g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+# Copyright (C) 2021 Free Software Foundation, Inc.
+
+nvcc -V  # 检查 CUDA SDK
+# nvcc: NVIDIA (R) Cuda compiler driver
+# Copyright (c) 2005-2024 NVIDIA Corporation
+# Built on Tue_Feb_27_16:19:38_PST_2024
+# Cuda compilation tools, release 12.4, V12.4.99
+# Build cuda_12.4.r12.4/compiler.33961263_0
+
+cmake --version
+# cmake version 3.25.1
+# CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+glxinfo | grep "OpenGL version"
+# OpenGL version string: 4.6 (Compatibility Profile) Mesa 23.2.1-1ubuntu3.1~22.04.2
+```
+
+
+## Installation
+
+```bash
+git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive  # HTTPS  # recursive is for submodules
+cd gaussian-splatting
+
+sudo apt install build-essential
+sudo apt install ninja-build
+
+
+pip3 install submodules/diff-gaussian-rasterization
+pip3 install submodules/simple-knn
+
+pip3 install plyfile
+pip3 install tensorboard
+
+
+# Interactive Viewers
+sudo apt install -y libglew-dev libassimp-dev libboost-all-dev libgtk-3-dev libopencv-dev libglfw3-dev libavdevice-dev libavcodec-dev libeigen3-dev libxxf86vm-dev libembree-dev
+```
+
+## Dataset
+
+T&T+DB COLMAP (650MB)
+
+
+## Visualization
+
+[<img src="Pics/gs033.png"> PolyCam](https://poly.cam/library) - Go to library, Upload a 3D model
+
+[3D Gaussian Splatting with Three.js - 清华大学自动化系JI-GROUP](https://www.neuralrendering.cn/)
+
+
+[](luma ai) ?
+
+
+## Colab
+
+[gaussian_splatting_colab.ipynb](https://colab.research.google.com/github/camenduru/gaussian-splatting-colab/blob/main/gaussian_splatting_colab.ipynb)
+
+
+
+### 下载文件
+
+将文件夹下载到你的Google Drive中
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+!cp -r [srcFolder] /content/drive/MyDrive/  # 会将 srcFolder 拷贝到 Google Drive 中 [srcFolder]
+```
+
+或
+
+
+
+## Explanation
+
+`train.py` 训练代码主入口
+`scene/_init_.py` 场景训练数据,相机数据,gaussian模型初始化
+`gaussian_model.py` gaussian模型核心代码
+`gaussian_renderer/init.py` render渲染核心代码
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -57,7 +245,7 @@
 
 <img src="Pics/gs003.png" width=600>
 
-初始化 : 通过 colmap 推理照片对应的相机位姿，得到 特征点，投射到世界坐标，得到稀疏关键点云(比随机初始化更快收敛)
+初始化 : 通过 **colmap** 推理照片对应的相机位姿，得到 特征点，投射到世界坐标，得到稀疏关键点云(比随机初始化更快收敛)，作为初始场景默认点
 1. <img src="Pics/gs004.png">
 
 
@@ -133,7 +321,7 @@ PLY 文件说明
 
 将原始形状进行挤压，到光栅化平面空间，将非平行线拉平，对点进行排序 并 进行光栅化渲染(并行计算加速)
 
-使用雅可比矩阵，利用 泰勒公式(扩展到三维)一阶展开 进行线性近似
+使用**雅可比矩阵**，利用 泰勒公式(扩展到三维)一阶展开 进行线性近似
 
 $\Sigma^{\prime}=J W \Sigma W^{T} J^{T}$
 
@@ -155,20 +343,35 @@ $\Sigma^{\prime}=J W \Sigma W^{T} J^{T}$
 1. $\mathcal{L} = (1 - \lambda)\mathcal{L}_1 + \lambda\mathcal{L}_{D-SSIM}$
 2. 论文使用值 $\lambda = 0.2$
 
+
+给予梯度自适应改变点云分布，densification(密集化)
+
 <img src="Pics/gs013.png">
-
-
 
 初始化点云质量不高
 
+在优化过程中，每个高斯点都有其颜色、位置和透明度的梯度变化
 
+梯度是针对投影后的 2d gaussian
 
+当某个高斯点的梯度大于预设的 **梯度阈值（densify_grad_threshold）** 时，会触发 Densification
+
+产生新的 Gaussian 点是三维的，继承原高斯点的三维坐标以及协方差矩阵的初始值
+
+Densification 也可以按照固定的 间隔次数(**Densification Interval**) 触发，以确保在训练过程中不断增加高斯点的数量，从而逐渐提高场景的密集度。只有在到达 **Densification Interval** 的那一批次时，才会检查哪些点需要进行 split 或 clone，减少计算开销，控制密集化的频率和效果
+
+`gaussian_model.py` 中 `densify_and_split()`(使用了随机偏移量，并且scaling也会调整), `densify_and_clone()`
+
+Densification 操作本身是用于动态调整高斯点的数量和分布，包括增加高斯点、更新其属性和剪枝(pruning)，这些操作不涉及梯度计算，减少显存消耗，优化训练效率
+
+每次 Densification 后，需要重新建立 Loss，相当于自动将新旧点都连接到Loss中
 
 
 ## 04 - 伪代码流程
 
+<img src="Pics/gs031.png">
 
-Rasterize 光栅化
+<img src="Pics/gs032.png">
 
 
 
@@ -303,38 +506,92 @@ Rasterize 光栅化
       \end{array}\right]$$
 
 
-![](Pics/gs015.png)
+<img src="../GAMES101/Pics/games007.png" width=600>
 
-**Computer Graphics**
-1. **视图变换**(View Transformation) (世界坐标系 -> 相机坐标系)
+**Computer Graphics** 中
+1. 详见 [GAMES101 Viewing Transformation 个人笔记](../GAMES101/games101.md#viewing观测-transformation)
+2. **视图变换**(View Transformation) (世界坐标系 -> 相机坐标系)
    1. <img src="Pics/gs016.png" width=300>
-2. **投影变换**(Projection Transformation) (相机坐标系 -> 2D 空间)
+   2. 本质是 平移加旋转
+   3. 已知 $T^{world}_{camera}$, $T^{world}_{object}$
+   4. 将物体变换到相机坐标系
+3. **投影变换**(Projection Transformation) (相机坐标系 -> 2D 空间)
    1. <img src="Pics/gs017.png" width=500>
    2. 正交(Orthographic)投影 - 无近大远小，与深度无关
-   3. 透视(Perspective)投影 - 有近大远小，与深度有关
+   3. 透视(Perspective)投影 - **有近大远小**，与深度有关
       1. 先把 **视锥** 压成立方体，再进行正交投影
-      2. **非线性** ？ - TODO
-3. **视口变换** ()
-4. **光栅化** (Rasterization)
+      2. **非线性**，非仿射变换
+   4. 但是希望高斯椭球只做仿射变换
+4. **视口变换**
+   1. 拉伸成想要的图片大小
+   2. 解决压成 canonical cube 的形变
+5. **光栅化** (Rasterization) - 画在屏幕上
    1. <img src="Pics/gs018.png" width=300>
    2. 连续转离散 (要显示在离散的像素中)
    3. 采样 (查看像素中心点是否在图形中)
    4. 可能会产生 混叠、混淆(Aliasing)
 
 
+**3D Gaussian** 的 **Viewing Transformation** (均值$M$ & 协方差$\Sigma$)
+1. 视图变换
+   1. $u = \phi(t) = Wt+d$
+   2. <img src="Pics/gs019.png" width=700>
+2. 投影变换
+   1. <img src="Pics/gs020.png" width=700>
+   2. 均值就是一个点，不会形变
+   3. 协方差矩阵会形变，所以难求
+   4. <img src="Pics/gs021.png" width=700>
+   5. 引入 Jacobian Matrix(对非线性变换的局部线性近似(利用导数求变换趋势))
+   6. <img src="Pics/gs022.png" width=700>
+   7. 均值已经被投影到了 canonical cube，需要 视口变换
+   8. 协方差在未缩放的正交坐标系中($[l,r]×[b,t]×[f,n]$)，不需要 视口变换
+   9. <img src="Pics/gs023.png" width=400>
+   10. 表达的三维坐标的点为 $[f_1(x), f_2(x), f_3(x)]^T = [\frac{nx}{z}, \frac{ny}{z}, n+f-\frac{nf}{z}]^T$，求导即可得 Jacobian
+   11. <img src="Pics/gs024.png" width=350>
+   12. 视口变换(只对均值，不对协方差)
+   13. <img src="Pics/gs025.png" width=700>
+
+## 雪球颜色
+
+基函数 & 球谐函数
+1. 任何球面坐标函数可以用多个球谐函数近似
+2. <img src="Pics/gs026.png" width=800>
+3. <img src="Pics/gs027.png" width=800>
+4. 其中
+   1. $l$ 表示 阶数
+   2. $m$ 表示 同一阶位置
+   3. $c^m_l$ 为一个 三元组，表示 **R,G,B** 颜色
+   4. 共使用4阶，共 $1+3+5+7=16$ 个球
+   5. 形成 $16×3$ 的 系数matrix
+   6. 0阶只有一个颜色
+5. 在使用实数球谐函数时，虽然 $\phi$ 没有显式出现，但它的影响已被转换为方向向量在三维空间中的分量。因此，代码中的 dir(归一化方向向量) 实际上已经包括了 $\phi$ 的影响。这个方向向量是从 3D 高斯中心指向相机的方向，通过其分量的组合来反映不同方向上的球谐函数分量。
+
+
+球谐函数 怎么就能 更好的表达颜色?
+1. 参数量更多
+2. 球形环境贴图
+   1. <img src="Pics/gs028.png" width=600>
+   2. 可以用球谐函数重建亮度
+3. **球谐函数的球(颜色空间) 与 高斯椭球(物理空间) 无关**
+
+
+合成图片(足迹合成)
+1. 直观上，$\alpha$-blending
+2. 实际上，对每个像素进行着色(GPU)，求出每个像素的颜色
+3. <img src="Pics/gs029.png" width=800>
+4. 没有类似NeRF通过像素反向找射线粒子的过程
+5. 但需要 对高斯球 按照 深度z 排序
 
 
 
+## 高性能渲染 & 机器学习
 
-**3D Gaussian** (核心 : 均值 & 协方差)
-1.
-
-
-
-为什么引入 雅可比?
-1. 不能直接使用投影变换，需要引入雅可比近似矩阵
-
-
+3D GS 怎么就快了?
+1. GPU 高性能运算
+2. 并行 : 一个线程负责一个像素，找对应的高斯椭球渲染颜色即可
+3. 图像分块 & 高斯对应分块
+4. GPU 每个 Block 负责一个区
+5. Block 之内可以共享内存
 
 
 
@@ -347,22 +604,51 @@ Rasterize 光栅化
 
 
 
-球谐函数 怎么就能 更好的表达颜色?
-
-3D GS 怎么就快了?
-
-
-## 抛雪球
-
-
-## 雪球颜色
-
-
-
-## 高性能渲染 & 机器学习
 
 
 
 
 
+# Cite Info
+
+```bibtex
+@Article{kerbl3Dgaussians,
+   author       = {Kerbl, Bernhard and Kopanas, Georgios and Leimk{\"u}hler, Thomas and Drettakis, George},
+   title        = {3D Gaussian Splatting for Real-Time Radiance Field Rendering},
+   journal      = {ACM Transactions on Graphics},
+   number       = {4},
+   volume       = {42},
+   month        = {July},
+   year         = {2023},
+   url          = {https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/}
+}
+```
+
+# Ideas from ShenLong Wang
+
+Archeologists
+1. despite recent hype of gsplats. point-based rendering, and geometric primitive based rendering has been there for years. trace back that direction
+2. there exists faster solutions, there also exist better solution, but think about why Gsplats triggered people’s excitement. what is the reason for their success?
+
+
+Industrial Practitioners
+1. try to think something coupled with the model itself.
+2. some of our recent solutions are a bit too generic in VR/AR in general.
+3. try to think out of box and come up with something unique or weird, or entertaining, or ambitious.
+
+Hackers
+1. 2d color image fitting with a bunch of 2d gaussians could be a very interesting experiment.
+   1. take a reference how our last hacker implement differentiable rectangle rendering.
+   2. i believe 1000 gaussians could fit some images very well.
+   3. this is the result of geometric primitive fitting using non differentiable method.
+   4. gaussians are differentiable to xy location by nature
+   5. [Primitive Image: Approximating Images with Basic Shapes, Creating SVG approximations of images using basic shapes](https://www.samueltgoldman.com/post/primitive-image/)
+   6. SIREN(Sinusoidal Representation Networks)’s image fitting could be another reference (you can consider its a nerf version)
+2. rethink the design of sfm point cloud init.
+   1. could you come up with some other initialization that doesn’t require sfm?
+   2. could you theoretically analyze why or why not gsplats is sensitive to init?
+   3.  some toy 1d/2d fitting example might help.
+3. repurpose monocular depth method to output gaussians splats
+   1. you can overfit a few images first
+   2. think about what are the challenges and can it generalize
 

@@ -38,7 +38,7 @@ def transformPoint4x4(p, matrix):
     return transformed
 
 
-def transformPoint4x3(p, matrix):
+def transformPoint4x3(p, matrix):  # matrix 4×4
     matrix = np.array(matrix).flatten(order="F")
     x, y, z = p
     transformed = np.array(
@@ -70,13 +70,16 @@ def computeCov3D(scale, mod, rot):
     return cov3D
 
 
-def computeCov2D(mean, focal_x, focal_y, tan_fovx, tan_fovy, cov3D, viewmatrix):
+def computeCov2D(mean, focal_x, focal_y, # x方向 & y方向 焦距
+                 tan_fovx, tan_fovy, # 视角
+                 cov3D, # 世界坐标系 3D 协方差
+                 viewmatrix):  # {world} -> {camera}
     # The following models the steps outlined by equations 29
     # and 31 in "EWA Splatting" (Zwicker et al., 2002).
     # Additionally considers aspect / scaling of viewport.
     # Transposes used to account for row-/column-major conventions.
 
-    t = transformPoint4x3(mean, viewmatrix)
+    t = transformPoint4x3(mean, viewmatrix)  # 中心点4维坐标经过仿射变换转3维，在点附近进行雅可比
 
     limx = 1.3 * tan_fovx
     limy = 1.3 * tan_fovy

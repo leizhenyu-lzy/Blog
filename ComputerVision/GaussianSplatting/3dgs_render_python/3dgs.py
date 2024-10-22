@@ -131,8 +131,8 @@ class Rasterizer:
             # transform point, from world to ndc
             # Notice, projmatrix already processed as mvp matrix
             p_hom = transformPoint4x4(p_orig, projmatrix)
-            p_w = 1 / (p_hom[3] + 0.0000001)
-            p_proj = [p_hom[0] * p_w, p_hom[1] * p_w, p_hom[2] * p_w]
+            p_w = 1 / (p_hom[3] + 0.0000001)  # 让齐次坐标最后一位为1
+            p_proj = [p_hom[0] * p_w, p_hom[1] * p_w, p_hom[2] * p_w]  # 视口变换
 
             # compute 3d covarance by scaling and rotation parameters
             scale = scales[idx]
@@ -188,7 +188,7 @@ class Rasterizer:
         out_color = np.zeros((H, W, 3))
         pbar = tqdm(range(H * W))
 
-        # loop pixel
+        # loop pixel 先遍历每个像素
         for i in range(H):
             for j in range(W):
                 pbar.update(1)
