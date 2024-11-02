@@ -135,6 +135,8 @@
 
 [2419. Longest SubArray With Maximum Bitwise AND](https://leetcode.com/problems/longest-subarray-with-maximum-bitwise-and/description) - 位与 Bitwise AND，两个数按位与，只有两数相同时，结果才能等于最大值，否则都将小于两个数之间的最大值
 
+[2490. Circular Sentence](https://leetcode.com/problems/circular-sentence/description) - Easy 题
+
 [2491. Divide Players Into Teams of Equal Skill](https://leetcode.com/problems/divide-players-into-teams-of-equal-skill/description) - 记录 频次
 
 [2696. Minimum String Length After Removing Substrings](https://leetcode.com/problems/minimum-string-length-after-removing-substrings/description) - Stack
