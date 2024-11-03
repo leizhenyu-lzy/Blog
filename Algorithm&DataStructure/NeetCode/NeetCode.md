@@ -115,7 +115,14 @@ Python 中的 `dict` 是通过 哈希表 `hash table` 的数据结构实现的�
 
 
 
-## 04 -
+## 04 - Product of Array Except Self
+
+[238. Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/description/)
+1. 之前没看到不能使用除法，感觉像是数学问题，自己的方法，做乘法时跳过0，判断 出现过 0个0(直接乘积除以当前值)，1个0(其他位置填0，0的位置填乘积)，多个0(全0)
+2. 不能使用除法，因此总乘积除以当前位置需要使用 prefix & postfix 来模拟
+3. 更高明的方法，不需要 使用 prefix & postfix 的额外 memory，将结果全部保存在 output 就行，正向过一遍prefix，反向过一遍postfix 与之前output中的prefix结果相乘即可
+
+
 
 
 ## 05 -
