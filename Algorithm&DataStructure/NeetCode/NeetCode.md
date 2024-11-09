@@ -125,21 +125,88 @@ Python 中的 `dict` 是通过 哈希表 `hash table` 的数据结构实现的�
 
 
 
-## 05 -
+## 05 - Maximum Subarray
 
-## 06 -
+[53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/description/)
+1. 如果 前面一段的和 小于零 则全部舍去
+
+## 06 - Maximum Product Subarray - Dynamic Programming
+
+[152. Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/description/)
+1. Dynamic Programming : 由于有 负数，需要同时跟踪 前一个数对应积的 最大值 & 最小值
+   1. preMax : `max(preMax*temp, preMin*temp, temp)`
+   2. preMin : `min(preMax*temp, preMin*temp, temp)`
+2. 时间复杂度 : O(n)
+3. 空间复杂度 : O(1), 可以不用建立 preMax, preMin 数组
 
 
-## 07 -
+## 07 - Find Minimum in Rotated Sorted Array
+
+[153. Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)
+1. 注意题目要求 You must write an algorithm that runs in `O(log n)` time
+2. 使用 Binary Search (之前的实现 是 特殊处理 长度为 1&2 的情况)
+   1. 如果 中间值 > 左端点，则寻找右侧
+   2. 如果 中间值 < 左端点，则寻找左侧
 
 
-## 08 -
 
-## 09 -
+## 08 - Search in Rotated Sorted Array
 
-## 10 -
-## 11 -
-## 12 -
+[33. Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/description/)
+1. 注意题目要求 You must write an algorithm that runs in `O(log n)` complexity，因此和上题一样，也是 binary search
+2. 通过 mid-value 判断左侧还是右侧是排好序的
+
+
+## 09 - 3Sum
+
+[15. 3Sum](https://leetcode.com/problems/3sum/description/)
+1. 可以先进行 sort `O(n logn)`，防止重复
+2. 使用 2Sum 的双指针方法  `O(n^2)`
+
+[1. 2Sum](https://leetcode.com/problems/two-sum/description/)
+1. 可以使用 hash
+2. 也可以使用双指针 `O(n^2)`，从排序好的两头向中间缩小，大了右指针左移，小了左指针右移
+
+
+## 10 - Container With Most Water
+
+[11. Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/)
+1. 双指针，开始在两边，谁短谁向内移动
+   1. 一样高时，任意移动一个，因为除非碰到出现内部两个线都比当期值高，才有可能 contain more water
+2. `O(n)`
+
+
+## 11 - Number of 1 Bits
+
+[191. Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/description/)
+1. 右移，使用 位与`&` 判断是否最后一位是否为 1
+2. `bin()`转为二进制字符串，统计 '1' 的数量 `binRepresent.count('1')`
+3. 难以想到的方法 : 不断地进行 `n = n & (n-1)` & `count += 1`，确保每次迭代只清除最后一位 1
+   ```python
+   n   = 100001
+   n-1 = 100000
+   #------------
+   n   = 100000
+   n-1 = 011111
+   # -----------
+   n   = 000000
+   ```
+   1. n-1 效果 : 前面的部分原封不动，最后一个1 & 后面的部分全部取反
+   2. 按位与后，前面的部分保持不变，后面的包括最后一个1全部变为0
+
+
+## 12 - Counting Bits
+
+[338. Counting Bits](https://leetcode.com/problems/counting-bits/description/)
+1. 个人解法 找规律 : `0` | `1` | `1 2` | `1 2 2 3`
+   1. 每次拓展长度 都是 $2^{exp}$
+   2. 在前面全部的基础上 +1
+2. 可以理解为 dynamic programming 问题
+
+
+
+
+
 ## 13 -
 ## 14 -
 ## 15 -
@@ -197,10 +264,6 @@ Python 中的 `dict` 是通过 哈希表 `hash table` 的数据结构实现的�
 
 
 [Algorithms & Data Structures for Beginners]()
-
-Python 中的 `dict` 和 `set` 都使用 哈希表 `hash table` 作为底层数据结构
-
-在处理键值对和唯一元素时都能提供高效的插入、查找和删除操作
 
 [Advanced Algorithms]()
 

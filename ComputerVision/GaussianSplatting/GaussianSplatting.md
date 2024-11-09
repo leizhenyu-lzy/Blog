@@ -189,6 +189,26 @@ T&T+DB COLMAP (650MB)
 
 [gaussian_splatting_colab.ipynb](https://colab.research.google.com/github/camenduru/gaussian-splatting-colab/blob/main/gaussian_splatting_colab.ipynb)
 
+```bash
+%cd /content
+!git clone --recursive https://github.com/camenduru/gaussian-splatting
+!pip install -q plyfile
+
+%cd /content/gaussian-splatting
+!pip install -q /content/gaussian-splatting/submodules/diff-gaussian-rasterization
+!pip install -q /content/gaussian-splatting/submodules/simple-knn
+
+!wget https://huggingface.co/camenduru/gaussian-splatting/resolve/main/tandt_db.zip
+!unzip tandt_db.zip
+
+!python train.py -s /content/gaussian-splatting/tandt/train
+
+# !wget https://huggingface.co/camenduru/gaussian-splatting/resolve/main/GaussianViewTest.zip
+# !unzip GaussianViewTest.zip
+# !python render.py -m /content/gaussian-splatting/GaussianViewTest/model
+# !ffmpeg -framerate 3 -i /content/gaussian-splatting/GaussianViewTest/model/train/ours_30000/renders/%05d.png -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" -c:v libx264 -r 3 -pix_fmt yuv420p /content/renders.mp4
+# !ffmpeg -framerate 3 -i /content/gaussian-splatting/GaussianViewTest/model/train/ours_30000/gt/%05d.png -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" -c:v libx264 -r 3 -pix_fmt yuv420p /content/gt.mp4 -y
+```
 
 
 ### 下载文件
