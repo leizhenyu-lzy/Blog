@@ -17,6 +17,9 @@
 [0001. Two Sum](https://leetcode.com/problems/two-sum/description/)
 1. hash : `dict (val:index)`
 
+[0167. Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+1. two pointer : 从两边开始，和大则右指针左移，和小则左指针右移
+
 Python 中的 `set` 是一种无序的、可变的集合类型，底层主要是使用 哈希表(`hash table`) 来实现
 1. 创建
     ```python
@@ -212,13 +215,28 @@ Python 中的 `dict` 是通过 哈希表 `hash table` 的数据结构实现的�
    2. 重复的数已经全部抵消 为0，只剩下 单独的数 和 0 异或 得到自身
 
 
-## 14 -
+## 14 - Reverse Bits
+
+[190. Reverse Bits](https://leetcode.com/problems/reverse-bits/description/)
+1. 方法1 : 不断右移，将结果 ×2，并累计当前最右 bit
+2. 方法2 : 将 1 左移到对应位置 进行 按位与 得到对应bit，再将 该 bit 左移到新数对应位置 进行 按位或(相当于加上)
 
 
-## 15 -
+## 15 - Climbing Stairs - Dynamic Programming
+
+[70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/description/)
+1. brute force - decision tree - 过于麻烦
+2. dynamic programming
 
 
-## 16 -
+
+
+
+## 16 - Coin Change - Dynamic Programming
+
+[322. Coin Change](https://leetcode.com/problems/coin-change/description/)
+1. greedy 并不可取
+
 
 
 ## 17 -

@@ -1,20 +1,23 @@
-def maxArea(height) -> int:
+def coinChange(coins, amount: int) -> int:
+    history = [-1]*(amount+1)
+    history[0] = 0
 
-    lines = len(height)
-    lPtr = 0
-    rPtr = lines - 1
-    maxWater = 0
+    for i in range(1, amount+1):
+        tempMin = None
+        for coin in coins:
+            if i-coin<0:
+                continue
+            if history[i-coin] == -1:
+                continue
 
-    while lPtr<rPtr:
-        curWater = min(height[lPtr], height[rPtr])*(rPtr - lPtr)
-        maxWater = max(maxWater, curWater)
-        if height[lPtr] > height[rPtr]:
-            rPtr -= 1
-        else:
-            lPtr += 1
+            if tempMin is None:
+                tempMin = history[i-coin] + 1
+            else:
+                tempMin = min(tempMin, history[i-coin] + 1)
+        history[i] = tempMin
 
-    return maxWater
+    return history[amount]
 
 
 if __name__ == '__main__':
-    print(maxArea([1,8,6,2,5,4,8,3,7]))
+    print(coinChange([1,2,5], 11))
