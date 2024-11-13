@@ -45,6 +45,7 @@ NeRF - ray-tracer
   - [Colab](#colab)
     - [下载文件](#下载文件)
   - [Explanation](#explanation)
+  - [Processing your own Scenes](#processing-your-own-scenes)
 - [Gaussian Splatting 原理速通 - 中恩实验室](#gaussian-splatting-原理速通---中恩实验室)
   - [01 - 三维高斯 概念](#01---三维高斯-概念)
   - [02 - 球谐函数(Spherical Harmonics) 概念](#02---球谐函数spherical-harmonics-概念)
@@ -66,7 +67,7 @@ NeRF - ray-tracer
 
 ## Overview
 
-The codebase has 4 main components:
+4 main components:
 1. A **PyTorch-based optimizer** to produce a 3D Gaussian model from SfM inputs
 2. A **network viewer** that allows to connect to and visualize the optimization process
 3. An **OpenGL-based real-time viewer** to render trained models in real-time.
@@ -181,9 +182,7 @@ T&T+DB COLMAP (650MB)
 
 [3D Gaussian Splatting with Three.js - 清华大学自动化系JI-GROUP](https://www.neuralrendering.cn/)
 
-
-[](luma ai) ?
-
+[splatviz](https://github.com/Florian-Barthel/splatviz) - 待测试
 
 ## Colab
 
@@ -234,6 +233,62 @@ drive.mount('/content/drive')
 
 
 
+
+## Processing your own Scenes
+
+COLMAP loaders expect the following dataset structure
+
+```bash
+<location>
+|---images  # 存储所有用于重建的图像
+|   |---<image 0>
+|   |---<image 1>
+|   |---...
+|---sparse  # 存储重建生成的稀疏点云数据
+    |---0
+        |---cameras.bin  # 相机参数
+        |---images.bin  # 图像位姿，COLMAP 默认选择场景中第一个相机的位置作为原点
+        |---points3D.bin  # 三维点
+```
+
+loader 实际上会从 images 文件夹中读取文件，而不是从 input 文件夹读取
+1. `input` 文件夹 主要用于存放未经处理的原始图像
+2. `images` 文件夹 最终存放无畸变的、经过处理的图像
+3. `sparse` 文件夹 用于存放最终的稀疏三维重建结果
+4. `distorted` 表示未经去畸变处理的中间数据
+
+
+`convert.py`
+
+对于视频 可以先用 ffmpeg 从中提取 图片
+
+```bash
+ffmpeg -i {video} -qscale:v 1 -qmin 1 -vf fps={fps} %4d.jpg
+ffmpeg -i {video} -qscale:v 1 -qmin 1 -vf "fps={fps},scale=iw/2:ih/2" %4d.jpg  # 添加 scale 滤镜来将图片缩小一半
+
+# -qscale:v 1 -qmin 1 : 控制输出图像的质量，-qmin 1 : 设置最小质量
+# -vf fps={fps} : 设置输出的帧率(vf = video filter)，将 {fps} 替换为所需的帧率，比如 fps=30 表示每秒提取 30 帧
+# %4d.jpg : 指定输出文件的命名格式，从 0001.jpg 开始自动编号
+```
+
+
+COLMAP 的相机模型必须是 SIMPLE_PINHOLE 或 PINHOLE，这样才可以用于后续的光栅化渲染
+
+**`convert.py`**
+1. 对输入图像进行去畸变处理
+2. 提取必要的结构化数据 `.bin`
+3. 如果需要，也可以将图像按 1/2、1/4 和 1/8 的原始分辨率进行缩放(需要安装 ImageMagick)
+
+```bash
+python convert.py -s <location> [--resize]
+```
+
+准备数据 : 将所有需要处理的图像放入 `<location>/input`
+```python
+python convert.py -s <location> [--resize]
+# -s <location>：指定数据位置
+# --resize：可选参数，是否对图像进行缩放
+```
 
 
 
