@@ -1,0 +1,1 @@
+[Stanford - CS468 Machine Learning for 3D Data - Spring 2017](https://graphics.stanford.edu/courses/cs468-17-spring/schedule.html)
