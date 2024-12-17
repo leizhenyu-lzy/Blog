@@ -441,6 +441,25 @@ $\Sigma^{\prime}=J W \Sigma W^{T} J^{T}$
 1. $\mathcal{L} = (1 - \lambda)\mathcal{L}_1 + \lambda\mathcal{L}_{D-SSIM}$
 2. 论文使用值 $\lambda = 0.2$
 
+SSIM Loss (Structural Similarity Index Measure)
+1. 度量 2个 给定图像之间的 相似性
+2. 从图像中提取 3 个关键特征
+   1. 亮度
+   2. 对比
+   3. 结构
+3. <img src="Pics/gs035.png" width=700>
+4. $$\operatorname{SSIM}(x, y)=\frac{(2 \mu_{x} \mu_{y}+c_{1})(2 \sigma_{x y}+c_{2})}{(\mu_{x}^{2}+\mu_{y}^{2}+c_{1})(\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2})}$$
+   1. $\mu_x$
+   2. $\mu_y$
+   3. $\sigma_{x}^{2}$
+   4. $\sigma_{y}^{2}$
+   5. $\sigma_{xy}$
+   6. $c_1=(k_1 L)^2$, $c_2=(k_2 L)^2$
+   7. $L$
+   8. $k_1 = 0.01$ (default)
+   9. $k_2 = 0.03$ (default)
+
+
 
 给予梯度自适应改变点云分布，densification(密集化)
 
