@@ -441,23 +441,32 @@ $\Sigma^{\prime}=J W \Sigma W^{T} J^{T}$
 1. $\mathcal{L} = (1 - \lambda)\mathcal{L}_1 + \lambda\mathcal{L}_{D-SSIM}$
 2. 论文使用值 $\lambda = 0.2$
 
-SSIM Loss (Structural Similarity Index Measure)
+SSIM (Structural Similarity Index Measure)
 1. 度量 2个 给定图像之间的 相似性
-2. 从图像中提取 3 个关键特征
-   1. 亮度
-   2. 对比
-   3. 结构
-3. <img src="Pics/gs035.png" width=700>
+2. <img src="Pics/gs035.png" width=700>
+3. 从图像中提取 3 个关键特征
+   1. 亮度(Luminance) : 比较图像的均值  ($\mu_x$ & $\mu_y$)
+   2. 对比(Contrast)  : 比较图像的方差  ($\sigma_{x}^2$ & $\sigma_{y}^2$)
+   3. 结构(Structure) : 比较图像的协方差  ($\sigma_{xy}$)
 4. $$\operatorname{SSIM}(x, y)=\frac{(2 \mu_{x} \mu_{y}+c_{1})(2 \sigma_{x y}+c_{2})}{(\mu_{x}^{2}+\mu_{y}^{2}+c_{1})(\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2})}$$
-   1. $\mu_x$
-   2. $\mu_y$
-   3. $\sigma_{x}^{2}$
-   4. $\sigma_{y}^{2}$
-   5. $\sigma_{xy}$
-   6. $c_1=(k_1 L)^2$, $c_2=(k_2 L)^2$
-   7. $L$
+   1. $\mu_x$ : the pixel sample mean of x
+   2. $\mu_y$ : the pixel sample mean of y
+   3. $\sigma_{x}^{2}$ : the variance of x
+   4. $\sigma_{y}^{2}$ : the variance of y
+   5. $\sigma_{xy}$ : the covariance of x & y
+   6. $c_1=(k_1 L)^2$, $c_2=(k_2 L)^2$ : two variables to stabilize the division with weak denominator(防止 分母趋于零 导致数值不稳定或计算失败)
+   7. $L$ : the dynamic range of the pixel-values ($2^{\text{\#bits\ per\ pixel}} - 1$)
    8. $k_1 = 0.01$ (default)
    9. $k_2 = 0.03$ (default)
+5. 变体
+   1. Multi-Scale SSIM
+   2. Multi-component SSIM
+   3. Structural Dissimilarity (DSSIM)
+      1. $DSSIM(x,y) = \frac{1 - SSIM(x, y)}{2}$
+      2. **计算相对复杂**，计算 SSIM 需要均值、方差和协方差的卷积操作，开销比 L2 损失大
+      3. SSIM 更关注局部结构，**有时对全局误差不敏感**
+      4. SSIM Loss 常与 L1/L2 损失结合使用
+   4. Complex Wavelet SSIM
 
 
 
