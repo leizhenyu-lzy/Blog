@@ -17,6 +17,10 @@
 
 # Installation
 
+[Omniverse](https://www.nvidia.com/en-us/omniverse/)
+
+[Omniverse Download](https://www.nvidia.com/en-us/omniverse/)
+
 [NVIDIA Omniverse](https://developer.nvidia.com/omniverse) 选择 `Access Omniverse Launcher for Windows or Linux`
 
 ```bash
