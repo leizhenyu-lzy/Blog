@@ -11,9 +11,10 @@ Omniverse 是 开放式协作与仿真平台，用于构建和操作虚拟世界
 3. 是 Isaac Sim 等工具的基础平台，它为 Isaac Sim 提供底层仿真和渲染支持
 
 Issac Sim 是 基于 Omniverse 构建的机器人仿真工具 (用于 Build，闭源)
-1. 高保真的物理仿真(动力学 & 传感器)
-2. 与 ROS 集成
-3. 可扩展性强
+1. [What Is Isaac Sim?](https://docs.omniverse.nvidia.com/isaacsim/latest/index.html)
+2. 高保真的物理仿真(动力学 & 传感器)
+3. 与 ROS 集成
+4. 可扩展性强
 
 Isaac Lab 是 专注于机器人 AI 开发的工具集(轻量化)，依赖于 Isaac Sim 的仿真能力 (用于 Train，开源)
 1. 提供了一系列预构建的机器人模型和任务场景
@@ -22,17 +23,28 @@ Isaac Lab 是 专注于机器人 AI 开发的工具集(轻量化)，依赖于 Is
 4. 支持多种机器人形态(移动机器人、机械臂、人形机器人等)
 
 Isaac Gym 用于机器人强化学习的 GPU 加速仿真框架
-1. 支持主流 强化学习算法(PPO、SAC)
-2. 无高保真的渲染
-3. 不包括可变形和刚性对象之间的交互
-4. 逐渐被 Isaac Lab 取代，已经停止维护，但是使用简单
+1. [Isaac Gym - Now Deprecated](https://developer.nvidia.com/isaac-gym)
+2. 支持主流 强化学习算法(PPO、SAC)
+3. 无高保真的渲染
+4. 不包括可变形和刚性对象之间的交互
+5. 逐渐被 Isaac Lab 取代，已经停止维护，但是使用简单
 
 Orbit 是 Isaac Lab 的前身
+1. [Paper Website](https://isaac-orbit.github.io/)
+2. Orbit will continue to evolve as Isaac Lab to become an even lighter application on Isaac Sim for robot learning
+
+NVIDIA PhysX
+1. scalable, multi-physics SDK
+2. simulating and modeling physics in Robotics, Autonomous Vehicles, and VFX workflows
+
+![](Pics/Isaac_Sim_System_Diagram.png)
 
 ![](Pics/nvidia-isaac-sim-diagram.jpg)
 
 
 # Blog
+
+## Create, Design, and Deploy Robotics Applications Using New NVIDIA Isaac Foundation Models and Workflows
 
 [Create, Design, and Deploy Robotics Applications Using New NVIDIA Isaac Foundation Models and Workflows](https://developer.nvidia.com/blog/create-design-and-deploy-robotics-applications-using-new-nvidia-isaac-foundation-models-and-workflows/)
 
@@ -61,11 +73,23 @@ New Features
 
 # Installation
 
+## Isaac Sim
+
 [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim)
 1. 点击 `Download Omniverse` 进入 [Installation](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/index.html)
 2. 选择 `Workstation Installation`, Direct Link: `Linux`, 下载 `omniverse-launcher-linux.AppImage`
 
 打开 `Omniverse Launcher`，进入 `EXCHANGE`，搜索 `ISAAC SIM` 并安装，同时 安装 `CACHE`
+
+
+
+## Isaac Gym
+
+[Isaac Gym - Now Deprecated](https://developer.nvidia.com/isaac-gym)
+
+[Isaac Gym - Download Archive](https://developer.nvidia.com/isaac-gym/download)
+
+Installation instructions can be found in the package in the docs folder - open `docs/index.html` to see more.
 
 
 

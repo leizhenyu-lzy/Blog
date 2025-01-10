@@ -38,3 +38,9 @@ grasp - AnyGrasp
 4. 世界模型
 
 
+
+Robotics & CV/NLP 区别 : 数据集
+
+CLIP 对比学习
+
+

@@ -12,3 +12,11 @@ gedit ~/.config/user-dirs.dirs  # XDG_DESKTOP_DIR 一项改成"$HOME/Desktop"
 sudo apt install gnome-shell-extension-desktop-icons-ng
 sudo apt install gnome-shell-extension-prefs
 ```
+
+Desktop Icon
+1. `/usr/share/applications`
+2. `~/.local/share/applications`
+3. `~/.local/share/applications/wine/Programs`
+
+
+

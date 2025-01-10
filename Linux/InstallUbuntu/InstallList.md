@@ -61,6 +61,9 @@ apt
 31. build-essential
 32. gnome-weather
 33. vlc
+34. ntfs-3g
+35. exfat-fuse
+
 
 
 
@@ -87,7 +90,7 @@ Web
    4. sudo apt install libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2
    5. sudo apt install libgsettings-qt1
 8. eudic & ting_en
-9. 
+9.
 10. miniconda
     1. https://docs.anaconda.com/miniconda/install/
     2. conda config --set auto_activate_base false
