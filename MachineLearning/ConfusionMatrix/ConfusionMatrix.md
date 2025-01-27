@@ -8,28 +8,52 @@
 
 ## 混淆矩阵 Confusion Matrix
 
-T/F表示的是预测的正确与否，positive/negative表示的是分类器给出的分类
+`T/F` 表示的是预测的正确与否(和真实值一致)，`Positive/Negative` 表示的是分类器给出的分类
 
 TP : true positive  预测是正确的正样本
 FP : false positive 预测是错误的正样本
 TN : true negative  预测是正确的负样本
 FP : false positive 预测是错误的负样本
 
-![](pics/confusionmat000.png)
+![](Pics/confusionmat003.png)
 
-![](pics/confusionmat001.png)
+TP + FN : 数据集里真正的正样本总数
 
-![](pics/confusionmat002.png)
+TP + FP : 模型预测的正样本总数
+
+$$Accuracy = \frac{TP + TN}{TP + FP + FN + TN}$$
+
+$$Precision = \frac{TP}{TP + FP}$$
+
+$$TPR = Recall = \frac{TP}{TP + FN}$$
+
+$$TNR = \frac{TN}{TN + FP}$$
+
+$$FPR = 1 - TNR = \frac{FP}{TN + FP}$$
+
+$$FNR = 1 - TPR = \frac{FN}{TP + FN}$$
+
+![](Pics/confusionmat000.png)
+
+![](Pics/confusionmat001.png)
+
+![](Pics/confusionmat002.png)
+
 
 希望绿色的数值大，橙色的数值小，这样模型效果好。
 
+
+
+
+
+
 ## F1-score
 
-![](pics/f1score.jpg)
+![](Pics/f1score.jpg)
 
-![](pics/f1_score000.png)
+![](Pics/f1_score000.png)
 
-![](pics/f1_score001.png)
+![](Pics/f1_score001.png)
 
 准确率Accuracy：说明分类器正确分类的比例。
 
@@ -45,11 +69,11 @@ $F_\beta=(1+\beta^2)\times \frac{Precision·Recall}{\beta^2·Precision+Recall}$
 
 Recall的重要性是Precision的$\beta$倍
 
-![](pics/f1_score003.png)
+![](Pics/f1_score003.png)
 
-![](pics/f1_score004.png)
+![](Pics/f1_score004.png)
 
-![](pics/f1_score002.png)
+![](Pics/f1_score002.png)
 
 
 

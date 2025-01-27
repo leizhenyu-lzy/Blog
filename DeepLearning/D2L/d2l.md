@@ -20,13 +20,6 @@
 
 [toc]
 
----
-
-## 00 预告
-
-神经网络是一门语言
-
-增加 Transformer 等
 
 ---
 
@@ -37,14 +30,14 @@ LeNet - ResNet - LSTM - BERT
 损失函数、目标函数、过拟合、优化
 
 **内容**
-1. **深度学习基础** - 线性神经网络,多层感知机
-2. **卷积神经网络** - LeNet,AlexNet,VGG,Inception,ResNet
-3. **循环神经网络** - RNN,GRU,LSTM,seq2seq
-4. **注意力机制** - Attention,Transformer
-5. **优化算法** - SGD,Momentum,Adam
-6. **高性能计算** - 并行,多GPU,分布式
-7. **计算机视觉** - 目标检测,语义分割
-8. **自然语言处理** - 词嵌入,BERT
+1. **深度学习基础** - 线性神经网络, 多层感知机
+2. **卷积神经网络** - LeNet, AlexNet, VGG, Inception, ResNet
+3. **循环神经网络** - RNN, GRU, LSTM, seq2seq
+4. **注意力机制** - Attention, Transformer
+5. **优化算法** - SGD, Momentum, Adam
+6. **高性能计算** - 并行, 多GPU, 分布式
+7. **计算机视觉** - 目标检测, 语义分割
+8. **自然语言处理** - 词嵌入, BERT
 
 下载 D2L Notebook
 
@@ -65,34 +58,28 @@ pip3 install d2l
 
 ## 02 深度学习介绍
 
-<img src="Pics/d2l002.png">
+<img src="Pics/d2l002.png" width=400>
 
-图片分类 - [![](Pics/imagenet.jpg)](https://image-net.org/)
+应用
+1. 图片分类 - [<img src="Pics/imagenet.jpg"  width=150>](https://image-net.org/)
+2. 物体检测&分割(精确到像素)
+3. 样式迁移
+4. 人脸合成
+5. 文生图
+6. 文字/代码生成(eg. GPT-3)
+7. 无人驾驶
 
-物体检测&分割(精确到像素)
+案例 - 广告点击(搜推广)
+1. 触发(用户搜索) - 点击率预估(关键) - 排序(点击率 × 竞价)
+2. 广告特征提取(广告主、产品描述、图片) -> 模型(训练数据 -> 特征和用户点击 -> 模型) -> 点击率预测
 
-样式迁移
-
-人脸合成
-
-文生图
-
-文字生成(eg. GPT-3)
-
-无人驾驶
-
-广告点击(搜推广)
-1. 触发 - 点击率预估 - 排序(点击率 × 竞价)
-2. 广告特征提取 -> 模型(训练数据 -> 特征和用户点击 -> 模型) -> 点击率预测
-
-<img src="Pics/d2l003.png">
+<img src="Pics/d2l003.png" width=400>
 
 ---
 
 ## 03 安装
 
-[安装](https://www.bilibili.com/video/BV18p4y1h7Dr/)
-
+[PyTorch 官网](https://pytorch.org/)
 
 ---
 
@@ -105,7 +92,8 @@ pip3 install d2l
 <img src="Pics/d2l004.png">
 
 
-**广播机制 - broadcasting mechanism**
+**广播机制 - broadcasting mechanism** (numpy & tensor)
+
 
 ```python
 import numpy as np
@@ -136,7 +124,17 @@ csv 逗号分隔值 文件
 
 pandas
 
-pd.get_dummies()用于将分类数据转换为一种称为 "独热编码" One-Hot Encoding 的形式 (将缺失值转为 one-hot)
+`pd.get_dummies()` 用于将分类数据转换为一种称为 **独热编码 One-Hot Encoding** 的形式 (将缺失值转为 one-hot)
+
+float64 计算较慢，一般使用 float32
+
+reshape & view
+1. 相同点
+   1. 不会改变张量存储的数据本身，而是改变张量的形状(元信息)
+   2. 总元素数量必须一致
+2. 不同点
+   1. view(更高效) 要求原始张量的内存布局必须是连续的，如果张量是非连续的，需要先调用 `.contiguous()` 方法将张量变为连续的
+   2. reshape 会尝试自动处理非连续的张量，如果原始张量是非连续的，reshape 会隐式创建一个新的连续张量，并复制数据到新的内存区域
 
 ```python
 torch.Tensor._is_view()
@@ -146,16 +144,17 @@ torch.Tensor._is_view()
 
 ## 05 线性代数
 
-<img src="Pics/d2l005.png" width=50%>
+<img src="Pics/d2l005.png" width=400>
 
-<img src="Pics/d2l006.png" width=50%>
+<img src="Pics/d2l006.png" width=400>
 
-<img src="Pics/d2l007.png" width=50%>
+<img src="Pics/d2l007.png" width=400>
 
+矩阵范数是一个标量，用来衡量矩阵的大小
 
 **范数不等式**
 
-**Frobenius范数**是矩阵的一种范数，是矩阵中所有元素的平方和的平方根。这个范数在机器学习中常用于正则化，以防止过拟合。
+**Frobenius范数** 是矩阵的一种范数，是矩阵中所有元素的平方和的平方根，机器学习中常用于正则化，以防止过拟合
 
 ```python
 torch.norm(Array)
@@ -163,16 +162,32 @@ torch.norm(Array)
 keepdim = True  # 保留维度
 ```
 
-**正定矩阵** - Positive Definite Matrix - 对于一个实对称矩阵 $A$，它被定义为正定的，如果对于所有非零实向量 $x$，都有 $x^TAx>0$。
+**正定矩阵** - Positive Definite Matrix : 对于一个实对称矩阵 $A$，它被定义为正定的，如果对于所有非零实向量 $x$，都有 $x^TAx>0$。
 
-**正交矩阵** - Orthogonal Matrix - $UU^T=1$，行相互正交，行单位长度
+**正交矩阵** - Orthogonal Matrix : $UU^T=1$，行相互正交，行单位长度
 
 **置换矩阵** - Permutation Matrix - 元素只有0和1，每行和每列只有一个元素是 1，箱单与单位矩阵行列变换，**置换矩阵 是 正交矩阵**，置换矩阵的逆是它的转置
 
-<img src="Pics/d2l009.png" width=50%>
+<img src="Pics/d2l009.png" width=400>
+
+特征向量(不被矩阵改变方向的向量) & 特征值
+
+实对称矩阵
+1. 总可以找到特征向量
+2. 所有特征值都是实数
+3. 特征向量可以构成一组正交基
+4. 可以被正交矩阵对角化
 
 
-特征向量 & 特征值
+矩阵乘法
+1. Hadamard Product `⊙` 哈达玛积 : 矩阵按元素乘法
+2. Cross Product `@` 叉乘
+
+
+计算 总和/均值 时保持 轴数不变 `keepdims=True`
+
+沿轴累加求和 `cumsum(axis=)`
+
 
 ---
 
@@ -180,25 +195,20 @@ keepdim = True  # 保留维度
 
 主要是求导数
 
-<img src="Pics/d2l010.png" width=50%>
+<img src="Pics/d2l010.png" width=400>
 
 
-亚导数
+亚导数(拓展到不可微函数)
 
-<img src="Pics/d2l011.png" width=40%>
+<img src="Pics/d2l011.png" width=300>
 
 
 **梯度**
-
-<img src="Pics/d2l012.png" width=35%>
-
-<img src="Pics/d2l013.png" width=45%><img src="Pics/d2l014.png" width=53%>
-
-<img src="Pics/d2l015.png" width=50%>
-
-<img src="Pics/d2l016.png"  width=50%><img src="Pics/d2l017.png"  width=49%>
-
-<img src="Pics/d2l018.png" width=80%>
+1. <img src="Pics/d2l012.png" width=300>
+2. <img src="Pics/d2l013.png" width=300><img src="Pics/d2l014.png" width=350>
+3. <img src="Pics/d2l015.png" width=300>
+4. <img src="Pics/d2l016.png"  width=300><img src="Pics/d2l017.png"  width=300>
+5. <img src="Pics/d2l018.png" width=600>
 
 
 
@@ -237,7 +247,7 @@ keepdim = True  # 保留维度
 
 **自动求导**计算一个函数在指定值上的导数
 
-<img src="Pics/d2l022.png" width=50%>
+<img src="Pics/d2l022.png" width=400>
 
 计算图
 
@@ -257,7 +267,7 @@ keepdim = True  # 保留维度
 
 <img src="Pics/d2l025.png" width=70%>
 
-<img src="Pics/d2l027.png" width=50%>
+<img src="Pics/d2l027.png" width=400>
 
 <img src="Pics/d2l026.png" width=80%>
 
@@ -602,7 +612,35 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 ---
 
-## 63 束搜索
+## 63 束搜索 (Beam Search)
+
+seq2seq 中 使用 贪心搜索预测序列 (选最大概率的词)
+
+贪心 ≠ 最优 (局部最优 ≠ 全局最优)
+
+穷举可以保证最优，但是 computing complexity 太大，为 $n^T$ (字典大小$n$，序列长度$T$)
+
+Beam Search
+1. 每次搜索，保存最好的 k个 候选 (一共只保留k个，不是每个 branch 保留 k个)
+2. 每个时刻，对上一步 k个候选(每个对应 n种 可能) 对应的 kn个可能，选出最好的 k个
+   1. 如果某些分支(branch)提前结束(产生 `<eos>` 标记)，算法通常会将这些分支的结果保留，并继续扩展其他未完成的分支(确保生成的结果完整且能够处理不同长度的输出序列)
+3. <img src="Pics/d2l036.png" width=600>
+4. 时间复杂度 $O(knT)$
+5. 可能不仅仅考虑最后的 k 个，子序列也考虑
+6. 候选分数 $\frac{1}{L^\alpha} \log p(y_1, \ldots, y_L) = \frac{1}{L^\alpha} \sum_{t'=1}^L \log p(y_{t'} | y_1, \ldots, y_{t'-1})$
+   1. $\frac{1}{L^\alpha}$ 用于归一化，log 的结果为负，使用该参数可以减少对 短句的 倾向
+      1. 不归一化，会倾向于短句，因为概率越乘越小，log 之后 会是 更大负数
+   2. 通常 $\alpha$ 取 0.75
+
+
+
+bleu
+
+### 补 :
+
+
+
+
 
 ---
 

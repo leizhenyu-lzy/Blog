@@ -121,6 +121,9 @@ Ubuntu Software / Snap
 
 pip3
 1. torch torchvision torchaudio
+   1. libtorch [Installing C++ Distributions of PyTorch](https://pytorch.org/cppdocs/installing.html)
+   2. `python3 -c 'import torch;print(torch.utils.cmake_prefix_path)'` 检查 PyTorch 的 CMake 配置文件的路径
+   3. `cmake -DCMAKE_PREFIX_PATH/home/lzy/Projects/libtorch-cxx11-abi-shared-with-deps-2.5.1+cu124/libtorch ..`
 2. opencv-python
 3. plyfile
 4. tqdm
@@ -128,7 +131,7 @@ pip3
 6. numpy
 7. scipy
 8. matplotlib
-9. scikit-learn
+9.  scikit-learn
 10. seaborn
 11. beautifulsoup4
 12. ipykernel
@@ -151,6 +154,8 @@ NVIDIA
       3. P.S. : ls /usr/local -l : cuda -> /usr/local/cuda-12.4/ (soft link)
 4. cuDNN : https://developer.nvidia.com/rdp/cudnn-archive
    1. sudo apt install ./cudnn-xxx.deb
+   2. 可能位置 /home/lzy/.local/lib/python3.10/site-packages/nvidia/cudnn/include/cudnn_version.h
+   3. cat cudnn_version.h_path | grep CUDNN_MAJOR -A 2
 
 ```python
 >>> import torch

@@ -40,3 +40,11 @@
 公司
 1. [WaveOptics](https://waveoptics.ar/) - 衍射表面浮雕纳米柱光波导
 
+
+
+[一文看懂主流AR眼镜的核心显示技术--光波导（完整篇）](https://www.eet-china.com/mp/a42617.html)
+
+☆ [Fundamentals of display technologies for Augmented and Virtual Reality](https://hackernoon.com/fundamentals-of-display-technologies-for-augmented-and-virtual-reality-c88e4b9b0895)
+
+[一文看懂：AR产业金钥匙——衍射光波导](https://xueqiu.com/8552745795/133678299)
+

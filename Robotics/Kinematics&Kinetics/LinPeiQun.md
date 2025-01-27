@@ -152,7 +152,8 @@ Rigid Body 状态描述
 
 **Gimbal Lock - 万向节死锁**
 1. [Gimbal Lock - Wikipedia](https://en.wikipedia.org/wiki/Gimbal_lock)
-   <img src="Pics/Gimbal_Lock_Plane.gif">
+   1. <img src="Pics/Gimbal_Lock_Plane.gif">
+   2. <img src="Pics/Gimbal_3_axes_rotation.gif">
 
 
 

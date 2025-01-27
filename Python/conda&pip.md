@@ -2,6 +2,23 @@
 
 conda 环境是一个独立的环境，包含自己的 python 解释器和依赖
 
+
+# 常用命令
+
+conda info
+
+conda env list / conda info --envs
+
+conda create -n env_name python=x.x.x
+
+conda remove --name env_name --all
+
+conda activate env_name / deactivate
+
+conda install/uninstall
+
+conda upgrade
+
 # info
 
 `conda info` 查看相关信息
@@ -98,5 +115,8 @@ Hard Link(硬链接) 是一种文件系统中的技术，用于创建一个文�
    2. 删除其中一个硬链接，不会影响其他硬链接或原始文件
 
 符号链接/软链接
+
+
+
 
 
