@@ -1284,14 +1284,43 @@ Examples
 1. [SolidWorks URDF Exporter](https://github.com/ros/solidworks_urdf_exporter)
 2. [FreeCAD ROS Workbench](https://github.com/galou/freecad.cross)
 
+Tools
+1. **check_urdf**
+   1. `check_urdf <folder_path/urdf_file_name>`
+   2. 查看 机器人模型的层次结构
+2. **urdf_to_graphviz**
+   1. `urdf_to_graphviz <folder_path/urdf_file_name> <folder_path/output_name>` (output name 不用加后缀)
+   2. 该工具以前名为 urdf_to_graphiz 现建议使用 urdf_to_graphviz 替代
+
+
+#### Using URDF with `robot_state_publisher`
 
 ```bash
-check_urdf <folder_path/urdf_file_name> <folder_path/output_name>
-urdf_to_graphviz <folder_path/urdf_file_name> <folder_path/output_name>
-# 该工具以前名为 urdf_to_graphiz 现建议使用 urdf_to_graphviz 替代
+sudo apt install ros-humble-xacro
+sudo apt install ros-humble-urdf
+sudo apt install ros-humble-urdfdom
+
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro ./a1/urdf/a1.urdf)"  # 如果 URDF 文件是基于 .xacro(XML 宏)构建的，那么需要先通过 xacro 处理它
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(< ./a1/urdf/a1.urdf)"
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(cat ./a1/urdf/a1.urdf)"  # 使用 $(cat ...) 的方式将文件内容直接插入到 robot_description 参数
 ```
 
 
+base
+
+
+
+```
+ros2 run robot_state_publisher robot_state_publisher ~/Projects/Blog/Robotics/URDF/a1.urdf
+ros2 run robot_state_publisher robot_state_publisher ~/Projects/Blog/Robotics/URDF/a1/urdf/a1.urdf
+history | grep robot_state_publisher
+```
+
+
+
+
+
+---
 
 
 lzy@legion:~/Projects/LocomotionWithNP3O-master $ freecad --module-path ${PYTHONPATH//:/' --module-path '}

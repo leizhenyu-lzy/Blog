@@ -19,6 +19,11 @@ conda install/uninstall
 
 conda upgrade
 
+
+
+pip check  检查包冲突
+
+
 # info
 
 `conda info` 查看相关信息
