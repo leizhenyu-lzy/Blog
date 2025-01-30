@@ -48,3 +48,5 @@
 
 [一文看懂：AR产业金钥匙——衍射光波导](https://xueqiu.com/8552745795/133678299)
 
+[AR眼镜入门指南！一个视频带你看懂AR光学技术](https://www.bilibili.com/video/BV1o4421F7fL)
+

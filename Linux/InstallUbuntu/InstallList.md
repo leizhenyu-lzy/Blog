@@ -152,6 +152,7 @@ NVIDIA
       1. export PATH=/usr/local/cuda/bin:${PATH}
       2. export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
       3. P.S. : ls /usr/local -l : cuda -> /usr/local/cuda-12.4/ (soft link)
+   4. uninstall : 使用 /usr/local/cuda-<version>/bin 中的 cuda-uninstaller
 4. cuDNN : https://developer.nvidia.com/rdp/cudnn-archive
    1. sudo apt install ./cudnn-xxx.deb
    2. 可能位置 /home/lzy/.local/lib/python3.10/site-packages/nvidia/cudnn/include/cudnn_version.h
@@ -165,6 +166,7 @@ NVIDIA
 12.4
 >>> print(torch.backends.cudnn.version())
 90100
+>>> print(torch.cuda.get_device_name(0))
 ```
 
 
