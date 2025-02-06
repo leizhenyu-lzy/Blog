@@ -5,9 +5,12 @@
 - [机器人学 运动学 \& 动力学](#机器人学-运动学--动力学)
   - [Table of Contents](#table-of-contents)
 - [台大机器人学 运动学(Kinematics) - 林沛群](#台大机器人学-运动学kinematics---林沛群)
-  - [01 Spatial Descriptions and Transforms](#01-spatial-descriptions-and-transforms)
-  - [02 - Manipulator Kinematics](#02---manipulator-kinematics)
+  - [01 - Spatial Descriptions and Transforms](#01---spatial-descriptions-and-transforms)
+  - [02 - Manipulator Forward Kinematics](#02---manipulator-forward-kinematics)
+  - [03 - Manipulator Inverse Kinematics](#03---manipulator-inverse-kinematics)
+  - [](#)
 - [台大机器人学 动力学(Kinetics) - 林沛群](#台大机器人学-动力学kinetics---林沛群)
+  - [05 - Jacobians : Velocities and Static Forces](#05---jacobians--velocities-and-static-forces)
 
 
 ---
@@ -17,7 +20,7 @@
 
 [台大机器人学之运动学(Kinematics) - 林沛群](https://www.bilibili.com/video/BV1v4411H7ez)
 
-## 01 Spatial Descriptions and Transforms
+## 01 - Spatial Descriptions and Transforms
 
 Rigid Body 状态描述
 1. **2D 平面** : 2 Translation DoF + 1 Rotation DoF
@@ -113,6 +116,10 @@ Rigid Body 状态描述
    1. Euler Angles & Fixed Angles 各有 $3×2×2 = 12$(1、3转轴可以一样，相邻转轴不能一样) 种顺序可能
    2. <img src="Pics/lpq016.png" width=500>
 
+**Gimbal Lock - 万向节死锁**
+1. [Gimbal Lock - Wikipedia](https://en.wikipedia.org/wiki/Gimbal_lock)
+   1. <img src="Pics/Gimbal_Lock_Plane.gif">
+   2. <img src="Pics/Gimbal_3_axes_rotation.gif">
 
 **Homogeneous Transformation Matrix (T)** 齐次变换矩阵
 1. 将 Rotation & Translation 整合 - 16个元素，6 DoF
@@ -133,35 +140,160 @@ Rigid Body 状态描述
    1. 注意 : 求逆部分不需要直接求，使用上述逆矩阵的特性即可方便得到
    2. <img src="Pics/lpq026.png" width=550>
    3. <img src="Pics/lpq027.png" width=600>
+8. **P.S.** 如果 旋转 & 平移 关于同一轴(不必须是坐标系)，顺序对最终的变换矩阵没有影响，可以用代码验证
 
 
 
 **Operators 算子** : Translation & Rotation & Transformation
-1. single 移动 & 旋转
+1. single : 移动 / 旋转
    1. <img src="Pics/lpq019.png" width=550>
-2. combined 移动 & 旋转
+2. combined : 移动 & 旋转
    1. 先转动再移动 ≠ 先移动再转动(移动的向量也会被转动)
    2. <img src="Pics/lpq020.png" width=550>
 3. frame 中的点运动 = frame 做反向运动 (CCW = counter-clock-wise, CW = clock-wise)
    1. <img src="Pics/lpq021.png" width=550>
-   2. 感觉有点类似于 内旋，需要根据当前 frame 进行反向操作，而不是针对原始 frame - TODO
-   3. <img src="Pics/lpq022.png" width=550>
+   2. <img src="Pics/lpq022.png" width=550>
+   3. 感觉有点类似于 内旋，需要根据当前 frame 进行反向操作，而不是针对原始 frame
+      1. eg : $P_2 = T × R × P_1$
+         1. 对于 fixed angle 相当于 $P_1$ 先 Rotate 再 Translate
+         2. 对于 euler angle 相当于 $P_1$ 先 Translate 再 Rotate(Translate 之后的坐标系)
+            1. 如果再从坐标系反向运动理解，就是点不动，坐标系 先 反向Rotate 再 反向Translate
 
 
 
 
-**Gimbal Lock - 万向节死锁**
-1. [Gimbal Lock - Wikipedia](https://en.wikipedia.org/wiki/Gimbal_lock)
-   1. <img src="Pics/Gimbal_Lock_Plane.gif">
-   2. <img src="Pics/Gimbal_3_axes_rotation.gif">
 
 
 
-## 02 - Manipulator Kinematics
+**Transformation Matrix 运算**
+1. 连续运算
+   1. 向量相加，只有 在相同坐标系下 才有意义
+   2. <img src="Pics/lpq028.png" width=550>
+   3. 矩阵乘法 具有 **结合律**
+2. 反向运算
+   1. <img src="Pics/lpq029.png" width=650>
+   2. Rotation 部分 : 抵消
+   3. Translation 部分 : 反向 & 视角切换
+
+
+
+---
+
+## 02 - Manipulator Forward Kinematics
+
+Kinematics 运动学，不涉及 力
+1. 转动 & 移动
+   1. 位置、姿态
+   2. 速度、角速度
+   3. 加速度、角加速度
+
+Dynamics 动力学
+1. Newton's 2nd Law
+2. Work & Energy
+3. Impulse & Momentum
+
+
+机械臂
+1. links
+   1. 之间做 prismatic(平移) & revolute(旋转)
+   2. 驱动 actuator 将 末端移动
+   3. 在 link 上建立 frame
+   4. **编号方式**
+      1. Link 0 : 地杆，不动的杆件
+      2. Link 1 : 和 Link 0 相连，第1个 可动杆件
+      3. ...... :
+2. joints
+   1. 每个 joint 对 特定 axis 进行 rotation/translation
+
+
+**==几何描述==**
+1. **转轴 Axis 定义在 Link ==前侧==**
+2. <img src="Pics/lpq030.png" width=600>
+3. `Link Length` $a$ : 公垂线长度 (2条 异面axes 之间的 最短距离线段，和 2个 axes 都垂直)
+4. `Link Twist` $\alpha$ : 2个 axes 绕 公垂线 旋转的 角度(从 前杆件 转到 后杆件)
+5. `Link Offset` $d$ : 2个 相邻公垂线 在 1个 axis 上 相距的距离
+6. `Joint Angle` $\theta$ : 2个 相邻公垂线 在 1个 axis 上 旋转的 角度
+7. 对于
+   1. 旋转 revolute  : 只有 `Joint Angle` $\theta$ 变动
+   2. 平移 prismatic : 只有 `Link Offset` $d$ 变动
+
+
+**在杆件上建立Frame**
+1. <img src="Pics/lpq031.png" width=550>
+2. 先确定 $z$(转动/移动 方向) & $x$(公垂线 方向)，在用 右手定则 确定 $y$
+3. 特殊情况
+   1. **Link 0** (没有前轴)
+      1. <img src="Pics/lpq032.png" width=450>
+      2. 虽然 $\theta$ & $d$ arbitrary，但 通常 取 0
+   2. **Link n**(Last Link)
+      1. 没有后轴(没有公垂线)，frame 的 $x$ 取同方向
+      2. <img src="Pics/lpq033.png" width=450>
+
+**Denavit-Hartenberg 表示法**
+1. Craig Version
+   1. axis  在 link **前端**
+   2. <img src="Pics/lpq034.png" width=600>
+   3. **Link Transformation**
+      1. 转动 $\alpha_{i-1}$，平移 $a_{i-1}$，转动 $\theta_{i}$，平移 $d_{i}$
+      2. 都是对于 **euler angle**，因此 先进行的 transform 后左乘
+      3. <img src="Pics/lpq044.png" width=500>
+      4. <img src="Pics/lpq035.png" width=500>
+2. Standard
+   1. joint 在 link **末端**
+   2. <img src="Pics/lpq042.png" width=600>
+   3. **Link Transformation**
+      1. 转动 $\theta_{i}$，平移 $d_{i}$，转动 $\alpha_{i-1}$，平移 $a_{i-1}$
+      2. <img src="Pics/lpq043.png" width=600>
+
+
+
+
+对于 z轴相交(没有公垂线 $a=0$) 有多种定义方法
+1. <img src="Pics/lpq038.png" width=500>
+
+Examples
+1. RRR Manipulator
+   1. <img src="Pics/lpq036.png" width=500>
+2. RPR Manipulator
+   1. <img src="Pics/lpq037.png" width=550>
+3. PRRR Manipulator - 晶圆机器人
+   1. <img src="Pics/lpq039.png" width=500>
+4. RRRP Manipulator - SCARA机器人
+   1. <img src="Pics/lpq040.png" width=500>
+
+
+
+Actuator, Joint, Cartesian Space(笛卡尔坐标系)
+1. <img src="Pics/lpq041.png" width=500>
+2. Kinematic Mapping
+
+
+
+
+
+
+
+
+
+
+---
+
+## 03 - Manipulator Inverse Kinematics
 
 
 
 [](#01-spatial-descriptions-and-transforms)
+
+
+
+
+
+##
+
+
+
+
+
 
 
 ---
@@ -169,6 +301,20 @@ Rigid Body 状态描述
 # 台大机器人学 动力学(Kinetics) - 林沛群
 
 [台大机器人学之动力学(Kinetics) - 林沛群](https://www.bilibili.com/video/BV1Vt41157jp/)
+
+
+## 05 - Jacobians : Velocities and Static Forces
+
+移动
+1. <img src="Pics/lpq045.png" width=500>
+2. <img src="Pics/lpq046.png" width=500>
+3. 注意 是 velocity，不是 position
+
+转动
+1. $^A \Omega _B$ frameB 相对于 frameA 的 角速度向量，表达在 frameA 中
+2. <img src="Pics/lpq047.png" width=500>
+3.
+
 
 
 
