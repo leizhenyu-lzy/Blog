@@ -1,6 +1,8 @@
 
 # Omniverse | Isaac Sim | Isaac Lab
 
+# Overview
+
 [NVIDIA Isaac Sim - Nvidia 官网](https://developer.nvidia.com/isaac/sim )
 
 [How Isaac Sim relates to Isaac Lab - YouTube 视频](https://www.youtube.com/watch?v=NFcRirGuERI )
@@ -37,9 +39,9 @@ NVIDIA PhysX
 1. scalable, multi-physics SDK
 2. simulating and modeling physics in Robotics, Autonomous Vehicles, and VFX workflows
 
-![](Pics/Isaac_Sim_System_Diagram.png)
+<img src="Pics/Isaac_Sim_System_Diagram.png" width=600>
 
-![](Pics/nvidia-isaac-sim-diagram.jpg)
+<img src="Pics/nvidia-isaac-sim-diagram.jpg" width=800>
 
 
 # Blog
@@ -82,7 +84,6 @@ New Features
 打开 `Omniverse Launcher`，进入 `EXCHANGE`，搜索 `ISAAC SIM` 并安装，同时 安装 `CACHE`
 
 
-
 ## Isaac Gym
 
 [Isaac Gym - Now Deprecated](https://developer.nvidia.com/isaac-gym)
@@ -93,8 +94,6 @@ Installation instructions can be found in the package in the docs folder - open 
 
 [Isaac Gym安装及使用教程 - 知乎](https://zhuanlan.zhihu.com/p/618778210)
 
-
-安装及报错解决
 
 ```python
 # 绿色的按钮下载压缩文件IsaacGym_Preview_4_Package.tar.gz

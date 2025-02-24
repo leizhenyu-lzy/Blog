@@ -389,7 +389,7 @@ print("After second backward: ", x.grad)  # tensor([ 8., 16., 24., 32.])
 
 PyTorch累计梯度原因
 1. 当GPU内存限制了批量大小时，通过累积来自多个小批量 mini-batches 的梯度，可以实现有效的大批量 batch 训练
-2. 在多任务学习或当模型有多个输出时，需要分别计算每个损失函数对模型参数的梯度，此时需要累加梯度，之后再统一对模型参数更新
+2. 在**多任务学习**或当模型**有多个输出时**，需要分别计算每个损失函数对模型参数的梯度，此时需要累加梯度，之后再统一对模型参数更新
    ```python
    # 前向传播
    output1, output2 = model(input)
@@ -504,6 +504,14 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
    2. 只关心预测正确的情况(因为独热)
 
 
+Sigmoid $\sigma(x)$
+1. $\sigma(x) = \frac{e^x}{1+e^x}$
+2. derivative : $\frac{\partial \sigma(x)}{\partial x} = \sigma(x) (1- \sigma(x))$
+
+Cross Entropy Loss(eg : 二分类)
+1. $L(y, \hat{y}) = -[y \log(\hat{y}) + (1-y)\log(1- \hat{y})]$
+2. derivative : $\frac{\partial L}{\partial \hat{y}} = - \frac{y}{\hat{y}} + \frac{1-y}{1-\hat{y}} = \frac{\hat{y}-y}{\hat{y}(1-\hat{y})}$
+
 Loss Function
 1. L2 Loss - MSE(Mean Squared Error)
    1. 距离 minimum 越远，梯度下降 越快，参数更新幅度越大
@@ -527,6 +535,7 @@ Softmax 回归 代码实现
 
 
 
+
 ---
 
 ## 10 多层感知机 + 代码实现
@@ -538,6 +547,19 @@ Softmax 回归 代码实现
 ---
 
 ## 11 模型选择 + 过拟合 & 欠拟合
+
+常见比例为 70%训练集 & 15%验证集 & 15%测试集
+
+Training Set - learn parameters
+
+Validation Set - tune hyper-parameters
+1. 在训练过程中，每隔一段时间(如每个epoch)在验证集上评估模型性能
+2. 超参数调优 : 定义超参数空间，选择在验证集上表现最好的超参数组合
+3. 不参与训练，**多次使用**
+
+Test Set - evaluate performance
+1. 评估模型在未见数据上的最终性能
+2. **一次性使用**
 
 
 
@@ -827,7 +849,7 @@ RNN, NLP 处理序列，考虑时间信息
 CNN 考虑空间信息
 
 **统计工具** (**不独立**的随机变量)
-1. 联合概率 用 条件概率 展开
+1. **联合概率** 用 **条件概率** 展开
 2. <img src="Pics/d2l041.png" width=500>
 3. 核心 : 条件概率
    1. <img src="Pics/d2l042.png" width=350>
@@ -864,16 +886,50 @@ CNN 考虑空间信息
 
 ## 52 文本预处理
 
-文本当做时序序列
+文本当做时序序列，将词汇转为训练素材
 
+[文本预处理 - ipynb](./OfficialNoteBooks/chapter_recurrent-neural-networks/text-preprocessing.ipynb)
 
+暴力方法(现实中不用) : 仅保留字母，并将字母全变为小写，去除两端空白字符
 
+tokenize 词元化
+1. 两种方式
+   1. word 词 : 机器学习模型简单，但词可能性多，而且会有 **长尾** 问题(很多词出现频率低)
+   2. char 字符 : 可能性少，但是模型要学习用字符构成单词
+2. 特殊
+   1. reserved token : 句子 开始/结束 Token
+   2. unknown token `<unk>` : 未知
 
+中文更麻烦，需要分词(没有空格) `jieba` 库
+
+vocabulary 词汇表
+1. 计算机无法直接处理原始文本数据，需要将文本转换为**数值形式**
+2. 将文本中的每个单词或词项映射到数值空间
+3. 通过词汇表，我们可以使用 词袋模型(Bag of Words)、TF-IDF 或 Word2Vec 等方法将文本转换为向量
+4. 构建 vocabulary 可以有效地控制输入特征的维度，避免处理过程中出现过多的词项
+5. 可以构建 `token_to_idx` & `idx_to_token`
+
+corpus 语料库
+
+模型 需要配合 训练模型使用的vocabulary
 
 
 ---
 
 ## 53 语言模型
+
+文本序列
+
+目标是估计 **联合概率**
+
+给定前面的词，不断使用条件概率，生成后续文本
+
+应用
+1. <img src="Pics/d2l045.png" width=500>
+2. 甚至可以纠错
+
+
+
 
 
 

@@ -1272,13 +1272,67 @@ Examples
 
 
 
+### URDF(Unified Robot Description Format)
+
+XML specification to describe a robot, covers
+1. **Kinematic** and **Dynamic** description
+2. **Visual** representation
+3. **Collision** model
+
+Limitations
+1. only **tree structures**, no **parallel** robots
+2. rigid links connected by joints, no **flexible** elements
+
+
+[urdf/XML : Specifications](https://wiki.ros.org/urdf/XML)
+1. robot
+   1. `<robot>` : **root element** : **name**(required)
+      1. `<link>` (rigid body) : **name**(required)
+         1. <img src="Pics/ros037.png" width=350>
+         2. inertia
+            1. origin(xyz, rpy) - 质心的位置
+               1. xyz : position vector from **Lo(link-frame origin)** to **Co(center of mass)**
+               2. rpy : 相对 Link-Frame
+            2. mass(value)
+            3. inertia
+               1. 关于 质心
+               2. $$ I = \begin{bmatrix}
+                      I_{xx} & -I_{xy} & -I_{xz} \\
+                     -I_{xy} &  I_{yy} & -I_{yz} \\
+                     -I_{xz} & -I_{yz} &  I_{zz}
+                     \end{bmatrix}$$
+               3. 注意 SolidWorks 在将 惯性积 写入 惯性矩阵时，没有 添加负号，需要 手动添加，保证符合 URDF 的定义
+         3. visual : 允许在同一个 link 下定义多个 `<visual>` 合并为整体
+            1. origin(xyz, rpy)
+               1. rpy : 弧度制(radians)，Fixed Frame，ZYX顺序(先绕 Z 轴旋转 Yaw，再绕 Y 轴旋转 Pitch，最后绕 X 轴旋转 Roll)
+               2. `<origin xyz="1 0 0" rpy="0 0 1.57"/>` - 先绕 Z 轴旋转 1.57 ? - TODO
+            2. geometry
+               1. box(size), cylinder(radius, length), sphere(radius), mesh(filename)
+            3. material
+               1. color(rgba) + texture(filename)
+         4. collision : 允许在同一个 link 下定义多个 `<collision>` 合并为整体
+            1. origin(xyz, rpy) - 同 visual 中的
+            2. geometry
+               1. box(size), cylinder(radius, length), sphere(radius), mesh(filename, scale)
+         5. P.S.
+            1. **as few faces per link as possible** are recommended(ideally less than 1000)
+            2. **not support** multiple collision groups(eg : for planning / for moveit) (不等于 `<collision>` tag)
+               1. 解决方案 使用 自定义 XML 标签(eg : `<collision_checking>`)，并 手动 解析 & 处理
+            3. 使用 `package://<packagename>/<path>`，这样可以让文件路径相对于 ROS package 而不是绝对路径
+            4. mesh file 必须是 local file
+      2. `<joint>` : connect links
+      3. `<transmission>`
+      4. `gazebo`
+2. sensor/proposals
+3. sensor
+4. model_state
+5.  <img src="Pics/ros036.png" width=400>
 
 
 
 
 
 
-### URDF
 
 **[Generating an URDF File](https://docs.ros.org/en/humble/Tutorials/Intermediate/URDF/Exporting-an-URDF-File.html)**
 1. [SolidWorks URDF Exporter](https://github.com/ros/solidworks_urdf_exporter)
@@ -1288,7 +1342,7 @@ Tools
 1. **check_urdf**
    1. `check_urdf <folder_path/urdf_file_name>`
    2. 查看 机器人模型的层次结构
-2. **urdf_to_graphviz**
+2. **urdf_to_graphviz** - 可视化
    1. `urdf_to_graphviz <folder_path/urdf_file_name> <folder_path/output_name>` (output name 不用加后缀)
    2. 该工具以前名为 urdf_to_graphiz 现建议使用 urdf_to_graphviz 替代
 
@@ -1300,7 +1354,6 @@ sudo apt install ros-humble-xacro
 sudo apt install ros-humble-urdf
 sudo apt install ros-humble-urdfdom
 
-ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro ./a1/urdf/a1.urdf)"  # 如果 URDF 文件是基于 .xacro(XML 宏)构建的，那么需要先通过 xacro 处理它
 ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(< ./a1/urdf/a1.urdf)"
 ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(cat ./a1/urdf/a1.urdf)"  # 使用 $(cat ...) 的方式将文件内容直接插入到 robot_description 参数
 ```
@@ -1310,29 +1363,7 @@ base
 
 
 
-```
-ros2 run robot_state_publisher robot_state_publisher ~/Projects/Blog/Robotics/URDF/a1.urdf
-ros2 run robot_state_publisher robot_state_publisher ~/Projects/Blog/Robotics/URDF/a1/urdf/a1.urdf
-history | grep robot_state_publisher
-```
 
-
-
-
-
----
-
-
-lzy@legion:~/Projects/LocomotionWithNP3O-master $ freecad --module-path ${PYTHONPATH//:/' --module-path '}
-FreeCAD 1.0.0, Libs: 1.0.0R38641 +468 (Git)
-(C) 2001-2024 FreeCAD contributors
-FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.
-
-Adding snap-specific PYTHONPATH to sys.path: /home/lzy/snap/freecad/common/.local/lib/python3.10/site-packages:/snap/freecad/1248/lib/python3.10/site-packages:/snap/freecad/1248/usr/lib/python3/dist-packages
-Qt: Session management error: Could not open network socket
-No module named 'urdf_parser_py'
-No module named 'urdf_parser_py'
-connect failed: No such file or directory
 
 
 
@@ -1343,6 +1374,9 @@ connect failed: No such file or directory
 
 
 
+
+
+---
 
 # 基础知识
 

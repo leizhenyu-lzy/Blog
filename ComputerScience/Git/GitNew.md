@@ -158,10 +158,123 @@ Git跟踪并管理的是**修改**，而非文件
 4. GitHub 需要识别出你推送的提交确实是你推送的，而不是别人冒充的
 5. GitHub允许你添加多个Key (对应多个电脑)
 
+Github
+1. 注意 : **GitHub 自 2021 年 8 月 13 日起 不再支持通过 密码 进行 HTTPS 认证登录**，强制要求使用 更安全的身份验证方式，如 SSH 密钥 或 Personal Access Token (PAT)
+2. 使用 SSH
+   1. `ssh -T git@github.com` - 测试 SSH 连接
+      1. `The authenticity of host 'github.com (140.82.114.3)' can't be established.` - 输入 yes
+   2. `git remote set-url origin git@github.com:leizhenyu-lzy/Blog.git`
+3. PAT
+   1. Github
+   2. Settings -> Developer Settings -> Personal Access Token -> Tokens(classic) -> Generate New Token
+   3. 当你被要求输入密码时，使用你刚才生成的 Personal Access Token，而不是 GitHub 账户的密码
 
 
 
+添加远程库
+1. 本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步
+2. 在 github 创建仓库
+3. `git remote add origin xxx`
+   1. 远程库的名字就是 **origin**
+4. `git push -u origin master`
+   1. 用 git push 命令，实际上是把当前分支 master 推送到远程
+   2. 加上了`-u`参数，Git不但会把 本地的master分支内容 推送到 远程新的master分支，还会把 本地的master分支 和 远程的master分支 关联起来
+5. `git remote -v` 查看远程库信息
+6. `git remote rm <name>` - `rm` 其实是解除了本地和远程的绑定关系，并不是物理上删除了远程库
 
+克隆一个仓库，首先必须知道仓库的地址，然后使用 `git clone` 命令克隆
+
+当我们 `clone` 远程仓库时其实自动建立了 本地master分支 与 远程master分支 的追踪关系
+
+**分支管理**
+1. Git的分支是与众不同的，无论创建、切换和删除分支，Git在1秒钟之内就能完成
+2. HEAD 严格来说不是指向提交，而是指向 **master**，master 才是指向 提交
+3. 当我们创建新的分支，例如 dev 时，Git 新建了一个指针叫 dev，指向 master 相同的提交，再把 HEAD 指向 dev，就表示当前分支在 dev
+   1. 全部操作 : 增加 dev 指针，更改 HEAD 指向
+4. 现在开始，对工作区的修改和提交就是针对 dev 分支了，新提交后，dev 移动，master 指针不变
+
+
+`git checkout -b <branch>`(创建并切换) = `git branch <branch>` + `git checkout <branch>`
+
+`git checkout -b dev origin/dev`
+1. 创建一个新的本地分支 dev
+2. 基于远程分支 `origin/dev` 进行创建，使 dev 继承 `origin/dev` 的所有提交
+3. 切换到 dev 分支
+
+`git branch --set-upstream-to=origin/<branch> <branch>` 指定 本地分支 与 远程分支 的链接
+
+也可以使用 `switch`
+
+`git switch -c dev`(创建并切换，直接切换不用 `-c`)
+
+
+`git branch -a` 显示本地和远端的所有分支(当前分支有 * 号)
+
+`git branch -d <branch>` delete a branch
+
+`git branch -vv` 查看本地分支的远程跟踪情况
+
+
+`git merge`
+
+`git merge <branch>` 命令会将指定的 `<branch>` 分支合并到当前所在的分支，Git 通过当前的 `HEAD` 所指向的分支来确定合并的目标，而 `<branch>` 是你要合并进来的分支
+
+分支合并
+1. 会有提示，属于那种合并
+2. **快进合并** - Fast-Forward Merge
+   1. 合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息，可以使用 `--no-ff` 强制禁用，在 merge 时 产生一个 新 commit
+   2. main 还没有新提交
+   3. Git 只需简单地把 HEAD 指针向前移动，而不会创建额外的合并提交
+3. **三方合并** - Three-Way Merge
+   1. main 分支有自己的新提交，而 feature 分支也有不同的提交
+   2. Git 需要创建一个新的合并提交，整合两个分支的更改
+   3. 运行原理
+      1. Git 计算 main 和 feature 的最近共同祖先
+      2. 结合两个分支的不同更改，创建一个新的合并提交 (merge commit)
+4. 如果 git merge 遇到同一文件在两个分支中有不同的修改，Git 无法自动合并，会提示**冲突**
+   1. 解决步骤
+      1. **手动**编辑冲突文件
+      2. `add` 到 暂存区
+      3. `commit` 提交
+      4. 删除无用的 branch
+5. 撤销
+   1. `git merge --abort`
+   2. `git reset --hard HEAD~1`
+
+
+分支策略
+1. master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活
+2. 干活都在dev分支上，也就是说，dev分支是不稳定的
+3. 每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了
+   1. <img src="Pics/git05.png" width=500>
+
+`stash` - TODO https://liaoxuefeng.com/books/git/branch/bug/index.html
+
+
+
+远程库
+1. `git remote`  查看远程库信息，`-v` 显示更详细的信息 (fetch & push)，如果没有推送权限，就看不到push的地址
+2. `git remote show origin`
+
+`git pull` (从远程仓库获取最新代码，并自动合并到当前分支)
+1. `git pull origin main` 实际上执行
+   1. `git fetch origin main` + `git merge origin/main`
+2. 远程分支冲突 : 先 `git pull` 将最新提交抓下，在本地合并，解决冲突(和本地冲突同样的解决方法)，再推送
+3. `git pull --rebase` 相当于
+   1. `git fetch origin main` + `git rebase origin/main`
+
+`get fetch` 仅从远程仓库获取最新代码，但不会自动合并，它只会更新本地的远程分支信息
+
+
+`GitFlow`
+1. <img src="Pics/git06.png" width=700>
+2. <img src="Pics/git07.png" width=700>
+
+`git rebase` - 通过重新应用提交，避免创建合并提交，没有 merge commit，历史更加整洁
+
+Feature 分支 - TODO https://liaoxuefeng.com/books/git/branch/feature/index.html
+1. master 分支非常强调环境的稳定性，开发一个新功能，最好新建一个分支
+2. 完成开发后，需要提交 pull request 将 feature 分支合并回 master 分支中
 
 
 

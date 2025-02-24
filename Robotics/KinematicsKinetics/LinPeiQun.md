@@ -313,7 +313,68 @@ Actuator, Joint, Cartesian Space(笛卡尔坐标系)
 转动
 1. $^A \Omega _B$ frameB 相对于 frameA 的 角速度向量，表达在 frameA 中
 2. <img src="Pics/lpq047.png" width=500>
+
+**Rigid Body Motion**
+1. 暂时不用使用旋转矩阵将 {B} frame下的向量 转到 {U} frame，先进行微分
+   1. <img src="Pics/lpq048.png" width=500>
+2. 注意 : 相对 {U}，{B} 本身也在运动，所以 "**导正正导**" 需要同时考虑
+3. 补 : 坐标轴位置向量微分(速度向量)
+   1. <img src="Pics/lpq049.png" width=450>
+   2. 当 $x$ 很小时，$x$ $\sin x$ 是等价无穷小
+4. 带入，并将 {B} 替换为 {U}
+   1. <img src="Pics/lpq050.png" width=500>
+   2. <img src="Pics/lpq051.png" width=500>
+   3. 由于 $\vec{\omega}$ 是在 {U} 下的，需要将 {B} 中的 坐标轴转到 {U}
+5. 最终
+   1. <img src="Pics/lpq052.png" width=550>
+   2. 分量
+      1. 新坐标系原点 相对于 世界坐标系原点 速度
+      2. 新坐标系中 点 本身的运动速度(转回 世界坐标系)
+      3. 新坐标系 旋转 在 点 产生的速度(向量先转回世界坐标系，因为旋转向量定义在世界坐标系)
+
+
+**Velocity Propagation** (from Link to Link)
+
+
+
+
+
+
+
+
+Revolute Prismatic Helical Cylindrical Universal Spherical
+
+<img src="Pics/yim001.png" width=400>
+
+Grübler's Formula (注意 **independent constraint**)
+1. eg :
+   1. <img src="Pics/yim003.png" width=300>
+   2. Links : 6 + 6 + 1 + 1(Ground) = 14
+   3. Joints : 6 × (prismatic + universal + spherical)
+   4. #DoF = (14 - 1) * 6 - 6 * (5 + 4 + 3) = 6
+
+Redundant Manipulator (`#joints` > `#end-effector dof`)
+1. <img src="Pics/yim002.png" width=300>
+
+
+Composition of Rotations
+1. current axis - **post-multiply**
+2. fixed axis - **pre-multiply**
+
+
+**Similarity Transform**
+1. <img src="Pics/yim004.png" width=600>
+2. 联想 相似矩阵 的定义 $P^{-1}AP = B$，则 A & B 相似
 3.
+
+
+
+
+
+
+
+
+
 
 
 
