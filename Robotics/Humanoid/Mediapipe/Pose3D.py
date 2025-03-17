@@ -189,6 +189,7 @@ python3 Pose3D.py --src=webcam
 python3 Pose3D.py --src=video --pth=~/Videos/taiji.mp4
 python3 Pose3D.py --src=video --pth=~/Videos/dance.mp4
 python3 Pose3D.py --src=image --pth=~/Videos/skate.jpg
+python3 Pose3D.py --src=image --pth=Pics/yoga001.png
 """
 
 

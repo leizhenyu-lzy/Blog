@@ -10,7 +10,7 @@
 
 [Isaac Gym 说明文档](file:///home/lzy/Projects/isaacgym/docs/programming/index.html)
 
-
+# Basic
 
 逻辑分块
 1. 创建交互环境
@@ -36,6 +36,18 @@ Action Space - 所有可能动作的集合
 
 
 
+用 PPO 的 固定步长的 单步更新(Truncated Mini-Batch Updates)
+
+
+GPU 并行仿真中 独立处理每个环境，提前终止的环境会被**立即重置**，并继续收集数据，而不是等待整个 batch 结束
+
+每个环境 都会运行 24 个时间步，然后就执行一次 PPO 更新
+
+每个 并行环境 按照 相同的策略 进行决策(On-Policy 需要确保策略一致性)，并收集数据
+
+当所有环境收集满 `num_steps_per_env`(24 步)后，所有数据会一起用于更新策略
+
+
 # Code Structure
 
 Each environment is defined by an `env` file (`legged_robot.py`) and a `config` file (`legged_robot_config.py`).
@@ -52,7 +64,7 @@ Tasks must be **registered** using `task_registry.register(name, EnvClass, EnvCo
 
 
 
-# Usage
+# Terminal Usage
 
 `python legged_gym/scripts/train.py` 参数
 1. `--task <TASK>` : Task name
@@ -109,6 +121,13 @@ P.S.
 
 
 
+# `base_task.py`
+
+`BaseTask` 类
+
+`self.gym = gymapi.acquire_gym()`
+
+
 
 # `legged_robot.py`
 
@@ -128,7 +147,7 @@ P.S.
 2. **添加机器人**
    1. `_create_envs` - loads the robot URDF/MJCF asset & Environment(properties)
       1. `_process_rigid_shape_props`
-      2. `_process_dof_props`
+      2. `_process_dof_props` : stores position, velocity and torques limits defined in the URDF，多个环境共享，只需要执行一遍(env_id==0)
       3. `_process_rigid_body_props`
    2. `_get_env_origins` - Sets environment origins, Otherwise create a grid. (env 表示机器人)
    3. `_get_heights` - Samples heights of the terrain at required points around each robot (应对 凸起、凹陷 地形)，points are offset by the base's position and rotated by the base's yaw
@@ -209,9 +228,12 @@ P.S.
 5. `class control`
    1. `control_type` - P: position, V: velocity, T: torques
    2. `decimation` = $\frac{Policy DT}{Sim DT}$ - 每个策略决策时间步(policy DT)内，环境模拟时间步(sim DT)中控制指令更新的次数(桥接策略更新频率和物理模拟频率之间的差异)
-      1. 物理仿真的时间步(sim DT，如 1 ms 或更小)通常非常小，以确保模拟的物理行为足够准确
-      2. 策略更新的时间步(policy DT)则相对较大(如 10 ms 或更多)，因为策略通常由神经网络控制，其更新频率相对较低
-      3. 在一个策略时间步内，控制系统会在物理仿真时间步中更新 `decimation` 次控制指令，策略每次更新后的控制指令会在接下来的 `decimation` 个仿真时间步中保持一致
+      1. `self.dt = self.cfg.control.decimation * self.sim_params.dt`
+         1. `self.dt` : 策略时间步长
+         2. `self.sim_params.dt` : 仿真的基本时间步长
+      2. 物理仿真的时间步(sim DT，如 1 ms 或更小)通常非常小，以确保模拟的物理行为足够准确
+      3. 策略更新的时间步(policy DT)则相对较大(如 10 ms 或更多)，因为策略通常由神经网络控制，其更新频率相对较低
+      4. 在一个策略时间步内，控制系统会在物理仿真时间步中更新 `decimation` 次控制指令，策略每次更新后的控制指令会在接下来的 `decimation` 个仿真时间步中保持一致
    3. PD Drive parameters (通常需要测算，可以独立定义各关节joint名称对应的PD系数，名字要与URDF对应)
       1. `stiffness`
       2. `damping`
@@ -229,7 +251,8 @@ P.S.
 9.  `class normalization`
 10. `class noise` - 增加鲁棒性
 11. `class sim`
-    1.  `dt` - 仿真频率，乘以 decimation 为 1 个 step 时间
+    1.  `dt` - 仿真频率，乘以 decimation 为 1 个 policy step 时间
+    2.  `substeps`(LeggedRobotCfg中=1) : 物理引擎(例如 PhysX)会在每个 dt 内运行 substeps 次物理计算，更新物体的位置、速度、碰撞检测等
 
 
 `LeggedRobotCfgPPO` 类 - RL 网络相关
@@ -243,6 +266,85 @@ P.S.
    2. `resume` & `resume_path` - 载入网络二次训练
    3. `run_name`
    4. `experiment_name`
+
+
+
+# Terminal Output
+
+```bash
+################################################################################
+                     Learning iteration 1879/10000  # 训练进度
+
+                       Computation: 3521 steps/s (collection: 0.224s, learning 0.067s)
+                                    # 模拟环境每秒处理的步数 (数据收集(rollout)时间, 策略更新时间(神经网络训练))
+               Value function loss: 0.0000  # Critic 价值网络的损失，应该趋于 0，否则说明 Critic 训练不充分
+                    Surrogate loss: -0.0463  # PPO 策略损失，负值表示策略在优化方向上有所改进
+             Mean action noise std: 1.93  # 反映了策略的 不确定性(随着训练进展通常会降低，因为策略会趋向确定性)
+                       Mean reward: 0.00  # 当前平均回合(episode)的总奖励
+               Mean episode length: 18.18  # 平均回合长度，如果太短，说明机器人可能摔倒过早
+      Mean episode rew_action_rate: -0.0286
+            Mean episode rew_alive: 0.0025
+       Mean episode rew_ang_vel_xy: -0.0273
+      Mean episode rew_base_height: -0.0015
+          Mean episode rew_contact: 0.0031
+   Mean episode rew_contact_no_vel: -0.0097
+          Mean episode rew_dof_acc: -0.0635
+   Mean episode rew_dof_pos_limits: -0.0099
+          Mean episode rew_dof_vel: -0.1011
+Mean episode rew_feet_swing_height: -0.0038
+          Mean episode rew_hip_pos: -0.0225
+        Mean episode rew_lin_vel_z: -0.0316
+      Mean episode rew_orientation: -0.0040
+          Mean episode rew_torques: -0.0050
+ Mean episode rew_tracking_ang_vel: 0.0003
+ Mean episode rew_tracking_lin_vel: 0.0010
+--------------------------------------------------------------------------------
+                   Total timesteps: 1925120
+                    Iteration time: 0.29s
+                        Total time: 509.11s
+                               ETA: 2199.2s
+```
+
+
+
+
+
+
+# Tensorboard
+
+`tensorboard --logdir=/home/lzy/Projects/unitree_rl_gym/logs`
+
+
+
+
+# Modify
+
+
+修改 DoF 后需要调整的地方
+
+config
+1. init_state
+   1. default_joint_state
+2. env
+   1. num_privileged_obs (参考 compute_observations 中 self.obs_buf)
+   2. num_observations (参考 compute_observations 中 self.privileged_obs_buf)
+   3. num_actions
+3. asset
+   1. file
+   2. penalize_contacts_on
+   3. terminate_after_contacts_on
+4. control
+   1. stiffness
+   2. damping
+
+
+
+rollout : 指在给定策略(policy)下，从环境中收集的一段交互序列或轨迹(trajectory)
+
+$\tau = (s_0, a_0, r_1, s_1, a_1, r_2, \cdots)$
+1. state
+2. action
+3. reward
 
 
 

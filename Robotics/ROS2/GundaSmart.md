@@ -1289,10 +1289,10 @@ Limitations
    1. `<robot>` : **root element** : **name**(required)
       1. `<link>` (rigid body) : **name**(required)
          1. <img src="Pics/ros037.png" width=350>
-         2. inertia
-            1. origin(xyz, rpy) - 质心的位置
+         2. `<inertial>`
+            1. origin(xyz, rpy) - 质心的位置，相对 自己的 link
                1. xyz : position vector from **Lo(link-frame origin)** to **Co(center of mass)**
-               2. rpy : 相对 Link-Frame
+               2. rpy : 弧度制(radians)，Link 的 Fixed Frame(1 **roll** around x, 2 **pitch** around y, 3 **yaw** around z)
             2. mass(value)
             3. inertia
                1. 关于 质心
@@ -1301,32 +1301,134 @@ Limitations
                      -I_{xy} &  I_{yy} & -I_{yz} \\
                      -I_{xz} & -I_{yz} &  I_{zz}
                      \end{bmatrix}$$
-               3. 注意 SolidWorks 在将 惯性积 写入 惯性矩阵时，没有 添加负号，需要 手动添加，保证符合 URDF 的定义
-         3. visual : 允许在同一个 link 下定义多个 `<visual>` 合并为整体
+               3. 注意 SolidWorks 在将 惯性积 写入 惯性矩阵时，没有 添加负号 `-`，需要 手动添加，保证符合 URDF 的定义
+               4. 最简单的方式 : 与 principal inertia directions 对齐，使得 惯性积 = 0
+         3. `<visual>` : 相对 自己的 link，允许在同一个 link 下定义多个 `<visual>` 合并为整体
             1. origin(xyz, rpy)
-               1. rpy : 弧度制(radians)，Fixed Frame，ZYX顺序(先绕 Z 轴旋转 Yaw，再绕 Y 轴旋转 Pitch，最后绕 X 轴旋转 Roll)
-               2. `<origin xyz="1 0 0" rpy="0 0 1.57"/>` - 先绕 Z 轴旋转 1.57 ? - TODO
+               1. rpy : 弧度制(radians)，Fixed Frame(1 **roll** around x, 2 **pitch** around y, 3 **yaw** around z)
             2. geometry
                1. box(size), cylinder(radius, length), sphere(radius), mesh(filename)
             3. material
                1. color(rgba) + texture(filename)
-         4. collision : 允许在同一个 link 下定义多个 `<collision>` 合并为整体
+         4. `<collision>` : 相对 自己的 link，允许在同一个 link 下定义多个 `<collision>` 合并为整体
             1. origin(xyz, rpy) - 同 visual 中的
             2. geometry
                1. box(size), cylinder(radius, length), sphere(radius), mesh(filename, scale)
          5. P.S.
-            1. **as few faces per link as possible** are recommended(ideally less than 1000)
-            2. **not support** multiple collision groups(eg : for planning / for moveit) (不等于 `<collision>` tag)
+            1. 注意 需要 inertial/visual/collision 的 origin 同时修改
+            2. **as few faces per link as possible** are recommended(ideally less than 1000)
+            3. **not support** multiple collision groups(eg : for planning / for moveit) (不等于 `<collision>` tag)
                1. 解决方案 使用 自定义 XML 标签(eg : `<collision_checking>`)，并 手动 解析 & 处理
-            3. 使用 `package://<packagename>/<path>`，这样可以让文件路径相对于 ROS package 而不是绝对路径
-            4. mesh file 必须是 local file
-      2. `<joint>` : connect links
+            4. 使用 `package://<packagename>/<path>`，这样可以让文件路径相对于 ROS package 而不是绝对路径
+            5. mesh file 必须是 local file
+      2. `<joint>` : connect links : **name**, **type**(revolute/continuous/prismatic/fixed/floating/planar)
+         1. <img src="Pics/ros038.png" width=450>
+         2. `<origin>` : transform from the parent link to the child link
+            1. xyz
+            2. rpy : 弧度制(radians)，Fixed Frame(1 **roll** around x, 2 **pitch** around y, 3 **yaw** around z)
+         3. `<parent>` : parent link name
+         4. `<child>` : child link name
+         5. `<axis>` : joint axis specified in the joint frame
+         6. `<calibration>`
+         7. `<dynamics>`
+         8. `<limit>`(lower, upper, effort, velocity)
+         9.  `<mimic>`
+         10. `<safety_controller>`
       3. `<transmission>`
-      4. `gazebo`
+      4. `<gazebo>`
 2. sensor/proposals
 3. sensor
 4. model_state
 5.  <img src="Pics/ros036.png" width=400>
+
+例子 :
+```xml
+<robot name="test">
+
+    <link name="link1">
+        <inertial>
+            <origin xyz="0.5 0.5 0.5" rpy="0 0 0"/>
+            <mass value="20"/>
+            <inertia ixx="2"  ixy="0"  ixz="0" iyy="2" iyz="0" izz="2" />
+        </inertial>
+
+        <visual>
+            <origin xyz="0.5 0.5 0.5" rpy="0 0 0" />
+            <geometry>
+                <box size="1 1 1" />
+            </geometry>
+            <material name="R">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="link2">
+        <inertial>
+            <!-- <origin xyz="1 0.25 0.5" rpy="0 0 0"/> -->
+            <origin xyz="1 0.25 0.5" rpy="1.570796327 0.785398163 0" />
+            <mass value="20"/>
+            <inertia ixx="2"  ixy="0"  ixz="0" iyy="4" iyz="0" izz="3" />
+
+        </inertial>
+
+        <visual>
+            <!-- <origin xyz="1 0.25 0.5" rpy="0 0 0" /> -->
+            <origin xyz="1 0.25 0.5" rpy="1.570796327 0.785398163 0" />
+            <!-- fixed frame，先 绕 x 90，再 绕 y 45 -->
+            <geometry>
+                <box size="2 0.5 1" />
+            </geometry>
+            <material name="G">
+                <color rgba="0.0 1.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="link3">
+        <inertial>
+            <origin xyz="0.5 0.5 0.5" rpy="0 0 0"/>
+            <mass value="20"/>
+            <inertia ixx="2"  ixy="0"  ixz="0" iyy="2" iyz="0" izz="2" />
+        </inertial>
+
+        <visual>
+            <origin xyz="0.5 0.5 0.5" rpy="0 0 0" />
+            <geometry>
+                <sphere radius="0.866025404" />
+            </geometry>
+            <material name="B">
+                <color rgba="0.0 0.0 1.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="joint12" type="continuous">
+        <origin xyz="1 1 1" rpy="0 0 0"/>
+        <!-- <origin xyz="1 1 1" rpy="-1.570796327 1.570796327 0"/> -->
+        <!-- fixed frame，先 绕 x -90，再 绕 y 90 -->
+        <parent link="link1"/>
+        <child link="link2"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <joint name="joint23" type="continuous">
+        <origin xyz="2 0.5 1" rpy="0 0 0"/>
+        <parent link="link2"/>
+        <child link="link3"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+</robot>
+
+<!-- 30 0.523598776 -->
+<!-- 45 0.785398163 -->
+<!-- 60 1.047197551 -->
+<!-- 90 1.570796327 -->
+<!-- 120 2.094395102 -->
+<!-- 180 3.141592654 -->
+```
+
+<img src="Pics/ros039.png" width=500>
 
 
 

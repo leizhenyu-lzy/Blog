@@ -238,6 +238,7 @@ Dynamics 动力学
       2. 都是对于 **euler angle**，因此 先进行的 transform 后左乘
       3. <img src="Pics/lpq044.png" width=500>
       4. <img src="Pics/lpq035.png" width=500>
+   4. 最后需要 补一步，最后一个 link origin 到 end-effector 的变换
 2. Standard
    1. joint 在 link **末端**
    2. <img src="Pics/lpq042.png" width=600>
@@ -262,16 +263,12 @@ Examples
    1. <img src="Pics/lpq040.png" width=500>
 
 
+对同一个轴，旋转 & 平移 顺序 可以颠倒
 
-Actuator, Joint, Cartesian Space(笛卡尔坐标系)
+
+Actuator, Joint, Cartesian Space(笛卡尔坐标系,point)
 1. <img src="Pics/lpq041.png" width=500>
 2. Kinematic Mapping
-
-
-
-
-
-
 
 
 
@@ -280,9 +277,39 @@ Actuator, Joint, Cartesian Space(笛卡尔坐标系)
 
 ## 03 - Manipulator Inverse Kinematics
 
+<img src="Pics/lpq053.png" width=500>
+
+6 自由度(3 rotation，3 translation)，6 限制条件(rotation 部分 3模长=1，3正交)
+
+<img src="Pics/lpq054.png" width=550>
+
+Reachable Workspace - 一种以上姿态到达的位置
+
+Dexterous Workspace - 任何姿态到达的位置
+
+<img src="Pics/lpq055.png" width=450>
+
+Subspace
+
+**多重解**
+1. nonlinear transcendental equations (非线性超越方程)
+   1. 6 方程 6 未知数 不代表 由 唯一解
+2. 解的数量 由 joint & link 数量决定
+   1. joint offset 导致解的数量增加
+3. eg
+   1. <img src="Pics/lpq056.png" width=500>
+4. 选择 : 快速，省能，避障，距离
+
+**求解方法**
+1. Closed-Form Solutions (algebraic + geometric)
+   1. 求解快
+   2. 大部分机械臂设计成解析解形式
+   3. Pieper's Solution : 相邻3轴交于一点
+2. Numerical Solutions (方程给电脑)
 
 
-[](#01-spatial-descriptions-and-transforms)
+
+
 
 
 

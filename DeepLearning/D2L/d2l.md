@@ -8,7 +8,7 @@
 
 [d2l - Github](https://github.com/d2l-ai/d2l-zh)
 
-[动手学深度学习 PyTorch版  - B站视频(合集)](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
+[动手学深度学习 PyTorch版  - B站视频(合集)](https://space.bilibili.com/1567748478/lists/358497?type=series)
 
 [PyTorch 论坛](https://discuss.pytorch.org/)
 
@@ -493,24 +493,37 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 <img src="Pics/d2l037.png" width=500>
 
+ArgMax 难以 求导，因此难以 BackPropagation
+
 分类
 1. 对 真实类别进行 独热编码 One-Hot Encoding
    1. <img src="Pics/d2l038.png" width=250>
 2. 更需要 正确类的 置信度 尽量大，$o_{True} - o_{False} \ge \delta$，让模型有能力更能辨识类别
 3. Softmax，预测概率 (多分类)
    1. <img src="Pics/d2l039.png" width=300>
+   2. 输出范围 0-1
 4. **Cross Entropy** 交叉熵，用于衡量 两个分布的相似程度
-   1. [信息量--香农熵--交叉熵--kl散度 | 笔记](../DiffusionModel/DiffusionModel.md#补--信息量--香农熵--交叉熵--kl散度)
+   1. **==☆==**[信息量--香农熵--交叉熵--kl散度 | 笔记](../DiffusionModel/DiffusionModel.md#补--信息量--香农熵--交叉熵--kl散度)
    2. 只关心预测正确的情况(因为独热)
 
+**激活函数**
 
 Sigmoid $\sigma(x)$
-1. $\sigma(x) = \frac{e^x}{1+e^x}$
-2. derivative : $\frac{\partial \sigma(x)}{\partial x} = \sigma(x) (1- \sigma(x))$
+1. $$\sigma(x) = \frac{e^x}{1+e^x}$$
+2. derivative : $$\frac{\partial \sigma(x)}{\partial x} = \sigma(x) (1- \sigma(x))$$
+
+ReLU(Rectified Linear Unit)
+
+
+
+
+**损失函数**
 
 Cross Entropy Loss(eg : 二分类)
-1. $L(y, \hat{y}) = -[y \log(\hat{y}) + (1-y)\log(1- \hat{y})]$
-2. derivative : $\frac{\partial L}{\partial \hat{y}} = - \frac{y}{\hat{y}} + \frac{1-y}{1-\hat{y}} = \frac{\hat{y}-y}{\hat{y}(1-\hat{y})}$
+1. $$L(y, \hat{y}) = -[y \log(\hat{y}) + (1-y)\log(1- \hat{y})]$$
+2. derivative : $$\frac{\partial L}{\partial \hat{y}} = - \frac{y}{\hat{y}} + \frac{1-y}{1-\hat{y}} = \frac{\hat{y}-y}{\hat{y}(1-\hat{y})}$$
+3. <img src="Pics/d2l046.png" width=500>
+4. 在 worst prediction 中，Loss 大，因此更新快
 
 Loss Function
 1. L2 Loss - MSE(Mean Squared Error)
@@ -855,7 +868,7 @@ CNN 考虑空间信息
    1. <img src="Pics/d2l042.png" width=350>
    2. 当前时刻的值依赖于之前时刻的某种函数 $f$
 
-自回归模型 AutoRegressive Model
+自回归模型 Auto-Regressive Model
 1. 核心思想 : 当前时刻的值由之前若干时刻的值决定，**使用自身过去数据预测未来**
 
 方案
@@ -938,8 +951,26 @@ corpus 语料库
 
 ---
 
-## 54 循环神经网络 RNN
+## 54 循环神经网络 RNN(Recurrent Neural Network)
 
+[【数之道 09】揭开循环神经网络RNN模型的面纱 - BiliBili](https://www.bilibili.com/video/BV1YK411F7Tg)
+
+MLP 不适合 处理 序列问题，模型 input 数量固定
+
+<img src="Pics/d2l047.png" width=800>
+
+BPTT - Back Propagation Through Time
+1. <img src="Pics/d2l049.png" width=800>
+2. 也会出现 梯度消失/梯度爆炸 的问题，很多个 $\frac{\partial H_k}{\partial H_{k-1}}$ 连乘
+3. 通过 LSTM 或 GRU 解决 (**短期记忆**)
+   1. <img src="Pics/d2l056.png" width=700>
+
+
+tanh 损失函数
+1. **$$\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$**
+2. <img src="Pics/d2l048.png" width=350>
+3. 零均值、对称性好，梯度较大
+4. 比 Sigmoid 更适合深度网络，因为其**梯度更大，不容易梯度消失**
 
 
 
@@ -952,19 +983,118 @@ corpus 语料库
 
 ---
 
-## 56 门控循环单元 GRU
+## 56 门控循环单元 GRU(Gated Recurrent Units)
 
+[lstm - ipynb](./OfficialNoteBooks/chapter_recurrent-modern/gru.ipynb)
+
+GRU 是在 LSTM 之后 提出的，只用 隐藏状态传递信息
+
+RNN 无法处理 太长的序列，Hidden State 无法记住 很久以前的 信息
+
+观察序列时，不是每个观察值都同等重要
+
+2 个 sigmoid
+1. **更新门** update gate
+   1. 上期状态能进入当期的比例
+   2. 数据比较重要，更新隐藏状态
+   3. 等于 1，不更新，保留过去状态，抛弃当前 input
+   4. 等于 0，抛弃 过去状态，更关注当前 input
+2. **重置门** reset gate
+   1. 上期状态的遗忘比例
+   2. 遗弃多少历史信息
+
+1 个 sigmoid
+
+同时考虑历史信息部分 & 新增信息部分
+
+<img src="Pics/d2l053.png" width=800>
+
+$\tilde{H}_t$(candidate hidden state)，input & hidden state 经过 重置门
+
+$H_t$(hidden state)
+
+<img src="Pics/d2l058.png" width=800>
+
+<img src="Pics/d2l057.png" width=450>
+
+极端情况
+1. z = 0，r = 1，回退到 普通 RNN
+2. z = 0，r = 0，只关注当前 input
+3. z = 1，忽略当前 input
+
+outputs 存储整个序列的输出，必须在循环中逐步**累积结果**
+
+H 隐藏状态，每个时间步只需要保留最新的 H，不需要存储整个历史序列的 H
 
 
 
 ---
 
-## 57 长短期记忆网络 LSTM
+## 57 长短期记忆网络 LSTM(Long Short-Term Memory)
+
+[lstm - ipynb](./OfficialNoteBooks/chapter_recurrent-modern/lstm.ipynb)
+
+**候选记忆单元** $c_t$ (Memory(Cell State)) - 相比 RNN 增加
+1. 上期状态 $c_{t-1}$ 通过 遗忘门
+2. 加上 本期新增的部分(由 tanh & sigmoid 相乘 得到)
+3. 本期状态 乘以 输出门，得到输出值
+4. 可以看成一个 没有 normalize 的，数值区间可能比较大
+5. 可以选择 过去 和 当前 的 比例
+
+<img src="Pics/d2l050.png" width=800>
+
+<img src="Pics/d2l051.png" width=800>
 
 
+3 个 sigmoid & 2 个 tanh 函数
+1. sigmoid
+   1. 可以返回 [0,1] 区间的值
+   2. 可以作为闸门，控制信息更新的比例
+   3. 管理
+      1. **遗忘门** forget gate
+         1. 将值朝0 减少
+         2. 0 表示 完全遗忘
+         3. 1 表示 完全保留
+      2. **输入门** input gate
+         1. 决定是否忽略 input 数据
+      3. **输出门** output gate
+         1. 决定是不是使用 隐状态
+2. tanh
+   1. 可以返回 [-1,+1] 区间的值
+   2. 控制信息的增减的 大小 & 方向，并将值锁定在 [-1,+1] 区间
+
+<img src="Pics/d2l052.png" width=600>
+
+由于 由4个部分组成，结果 在0~1之间 或者 大于1，混合相乘，更加稳定 (解决梯度 消失、爆炸)
+
+
+
+<img src="Pics/d2l055.png" width=800>
+
+$\tilde{c}_t$ 的范围 是 [-1,+1] (tanh 的输出)，但是 $c_t$ 未必，通过 tanh 将其 放缩在 [-1,+1]之间，再和 output gate 得到 $H_t$
+
+<img src="Pics/d2l054.png" width=450>
+
+Hidden State / Memory(Cell State) / Candidate Memory 的 维度相同
+
+遗忘门，输入门，输出门，候选记忆单元 的网络参数 维度一样
+
+```python
+return (normal((num_inputs, num_hiddens)),  # W_x (输入 -> 隐藏)
+        normal((num_hiddens, num_hiddens)),  # W_h (隐藏 -> 隐藏)
+        torch.zeros(num_hiddens, device=device))  # 偏置项 b
+```
+
+perplexity : 困惑度，衡量语言模型好坏的指标，数值越小，表示模型的预测能力越强
+
+最终输出 $Y_t$ 只由 hidden state 决定
+
+$H_t$(Hidden State) 称为短期记忆，更容易受输入变化影响
+$C_t$(Cell State) 称为长期记忆，更稳定
 
 
 ---
+
 
 ## 58 深层循环神经网络
 
