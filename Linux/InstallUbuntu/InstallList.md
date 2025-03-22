@@ -17,27 +17,28 @@ apt
 4. dotnet8
 5. gthumb
 6. python3-pip
-7. gcc
-8. g++
-9. meshlab
-10. flameshot
-11. synaptic : sudo apt install -y synaptic
-12. tree
-13. gnome-sound-recorder
-14. clang
-15. cmake
-16. net-tools
-17. ubuntu-restricted-extras(基本的媒体编解码器)
-18. neofetch
-19. openjdk-11-jdk
+7. python3-venv
+8. gcc
+9. g++
+10. meshlab
+11. flameshot
+12. synaptic : sudo apt install -y synaptic
+13. tree
+14. gnome-sound-recorder
+15. clang
+16. cmake
+17. net-tools
+18. ubuntu-restricted-extras(基本的媒体编解码器)
+19. neofetch
+20. openjdk-11-jdk
     1. java -version
     2. javac -version
-20. gpustat
-21. remmina & filezilla
-22. cheese
-23. ffmpeg
-24. gnome-clocks
-25. gnome-tweaks
+21. gpustat
+22. remmina & filezilla
+23. cheese
+24. ffmpeg
+25. gnome-clocks
+26. gnome-tweaks
     1. chrome-gnome-shell
     2. gnome-shell --version (GNOME Shell 42.9)
     3. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
@@ -50,18 +51,18 @@ apt
     10. Vitals
     11. Panel World Clock (Lite)
     12. Weather O'Clock
-26. p7zip p7zip-full p7zip
-27. mysql-server
+27. p7zip p7zip-full p7zip
+28. mysql-server
     1. mysql -V
     2. sudo mysql
     3. ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'your new password';  # 输入自己新设置的密码
-28. gnome-todo
-29. npm
-30. build-essential
-31. gnome-weather
-32. vlc
-33. ntfs-3g
-34. exfat-fuse
+29. gnome-todo
+30. npm
+31. build-essential
+32. gnome-weather
+33. vlc
+34. ntfs-3g
+35. exfat-fuse
 
 
 
