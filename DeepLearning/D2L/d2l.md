@@ -482,6 +482,43 @@ RNN 是环状图，但是实际上会拆开，然后梯度累加
 
 对 loss 进行 `backward()`，各个 parameter 对于 loss 的
 
+---
+
+## 补
+
+[“随机梯度下降、牛顿法、动量法、Nesterov、AdaGrad、RMSprop、Adam”，打包理解对梯度下降法的优化](https://www.bilibili.com/video/BV1r64y1s7fU/)
+
+[优化器 ｜SGD ｜Momentum ｜Adagrad ｜RMSProp ｜Adam](https://www.bilibili.com/video/BV1jh4y1q7ua)
+
+[十分钟搞明白Adam和AdamW，SGD，Momentum，RMSProp，Adam，AdamW](https://www.bilibili.com/video/BV1NZ421s75D)
+
+梯度下降 是下降 **损失函数的梯度**
+
+使用 Vanilla 的 梯度下降，需要 **遍历整个数据集**，效率不高，并且梯度求的是一个点的最速下降方向 结合 步长(学习率)，而不整体的最优路径
+
+
+
+随机梯度下降
+1. 对于 凸问题，收敛速度稍慢于 Vanilla 梯度下降，性价比高
+2. 随机选取一个批次(mini-batch)
+
+
+牛顿法
+
+
+
+动量法
+
+Nesterov
+
+AdaGrad
+
+RMSprop
+
+Adam
+
+
+
 
 ---
 
@@ -576,27 +613,104 @@ Test Set - evaluate performance
 
 
 
-
-
----
-
-## 12 权重衰退
-
-
-
-
+TODO
 
 ---
 
-## 13 丢弃法
+## 12 权重衰退 Weight Decay
+
+[weight decay - ipynb](./OfficialNoteBooks/chapter_multilayer-perceptrons/weight-decay.ipynb)
+
+一种 L2 正则化(L2 Regularization) 技术，目的是防止模型过拟合，让神经网络的权重不会变得过大
+
+处理过拟合的方法
+
+限制参数值选择范围
+
+硬性限制(不常用)
+1. <img src="Pics/d2l061.png" width=380>
+
+柔性限制
+1. $\lambda$ 是 超参数
+2. 相当于 在 loss 加上了 对 weight 的 penalty 罚
+3. <img src="Pics/d2l062.png" width=500>
+
+<img src="Pics/d2l063.png" width=400>
+
+参数更新
+1. <img src="Pics/d2l064.png" width=450>
+2. 先将当前权重减小，再按照梯度更新
+
+<img src="Pics/d2l065.png" width=500>
+
+不需要特殊的网络结构
+
+pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`torch.optim`)
+1. 作用到 `model.parameters()` 里的所有参数，包括 bias
+   1. `optimizer = optim.SGD(model.parameters(), lr=0.01, weight_decay=0.0001)`
+   2. `optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.0001)`
+2. 只对权重 weights 进行 L2 正则化，而不对偏置 bias 进行正则化
+   ```python
+   optim.SGD([
+                  {'params': others},
+                  {'params': bias_params, 'weight_decay': 0}
+               ], weight_decay=1e-2, lr=1e-2)
+   ```
+
+---
 
 
+
+## 13 丢弃法 DropOut
+
+动机 : 好的模型 需要对 input 的 扰动 鲁棒
+
+使用 有噪声的 数据 相当于 Tikhonov 正则
+
+正则使得权重不要太大，避免一定程度的过拟合
+
+丢弃法 : 在 层之间 加入噪音，而不是在 输入 加噪音
+
+**不改变期望** - **无偏差**的加入噪音
+1. <img src="Pics/d2l059.png" width=350>
+
+通常将 丢弃法 作用在 **隐藏全连接层的 输出**(不是整个模型的 输出)
+
+很少用在 CNN 中
+
+丢弃概率 是一个 超参数
+
+<img src="Pics/d2l060.png" width=600>
+
+训练时随机丢弃（置零）部分神经元，这样可以让模型学到更鲁棒的特征
+
+**注意**
+1. 正则项 只在 训练中 使用，影响 模型参数 更新
+2. 保证确定性的输出
 
 
 
 ---
 
 ## 14 数值稳定性 + 模型初始化
+
+[Numerical Stability - ipynb](./OfficialNoteBooks/chapter_multilayer-perceptrons/numerical-stability-and-init.ipynb)
+
+<img src="Pics/d2l066.png" width=400>
+
+<img src="Pics/d2l068.png" width=450>
+
+
+**梯度爆炸**
+1. <img src="Pics/d2l069.png" width=550>
+2. 转置是因为分母布局
+3. <img src="Pics/d2l067.png" width=450>
+
+**梯度消失**
+1. <img src="Pics/d2l070.png" width=400>
+2. <img src="Pics/d2l071.png" width=500>
+3. <img src="Pics/d2l072.png" width=400>
+
 
 
 
@@ -695,7 +809,112 @@ Test Set - evaluate performance
 
 ---
 
-## 28 批量归一化
+## 28 批量归一化 Batch Normalization(BN)
+
+[Batch Normalization - ipynb](./OfficialNoteBooks/chapter_convolutional-modern/batch-norm.ipynb)
+
+不同batch的分布变化大，而不是指底层参数变化导致顶层参数变化
+
+让同一个 batch 样本 在 每一层 都服从 类似的分布
+
+
+<img src="Pics/d2l073.png" width=400>
+
+一般情况会出现，梯度消失，下层(接近input) 梯度小 训练慢
+
+并且底层变化，导致上层比较快收敛的部分需要同时更新，导致收敛慢
+
+希望学习底层的时候，避免顶层变化
+
+batch 的 分布(方差 和 均值) 会一直变化
+
+尝试将 不同层 的 mini-batch 的 均值 & 方差 固定
+
+<img src="Pics/d2l074.png" width=500>
+
+分母一般加一个 小 $\epsilon$ 防止 0
+
+**$$\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$$**
+
+**$$y_i = \gamma \hat{x}_i + \beta$$**
+
+简单的仿射变换，移开 激活函数 的线性部分
+
+<img src="Pics/d2l081.png" width=300>
+
+**仿射参数是需要学习的** $\gamma$, $\beta$
+
+<img src="Pics/d2l075.png" width=400>
+
+**==注意 一定 要在 激活函数 之前==**
+
+**不仅仅作用在数据上，而且作用在 每个 全连接层的 input/output**
+
+对于
+1. 全连接层
+   1. 对每个 特征 计算 标量的 均值 & 方差，进行归一化，再用学到的 $\gamma$, $\beta$ 进行 调整
+   2. **不仅仅作用在数据上，而且作用在 每个 全连接层的 input/output**
+2. 卷积层
+   1. 作用在 **通道(channel)** 上，对于一个像素，可以映射到 多个 通道，将每个像素当做样本
+
+<img src="Pics/d2l076.png" width=500>
+
+每个 mini-batch 的 均值 和 方差 可以理解为 一个 随机的 偏移/缩放 (噪声)
+
+<img src="Pics/d2l077.png" width=400>
+
+可以用更大的学习率，加速收敛，不改变模型精度
+
+`nn.BatchNorm2d`
+
+推理 使用 全局的 moving_mean & moving_var (利用 momentum 调整 当前 & 过去 的 比例，是在 训练时更新的)，训练使用 mini-batch 的 mean & var
+
+<img src="Pics/d2l078.png" width=400>
+
+缺陷
+1. 仅在 Batch 中包含样本数量较多时有效
+2. 对于 RNN / Sequence序列数据 性能差
+3. 分布式运算 的 数据同步，影响效率
+
+
+### 层归一化 Layer Normalization(LN)
+
+[什么是层归一化LayerNorm，为什么Transformer使用层归一化 - B站视频](https://www.bilibili.com/video/BV1yCyQY6EnA/?)
+
+序列数据 尺寸 $B * Q* D$
+1. B - batch size
+2. Q - sequence length
+3. D - feature dim
+
+
+
+是 Batch Normalization 的替代方案，但不依赖 mini-batch 的统计信息，而是对每个样本的隐藏层神经元维度进行归一化
+
+<img src="Pics/d2l079.png" width=500>
+
+不是以 batch 为单位 进行 归一化，而是 对 某个样本的 某层 的 input/output 进行归一化(对于原始数据，相当于是对于 feature 维度 计算均值 和 方差)，让不同 feature 维度可以有不同的 缩放比例 和 偏差
+
+公式 和 Batch Norm 类似，也有两个 可以学习的参数 $\gamma$, $\beta$，用于仿射变化，γ 和 β 的作用是让网络在归一化后仍然能够灵活学习不同的 feature 分布，而不会丢失原始信息，
+
+Transformer 使用 层归一化
+
+<img src="Pics/d2l080.png" width=600>
+
+
+### 例题
+
+对于 PyTorch 里的一个 tensor，shape 为 (2, 3, 4, 4)，如果对这个 Tensor 进行 Batch Normalization，请问一共会计算 **几个均值/方差**？ 3，通道数 channel
+
+对于 PyTorch 里的一个 tensor，shape 为 (2, 3, 4)，如果对这个 Tensor 进行 Layer Normalization，请问一共会计算 **几个均值/方差**？ 2*3 (batch_size * sequence_size)，不需要 特征维度
+
+对于 shape 为 (2, 3, 4, 4) 的 Tensor，如果对其进行 Batch Normalization (BN)，请问 α/β（可学习参数 γ 和 β）的 shape 是多少？ **在 C=3 维度计算均值和方差，每个通道 1 组 γ 和 β，shape 是 [3]**
+
+对于 shape 为 (2, 3, 4) 的 Tensor，如果对其进行 Layer Normalization (LN)，请问 α/β（可学习参数 γ 和 β）的 shape 是多少？ **对 D=4 维度进行归一化，所以 γ/β 的 shape 也是 [4]**
+
+Batch Normalization (BN) 在 CNN 任务中， 对每个通道（Channel）单独计算均值和方差，所以对于 RGB 3 通道的图像，BN 计算 3 个均值和方差，与图像大小无关
+
+**Batch Norm 区分 训练/推理(需要 moving_mean/var)**
+
 
 
 
@@ -973,6 +1192,13 @@ tanh 损失函数
 4. 比 Sigmoid 更适合深度网络，因为其**梯度更大，不容易梯度消失**
 
 
+同一层 所有时间步共享参数
+
+不同层 拥有独立的参数
+
+
+
+[Understanding LSTM Networks](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
 
 ---
 

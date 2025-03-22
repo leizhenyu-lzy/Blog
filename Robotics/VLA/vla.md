@@ -64,6 +64,12 @@ LLM 用于 Plan(Action Sequence)
       2. BFS、DFS、MCTS(蒙特卡洛树搜索)
 
 
+---
+
+
+# Vision-Language-Action Models for Robot Manipulation
+
+[B站视频](https://www.bilibili.com/video/BV1QxB9YuERU)
 
 
 
@@ -71,6 +77,13 @@ LLM 用于 Plan(Action Sequence)
 
 
 
+
+
+
+
+
+
+---
 
 # Prismatic VLM
 

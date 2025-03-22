@@ -8,7 +8,8 @@
 [How Isaac Sim relates to Isaac Lab - YouTube 视频](https://www.youtube.com/watch?v=NFcRirGuERI )
 
 Omniverse 是 开放式协作与仿真平台，用于构建和操作虚拟世界和数字孪生
-1. 基于 USD(Universal Scene Description) 3D 框架，可互操作多种 3D 工具(Maya、Blender)
+1. 基于 USD(Universal Scene Description)(皮克斯动画工作室 pixar) 3D 框架，可互操作多种 3D 工具(Maya、Blender)
+   1. Nucleus 将各种格式 转为 usd 格式
 2. 提供高质量的物理渲染、实时物理仿真
 3. 是 Isaac Sim 等工具的基础平台，它为 Isaac Sim 提供底层仿真和渲染支持
 
@@ -44,6 +45,19 @@ NVIDIA PhysX
 <img src="Pics/nvidia-isaac-sim-diagram.jpg" width=800>
 
 
+# Omniverse
+
+5大组件
+1. NUCLEUS : 数据托管服务，存储USD & 版本管理
+2. CONNECT : 链接 3D设计软件，导入 USD
+3. KIT : 可视化交互式开发环境
+4. SIMULATION : Physics
+5. RTX RENDERER : 实时渲染
+
+Omniverse Launcher 计划 2025年10月 弃用
+
+
+
 # Blog
 
 ## Create, Design, and Deploy Robotics Applications Using New NVIDIA Isaac Foundation Models and Workflows
@@ -73,74 +87,13 @@ New Features
 
 
 
-# Installation
-
-## Isaac Sim
-
-[NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim)
-1. 点击 `Download Omniverse` 进入 [Installation](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/index.html)
-2. 选择 `Workstation Installation`, Direct Link: `Linux`, 下载 `omniverse-launcher-linux.AppImage`
-
-打开 `Omniverse Launcher`，进入 `EXCHANGE`，搜索 `ISAAC SIM` 并安装，同时 安装 `CACHE`
 
 
-## Isaac Gym
-
-[Isaac Gym - Now Deprecated](https://developer.nvidia.com/isaac-gym)
-
-[Isaac Gym - Download Archive](https://developer.nvidia.com/isaac-gym/download)
-
-Installation instructions can be found in the package in the docs folder - open `docs/index.html` to see more.
-
-[Isaac Gym安装及使用教程 - 知乎](https://zhuanlan.zhihu.com/p/618778210)
 
 
-```python
-# 绿色的按钮下载压缩文件IsaacGym_Preview_4_Package.tar.gz
-# 对上面的文件解压缩，得到isaacgym的文件夹，最外层可以扔掉
-
-# 指令会新建名为rlgpu的conda环境
-
-cd isaacgym/python/
-sh ../create_conda_env_rlgpu.sh
-
-# 先试一下安装好的环境能不能用
-conda activate rlgpu
-cd examples
-python joint_monkey.py
-
-# 如果报错没有isaacgym
-cd isaacgym/python/
-pip install -e .
-
-# 此时再尝试运行demo
-cd examples
-python joint_monkey.py
-
-# 如果报错ImportError: libpython3.7m.so.1.0
-# 找出系统中的libpython3.7m.so.1.0的位置
-find / -name "libpython*so*"
-sudo cp /path/to/libpython3.7m.so.1.0 /usr/lib/x86_64-linux-gnu
-
-# 再次尝试运行demo
-cd examples
-python joint_monkey.py
-
-# 从 Github 下载 IsaacGymEnvs https://github.com/isaac-sim/IsaacGymEnvs/tree/main 内容全部复制到 isaacgym 中
-cd isaacgym/
-pip install -e .
 
 
-cd isaacgymenvs
-python train.py task=Cartpole
-# 【ImportError】from torch._C import * # noqa: F403； ImportError: xxx: defined symbol: iJIT_NotifyEvent
-pip install mkl==2024.0.0
 
-# RuntimeError: The following operation failed in the TorchScript interpreter.
-# Traceback of TorchScript (most recent call last):
-# RuntimeError: nvrtc: error: invalid value for --gpu-architecture (-arch)
-pip3 install torch torchvision torchaudio  # solve this by upgrading to a higher torch version
-```
 
 
 

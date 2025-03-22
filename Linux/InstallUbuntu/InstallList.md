@@ -28,17 +28,16 @@ apt
 15. cmake
 16. net-tools
 17. ubuntu-restricted-extras(基本的媒体编解码器)
-18. gnome-sound-recorder
-19. neofetch
-20. openjdk-11-jdk
+18. neofetch
+19. openjdk-11-jdk
     1. java -version
     2. javac -version
-21. gpustat
-22. remmina & filezilla
-23. cheese
-24. ffmpeg
-25. gnome-clocks
-26. gnome-tweaks
+20. gpustat
+21. remmina & filezilla
+22. cheese
+23. ffmpeg
+24. gnome-clocks
+25. gnome-tweaks
     1. chrome-gnome-shell
     2. gnome-shell --version (GNOME Shell 42.9)
     3. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
@@ -51,18 +50,18 @@ apt
     10. Vitals
     11. Panel World Clock (Lite)
     12. Weather O'Clock
-27. p7zip p7zip-full p7zip
-28. mysql-server
+26. p7zip p7zip-full p7zip
+27. mysql-server
     1. mysql -V
     2. sudo mysql
     3. ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'your new password';  # 输入自己新设置的密码
-29. gnome-todo
-30. npm
-31. build-essential
-32. gnome-weather
-33. vlc
-34. ntfs-3g
-35. exfat-fuse
+28. gnome-todo
+29. npm
+30. build-essential
+31. gnome-weather
+32. vlc
+33. ntfs-3g
+34. exfat-fuse
 
 
 
@@ -90,16 +89,15 @@ Web
    4. sudo apt install libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2
    5. sudo apt install libgsettings-qt1
 8. eudic & ting_en
-9.
-10. miniconda
+9.  miniconda
     1. https://docs.anaconda.com/miniconda/install/
     2. conda config --set auto_activate_base false
-11. Docker - TODO
-12. BaiduNetdisk
-13. foxglove : https://foxglove.dev/download
-14. obs : https://obsproject.com/download
-15. unity : https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
-16. docker : https://docs.docker.com/desktop/setup/install/linux/ubuntu/
+10. Docker - TODO
+11. BaiduNetdisk
+12. foxglove : https://foxglove.dev/download
+13. obs : https://obsproject.com/download
+14. unity : https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
+15. docker : https://docs.docker.com/desktop/setup/install/linux/ubuntu/
     1. sign in desktop : https://docs.docker.com/desktop/setup/sign-in/#signing-in-with-docker-desktop-for-linux
 
 
@@ -107,14 +105,15 @@ Ubuntu Software / Snap
 1. slack
 2. discord
 3. dbeaver-ce
-4. zoom
+4. zoom-client
 5. shotcut
-6. blender
-7. FreeCAD
+6. blender --classic
+7. freecad
 8. drawio
 9. pomatez 计时器
 10. htop (cpu monitor)
 11. steam
+12. xmind
 
 
 

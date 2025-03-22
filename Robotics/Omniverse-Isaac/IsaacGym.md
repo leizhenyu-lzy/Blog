@@ -13,6 +13,7 @@
     - [Control Tensors](#control-tensors)
   - [API Reference](#api-reference)
     - [Python API](#python-api)
+  - [Installation](#installation)
 
 
 
@@ -176,4 +177,65 @@ def quat_rotate_inverse(q, v):
             shape[0], 3, 1)).squeeze(-1) * 2.0
     return a - b + c
 ```
+
+
+## Installation
+
+
+[Isaac Gym - Now Deprecated](https://developer.nvidia.com/isaac-gym)
+
+[Isaac Gym - Download Archive](https://developer.nvidia.com/isaac-gym/download)
+
+Installation instructions can be found in the package in the docs folder - open `docs/index.html` to see more.
+
+[Isaac Gym安装及使用教程 - 知乎](https://zhuanlan.zhihu.com/p/618778210)
+
+
+```python
+# 绿色的按钮下载压缩文件IsaacGym_Preview_4_Package.tar.gz
+# 对上面的文件解压缩，得到isaacgym的文件夹，最外层可以扔掉
+
+# 指令会新建名为rlgpu的conda环境
+
+cd isaacgym/python/
+sh ../create_conda_env_rlgpu.sh
+
+# 先试一下安装好的环境能不能用
+conda activate rlgpu
+cd examples
+python joint_monkey.py
+
+# 如果报错没有isaacgym
+cd isaacgym/python/
+pip install -e .
+
+# 此时再尝试运行demo
+cd examples
+python joint_monkey.py
+
+# 如果报错ImportError: libpython3.7m.so.1.0
+# 找出系统中的libpython3.7m.so.1.0的位置
+find / -name "libpython*so*"
+sudo cp /path/to/libpython3.7m.so.1.0 /usr/lib/x86_64-linux-gnu
+
+# 再次尝试运行demo
+cd examples
+python joint_monkey.py
+
+# 从 Github 下载 IsaacGymEnvs https://github.com/isaac-sim/IsaacGymEnvs/tree/main 内容全部复制到 isaacgym 中
+cd isaacgym/
+pip install -e .
+
+
+cd isaacgymenvs
+python train.py task=Cartpole
+# 【ImportError】from torch._C import * # noqa: F403； ImportError: xxx: defined symbol: iJIT_NotifyEvent
+pip install mkl==2024.0.0
+
+# RuntimeError: The following operation failed in the TorchScript interpreter.
+# Traceback of TorchScript (most recent call last):
+# RuntimeError: nvrtc: error: invalid value for --gpu-architecture (-arch)
+pip3 install torch torchvision torchaudio  # solve this by upgrading to a higher torch version
+```
+
 

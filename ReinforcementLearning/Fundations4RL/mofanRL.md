@@ -35,19 +35,23 @@
 分数导向性
 
 
+<img src="Pics/mofan018.png" width=700>
+
 Action Space : 可选择的动作
 
 Policy $\pi$
-1. 是 Agent 在给定状态下选择动作的规则
+1. 是 Agent 在给定 状态 下选择 动作 的规则
 2. 分类
    1. 确定性策略(Deterministic Policy) : AlphaGo 里，AI 在同一个棋局里每次都会走相同的最佳棋步
    2. 随机策略(Stochastic Policy) : 在 PPO / SAC 里，策略不是固定的，而是一个概率分布，智能体会以一定概率选择不同的动作
 
 Trajectory $\tau$ (Episode/Rollout)
 1. 一连串的状态 & 动作序列
+2. 根据当前的 state & action，想要推出下一步的 state，可能是确定的，也有可能是随机的服从概率分布
 
 Return : 回报，从当前时间点，到游戏结束的 Reward 累积和
-1. 强化学习 目标，训练一个 Policy $\pi$ 在所有状态 S 下，给出相应 Action，(在所有的 Trajectory 中)，得到 Return 的期望最大
+
+**强化学习 目标**，训练一个 Policy $\pi$ 在所有状态 S 下，给出相应 Action，(在所有的 Trajectory 中)，得到 Return 的期望最大
 
 
 通过价值选择行为
@@ -389,6 +393,11 @@ DeepMind 在 2016 年提出
 2. Advantage 函数
 3. 异步更新
    1. 多个 Worker 线程在不同环境中收集数据，并异步更新全局网络
+
+
+
+
+
 
 
 
