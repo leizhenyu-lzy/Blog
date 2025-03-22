@@ -12,33 +12,37 @@ bash
 
 apt
 1. git
+   1. beautify - https://github.com/leizhenyu-lzy/Blog/blob/main/ComputerScience/Git/GitInShell.md
+   2. git config --global user.email lzy20190501@gmail.com
+   3. sudo sh cuda_12.4.0_550.54.14_linux.run
 2. pavucontrol
 3. nodejs
 4. dotnet8
-5. gthumb
-6. python3-pip
-7. python3-venv
-8. gcc
-9. g++
-10. meshlab
-11. flameshot
-12. synaptic : sudo apt install -y synaptic
-13. tree
-14. gnome-sound-recorder
-15. clang
-16. cmake
-17. net-tools
-18. ubuntu-restricted-extras(基本的媒体编解码器)
-19. neofetch
-20. openjdk-11-jdk
+5. curl
+6. gthumb
+7. python3-pip
+8. python3-venv
+9.  gcc
+10. g++
+11. meshlab
+12. flameshot
+13. synaptic : sudo apt install -y synaptic
+14. tree
+15. gnome-sound-recorder
+16. clang
+17. cmake
+18. net-tools
+19. ubuntu-restricted-extras(基本的媒体编解码器)
+20. neofetch
+21. openjdk-11-jdk
     1. java -version
     2. javac -version
-21. gpustat
-22. remmina & filezilla
-23. cheese
-24. ffmpeg
-25. gnome-clocks
-26. gnome-tweaks
+22. gpustat
+23. remmina & filezilla
+24. cheese
+25. ffmpeg
+26. gnome-clocks
+27. gnome-tweaks
     1. chrome-gnome-shell
     2. gnome-shell --version (GNOME Shell 42.9)
     3. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
@@ -51,18 +55,19 @@ apt
     10. Vitals
     11. Panel World Clock (Lite)
     12. Weather O'Clock
-27. p7zip p7zip-full p7zip
-28. mysql-server
+28. p7zip p7zip-full p7zip
+29. mysql-server
     1. mysql -V
     2. sudo mysql
     3. ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'your new password';  # 输入自己新设置的密码
-29. gnome-todo
-30. npm
-31. build-essential
-32. gnome-weather
-33. vlc
-34. ntfs-3g
-35. exfat-fuse
+30. gnome-todo
+31. npm
+32. build-essential
+33. gnome-weather
+34. vlc
+35. ntfs-3g
+36. exfat-fuse
+37. sudo apt install ca-certificates apt-transport-https software-properties-common lsb-release -y
 
 
 
@@ -79,26 +84,31 @@ Web
    3. bilibili - https://github.com/the1812/Bilibili-Evolved
 2. vscode
 3. qq
-4. wechat
-5. wps
-6. 向日葵
+4. ros
+5. wechat
+6. wps
+7. 向日葵
    1. https://d.oray.com/sunlogin/doc/%E8%B4%9D%E9%94%90%E5%90%91%E6%97%A5%E8%91%B5IT%E8%BF%90%E7%BB%B4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%AE%89%E5%85%A8%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf
-7. sogou
+8. sogou
    1. sudo apt install fcitx
    2. sudo apt install fcitx-bin
    3. sudo apt install fcitx-table
    4. sudo apt install libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2
    5. sudo apt install libgsettings-qt1
-8. eudic & ting_en
-9.  miniconda
+   6. sudo cp /usr/share/applications/fcitx.desktop /etc/xdg/autostart/
+   7. sudo apt purge ibus
+   8. sudo apt -f install
+   9. Fcitx Configuration 中 手动 添加 sogoupinyin，注意 不要 勾选 Only Show Current Language
+9.  eudic & ting_en
+10. miniconda
     1. https://docs.anaconda.com/miniconda/install/
     2. conda config --set auto_activate_base false
-10. Docker - TODO
-11. BaiduNetdisk
-12. foxglove : https://foxglove.dev/download
-13. obs : https://obsproject.com/download
-14. unity : https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
-15. docker : https://docs.docker.com/desktop/setup/install/linux/ubuntu/
+11. Docker - TODO
+12. BaiduNetdisk
+13. foxglove : https://foxglove.dev/download
+14. obs : https://obsproject.com/download
+15. unity : https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
+16. docker : https://docs.docker.com/desktop/setup/install/linux/ubuntu/
     1. sign in desktop : https://docs.docker.com/desktop/setup/sign-in/#signing-in-with-docker-desktop-for-linux
 
 
@@ -142,21 +152,25 @@ pip3
 
 NVIDIA
 1. Close Secure Boot
-2. Driver : https://www.nvidia.cn/geforce/drivers/  (Production Branch)
+2. BIOS select **Discrete Graphics**
+3. nvidia-detector 查看 driver 选择 后续对应版本
+4. Driver : https://www.nvidia.cn/geforce/drivers/  (Production Branch)
    1. chmod +x NVIDIA-Linux-x86_64-xxx.xxx.run
    2. sudo bash NVIDIA-Linux-x86_64-xxx.xxx.run
-3. CUDA : https://developer.nvidia.com/cuda-toolkit-archive runfile(local)
+   3. uninstall : sudo ./NVIDIA*.run --uninstall
+5. CUDA : https://developer.nvidia.com/cuda-toolkit-archive runfile(local)
    1. wget https://developer.download.nvidia.com/xxx/cuda_xxx_linux.run
-   2. sudo sh cuda_xxx_linux.run
-   3. add to PATH (~/.bashrc)
+   2. sudo sh cuda_xxx_linux.run (如果上一步正确，不要选 driver)
+   3. add to PATH (~/.bashrc) (如果正确，会有添加环境变量的提示)
       1. export PATH=/usr/local/cuda/bin:${PATH}
       2. export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
       3. P.S. : ls /usr/local -l : cuda -> /usr/local/cuda-12.4/ (soft link)
    4. uninstall : 使用 /usr/local/cuda-<version>/bin 中的 cuda-uninstaller
-4. cuDNN : https://developer.nvidia.com/rdp/cudnn-archive
+6. cuDNN : https://developer.nvidia.com/rdp/cudnn-archive
    1. sudo apt install ./cudnn-xxx.deb
-   2. 可能位置 /home/lzy/.local/lib/python3.10/site-packages/nvidia/cudnn/include/cudnn_version.h
-   3. cat cudnn_version.h_path | grep CUDNN_MAJOR -A 2
+   2. 根据提示可能需要类似操作 : sudo cp /var/cudnn-local-repo-ubuntu2204-8.9.7.29/cudnn-local-08A7D361-keyring.gpg /usr/share/keyrings/
+   3. 可能位置 /home/lzy/.local/lib/python3.10/site-packages/nvidia/cudnn/include/cudnn_version.h
+   4. cat cudnn_version.h_path | grep CUDNN_MAJOR -A 2
 
 ```python
 >>> import torch
@@ -168,6 +182,11 @@ NVIDIA
 90100
 >>> print(torch.cuda.get_device_name(0))
 ```
+
+
+lsmod | grep nvidia
+systemctl status gdm / systemctl status display-manager
+sudo update-initramfs -u
 
 
 Other

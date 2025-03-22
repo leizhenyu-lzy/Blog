@@ -192,6 +192,13 @@ Installation instructions can be found in the package in the docs folder - open 
 
 
 ```python
+# unitree-rl 不要完全一样操作
+# 可能需要
+# find ~/miniconda3/envs/unitree-rl/ -name "libpython3.8.so.1.0"
+# export LD_LIBRARY_PATH=/home/lzy/miniconda3/envs/unitree-rl/lib:$LD_LIBRARY_PATH
+
+
+
 # 绿色的按钮下载压缩文件IsaacGym_Preview_4_Package.tar.gz
 # 对上面的文件解压缩，得到isaacgym的文件夹，最外层可以扔掉
 
