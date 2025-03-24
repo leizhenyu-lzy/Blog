@@ -110,6 +110,8 @@ Web
 15. unity : https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
 16. docker : https://docs.docker.com/desktop/setup/install/linux/ubuntu/
     1. sign in desktop : https://docs.docker.com/desktop/setup/sign-in/#signing-in-with-docker-desktop-for-linux
+17. whatsapp 网页栏 添加 到桌面
+18. youtube music 网页栏 添加 到桌面
 
 
 Ubuntu Software / Snap
@@ -187,6 +189,17 @@ NVIDIA
 lsmod | grep nvidia
 systemctl status gdm / systemctl status display-manager
 sudo update-initramfs -u
+
+
+
+
+fonts
+1. 将字体解压缩到 **`/usr/share/fonts`** (或`~/.local/share/fonts`)，以在系统范围内安装字体
+2. `fc-cache -f -v`
+
+
+
+
 
 
 Other

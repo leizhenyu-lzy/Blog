@@ -195,7 +195,8 @@ Installation instructions can be found in the package in the docs folder - open 
 # unitree-rl 不要完全一样操作
 # 可能需要
 # find ~/miniconda3/envs/unitree-rl/ -name "libpython3.8.so.1.0"
-# export LD_LIBRARY_PATH=/home/lzy/miniconda3/envs/unitree-rl/lib:$LD_LIBRARY_PATH
+# sudo ln -s /home/lzy/miniconda3/envs/unitree-rl/lib/libpython3.8.so.1.0 /usr/lib/libpython3.8.so.1.0 创建软链接
+
 
 
 
