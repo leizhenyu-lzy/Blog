@@ -40,9 +40,10 @@ apt
 22. gpustat
 23. remmina & filezilla
 24. cheese
-25. ffmpeg
-26. gnome-clocks
-27. gnome-tweaks
+25. kazam
+26. ffmpeg
+27. gnome-clocks
+28. gnome-tweaks
     1. chrome-gnome-shell
     2. gnome-shell --version (GNOME Shell 42.9)
     3. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
@@ -55,19 +56,19 @@ apt
     10. Vitals
     11. Panel World Clock (Lite)
     12. Weather O'Clock
-28. p7zip p7zip-full p7zip
-29. mysql-server
+29. p7zip p7zip-full p7zip
+30. mysql-server
     1. mysql -V
     2. sudo mysql
     3. ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'your new password';  # 输入自己新设置的密码
-30. gnome-todo
-31. npm
-32. build-essential
-33. gnome-weather
-34. vlc
-35. ntfs-3g
-36. exfat-fuse
-37. sudo apt install ca-certificates apt-transport-https software-properties-common lsb-release -y
+31. gnome-todo
+32. npm
+33. build-essential
+34. gnome-weather
+35. vlc
+36. ntfs-3g
+37. exfat-fuse
+38. sudo apt install ca-certificates apt-transport-https software-properties-common lsb-release -y
 
 
 
@@ -197,6 +198,16 @@ fonts
 1. 将字体解压缩到 **`/usr/share/fonts`** (或`~/.local/share/fonts`)，以在系统范围内安装字体
 2. `fc-cache -f -v`
 
+
+desktop
+```
+[Desktop Entry]
+Type=Application
+Name=ICQ
+Icon=/path/to/icon.png
+Exec=/path/to/executable
+Terminal=false
+```
 
 
 
