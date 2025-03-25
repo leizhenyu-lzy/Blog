@@ -24,6 +24,7 @@
   - [0000 - 0999](#0000---0999)
   - [1000 - 1999](#1000---1999)
   - [2000 - 2999](#2000---2999)
+  - [3000 - 3999](#3000---3999)
 - [Appendix - 专题训练](#appendix---专题训练)
 
 ---
@@ -151,6 +152,10 @@ while y != 0:
     x, y = y, x % y
 return x
 ```
+
+## 3000 - 3999
+
+[3394. Check if Grid can be Cut into Sections](https://leetcode.com/problems/check-if-grid-can-be-cut-into-sections/description) - 思路 : 合并区间(有 overlap 也 合并)
 
 
 ---
