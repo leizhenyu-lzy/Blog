@@ -44,18 +44,20 @@ apt
 26. ffmpeg
 27. gnome-clocks
 28. gnome-tweaks
-    1. chrome-gnome-shell
-    2. gnome-shell --version (GNOME Shell 42.9)
-    3. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
-    4. Clipboard Indicator
-    5. Net Speed
-    6. Sound Input & Output Device Chooser
-    7. Network Stats
-    8. gTile
-    9. Extension List
-    10. Vitals
-    11. Panel World Clock (Lite)
-    12. Weather O'Clock
+    1. sudo apt install chrome-gnome-shell
+    2. sudo apt install gnome-shell-extensions
+    3. install position : /home/lzy/.local/share/gnome-shell/extensions
+    4. gnome-shell --version (GNOME Shell 42.9)
+    5. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
+    6. Clipboard Indicator
+    7. Net Speed
+    8. Sound Input & Output Device Chooser
+    9. Network Stats
+    10. gTile
+    11. Extension List
+    12. Vitals
+    13. Panel World Clock (Lite)
+    14. Weather O'Clock
 29. p7zip p7zip-full p7zip
 30. mysql-server
     1. mysql -V
