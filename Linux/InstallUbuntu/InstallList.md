@@ -10,6 +10,9 @@ bash
    3. sudo hwclock --localtime --systohc # 修改时间机制为localtime，并同步bios硬件时间
 
 
+---
+
+
 apt
 1. git
    1. beautify - https://github.com/leizhenyu-lzy/Blog/blob/main/ComputerScience/Git/GitInShell.md
@@ -71,12 +74,13 @@ apt
 36. ntfs-3g
 37. exfat-fuse
 38. sudo apt install ca-certificates apt-transport-https software-properties-common lsb-release -y
+39. sudo apt install blueman bluez*  (蓝牙自启动)
 
 
 
 
 
-
+---
 
 
 
@@ -115,6 +119,20 @@ Web
     1. sign in desktop : https://docs.docker.com/desktop/setup/sign-in/#signing-in-with-docker-desktop-for-linux
 17. whatsapp 网页栏 添加 到桌面
 18. youtube music 网页栏 添加 到桌面
+19. cursor : https://www.cursor.com/cn
+    ```txt
+      [Desktop Entry]
+      Name=Cursor
+      Comment=Cursor
+      Type=Application
+      Icon=/usr/share/pixmaps/cursor.png
+      Exec=/home/lzy/Tools/Cursor/Cursor.AppImage
+      Terminal=false
+      StartupNotify=true
+      Categories=Application;Development;
+    ```
+
+---
 
 
 Ubuntu Software / Snap
@@ -131,7 +149,7 @@ Ubuntu Software / Snap
 11. steam
 12. xmind
 
-
+---
 
 
 pip3
