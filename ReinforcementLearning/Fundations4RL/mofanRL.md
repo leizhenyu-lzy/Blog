@@ -11,7 +11,6 @@
 - [简介 \& 概念](#简介--概念)
   - [Monte-Carlo Tree Search (MCTS)](#monte-carlo-tree-search-mcts)
   - [Overfitting](#overfitting)
-  - [Functions](#functions)
 - [分类](#分类)
   - [是否是 Model-Based](#是否是-model-based)
   - [概率/价值](#概率价值)
@@ -23,7 +22,7 @@
 - [DDPG (Deep Deterministic Policy Gradient)](#ddpg-deep-deterministic-policy-gradient)
 - [A3C (Asynchronous Advantage Actor-Critic)](#a3c-asynchronous-advantage-actor-critic)
 - [PPO (Proximal Policy Optimization)](#ppo-proximal-policy-optimization)
-- [经验回访](#经验回访)
+- [经验回放](#经验回放)
 
 ---
 
@@ -45,11 +44,15 @@ Policy $\pi$
    1. 确定性策略(Deterministic Policy) : AlphaGo 里，AI 在同一个棋局里每次都会走相同的最佳棋步
    2. 随机策略(Stochastic Policy) : 在 PPO / SAC 里，策略不是固定的，而是一个概率分布，智能体会以一定概率选择不同的动作
 
-Trajectory $\tau$ (Episode/Rollout)
+Trajectory $\tau$ (Episode / Rollout)
 1. 一连串的状态 & 动作序列
 2. 根据当前的 state & action，想要推出下一步的 state，可能是确定的，也有可能是随机的服从概率分布
 
-Return : 回报，从当前时间点，到游戏结束的 Reward 累积和
+Return(总回报) : 回报，从当前时间点，到游戏结束的 Reward 累积和
+
+Reward(即时奖励) : 当前时间步获得的直接回报
+
+Value(价值) : 从某状态开始，期望得到的总回报
 
 **强化学习 目标**，训练一个 Policy $\pi$ 在所有状态 S 下，给出相应 Action，(在所有的 Trajectory 中)，得到 Return 的期望最大
 
@@ -135,43 +138,6 @@ Monte-Carlo Tree Search (MCTS)
    6. Transfer Learning
 
 
-## Functions
-
-Action-Value Function(动作价值函数)
-1. 状态 s 下，采取动作 a 后，按照当前策略 π 行动，未来能获得的期望累积奖励
-
-State-Value Function(状态价值函数)
-1. 在状态 s 下，按照当前策略 π 行动，期望获得的累积奖励
-
-Advantage Function(优势函数)
-1. 在状态 s 选择动作 a，比起随机按照策略 π 选择所有动作的平均水平，能获得的额外优势
-2. 用于 Actor-Critic 结构(如 PPO, A2C)，让策略优化更稳定
-
-<img src="Pics/mofan011.png" width=700>
-
-
-将 动作价值函数，用 状态价值函数 拟合 动作价值函数，现在只需要 训练 一个 状态价值网络
-
-<img src="Pics/mofan013.png" width=850>
-
-对于 状态价值函数，采样有不确定性，因此用 ≈
-
-进行多步采样
-1. 采样的步数越多，偏差越小(越能反映 return 的 期望)，方差越大
-
-<img src="Pics/mofan014.png" width=700>
-
-用 $\delta$ 表示 优势
-
-GAE (Generalized Advantage Estimation) 优势函数
-1. 给不同步数的采样分配不同的权重
-2. <img src="Pics/mofan015.png" width=850>
-
-
-状态价值函数，用神经网络拟合，一般可以和策略函数公用网络参数，最后一层不同，只需要输出单一的值，代表当前状态的价值
-
-<img src="Pics/mofan016.png" width=700>
-
 
 
 
@@ -237,6 +203,8 @@ GAE (Generalized Advantage Estimation) 优势函数
 
 
 ## 在线/离线
+
+<img src="Pics/mofan019.png" width =700>
 
 在线学习(On-Policy)
 1. 必须本人在场，学习
@@ -336,7 +304,7 @@ DQN 采用 两套 Q网络，解决 训练不稳定
 
 
 **Policy Gradient**
-1. 需要最大化期望，使用梯度上升的方法，**对 $\theta$(网络参数) 求导**，最终优化的是动作的概率分布
+1. 需要最大化 Return的 期望，使用梯度上升的方法，**对 $\theta$(网络参数) 求导**，最终优化的是动作的概率分布
 2. <img src="Pics/mofan004.png" width=500>
 3. 使用 梯度对数技巧
 4. Monte-Carlo 近似
@@ -344,27 +312,23 @@ DQN 采用 两套 Q网络，解决 训练不稳定
 6. 认为 下一个状态 完全由 当前状态&当前动作 决定，因此 Trajectory 的 概率分布可以由 state & action 表示
 7. <img src="Pics/mofan005.png" width=450>
 8. 将 Trajectory 拆分为 单步概率
-9. $\theta \rightarrow \theta + \alpha R(\tau) \nabla \log P_\theta(a_t | s_t)$
-   1. trajectory 得到的 return 大于0，那么这个轨迹的 所有状态下 对应动作的选择概率都会增加，智能体更倾向于复现这个轨迹
+9. 最后一行可以理解为 Loss 的 相反数，Loss 需要下降，所有这里需要梯度上升
+10. $\theta \rightarrow \theta + \alpha R(\tau) \nabla \log P_\theta(a_t | s_t)$
+11. trajectory 得到的 return 大于0
+    1.  网络将增加这些动作在对应状态下的概率
+    2.  那么这个轨迹的 所有状态下 对应动作的选择概率都会增加，智能体更倾向于复现这个轨迹
 
 
 要最大化期望，也就是要最小化 期望的相反数
 
 <img src="Pics/mofan006.png" width=700>
 
-输入是游戏画面，经过 CNN，Softmax 得到 动作的 概率
+输入是游戏画面，经过 CNN，Softmax 得到 动作的 概率，按照概率进行采样
 
 
 
-Policy Gradient 改进
-1. 增大或者减小概率，应该取决于 当前动作 到 结束的 reward，而不是整个 trajectory 的 reward，因为 action 只影响后续
-2. 使用衰减因子(步数作为指数，衰减)，action 只影响后续的 几步，而且影响逐渐衰减
-3. 给所有 action 的 reward 减掉 baseline，让相对好的action概率增加，相对差的action概率减小(原因 : 对于好的局势，所有动作都有 正reward，训练慢，需要让好的动作反应相当于其他动作的好处)
-   1. <img src="Pics/mofan007.png" width=300>
-   2. baseline 也是 由神经网络估算 (actor-critic 中的 critic)
 
 
-<img src="Pics/mofan012.png" width=700>
 
 
 
@@ -405,6 +369,8 @@ DeepMind 在 2016 年提出
 
 # PPO (Proximal Policy Optimization)
 
+[零基础学习强化学习算法 : PPO](https://www.bilibili.com/video/BV1iz421h7gb/)
+
 On-Policy，只能使用最新策略收集的数据来更新网络，不能使用 经验回放
 
 基于 Policy Gradient，属于Actor-Critic 结构
@@ -418,11 +384,81 @@ PPO 可以直接优化连续动作空间 (如机器人关节角度)，相比 DQN
 2. 并行 环境采样 (Isaac Gym)
 
 
+[跳转 Policy Gradient](#policy-gradient)
+
+
+
+**==Policy Gradient 改进==** to PPO
+1. 增大或者减小概率，应该取决于 当前动作 到 结束的 reward，而不是整个 trajectory 的 reward，因为 action 只影响后续
+2. 使用衰减因子(步数作为指数，衰减)，action 只影响后续的 几步，而且影响逐渐衰减
+3. <img src="Pics/mofan012.png" width=300>
+4. Reward 从当前步 t 开始 往后 求和
+5. Reward 添加 $\gamma$ 为 衰减因子
+6. <img src="Pics/mofan007.png" width=700>
+7. 给所有 action 的 reward 减掉 baseline，让相对好的action概率增加，相对差的action概率减小(原因 : 对于好的局势，所有动作都有 正reward，训练慢，需要让好的动作反应相当于其他动作的好处)
+   1. baseline 也是 由神经网络估算 (actor-critic 中的 critic)
+
+
+
+
+Action-Value Function(动作价值函数)
+1. 状态 s 下，采取动作 a 后，按照当前策略 π 行动，未来能获得的期望累积奖励
+
+State-Value Function(状态价值函数)
+1. 在状态 s 下，按照当前策略 π 行动，期望获得的累积奖励
+
+Advantage Function(优势函数) - 动作价值 - 状态价值
+1. 在状态 s 选择动作 a，比起随机按照策略 π 选择所有动作的平均水平，能获得的额外优势
+2. 用于 Actor-Critic 结构(如 PPO, A2C)，让策略优化更稳定
+
+<img src="Pics/mofan011.png" width=700>
+
+
+将 动作价值函数，用 状态价值函数 拟合 动作价值函数，即 当前 reward 加上 下个状态的 状态价值函数，现在只需要 训练 一个 状态价值网络
+
+可以 对 reward 进行 多步采样
+
+<img src="Pics/mofan013.png" width=850>
+
+相当于 对 后面的 reward 都乘 $\gamma$
+
+可以进行不同步数的采样
+
+对于 状态价值函数，采样有不确定性，因此用 ≈
+
+状态价值，采用 Bellman Equation
+
+进行多步采样
+1. 采样的步数越多，偏差越小(越能反映 return 的 期望，拟合更准)，方差越大(数据多样性大)
+
+<img src="Pics/mofan014.png" width=700>
+
+用 $\delta$ 表示 优势
+
+**GAE (Generalized Advantage Estimation)** 优势函数
+1. 给不同采样步数下的 优势函数
+2. 分配不同的权重
+3. <img src="Pics/mofan015.png" width=850>
+
+<img src="Pics/mofan020.png" width=400>
+
+
+状态价值函数，用神经网络拟合，一般可以和策略函数公用网络参数，最后一层不同
+
+状态价值函数，只需要输出单一的值，代表当前状态的价值
+
+<img src="Pics/mofan016.png" width=700>
+
+可以使用 重要性采样，将 On-Poliy 替换为 Off-Policy
 
 <img src="Pics/mofan017.png" width=300>
 
 
 
+可以使用 Clip 方法，直接对 Loss 进行约束 裁剪，限制 策略 更新幅度，防止策略跳变过大导致训练不稳定
+
+
+可以使用 KL 散度，衡量 策略变化(概率分布) 程度，动态调整学习率
 
 
 
@@ -432,7 +468,7 @@ PPO 可以直接优化连续动作空间 (如机器人关节角度)，相比 DQN
 
 
 
-# 经验回访
+# 经验回放
 
 经验回放 (Experience Replay)
 1. 存储过去的经验，并在训练时随机采样
@@ -442,6 +478,16 @@ PPO 可以直接优化连续动作空间 (如机器人关节角度)，相比 DQN
 
 
 
+Replay Buffer 不等于 Rollout Storage
 
+Rollout Storage
+1. 每轮收集、每轮丢弃
+2. 收集完后计算 GAE(Generalized Advantage Estimation)、优势函数
+3. 存储 trajectory（step-by-step）数据
+4. PPO 会重复训练多个 epoch，所以需要 mini_batch_generator
 
+Replay Buffer
+1. 数据长期保留，反复采样
+2. 从 buffer 中采样 minibatch
+3. 存储 单步 transition 或者 episode
 

@@ -1,6 +1,8 @@
 **/*.env
 **/*.pth
-
+**/*.token
 **/*.mp4
 
+**/*token*
 
+**/__pycache__

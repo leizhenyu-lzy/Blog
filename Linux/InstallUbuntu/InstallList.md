@@ -78,6 +78,9 @@ apt
 
 
 
+冻结 & 解冻
+1. sudo apt-mark hold/unhold package_name
+
 
 
 ---
@@ -86,9 +89,10 @@ apt
 
 Web
 1. edge
-   1. github
-   2. whatsapp
-   3. bilibili - https://github.com/the1812/Bilibili-Evolved
+   1. 历史版本 - https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ - 如果无法输入中文，可以尝试安装之前版本
+   2. github
+   3. whatsapp
+   4. bilibili - https://github.com/the1812/Bilibili-Evolved
 2. vscode
 3. qq
 4. ros
@@ -237,6 +241,13 @@ Other
 1. beyond compare 4
 2. Matlab - TODO
 3. Clash - TODO
+
+
+
+
+`/etc/apt/sources.list.d` 用于存放附加的软件源列表文件，每个文件里都可以列出一组 APT 仓库地址，格式和 `/etc/apt/sources.list` 一样
+1. 很多 `.deb` 包在安装时会往这里添加自己的源
+2. 可以单独启用/禁用某些软件源，而不用改 `/etc/apt/sources.list`
 
 
 

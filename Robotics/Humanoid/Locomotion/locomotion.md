@@ -179,39 +179,6 @@ We use an 3-step process to retarget the AMASS dataset to specific humanoid embo
 
 
 
-# AMP(Adversarial Motion Priors)
-
-模仿真实运动数据，训练一个既能完成特定任务 (Task)，又能生成 符合风格的运动（Motion Style） 的策略 (Policy)
-
-输入：Motion Dataset（运动数据集），包含 参考运动（Reference Motion），用于定义角色的 期望运动风格（Desired Motion Style）
-
-通过 对抗学习（Adversarial Training） 训练一个 运动风格模型（Motion Prior）
-
-训练时使用两个奖励信号，确保了策略（Policy）不仅完成任务，还能保持自然的运动风格
-1. 任务奖励
-2. 风格奖励
-
-
-
-
-
-Generative Adversarial Imitation Learning
-
-
-
-环境互动+最大化从专家数据学到的奖励函数=最优Actor
-
-基于对抗学习(Adversarial Learning) 的强化学习方法
-
-用于物理仿真的角色控制(Physics-Based Character Control)
-
-利用 对抗性运动先验，自动学习任务执行方式，同时保持自然且具有风格的运动
-
-通过 GAN（生成对抗网络）的思想，训练一个判别器（Discriminator）来区分真实的运动数据（来自数据集）与角色生成的运动
-
-判别器为角色的运动提供一个风格奖励（Style Reward），鼓励它生成类似于真实数据的运动
-
-
 
 
 

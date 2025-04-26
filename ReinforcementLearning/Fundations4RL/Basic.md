@@ -2,6 +2,30 @@
 
 ---
 
+## Table of Contents
+
+- [强化学习 基础](#强化学习-基础)
+  - [Table of Contents](#table-of-contents)
+- [History](#history)
+- [基础](#基础)
+- [有限马尔可夫决策过程](#有限马尔可夫决策过程)
+- [动态规划](#动态规划)
+
+
+---
+
+# History
+
+
+
+
+
+---
+
+# 基础
+
+[【强化学习】一小时完全入门](https://www.bilibili.com/video/BV13a4y1J7bw/)
+
 基本元素
 1. **Agent**
 2. **Environment**
@@ -116,4 +140,83 @@ Tic-Tac-Toe 井字棋
    1. <img src="Pics/basic008.png" width=300>
 5. 后果在特定的状态下，和特定的行动是对应的
 6. 有时，状态行动对会有冗余，使用 后果进行代替
+
+---
+
+# 有限马尔可夫决策过程
+
+[【强化学习 2-1】有限马尔可夫决策过程](https://www.bilibili.com/video/BV1SvXAYcEb7/)
+
+Markov Decision Process
+
+<img src="Pics/basic010.png" width=500>
+
+有限指的是 $\mathcal{S}$, $\mathcal{A}$, $\mathcal{R}$ 都是有限的，而不是时间上有限，离散才对应时间
+
+强化学习 中，尝尝认定，研究的 决策过程 具有 马尔可夫性
+
+即，玩家 取得的奖励$R_{t}$ 和 下一时刻的状态$S_{t+1}$ 完全取决于 当前时刻的状态$S_{t}$ 以及 当前时刻的行动$A_{t}$，确定 当前的状态和行动后，和过去的状态和行动无关
+
+可以通过 拓展对状态的定义(是否经过什么，是否获得过什么)，使得具有马尔可夫性
+
+主要 基于离散的 有限马尔可夫决策过程，连续问题可以进行离散化
+
+随机性 体现在 在一个特定状态下，选择了一个特定的行动后，**得到的奖励随机，下一时刻状态也随机**(可能是因为环境随机)，可以用 概率函数表示(具体值小写)
+
+<img src="Pics/basic011.png" width=400>
+
+时间是否有限？
+1. 存在 终止状态 $S^T$ (termination)，状态到达 $S^T$，马尔可夫决策过程终止，开始下一次过程，时间有限，**episodic**
+2. 不存在 终止状态，会持续下去，**continuing**
+
+Goal (将来所获得的所有奖励之和最大化)
+1. 对于 episodic，是从 $R_t$ 累积到 $R_T$ 的所有奖励，将综合成为 **Return**
+2. 对于 continuing，最终时刻无穷大，引入 **Discounting**，对于未来的奖励值进行一个折扣，确保回报有界
+   1. <img src="Pics/basic012.png" width=300>
+   2. Discount Factor : $\gamma \in [0,1]$，折扣率，折扣因子
+3. 相邻关系
+   1. <img src="Pics/basic013.png" width=200>
+
+
+Policy (函数)
+1. 同一个状态下，可以有不同的概率选择不同的行动
+2. 使用概率分布 **$\pi(\alpha|s)$** 描述策略
+3. <img src="Pics/basic015.png" width=300>
+
+Value (将来所能获得的 奖励之和的 期望值)
+1. <img src="Pics/basic014.png" width=400>
+2. 策略改变，价值也会相应改变，加入下标 $\pi$
+
+---
+
+# 动态规划
+
+[【强化学习 2-2】动态规划](https://www.bilibili.com/video/BV1MMZMYXEiW/)
+
+将复杂问题分解为简单的子问题
+
+先考虑 确定的 离散的 动态规划问题
+
+**状态最优价值** $v_{*}(s)$(* 表示最优策略) : 在 最优策略下的 状态价值
+
+**贝尔曼最优方程 - Bellman Optimality Equation**
+1. <img src="Pics/basic016.png" width=500>
+2. 一个状态的 状态最优价值，等于 状态-行动最优价值 中 最大的
+
+计算 **状态最优价值**
+1. 首先 进行 任意的估计，通常初始化为 0
+2. $\hat{}$ 表示 估计值
+3. 将 估计值 带入 贝尔曼最优方程，作为一个 迭代规则，对所有状态不断进行迭代 (**价值迭代 Value Iteration**)
+4. 也可以进行折扣
+5. <img src="Pics/basic017.png" width=500>
+6. 不断进行迭代，估计值 最终会收敛到 真实的 状态最优价值 (只有在 状态空间有限的情况下，才能保证收敛)
+
+需要从 确定的 离散的 进行推广
+
+<img src="Pics/basic018.png" width=500>
+
+---
+
+
+
 

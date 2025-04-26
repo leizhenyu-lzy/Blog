@@ -1,99 +1,41 @@
-import mujoco
-import mujoco.viewer
+import numpy as np
+import pandas as pd
 
-ball = """
+# 模拟 replicate 配置参数
+count = 4  # replicate count
+euler_per_step = 1.57  # 每次复制旋转 90 度（弧度）
+offset_local = np.array([-0.05, 0.0, 0.0])  # 每个副本之间在局部坐标下的平移
+site_local = np.array([0.05, 0.0, 0.0])  # site 在当前副本局部坐标中的位置
 
-"""
+# 初始化第 0 个副本的原点和旋转（世界坐标）
+origin = np.array([0.0, 0.0, 0.0])
+rotation = np.eye(3)  # 单位矩阵表示无旋转
 
-model = mujoco.MjModel.from_xml_string(ball)
+positions = []  # 存储每个副本的 site 世界坐标
 
-data = mujoco.MjData(model)
+for i in range(count):
+    # 第 i 个副本中 site 的世界坐标 = 当前副本原点 + 当前旋转作用下的 site 相对位置
+    site_world = origin + rotation @ site_local
+    positions.append({
+        "replica": f"rfAAA{i}",
+        "site_world_x": site_world[0],
+        "site_world_y": site_world[1],
+        "site_world_z": site_world[2]
+    })
 
-with mujoco.viewer.launch_passive(model, data) as viewer:
-    while viewer.is_running():
-        mujoco.mj_step(model, data)  # 进行仿真步
-        viewer.sync()
+    # 下一副本的原点 = 当前原点 + 当前坐标系中 offset 所表示的世界方向偏移
+    offset_world = rotation @ offset_local
+    origin = origin + offset_world
 
-"""
-<mujoco model="example">
-  <default>
-    <geom rgba=".8 .6 .4 1"/>
-  </default>
+    # 更新旋转矩阵：继续在当前坐标系下累积绕 Z 轴旋转
+    theta = euler_per_step
+    Rz = np.array([
+        [np.cos(theta), -np.sin(theta), 0],
+        [np.sin(theta),  np.cos(theta), 0],
+        [0,              0,             1]
+    ])
+    rotation = rotation @ Rz  # 累积旋转
 
-  <asset>
-    <texture type="skybox" builtin="gradient" rgb1="1 1 1" rgb2=".6 .8 1" width="256" height="256"/>
-  </asset>
-
-  <worldbody>
-    <light pos="0 1 1" dir="0 -1 -1" diffuse="1 1 1"/>
-    <body pos="0 0 1">
-      <joint type="ball"/>
-      <geom type="capsule" size="0.06" fromto="0 0 0  0 0 -.4"/>
-      <body pos="0 0 -0.4">
-        <joint axis="0 1 0"/>
-        <joint axis="1 0 0"/>
-        <geom type="capsule" size="0.04" fromto="0 0 0  .3 0 0"/>
-        <body pos=".3 0 0">
-          <joint axis="0 1 0"/>
-          <joint axis="0 0 1"/>
-          <geom pos=".1 0 0" size="0.1 0.08 0.02" type="ellipsoid"/>
-          <site name="end1" pos="0.2 0 0" size="0.01"/>
-        </body>
-      </body>
-    </body>
-
-    <body pos="0.3 0 0.1">
-      <joint type="free"/>
-      <geom size="0.07 0.1" type="cylinder"/>
-      <site name="end2" pos="0 0 0.1" size="0.01"/>
-    </body>
-  </worldbody>
-
-  <tendon>
-    <spatial limited="true" range="0 0.6" width="0.005">
-      <site site="end1"/>
-      <site site="end2"/>
-    </spatial>
-  </tendon>
-</mujoco><mujoco model="example">
-  <default>
-    <geom rgba=".8 .6 .4 1"/>
-  </default>
-
-  <asset>
-    <texture type="skybox" builtin="gradient" rgb1="1 1 1" rgb2=".6 .8 1" width="256" height="256"/>
-  </asset>
-
-  <worldbody>
-    <light pos="0 1 1" dir="0 -1 -1" diffuse="1 1 1"/>
-    <body pos="0 0 1">
-      <joint type="ball"/>
-      <geom type="capsule" size="0.06" fromto="0 0 0  0 0 -.4"/>
-      <body pos="0 0 -0.4">
-        <joint axis="0 1 0"/>
-        <joint axis="1 0 0"/>
-        <geom type="capsule" size="0.04" fromto="0 0 0  .3 0 0"/>
-        <body pos=".3 0 0">
-          <joint axis="0 1 0"/>
-          <joint axis="0 0 1"/>
-          <geom pos=".1 0 0" size="0.1 0.08 0.02" type="ellipsoid"/>
-          <site name="end1" pos="0.2 0 0" size="0.01"/>
-        </body>
-      </body>
-    </body>
-
-    <body pos="0.3 0 0.1">
-      <joint type="free"/>
-      <geom size="0.07 0.1" type="cylinder"/>
-      <site name="end2" pos="0 0 0.1" size="0.01"/>
-    </body>
-  </worldbody>
-
-  <tendon>
-    <spatial limited="true" range="0 0.6" width="0.005">
-      <site site="end1"/>
-      <site site="end2"/>
-    </spatial>
-  </tendon>
-</mujoco>
-"""
+# 显示结果
+df = pd.DataFrame(positions)
+print(df)
