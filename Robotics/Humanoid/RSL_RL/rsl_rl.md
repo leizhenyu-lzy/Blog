@@ -34,6 +34,12 @@ Surrogate loss 训练 Actor（策略网络） 的目标
 
 
 
+**on_policy_runner.py**
+1. class OnPolicyRunner
+2. 接收来自 Isaac Gym 的环境对象 (必须是 VecEnv 类型)
+
+
+
 **rollout_storage.py**
 
 

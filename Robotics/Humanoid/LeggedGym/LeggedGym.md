@@ -255,6 +255,10 @@ P.S.
     2.  `substeps`(LeggedRobotCfg中=1) : 物理引擎(例如 PhysX)会在每个 dt 内运行 substeps 次物理计算，更新物体的位置、速度、碰撞检测等
 
 
+P.S. **==做 sim2sim 的时候，需要保证 control频率相同，即 `sim.dt` * `control.decimation` 的 结果相同==**
+
+
+
 `LeggedRobotCfgPPO` 类 - RL 网络相关
 1. `class policy`
    1. `rnn_type` - lstm
@@ -266,6 +270,15 @@ P.S.
    2. `resume` & `resume_path` - 载入网络二次训练
    3. `run_name`
    4. `experiment_name`
+
+
+
+
+
+
+
+
+
 
 
 

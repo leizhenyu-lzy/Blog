@@ -105,3 +105,25 @@ python3 scripts/demo_video.py --video-name examples/dance.mp4 --out-dir res_danc
 如果 使用的是 Anaconda，推荐使用 `conda install pytorch3d -c pytorch3d` 安装
 
 
+
+#
+
+conda deactivate
+
+conda remove -n hybrik --all -y
+
+conda create -n hybrik python=3.10
+
+
+
+
+conda install pytorch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 pytorch-cuda=12.1 -c pytorch -c nvidia
+
+conda install pytorch3d -c pytorch3d   不一定可以
+
+可以直接源码安装 git clone https://github.com/facebookresearch/pytorch3d.git && cd pytorch3d && pip install ninja && pip install .
+
+conda install conda-forge::easydict
+
+可能需要修改 chumpy 源码
+

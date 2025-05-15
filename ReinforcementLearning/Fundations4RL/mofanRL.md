@@ -19,9 +19,9 @@
 - [Q-Learning](#q-learning)
 - [DQN (Deep Q-Network)](#dqn-deep-q-network)
 - [Policy Gradient](#policy-gradient)
+- [PPO (Proximal Policy Optimization)](#ppo-proximal-policy-optimization)
 - [DDPG (Deep Deterministic Policy Gradient)](#ddpg-deep-deterministic-policy-gradient)
 - [A3C (Asynchronous Advantage Actor-Critic)](#a3c-asynchronous-advantage-actor-critic)
-- [PPO (Proximal Policy Optimization)](#ppo-proximal-policy-optimization)
 - [经验回放](#经验回放)
 
 ---
@@ -29,7 +29,7 @@
 # 简介 & 概念
 
 分类
-1. <img src="Pics/mofan001.png">
+1. <img src="Pics/mofan001.png" width=800>
 
 分数导向性
 
@@ -334,29 +334,6 @@ DQN 采用 两套 Q网络，解决 训练不稳定
 
 
 
-# DDPG (Deep Deterministic Policy Gradient)
-
-DDPG 由 DeepMind 在 2016 年提出
-
-是 Actor-Critic 结构的一个变种，结合了 DQN 和 DPG（Deterministic Policy Gradient）
-
-
-
-
-# A3C (Asynchronous Advantage Actor-Critic)
-
-DeepMind 在 2016 年提出
-
-异步 的 Actor-Critic 算法
-
-
-核心思想
-1. Actor-Critic 结构
-   1. Actor  负责生成策略
-   2. Critic 估计值函数
-2. Advantage 函数
-3. 异步更新
-   1. 多个 Worker 线程在不同环境中收集数据，并异步更新全局网络
 
 
 
@@ -369,7 +346,7 @@ DeepMind 在 2016 年提出
 
 # PPO (Proximal Policy Optimization)
 
-[零基础学习强化学习算法 : PPO](https://www.bilibili.com/video/BV1iz421h7gb/)
+[零基础学习强化学习算法 : PPO - B站视频(推荐)](https://www.bilibili.com/video/BV1iz421h7gb/)
 
 On-Policy，只能使用最新策略收集的数据来更新网络，不能使用 经验回放
 
@@ -396,7 +373,8 @@ PPO 可以直接优化连续动作空间 (如机器人关节角度)，相比 DQN
 5. Reward 添加 $\gamma$ 为 衰减因子
 6. <img src="Pics/mofan007.png" width=700>
 7. 给所有 action 的 reward 减掉 baseline，让相对好的action概率增加，相对差的action概率减小(原因 : 对于好的局势，所有动作都有 正reward，训练慢，需要让好的动作反应相当于其他动作的好处)
-   1. baseline 也是 由神经网络估算 (actor-critic 中的 critic)
+   1. **baseline** 也是 由神经网络估算 **==(actor-critic 中的 critic)==**
+   2. 再结合 GAE(Generalized Advantage Estimation) 得到 Advantage
 
 
 
@@ -413,10 +391,12 @@ Advantage Function(优势函数) - 动作价值 - 状态价值
 
 <img src="Pics/mofan011.png" width=700>
 
+**==PPO 不直接使用 动作价值函数 $Q(s,a)$，而是通过 状态价值函数 $V(s)$，来近似估计 优势函数 $A(s,a)$==**
+
 
 将 动作价值函数，用 状态价值函数 拟合 动作价值函数，即 当前 reward 加上 下个状态的 状态价值函数，现在只需要 训练 一个 状态价值网络
 
-可以 对 reward 进行 多步采样
+可以 进行 多步采样
 
 <img src="Pics/mofan013.png" width=850>
 
@@ -449,19 +429,53 @@ Advantage Function(优势函数) - 动作价值 - 状态价值
 
 <img src="Pics/mofan016.png" width=700>
 
-可以使用 重要性采样，将 On-Poliy 替换为 Off-Policy
+可以使用 重要性采样，**将 On-Poliy 替换为 Off-Policy**
 
-<img src="Pics/mofan017.png" width=300>
+使用 参考的 Policy(θ') 进行 数据采样，并可以多次使用，解决效率太低的问题
+
+条件是 参考的 Policy(θ') 和 当前 Policy(θ) 的 统一情况给出的概率分布 差别 不能太大
+
+<img src="Pics/mofan017.png" width=400>
+
+<img src="Pics/mofan021.png" width=700>
+
+可以使用 KL 散度，判断 分布差别
+
+<img src="Pics/mofan022.png" width=850>
+
+也可以使用 Clip 方法，截断函数，直接对 Loss 进行 裁剪，限制 策略 更新幅度，防止策略跳变过大导致训练不稳定
+
+<img src="Pics/mofan023.png" width=850>
+
+这里两张图 都是 surrogate_loss，没有包括 rsl_rl 中 实现的 value_loss & entropy_loss
+
+PPO 只是为了稳定性，在一个 rollout 数据上多做几次更新，用 importance sampling 纠正轻微的策略偏移，但它本质仍是 依赖新数据 的
 
 
 
-可以使用 Clip 方法，直接对 Loss 进行约束 裁剪，限制 策略 更新幅度，防止策略跳变过大导致训练不稳定
+# DDPG (Deep Deterministic Policy Gradient)
+
+DDPG 由 DeepMind 在 2016 年提出
+
+是 Actor-Critic 结构的一个变种，结合了 DQN 和 DPG（Deterministic Policy Gradient）
 
 
-可以使用 KL 散度，衡量 策略变化(概率分布) 程度，动态调整学习率
 
 
+# A3C (Asynchronous Advantage Actor-Critic)
 
+DeepMind 在 2016 年提出
+
+异步 的 Actor-Critic 算法
+
+
+核心思想
+1. Actor-Critic 结构
+   1. Actor  负责生成策略
+   2. Critic 估计值函数
+2. Advantage 函数
+3. 异步更新
+   1. 多个 Worker 线程在不同环境中收集数据，并异步更新全局网络
 
 
 
