@@ -1345,12 +1345,66 @@ $C_t$(Cell State) 称为长期记忆，更稳定
 
 ## 61 编码器-解码器 架构
 
+<img src="Pics/d2l084.png" width=300>
+
+编码器(处理输入) : 将 input 变成 中间表达形式(特征)
+
+解码器(得到输出) : 将 中间表达形式 解析为 output
+
+CNN
+1. <img src="Pics/d2l082.png" width=300>
+
+RNN
+1. <img src="Pics/d2l083.png" width=300>
+
+编码器 输出 状态 (encoder_outputs)
+
+解码器 接收 编码器的输出 作为 init_state
+
+编码器 和 解码器 都有 输入
 
 
 
 ---
 
 ## 62 序列到序列学习 seq2seq
+
+编码器 解码器 都是 RNN
+
+编码器 最后时刻的 隐状态 作为 初始 解码器 隐状态，完成信息传递
+
+<img src="Pics/d2l085.png" width=500>
+
+编码器 是 RNN，读取输入句子，只需要 hidden state，不需要输出
+
+encoder 可以使用 双向 RNN(既能看到前文，也能看到后文，不仅仅是从左到右)，decoder 不能是 双向 RNN，因为需要做预测
+
+将最后的 隐藏状态 传给 解码器，使用 RNN 输出，给一个 `<bos>` 直到 `<eos>`，长度可变
+
+
+<img src="Pics/d2l086.png" width=300>
+
+编码器 最后 时间步 的 hidden state 用作 解码器的 init_state (初始隐状态)
+
+**训练**
+1. 解码器 使用 目标句子 作为 输入
+2. 即时 前一个 单词 翻译错误 也不影响，使用 目标句子的上一个词 作为 下一个 输入
+3. <img src="Pics/d2l087.png" width=300>
+
+
+
+**推理**
+1. 直接使用上一时刻输出的 作为 下一时刻的 输入
+
+
+**BLEU**(Bilingual Evaluation Understudy)
+1. 衡量生成序列的好坏
+2. `n-gram` 从一个序列中连续取出的 n 个元素的子序列
+3. n-gram 精度 使用 clipped count (裁剪计数 (B 在参考里只有 1 次，所以预测里的 2 个 B 只能算 1 次命中))，避免模型靠 复读 同一个高频词来刷分
+4. <img src="Pics/d2l088.png" width=500>
+5. BLEU 越大越好
+6. 指数项惩罚过短的预测，如果 过长 容易 低命中
+7. $p_n$(n-gram 的精度) 小于 1，越开方越大，因此 长匹配 有 高权重
 
 
 
@@ -1361,7 +1415,7 @@ $C_t$(Cell State) 称为长期记忆，更稳定
 
 seq2seq 中 使用 贪心搜索预测序列 (选最大概率的词)
 
-贪心 ≠ 最优 (局部最优 ≠ 全局最优)
+贪心 ≠ 最优 (局部最优 ≠ 全局最优)，当前步次优，但是后续 有更好的选择
 
 穷举可以保证最优，但是 computing complexity 太大，为 $n^T$ (字典大小$n$，序列长度$T$)
 
@@ -1379,31 +1433,98 @@ Beam Search
 
 
 
-bleu
-
-### 补 :
-
-
-
-
-
 ---
 
-## 64 注意力机制
+## 64 注意力机制 (Attention Mechanism)
+
+不随意线索 : 找到特征最明显的 (卷积，全连接，池化)
+
+随意线索 : 有意识的寻找 (注意力机制)
+
+<img src="Pics/d2l089.png" width=500>
+
+**随意线索 query**
+
+**不随意线索 key** & 对应值 value
 
 
+通过 attention pooling 注意力池化，**有偏向性的选择输入**
+
+
+非参注意力 池化/汇聚
+1. 非参表示，参数不用学习，只要足够多数据，可以很好拟合模型
+2. <img src="Pics/d2l090.png" width=500>
+3. K 是 kernel核，用于 衡量 query 和 key 差异
+4. <img src="Pics/d2l091.png" width=300>
+5. 有点像滑动窗口，加权平均
+
+
+参数化注意力机制
+1. 引入 可以学习的 $w = \frac{1}{\sigma}$ (kernel 宽度)，起到缩放距离的作用，w大($\sigma$ 小) softmax 更尖锐，w小($\sigma$ 大) softmax 更平坦
+2. <img src="Pics/d2l092.png" width=300>
+3. query - $x$
+4. key - $x_i$
+5. value - $y_i$
+
+<img src="Pics/d2l093.png" width=300>
+
+bmm(batch matrix multiplication)，对于每个batch，分别进行矩阵乘法
+
+热力图
+1. <img src="Pics/d2l094.png" width=200>
+2. Testing = Query
+3. Training = Key
+4. 颜色表示 softmax 后 得到的 **注意力权重** $\alpha$
 
 
 ---
 
 ## 65 注意力分数
 
+[attention-scoring-functions - ipynb](./OfficialNoteBooks/chapter_attention-mechanisms/attention-scoring-functions.ipynb)
 
+分数 : 没有 normalize 的 权重
 
+<img src="Pics/d2l095.png" width=500>
+
+拓展到高维度
+
+<img src="Pics/d2l096.png" width=500>
+
+关键在于 设计 a
+
+**Additive Attention** 加性注意力
+1. 将 key & query 映射 到相同长度，并相加，放入激活函数，并和 v相乘(不是 value) 转为一个值
+2. <img src="Pics/d2l097.png" width=400>
+3. 相当于一层 全连接
+
+**Scaled Dot-Product Attention**
+1. 如果长度相同，可以不学新参数，直接内积，并除以长度开根号，减少对长度的敏感性
+2. <img src="Pics/d2l098.png" width=400>
+
+<img src="Pics/d2l099.png" width=500>
+
+可以对部分 weight 做 dropout，忽略某些 key-value pair，做完后 和 value 进行 bmm
 
 ---
 
 ## 66 使用注意力机制的 seq2seq
+
+机器翻译中，每个生成的词可能源于句子中不同的词，需要 focus
+
+而 普通 seq2seq 只使用了 最后的 hidden state，之前的内容可能产生遗忘，难以还原
+
+**动机** 希望在翻译的时候，使用对应原句的词 (利用 注意力机制)
+
+对比
+1. 有注意力 -> 全序列隐藏状态当 Key/Value
+2. 没注意力 -> 只要最后隐藏状态
+
+加入注意力
+1. <img src="Pics/d2l100.png" width=500>
+2. 编码器 每个 词的输出 作为 key-value (相同的)
+3. 解码器 RNN 上一个词输出 作为 query (最好是用当前词，但是正在预测，因此用上一个词)
+4. 注意力的输出 和 下一个词的 embedding 合并 进入 RNN
 
 
 
