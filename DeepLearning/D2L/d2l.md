@@ -1510,6 +1510,8 @@ bmm(batch matrix multiplication)，对于每个batch，分别进行矩阵乘法
 
 ## 66 使用注意力机制的 seq2seq
 
+[Bahdanau 注意力 - ipynb](./OfficialNoteBooks/chapter_attention-mechanisms/bahdanau-attention.ipynb)
+
 机器翻译中，每个生成的词可能源于句子中不同的词，需要 focus
 
 而 普通 seq2seq 只使用了 最后的 hidden state，之前的内容可能产生遗忘，难以还原
@@ -1524,9 +1526,12 @@ bmm(batch matrix multiplication)，对于每个batch，分别进行矩阵乘法
 1. <img src="Pics/d2l100.png" width=500>
 2. 编码器 每个 词的输出 作为 key-value (相同的)
 3. 解码器 RNN 上一个词输出 作为 query (最好是用当前词，但是正在预测，因此用上一个词)
-4. 注意力的输出 和 下一个词的 embedding 合并 进入 RNN
+4. 注意力的输出 和 下一个词的 embedding 合并 作为输入 进入 RNN
+5. query 和 key-value 都统一用 RNN 的 输出，因为语义空间一致
 
+seq2seq 通过 隐状态 在 encoder & decoder 中传递信息
 
+注意力机制 通过 解码器 RNN 输出，匹配 合适的 编码器 RNN 输出，更有效的传递信息
 
 
 ---

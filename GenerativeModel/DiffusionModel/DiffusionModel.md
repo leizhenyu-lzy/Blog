@@ -9,8 +9,7 @@
   - [Stable Diffusion、DALL-E、Imagen 背后共同的套路](#stable-diffusiondall-eimagen-背后共同的套路)
   - [Diffusion Model 原理剖析](#diffusion-model-原理剖析)
 - [对比](#对比)
-- [补 : VAE(Variational Auto-Encoder) 变分自编码器](#补--vaevariational-auto-encoder-变分自编码器)
-- [补 : 信息量 + 香农熵 + 交叉熵 + KL散度](#补--信息量--香农熵--交叉熵--kl散度)
+- [Link : 信息量 + 香农熵 + 交叉熵 + KL散度](#link--信息量--香农熵--交叉熵--kl散度)
 
 
 # 简介
@@ -322,75 +321,12 @@ VAE : 训练容易，但是输出模糊
 
 
 
-# 补 : VAE(Variational Auto-Encoder) 变分自编码器
-
-AE(Auto-Encoder) 自编码器
-1. **自** 表示 自训练
-2. 隐藏层 神经元数量少，过滤输入，特征提取，高度压缩
-   1. <img src="Pics/diffusion009.png" width=300>
-
-
-VAE(Variational Auto-Encoder)
-1. variation 就是分布 (将输入映射到一个分布上，而非固定变量)
-2. <img src="Pics/diffusion010.png" width=600>
-3. bottle neck 被分解为两个向量
-   1. 均值向量
-   2. 方差向量
-4. 损失函数
-   1. <img src="Pics/diffusion011.png" width=500>
-   2. 重建损失 : 与 AE 的 Loss 一致
-   3. KL 散度 ： 描述 学习的分布 & 高斯分布 的 相似性
-5. 与强化学习结合，进行环境的潜在空间表示
-
-
-GMM - TODO
 
 
 
 ---
 
-# 补 : 信息量 + 香农熵 + 交叉熵 + KL散度
+# Link : 信息量 + 香农熵 + 交叉熵 + KL散度
 
-**信息量 (Amount of Information)**
-1. 小概率事件，信息量大 | 大概率事件，信息量小
-2. 独立事件，信息量可以相加
-3. $$I(x) = \log _2 (\frac{1}{p(x)}) = - \log _2 (p(x))$$
+[信息量 + 香农熵 + 交叉熵 + KL散度 - 个人笔记](../../Math/Entropy&Divergence/EntropyDivergence.md)
 
-
-**香农熵 (Shannon Entropy)** - 对于单个分布
-1. 概率分布的期望信息量
-2. $$H(p) = \sum_i p_i \log _2(\frac{1}{p_i}) = -\sum_i p_i \log_2(p_i)$$
-3. 概率密度越均匀，也就是越随机，熵越大
-4. 概率密度越集中，也就是越确定，熵越小 (小概率事件 : 大信息量 × 小概率)
-
-交叉熵 和 KL散度 都是用来测量两个概率分布
-
-
-**交叉熵 (Cross-Entropy)** - 对于两个分布 求差异
-1. p **真实分布** & q **预测/拟合分布**
-2. $$H(p, q) = \sum_i p_i \log _2(\frac{1}{q_i}) = -\sum_i p_i \log_2(q_i)$$
-   1. $i$ 是 类别 数量
-3. 如果真实分布是 p，用 q 来描述数据时，所需的平均编码代价是多少
-4. 用 q 模型去解释 p 数据时的效率和准确性
-5. $H(p,q)$ ==不等于== $H(q,p)$
-6. 在深度学习中，分类模型 (eg : Softmax 分类器) 输出的是预测分布 q(x)，真实标签对应一个分布 p(x) (通常是独热编码)，交叉熵损失函数用于量化预测分布 q 和真实分布 p 的差异
-   1. 对于 语义分割模型，相当于是 对 每个 pixel 都求 cross-entropy (每个 pixel 都是一个 softmax 得到的 概率分布 **结合** 实际的 one-hot ground-truth) 再进行 平均
-7. 交叉熵越**小**，说明 预测分布 q 越 **接近** 真实分布 p
-   1. 对于 $\sum_i p_i \log _2(\frac{1}{q_i})$，显然，当 $p_i$ 大 时，需要 $q_i$ 同时也大(分布接近)，否则 $\log _2(\frac{1}{q_i})$ 将会较大，使得 大概率 × 大信息量
-
-
-**KL 散度 (KL Divergence)** - $D_{KL}(p||q)$ - 相对熵
-1. p **真实分布** & q **预测/拟合分布**
-2. **$D_{KL}(p||q)$(前向散度)** ==不等于== **$D_{KL}(q||p)$(反向散度)**
-3. $$D_{KL}(p||q) = E_p[log\frac{p}{q}] = \sum p \log \frac{p}{q}$$
-   1. 比值 + 对数 + 期望
-4. 前向散度 用于 监督学习，反向散度 用于 强化学习/变分推断
-5. 分布相似时，两种散度都很小
-6. 性质
-   1. KL散度 恒 非负 $D_{KL}(p||q) \geq 0$ (Gibbs Inequality 吉布斯不等式)
-      1. 当且仅当，p=q 时，$D_{KL}(p||q) = 0$
-   2. KL散度 不对称，不是一个严格的距离度量
-7. 模型训练中，最小化 KL散度 等价于 最小化 交叉熵，因为 只有预测分布 $q_\theta$ 才与模型有关，真实分布 $p$，与模型参数无关，因此一般没有 KL散度 损失函数，直接 交叉熵 损失函数
-
-交叉熵 & KL 散度(Kullback-Leibler Divergence) 关系
-1. $$D_{KL}(p||q) = H(p, q) - H(p) = \sum_i p_i \log _2(\frac{1}{q_i}) - \sum_i p_i \log _2(\frac{1}{p_i}) = \sum_i p_i \log _2(\frac{p_i}{q_i})$$
