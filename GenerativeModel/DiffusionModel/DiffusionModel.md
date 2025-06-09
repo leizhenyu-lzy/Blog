@@ -1,89 +1,45 @@
 # Diffusion Model 扩散模型
 
 - [Diffusion Model 扩散模型](#diffusion-model-扩散模型)
-- [简介](#简介)
-- [原理](#原理)
-- [Denoising Diffusion Probabilistic Models(DDPM)](#denoising-diffusion-probabilistic-modelsddpm)
+- [Diffusion Model - YouTube](#diffusion-model---youtube)
 - [Diffusion Model - 李宏毅](#diffusion-model---李宏毅)
   - [浅谈 生成模型 Diffusion Model 原理](#浅谈-生成模型-diffusion-model-原理)
   - [Stable Diffusion、DALL-E、Imagen 背后共同的套路](#stable-diffusiondall-eimagen-背后共同的套路)
   - [Diffusion Model 原理剖析](#diffusion-model-原理剖析)
+- [简介](#简介)
+- [原理](#原理)
+- [Denoising Diffusion Probabilistic Models(DDPM)](#denoising-diffusion-probabilistic-modelsddpm)
 - [对比](#对比)
 - [Link : 信息量 + 香农熵 + 交叉熵 + KL散度](#link--信息量--香农熵--交叉熵--kl散度)
 
 
-# 简介
+---
 
-功能
-1. 文生图
-2. 模仿
-3. 抠图填充
-4. 图像扩展
+# Diffusion Model - YouTube
 
-模仿 物理(热力学) 扩散现象(熵增，混乱)
+[Diffusion Models: DDPM - YouTube](https://www.youtube.com/watch?v=EhndHhIvWWw)
 
-inspired by non-equilibrium thermodynamics
+DDPM : Denoising Diffusion Probabilistic Models
 
-给图片增加噪声(正向扩散)，变的混乱(图像收敛于噪声的分布，即高斯分布)
+$p(x)$ 概率分布，复杂，无法使用单一的表达式完整描述，但仍希望生成芯图像，从分布中抽取新的样本点(从未知分布中，抽取新的样本点)
 
-<img src="Pics/diffusion002.png" width=700>
+<img src="Pics/yt001.png" width=600>
 
-训练模型将其变为有序的样子(逆向扩散)
+如果模型有效，应该能够从随机噪声开始，逐步转化为有意义的图像
 
-将 逐渐变的混乱的过程 分解为 多个状态
+原始图像 $x_0$
 
-使用 **马尔科夫链(Markov Chain)** 描述整个加噪声过程(无记忆性)，后一个图片仅依赖前一个图片
+使用 条件分布 $q(x_1 | x_0)$ 生成下一个图像
 
-使用 信息熵(Information Entropy) 衡量 图片混乱程度
-1. $$\mathbf{H}(\mathbf{U})=-\sum_{i=1}^{n} p_{i} \log _{2} p_{i}$$
-2. 信息熵可以理解为一个 随机变量的平均信息量，也被称为香农熵
-3. 在 不确定性较高的 系统中，信息熵较高，因为需要更多的信息来确定系统的状态
-4. 在 确定性较高的 系统中，信息熵较低
-5. 指导 神经网络 将混乱图片 变得有序
+添加 高斯噪声 $x_1 = x_0 + \beta · \epsilon$，标量 $\beta$，$\epsilon \sim \mathcal{N}(0, 1)$
 
-<img src="Pics/diffusion001.png" width=400>
+$q(x_1 | x_0) = \mathcal{N}(x_0, \beta)$，可以理解为以 $x_0$ 为中心，标准差 为 $\beta$ 的 高斯分布中抽取样本
 
-给图像去噪的过程
+<img src="Pics/yt002.png" width=400>
 
-扩散模型 相比 变分自编码器 可以将图片更好的打乱，避免过拟合现象
+<img src="Pics/yt003.png" width=600>
 
 
-
-# 原理
-
-<img src="Pics/diffusion003.png" width=600>
-
-<img src="Pics/diffusion004.png" width=600>
-
-<img src="Pics/diffusion005.png" width=600>
-
-单步加噪公式
-
-可以逐层展开，推导 多步等效 公式
-
-$\beta$ 为 预定义的超参数(随 t 增加 而 增大)
-
-
-
-<img src="Pics/diffusion006.png" width=600>
-
-<img src="Pics/diffusion007.png" width=600>
-
-<img src="Pics/diffusion008.png" width=600>
-
-
-
-
-
-
-# Denoising Diffusion Probabilistic Models(DDPM)
-
-[【较真系列】讲人话-Diffusion Model全解 - B站视频](https://www.bilibili.com/video/BV19H4y1G73r/)
-
-[【大白话01】一文理清 Diffusion Model 扩散模型 | 原理图解+公式推导](https://www.bilibili.com/video/BV1xih7ecEMb/?vd_source=d5863bac06474ffc8562eab966db3af7)
-1. [配套PDF](./DDPM_tutorial_by_ZhangXin.pdf)
-
-前向过程，向图像加噪，
 
 
 ---
@@ -307,6 +263,90 @@ Diffusion Model 用于 Text
 为什么 Diffusion Model 有效
 1. 一步到位 -> 查分多步
 2. Mask-Predict 思想 : 使用 mask 替代 部分位置(低分位置)，再进行 predict
+
+
+
+
+---
+
+# 简介
+
+功能
+1. 文生图
+2. 模仿
+3. 抠图填充
+4. 图像扩展
+
+模仿 物理(热力学) 扩散现象(熵增，混乱)
+
+inspired by non-equilibrium thermodynamics
+
+给图片增加噪声(正向扩散)，变的混乱(图像收敛于噪声的分布，即高斯分布)
+
+<img src="Pics/diffusion002.png" width=700>
+
+训练模型将其变为有序的样子(逆向扩散)
+
+将 逐渐变的混乱的过程 分解为 多个状态
+
+使用 **马尔科夫链(Markov Chain)** 描述整个加噪声过程(无记忆性)，后一个图片仅依赖前一个图片
+
+使用 信息熵(Information Entropy) 衡量 图片混乱程度
+1. $$\mathbf{H}(\mathbf{U})=-\sum_{i=1}^{n} p_{i} \log _{2} p_{i}$$
+2. 信息熵可以理解为一个 随机变量的平均信息量，也被称为香农熵
+3. 在 不确定性较高的 系统中，信息熵较高，因为需要更多的信息来确定系统的状态
+4. 在 确定性较高的 系统中，信息熵较低
+5. 指导 神经网络 将混乱图片 变得有序
+
+<img src="Pics/diffusion001.png" width=400>
+
+给图像去噪的过程
+
+扩散模型 相比 变分自编码器 可以将图片更好的打乱，避免过拟合现象
+
+
+
+# 原理
+
+<img src="Pics/diffusion003.png" width=600>
+
+<img src="Pics/diffusion004.png" width=600>
+
+<img src="Pics/diffusion005.png" width=600>
+
+单步加噪公式
+
+可以逐层展开，推导 多步等效 公式
+
+$\beta$ 为 预定义的超参数(随 t 增加 而 增大)
+
+
+
+<img src="Pics/diffusion006.png" width=600>
+
+<img src="Pics/diffusion007.png" width=600>
+
+<img src="Pics/diffusion008.png" width=600>
+
+
+
+
+
+
+# Denoising Diffusion Probabilistic Models(DDPM)
+
+[【较真系列】讲人话-Diffusion Model全解 - B站视频](https://www.bilibili.com/video/BV19H4y1G73r/)
+
+[【大白话01】一文理清 Diffusion Model 扩散模型 | 原理图解+公式推导](https://www.bilibili.com/video/BV1xih7ecEMb/?vd_source=d5863bac06474ffc8562eab966db3af7)
+1. [配套PDF](./DDPM_tutorial_by_ZhangXin.pdf)
+
+前向过程，向图像加噪，
+
+
+
+
+
+
 
 ---
 
