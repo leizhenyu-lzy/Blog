@@ -90,9 +90,10 @@ apt
 Web
 1. edge
    1. 历史版本 - https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ - 如果无法输入中文，可以尝试安装之前版本
-   2. github
-   3. whatsapp
-   4. bilibili - https://github.com/the1812/Bilibili-Evolved
+   2. beta 历史版本 - https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-beta/
+   3. github
+   4. whatsapp
+   5. bilibili - https://github.com/the1812/Bilibili-Evolved
 2. vscode
 3. qq
 4. ros
