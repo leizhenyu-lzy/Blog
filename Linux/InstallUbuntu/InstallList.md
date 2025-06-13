@@ -186,6 +186,7 @@ NVIDIA
    1. chmod +x NVIDIA-Linux-x86_64-xxx.xxx.run
    2. sudo bash NVIDIA-Linux-x86_64-xxx.xxx.run
    3. uninstall : sudo ./NVIDIA*.run --uninstall
+   4. 查看 : cat /proc/driver/nvidia/version 或 nvidia-smi
 5. CUDA : https://developer.nvidia.com/cuda-toolkit-archive runfile(local)
    1. wget https://developer.download.nvidia.com/xxx/cuda_xxx_linux.run
    2. sudo sh cuda_xxx_linux.run (如果上一步正确，不要选 driver)
@@ -194,11 +195,14 @@ NVIDIA
       2. export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
       3. P.S. : ls /usr/local -l : cuda -> /usr/local/cuda-12.4/ (soft link)
    4. uninstall : 使用 /usr/local/cuda-<version>/bin 中的 cuda-uninstaller
+   5. position : /usr/local/cuda-*
 6. cuDNN : https://developer.nvidia.com/rdp/cudnn-archive
    1. sudo apt install ./cudnn-xxx.deb
    2. 根据提示可能需要类似操作 : sudo cp /var/cudnn-local-repo-ubuntu2204-8.9.7.29/cudnn-local-08A7D361-keyring.gpg /usr/share/keyrings/
    3. 可能位置 /home/lzy/.local/lib/python3.10/site-packages/nvidia/cudnn/include/cudnn_version.h
    4. cat cudnn_version.h_path | grep CUDNN_MAJOR -A 2
+
+
 
 ```python
 >>> import torch
