@@ -374,18 +374,18 @@ PPO 可以直接优化连续动作空间 (如机器人关节角度)，相比 DQN
 6. <img src="Pics/mofan007.png" width=700>
 7. 给所有 action 的 reward 减掉 baseline，让相对好的action概率增加，相对差的action概率减小(原因 : 对于好的局势，所有动作都有 正reward，训练慢，需要让好的动作反应相当于其他动作的好处)
    1. **baseline** 也是 由神经网络估算 **==(actor-critic 中的 critic)==**
-   2. 再结合 GAE(Generalized Advantage Estimation) 得到 Advantage
+   2. 再结合 GAE(Generalized Advantage Estimation)(说明在后面) 得到 Advantage
 
 
 
 
-Action-Value Function(动作价值函数)
+**Action-Value Function(动作价值函数)**
 1. 状态 s 下，采取动作 a 后，按照当前策略 π 行动，未来能获得的期望累积奖励
 
-State-Value Function(状态价值函数)
+**State-Value Function(状态价值函数)**
 1. 在状态 s 下，按照当前策略 π 行动，期望获得的累积奖励
 
-Advantage Function(优势函数) - 动作价值 - 状态价值
+**Advantage Function(优势函数) = 动作价值 - 状态价值**
 1. 在状态 s 选择动作 a，比起随机按照策略 π 选择所有动作的平均水平，能获得的额外优势
 2. 用于 Actor-Critic 结构(如 PPO, A2C)，让策略优化更稳定
 
@@ -447,9 +447,16 @@ Advantage Function(优势函数) - 动作价值 - 状态价值
 
 <img src="Pics/mofan023.png" width=850>
 
+surrogate(替代的，代理的)
+
 这里两张图 都是 surrogate_loss，没有包括 rsl_rl 中 实现的 value_loss & entropy_loss
 
 PPO 只是为了稳定性，在一个 rollout 数据上多做几次更新，用 importance sampling 纠正轻微的策略偏移，但它本质仍是 依赖新数据 的
+
+surrogate loss，初期阶段 可能相对较大 因为策略从随机初始化开始学，后期应该 组件区域稳定，策略逐渐收敛
+
+surrogate loss 可以和 mean action noise std 一块 判断 策略是否 收敛
+
 
 
 
