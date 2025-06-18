@@ -93,12 +93,13 @@ PPO的奖励函数 = 环境奖励 + 判别器奖励
 `AMPOnPolicyRunner` - `rsl_rl/rsl_rl/runners/amp_on_policy_runner.py`
 
 `AMPDiscriminator` - `rsl_rl/rsl_rl/algorithms/amp_discriminator.py`
-1. amp_reward_coef
-2. amp_discr_hidden_dims
-3. amp_task_reward_lerp
+1. input_dim = 2 * amp_data.observation_dim
+2. amp_reward_coef
+3. amp_discr_hidden_dims
+4. amp_task_reward_lerp
 
-
-
+trajectories : 去除 root pos + rot & 足尖速度
+trajectories_full : 完整
 
 
 
