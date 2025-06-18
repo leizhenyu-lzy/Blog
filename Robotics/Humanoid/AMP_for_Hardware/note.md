@@ -9,7 +9,10 @@ AMP_for_hardware
 5. logs         训练日志和模型
 
 
-`legged_gym/envs/__init__.py` - task register
+`legged_gym/envs/__init__.py` - all task register
+1. name, task_class, env_cfg, train_cfg
+
+
 
 dataset
 1. 元数据
@@ -35,8 +38,38 @@ dataset
    8. 12 : TAR_TOE_VEL_LOCAL (4 * 3) 目标足端速度
 
 
+LeggedRobotCfgPPO 中 设定 seed，其他 CfgPPO 继承
+
+`set_seed()` 在 `legged_gym/utils/helpers.py`，设定 各种可能 用到的 random package 的 随机种子，在 `task_registry.py` 的 `make_env()` 被调用 (LeggedRobot -> BasTask -> create_sim + _create_envs)
+
+
 
 LeggedRobot 没有继承 VecEnv，但它实现了相同的接口
+
+sim 参数 定义在 legged_robot_config 中，控制 仿真环境
+
+
+
+commands
+1. num_commands : command 长度 4 (lin_vel_x, lin_vel_y, ang_vel_yaw, heading (in heading mode ang_vel_yaw is recomputed from heading error))
+2. 观测中只使用 Commands 的前 3 位
+3. 两种 控制模式
+   1. heading_command = False (default)
+      1. 直接控制yaw角速度
+   2. heading_command = True
+      1. 设置目标朝向
+      2. 系统自动计算yaw角速度
+4. 命令重采样机制
+   1. `_post_physics_step_callback` -> `_resample_commands`
+   2. ```python
+      env_ids = (
+         (self.episode_length_buf % int(self.cfg.commands.resampling_time / self.dt) == 0)
+         .nonzero(as_tuple=False)
+         .flatten()
+      )
+      ```
+      1. episode_length_buf : 记录每个环境的当前步数\
+      2. resampling_time : 重采样时间间隔
 
 
 
@@ -44,7 +77,9 @@ LeggedRobot 没有继承 VecEnv，但它实现了相同的接口
 AMP + PPO
 1. 生成器 Generator : PPO策略网络，生成动作
 2. 判别器 Discriminator : 区分 真实动捕数据 和 策略生成 动作
+   1. `rsl_rl/rsl_rl/algorithms/amp_discriminator.py`
 3. 动捕数据加载器 AMPLoader : 专家示范数据
+   1. `rsl_rl/rsl_rl/datasets/motion_loader.py`
 
 
 判别器同时接收：策略轨迹 + 真实动捕数据
@@ -53,5 +88,20 @@ PPO的奖励函数 = 环境奖励 + 判别器奖励
 
 
 `rsl_rl/rsl_rl/runners/amp_on_policy_runner.py`
+
+
+`AMPOnPolicyRunner` - `rsl_rl/rsl_rl/runners/amp_on_policy_runner.py`
+
+`AMPDiscriminator` - `rsl_rl/rsl_rl/algorithms/amp_discriminator.py`
+1. amp_reward_coef
+2. amp_discr_hidden_dims
+3. amp_task_reward_lerp
+
+
+
+
+
+
+
 
 
