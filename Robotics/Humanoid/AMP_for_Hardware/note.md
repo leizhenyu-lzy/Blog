@@ -98,8 +98,8 @@ PPO的奖励函数 = 环境奖励 + 判别器奖励
 3. amp_discr_hidden_dims
 4. amp_task_reward_lerp
 
-trajectories : 去除 root pos + rot & 足尖速度
-trajectories_full : 完整
+trajectories      :                             JOINT_POS(12) + TAR_TOE_POS(12) + LINEAR_VEL(3) + ANGULAR_VEL(3) + JOINT_VEL(12)
+trajectories_full : ROOT_POS(3) + ROOT_ROT(4) + JOINT_POS(12) + TAR_TOE_POS(12) + LINEAR_VEL(3) + ANGULAR_VEL(3) + JOINT_VEL(12) + TAR_TOE_VEL(12)
 
 
 
