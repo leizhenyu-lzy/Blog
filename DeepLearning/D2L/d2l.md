@@ -813,16 +813,17 @@ pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`tor
 
 [Batch Normalization - ipynb](./OfficialNoteBooks/chapter_convolutional-modern/batch-norm.ipynb)
 
-不同batch的分布变化大，而不是指底层参数变化导致顶层参数变化
+不同batch的分布变化大
 
 让同一个 batch 样本 在 每一层 都服从 类似的分布
-
 
 <img src="Pics/d2l073.png" width=400>
 
 一般情况会出现，梯度消失，下层(接近input) 梯度小 训练慢
 
-并且底层变化，导致上层比较快收敛的部分需要同时更新，导致收敛慢
+底层变化，导致上层部分 也需要更新，导致收敛慢
+1. 底层(靠近 Input，梯度小，收敛慢，细节)
+2. 顶层(靠近 Loss ，梯度大，收敛快，抽象)
 
 希望学习底层的时候，避免顶层变化
 
@@ -832,29 +833,32 @@ batch 的 分布(方差 和 均值) 会一直变化
 
 <img src="Pics/d2l074.png" width=500>
 
+$\gamma$, $\beta$ **仿射参数是需要学习的**
+
+$|B|$ 是 batch size
+
+$^2$是 逐元素 平方
+
 分母一般加一个 小 $\epsilon$ 防止 0
 
 **$$\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$$**
 
 **$$y_i = \gamma \hat{x}_i + \beta$$**
 
-简单的仿射变换，移开 激活函数 的线性部分
+BN 完成归一化后，再 **乘 γ** & **加 β** 相当于再进行 一次 仿射变换
 
 <img src="Pics/d2l081.png" width=300>
 
-**仿射参数是需要学习的** $\gamma$, $\beta$
+**==注意 一定 要在 激活函数 之前==**，防止 激活函数 截断数值
 
 <img src="Pics/d2l075.png" width=400>
 
-**==注意 一定 要在 激活函数 之前==**
-
-**不仅仅作用在数据上，而且作用在 每个 全连接层的 input/output**
+**不仅仅可以作用在数据上，而且可以作用在 每个 全连接层/卷积层 的 input/output**
 
 对于
-1. 全连接层
+1. 全连接层(特征维)
    1. 对每个 特征 计算 标量的 均值 & 方差，进行归一化，再用学到的 $\gamma$, $\beta$ 进行 调整
-   2. **不仅仅作用在数据上，而且作用在 每个 全连接层的 input/output**
-2. 卷积层
+2. 卷积层(通道维)
    1. 作用在 **通道(channel)** 上，对于一个像素，可以映射到 多个 通道，将每个像素当做样本
 
 <img src="Pics/d2l076.png" width=500>
