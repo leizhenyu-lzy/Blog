@@ -2,7 +2,17 @@
 
 [模型量化 - B站合集](https://space.bilibili.com/18235884/lists/2887562?type=season)
 
+<img src="Pics/quant007.png">
+
 # 量化基础
+
+浮点数存储格式(IEEE-754)
+1. <img src="Pics/quant011.png">
+2. 指数 : 偏移量 -127
+3. 小数 : +1
+   1. 科学计数法的标准形式 : 任何非零数都可以表示为 $1.\text{xxx} × 2^n$ 的形式
+
+
 
 Llama 13B = 13,000,000,000
 1. FP32 : 52GB
@@ -18,13 +28,14 @@ Llama 13B = 13,000,000,000
    1. 计算过程中，TensorCore 和 显存之间 频繁的数据 交换，减少数据交换大小，从而提升模型推理速度
    2. 显存带宽固定，制约推理速度
       1. 虽然 浮点数运算 更复杂，但是 位宽还是 主要决定性因素
+3. 更低功耗
 
 单位
 1. Tera = $10^{12}$ = $2^{40}$
 2. TFLOPS(Tera Floating-point Operations Per Second)
 3. TOPS(Tera Operations Per Second)
 
-量化 & 反量化
+**量化 & 反量化**
 1. $x1_f -> 量  化 -> x1_q$
 2. $x1_q -> 反量化 -> x2_f$
 3. 需要 让 $x1_f$ & $x2_f$ 尽可能接近
@@ -32,30 +43,37 @@ Llama 13B = 13,000,000,000
    1. 大部分计算 (卷积、矩阵乘法) 在整形空间，极大提升速度 + 降低内存
    2. 在 Input/Output(概率、坐标)、float-only 算子(Softmax，LayerNorm，Attention 缩放 & 加权和) 做 **量化 ↔ 反量化** 的转换
 
+**对称量化 & 非对称量化**
+
+<img src="Pics/quant008.png">
 
 对称量化
-1. 计算简单，精度低
-2. 找 绝对值 最大的数
-3. <img src="Pics/quant001.png">
-4. 会有一部分整数范围被浪费，除非数据范围对称
+1. <img src="Pics/quant001.png" width=600>
+2. <img src="Pics/quant010.png" width=600>
+3. 计算简单，精度低
+4. 找 绝对值 最大的数
+5. 零点固定不变，量化后的值中零点必须对应于原始值中的零
+6. 会有一部分整数范围被浪费，除非数据范围对称
 
 非对称量化
-1. 计算复杂，精度高
-2. clamp 用于 限制值的范围
-3. 量化前后零点不同，具有更好的动态映射范围
-4. <img src="Pics/quant002.png">
-5. 保证能将 原最小值 映射到 新0位，即使是正值
-6. zero_point 相当于 bias 平移
+1. <img src="Pics/quant002.png" width=600>
+2. <img src="Pics/quant009.png" width=600>
+3. 计算复杂，精度高
+4. clamp 用于 限制值的范围
+5. 不要求量化后的值中零点对应于原始值中的零，具有更好的动态映射范围
+6. 保证能将 原最小值 映射到 新0位，即使是正值
+7. zero_point 相当于 bias 平移
+8. 非对称量化使用三个参数(量化最小值、量化最大值、零点)
 
 量化后数据计算
 1. 浮点矩阵乘法 -> 整形矩阵乘法
 2. 对称量化
-   1. <img src="Pics/quant003.png">
+   1. <img src="Pics/quant003.png" width=600>
 3. 非对称量化
-   1. <img src="Pics/quant004.png">
+   1. <img src="Pics/quant004.png" width=600>
 
 异常值
-1. <img src="Pics/quant005.png">
+1. <img src="Pics/quant005.png" width=600>
 2. 可以将 异常值 单独处理
 
 量化力度
@@ -71,11 +89,30 @@ Llama 13B = 13,000,000,000
 
 下一层 进行 独立的 量化 & 反量化
 
-权重 : 离线一次性量化(导出模型时就转 INT8) + 对称量化 + **per-channel**
+**PTQ** (Post-training Quantization)  - **训练后量化**
 
-输入/激活值 : 推理时才量化(需要依赖实时数据分布) + 非对称量化 + **per-tensor**
+**QAT** (Quantization-Aware Training) - **量化感知训练**
+1. 在训练阶段就把 **量化误差** 模拟进网络，让它学会适应 INT8/INT4 精度
+2. FakeQuant 把张量 截断/四舍五入到 int8 格点，但仍用 FP32 保存值
+   1. 难求梯度  `round()`、`clip()` 都是 不可导或梯度几乎处处为 0 的函数
+      1. 前向 : 继续用截断 / 四舍五入，真实地模拟量化误差
+      2. 反向 : 把量化函数的梯度近似为 1
+         1. 直观上 : 梯度在 FakeQuant 处当成恒等传递
+         2. $$\frac{\partial L}{\partial x} \overset{\text{STE}}{\approx}\ \frac{\partial L}{\partial \hat{x}}$$
+3. 推理阶段把 FakeQuant 替换为真 QuantizeLinear / DequantizeLinear
 
-int8 × int8 的乘法结果会先累加到 32bit(int32) 寄存器中
+**量化对象**
+1. 模型权重(weight) : 容易量化，**离线一次性量化**(导出模型时就转 **INT8**，固定值) + 对称量化(权重正负都有) + **per-channel**
+2. 输入(input)/激活值(activation) : 推理时才量化(需要依赖实时数据分布) + 非对称量化 + **per-tensor**
+   1. 输入 相对容易量化，在预处理阶段固定
+      1. 输入像素范围 0-255，或归一化到 0-1
+      2. 文本 embedding 可提前归一化
+   2. 激活值 最难量化
+      1. 静态量化 → 用校准集统计 min/max
+      2. QAT → 训练时插入 fake-quant，让网络自适应
+3. 偏置(bias) : 只做一次，一般 量化到 **int32**
+
+
 
 
 为什么量化对神经网络精度影响不大?
@@ -85,13 +122,22 @@ int8 × int8 的乘法结果会先累加到 32bit(int32) 寄存器中
 
 
 神经网络训练后 动态量化
-1. <img src="Pics/quant006.png">
+1. <img src="Pics/quant006.png" width=600>
 2. 将训练好的模型权重量化为int8，并保存量化参数
 3. 在模型推理时，对每一层输入的fp32激活值，动态进行进行量化为int8
 4. 在每一层对量化后的int8权重和int8激活值进行计算
 5. 在每一层输出时将结果反量化为fp32
 6. 将fp32激活值传入到下一层
 
+
+**越界问题**
+1. int8 × int8 的乘法结果 会先存放到 **32bit(int32) 寄存器** 中
+2. 后续可以进行
+   1. 若下一层仍走 int8 路径 : **re-quant** : int32 -> int8
+   2. 若需要给浮点算子或最终输出 : **dequant** : int32 -> fp32 (开销大)
+
+
+PyTorch 会把 量化参数 scale 和 zero_point 直接存进张量的元数据里
 
 `torch.qint8`
 
