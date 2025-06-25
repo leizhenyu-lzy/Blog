@@ -813,6 +813,8 @@ pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`tor
 
 [Batch Normalization - ipynb](./OfficialNoteBooks/chapter_convolutional-modern/batch-norm.ipynb)
 
+Normalization 的作用 把数据拉回标准正态分布，向量经过矩阵运算后值会越来越大，为了网络的稳定性，需要及时把值拉回正态分布
+
 不同batch的分布变化大
 
 让同一个 batch 样本 在 每一层 都服从 类似的分布
@@ -845,9 +847,12 @@ $^2$是 逐元素 平方
 
 **$$y_i = \gamma \hat{x}_i + \beta$$**
 
-BN 完成归一化后，再 **乘 γ** & **加 β** 相当于再进行 一次 仿射变换
+
+
+BN 完成归一化后，再 **乘 γ** & **加 β** 相当于再进行 一次 仿射变换，可以避开 激活函数的线性部分，**不降低模型的 表达能力 和 灵活性**
 
 <img src="Pics/d2l081.png" width=300>
+
 
 **==注意 一定 要在 激活函数 之前==**，防止 激活函数 截断数值
 
@@ -859,7 +864,7 @@ BN 完成归一化后，再 **乘 γ** & **加 β** 相当于再进行 一次 �
 1. 全连接层(特征维)
    1. 对每个 特征 计算 标量的 均值 & 方差，进行归一化，再用学到的 $\gamma$, $\beta$ 进行 调整
 2. 卷积层(通道维)
-   1. 作用在 **通道(channel)** 上，对于一个像素，可以映射到 多个 通道，将每个像素当做样本
+   1. 作用在 **通道(channel)** 上，与图像分辨率无关
 
 <img src="Pics/d2l076.png" width=500>
 
@@ -905,17 +910,37 @@ Transformer 使用 层归一化
 <img src="Pics/d2l080.png" width=600>
 
 
+### BN & LN 对比
+
+BN抹杀 同一个样本 不同特征之间的大小关系，但是保留 不同样本间各个特征的 相对大小关系
+
+LN抹杀 不同样本间的 大小关系，但是保留 一个样本内不同特征之间的 相对大小关系
+
+batch-size较小 或 序列问题 可以使用 LN
+
+RNN 或 Transformer 解决的是序列问题，不同样本的序列长度不一致，而 Batch Norm 需要对不同样本的同一位置特征进行标准化处理
+
+LN 保留了一个样本内不同特征之间的大小关系，一条样本的不同特征，其实就是时序上的变化，这正是需要学习的东西自然不能做 BN 抹杀
+
+训练 & 推理
+1. LN 针对的是单独一个样本，训练 & 预测阶段 的使用并无差别
+2. BN 针对一个batch进行计算的，预测时有时要预测的是单个样本
+   1. 要么 认为 batch size 就是 1，不进行标准化处理
+   2. 要么 在训练时记录标准化操作的 均值和方差 直接应用到 预测数据
+
+
 ### 例题
 
-对于 PyTorch 里的一个 tensor，shape 为 (2, 3, 4, 4)，如果对这个 Tensor 进行 Batch Normalization，请问一共会计算 **几个均值/方差**？ 3，通道数 channel
+对于 PyTorch 里的一个 图片tensor，shape 为 (2, 3, 4, 4)，如果对这个 Tensor 进行 **Batch Normalization**，请问一共会计算 **几个均值/方差**？ 3，通道数 channel
 
-对于 PyTorch 里的一个 tensor，shape 为 (2, 3, 4)，如果对这个 Tensor 进行 Layer Normalization，请问一共会计算 **几个均值/方差**？ 2*3 (batch_size * sequence_size)，不需要 特征维度
+对于 PyTorch 里的一个 文本tensor，shape 为 (2, 3, 4)，如果对这个 Tensor 进行 **Layer Normalization**，请问一共会计算 **几个均值/方差**？ 2*3 (batch_size * sequence_size(token 数量))，不需要 特征维度
 
 对于 shape 为 (2, 3, 4, 4) 的 Tensor，如果对其进行 Batch Normalization (BN)，请问 α/β（可学习参数 γ 和 β）的 shape 是多少？ **在 C=3 维度计算均值和方差，每个通道 1 组 γ 和 β，shape 是 [3]**
 
 对于 shape 为 (2, 3, 4) 的 Tensor，如果对其进行 Layer Normalization (LN)，请问 α/β（可学习参数 γ 和 β）的 shape 是多少？ **对 D=4 维度进行归一化，所以 γ/β 的 shape 也是 [4]**
 
 Batch Normalization (BN) 在 CNN 任务中， 对每个通道（Channel）单独计算均值和方差，所以对于 RGB 3 通道的图像，BN 计算 3 个均值和方差，与图像大小无关
+
 
 **Batch Norm 区分 训练/推理(需要 moving_mean/var)**
 
@@ -1403,7 +1428,7 @@ encoder 可以使用 双向 RNN(既能看到前文，也能看到后文，不仅
 
 **BLEU**(Bilingual Evaluation Understudy)
 1. 衡量生成序列的好坏
-2. `n-gram` 从一个序列中连续取出的 n 个元素的子序列
+2. `n-gram` 从一个序列中 **连续** 取出的 n 个元素的子序列
 3. n-gram 精度 使用 clipped count (裁剪计数 (B 在参考里只有 1 次，所以预测里的 2 个 B 只能算 1 次命中))，避免模型靠 复读 同一个高频词来刷分
 4. <img src="Pics/d2l088.png" width=500>
 5. BLEU 越大越好
