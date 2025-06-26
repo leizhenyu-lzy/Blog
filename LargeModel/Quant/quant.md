@@ -2,6 +2,9 @@
 
 [模型量化 - B站合集](https://space.bilibili.com/18235884/lists/2887562?type=season)
 
+[Quantization explained with PyTorch - Post-Training Quantization, Quantization-Aware Training](https://www.youtube.com/watch?v=0VdNflU08yA)
+
+
 <img src="Pics/quant007.png">
 
 # 量化基础
@@ -108,7 +111,7 @@ Llama 13B = 13,000,000,000
       1. 输入像素范围 0-255，或归一化到 0-1
       2. 文本 embedding 可提前归一化
    2. 激活值 最难量化
-      1. 静态量化 → 用校准集统计 min/max
+      1. 静态量化 → 用 校准集(calibration set) 统计 min/max
       2. QAT → 训练时插入 fake-quant，让网络自适应
 3. 偏置(bias) : 只做一次，一般 量化到 **int32**
 
@@ -141,4 +144,7 @@ PyTorch 会把 量化参数 scale 和 zero_point 直接存进张量的元数据�
 
 `torch.qint8`
 
+
+
+[Practical Quantization in PyTorch](https://pytorch.org/blog/quantization-in-practice/)
 
