@@ -2,7 +2,7 @@
 
 [模型量化 - B站合集](https://space.bilibili.com/18235884/lists/2887562?type=season)
 
-[Quantization explained with PyTorch - Post-Training Quantization, Quantization-Aware Training](https://www.youtube.com/watch?v=0VdNflU08yA)
+[YouTube - Umar Jamil - Quantization explained with PyTorch - Post-Training Quantization, Quantization-Aware Training](https://www.youtube.com/watch?v=0VdNflU08yA)
 
 
 <img src="Pics/quant007.png">
@@ -76,13 +76,21 @@ Llama 13B = 13,000,000,000
    1. <img src="Pics/quant004.png" width=600>
 
 异常值
-1. <img src="Pics/quant005.png" width=600>
-2. 可以将 异常值 单独处理
+1. 会有导致 量化误差 增大
+2. <img src="Pics/quant005.png" width=600>
+3. <img src="Pics/quant013.png" width=600>
+4. 解决方法
+   1. 不是直接设为绝对 min/max，而是设为某个 高百分位 (eg : 99.99%)
+   2. <img src="Pics/quant014.png" width=600>
 
-量化力度
-1. tensor
-2. channel
-3. group
+
+量化力度(granularity)
+1. <img src="Pics/quant015.png" width=500>
+2. tensor
+3. channel
+4. group : 将权重矩阵分成多个小块，每个块单独进行量化和缩放
+
+
 
 
 
@@ -93,16 +101,21 @@ Llama 13B = 13,000,000,000
 下一层 进行 独立的 量化 & 反量化
 
 **PTQ** (Post-training Quantization)  - **训练后量化**
+1. Unlabeled Data 不需要是 training 数据，只需要 是 inference 会用到的即可
+2. <img src="Pics/quant016.png" width=600>
 
 **QAT** (Quantization-Aware Training) - **量化感知训练**
-1. 在训练阶段就把 **量化误差** 模拟进网络，让它学会适应 INT8/INT4 精度
-2. FakeQuant 把张量 截断/四舍五入到 int8 格点，但仍用 FP32 保存值
-   1. 难求梯度  `round()`、`clip()` 都是 不可导或梯度几乎处处为 0 的函数
-      1. 前向 : 继续用截断 / 四舍五入，真实地模拟量化误差
-      2. 反向 : 把量化函数的梯度近似为 1
-         1. 直观上 : 梯度在 FakeQuant 处当成恒等传递
-         2. $$\frac{\partial L}{\partial x} \overset{\text{STE}}{\approx}\ \frac{\partial L}{\partial \hat{x}}$$
-3. 推理阶段把 FakeQuant 替换为真 QuantizeLinear / DequantizeLinear
+1. <img src="Pics/quant017.png" width=600>
+2. 在 **训练阶段** 就把 **量化误差** 模拟进网络，让它学会适应 INT8/INT4 精度，more robust to the quantization effect
+3. FakeQuant 把张量 截断/四舍五入到 int8 格点，但仍用 FP32 保存值
+4. 难求梯度  `round()`、`clip()` 都是 不可导或梯度几乎处处为 0 的函数
+   1. 前向 : 继续用截断 / 四舍五入，真实地模拟量化误差
+   2. 反向 : 把量化函数的梯度近似为 1 (和 0)
+      1. <img src="Pics/quant018.png" width=600>
+      2. 直观上 : 梯度在 FakeQuant 处当成恒等传递
+      3. $$\frac{\partial L}{\partial x} \overset{\text{STE}}{\approx}\ \frac{\partial L}{\partial \hat{x}}$$
+      4. STE : straight-through estimator
+5. 推理阶段把 FakeQuant 替换为真 QuantizeLinear / DequantizeLinear
 
 **量化对象**
 1. 模型权重(weight) : 容易量化，**离线一次性量化**(导出模型时就转 **INT8**，固定值) + 对称量化(权重正负都有) + **per-channel**
@@ -110,7 +123,7 @@ Llama 13B = 13,000,000,000
    1. 输入 相对容易量化，在预处理阶段固定
       1. 输入像素范围 0-255，或归一化到 0-1
       2. 文本 embedding 可提前归一化
-   2. 激活值 最难量化
+   2. 激活值/输出 最难量化
       1. 静态量化 → 用 校准集(calibration set) 统计 min/max
       2. QAT → 训练时插入 fake-quant，让网络自适应
 3. 偏置(bias) : 只做一次，一般 量化到 **int32**
@@ -135,6 +148,7 @@ Llama 13B = 13,000,000,000
 
 **越界问题**
 1. int8 × int8 的乘法结果 会先存放到 **32bit(int32) 寄存器** 中
+   1. <img src="Pics/quant012.png" width=600>
 2. 后续可以进行
    1. 若下一层仍走 int8 路径 : **re-quant** : int32 -> int8
    2. 若需要给浮点算子或最终输出 : **dequant** : int32 -> fp32 (开销大)
