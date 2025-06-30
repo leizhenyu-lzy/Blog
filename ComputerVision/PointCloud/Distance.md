@@ -10,7 +10,7 @@
 定义 : 给定两个点云 P 和 Q，Chamfer Distance 是 `P 中每个点到 Q 中最近的点的距离的平方和`与 `Q 中每个点到 P 中最近的点的距离的平方和` 的平均值
 
 $$
-CD(A, B) = \frac{1}{|A|} \sum_{a \in A} \min_{b \in B} d(a, b) + \frac{1}{|B|} \sum_{b \in B} \min_{a \in A} d(b, a)
+CD(A, B) = \frac{1}{|A|} \sum_{a \in A} \min_{b \in B} d(a, b)^2 + \frac{1}{|B|} \sum_{b \in B} \min_{a \in A} d(b, a)^2
 $$
 
 $$CD(A, B) = CD(B, A)$$

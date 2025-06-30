@@ -1323,7 +1323,7 @@ Limitations
             5. mesh file 必须是 local file
       2. `<joint>` : connect links : **name**, **type**(revolute/continuous/prismatic/fixed/floating/planar)
          1. <img src="Pics/ros038.png" width=450>
-         2. `<origin>` : transform from the parent link to the child link
+         2. `<origin>` : transform from the parent link to the child link, joint is located at the origin of the child link
             1. xyz
             2. rpy : 弧度制(radians)，Fixed Frame(1 **roll** around x, 2 **pitch** around y, 3 **yaw** around z)
          3. `<parent>` : parent link name
