@@ -31,6 +31,10 @@ $$CD(A, B) = CD(B, A)$$
 
 # Hausdorff Distance
 
+[Hausdorff Distance - Wikipedia](https://en.wikipedia.org/wiki/Hausdorff_distance)
+
+<img src="Pics/point002.png" width=300>
+
 关注最坏情况(最大的最小距离)，对噪声敏感，**适用于几何精确匹配**
 1. 集合中某一点到另一集合最近的点的距离，然后在所有这些最小距离中取最大值
 2. 对于 集合1 的 每一个点，找 集合2 中最近的 点，然后 求出最大值。集合2 也做相同操作，最后再找出 两个方向的最大值
