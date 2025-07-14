@@ -160,5 +160,16 @@ PyTorch 会把 量化参数 scale 和 zero_point 直接存进张量的元数据�
 
 
 
+FP16 / BF16
+1. FP16
+   1. 1 sign + 5 exponent + 10 mantissa
+   2. 精度更高
+2. BF16
+   1. 1 sign + 8 exponent + 7  mantissa
+   2. 范围更大
+   3. 把 FP32 低 16 位直接截掉就是 BF16
+3. 两者同样节省显存与带宽，选哪一个主要看 硬件原生支持 + 训练稳定性需求
+
+
 [Practical Quantization in PyTorch](https://pytorch.org/blog/quantization-in-practice/)
 
