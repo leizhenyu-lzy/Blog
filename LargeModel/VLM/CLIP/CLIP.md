@@ -114,7 +114,10 @@ Contrastive Learning
 
 
 
-
+图片数据增强
+1. 随机 Resize-Crop (RandomResizedCrop → 224 × 224)
+   1. 先 resize(non-uniform) 再 crop
+2. 随机水平翻转 (Horizontal Flip)
 
 
 
@@ -124,3 +127,7 @@ Contrastive Learning
 相关应用
 1. [StyleCLIP: Text-Driven Manipulation of StyleGAN Imagery (ICCV 2021 Oral) - Github](https://github.com/orpatashnik/StyleCLIP)
 2. [CLIPDraw: Synthesize drawings to match a text prompt! - Github](https://github.com/kvfrans/clipdraw)
+3. [Open-Vocabulary Detection via Vision and Language Knowledge Distillation - Github](https://github.com/tensorflow/tpu/tree/master/models/official/detection/projects/vild)
+   1. [YouTube](https://www.youtube.com/watch?v=aA0r1M_NWhs)
+4. [Contrastive Language-Image Forensic Search - Github](https://github.com/johanmodin/clifs)
+
