@@ -26,6 +26,8 @@
 5. Zero-Shot Prediction
    1. 利用 prompt template 生成文本，**摆脱 categorical label 的限制**(无需定死的标签)
    2. 用 各个{类别}文本 和 图片 计算 cosine similarity
+   3. 因为预训练的时候使用的大多数是句子，因此最好推理的时候也用句子
+   4. Prompt Engineering (imagenet_templates) : [Prompt_Engineering_for_ImageNet.ipynb](https://github.com/openai/CLIP/blob/main/notebooks/Prompt_Engineering_for_ImageNet.ipynb)
 
 
 数据集
