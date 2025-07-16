@@ -22,6 +22,7 @@
    1. $T_1,\dotsm,T_N$ & $I_1, \dotsm, I_N$ 中，每个元素 长度都为 d，代表 N 对 text-image pair 得到的 embedding 结果
       1. 主对角线(蓝色) 代表 正样本，共 $N$ 个
       2. 非对角线(白色) 代表 负样本，共 $N^2 - N$ 个
+      3. mini-batch 内对比学习自带 负样本
 5. Zero-Shot Prediction
    1. 利用 prompt template 生成文本，**摆脱 categorical label 的限制**(无需定死的标签)
    2. 用 各个{类别}文本 和 图片 计算 cosine similarity
@@ -50,7 +51,20 @@
    $$
 2. 左边部分为 **Image-to-Text** loss，外层遍历 image，以 image 为 anchor 轮询所有 text
 3. 有半部分为 **Text-to-Image** loss，外层遍历 text，以 text 为 anchor 轮询所有 image
-4. create a distribution of similarities, allowing the model to distinguish correct pairs from incorrect pairs.
+4. create a distribution of similarities, allowing the model to distinguish correct pairs from incorrect pairs
+5. 伪代码
+   1. <img src="Pics/clip003.png" width=350>
+   2. 通过 可学习的 参数 $W_i$ & $W_t$，将 两种特征 对齐维度，对齐到同一个坐标系，翻成共同语言，否则图向量和文向量无法比较
+   3. `l2_normalize` 把向量投到单位超球面，对比学习里 关心 角度(余弦) 差异，数值/梯度更稳定，另外 使得 点积＝余弦
+   4. `np.dot(I_e, T_e.T)` 相当于 `I_e @ T_e.T`
+   5. logits 为 $n × n$ 维矩阵 (行代表不同 image，列代表不同 text)，并且已经都 乘以 $e^t$，t 是可学习参数，和 上方 公式 的 $\tau$ 的关系为 $\tau = e^{-t}$
+   6. pair 正好在对角线，因此 label 就为 `np.arrange`
+   7. `cross_entropy_loss` 内部
+      1. 逐行(axis=0) / 逐列(axis=1) 做 **softmax**
+      2. $\frac{\exp(\operatorname{sim/\tau})}{\sum \exp(\operatorname{sim/\tau})}$ 就是 在 softmax
+      3. axis=0 对应 同一个 image 去匹配 不同 text
+      4. axis=1 对应 同一个 text 去匹配 不同 image
+      5. 通过 label 选中 correct 概率，并进行 负对数，均值
 
 
 
