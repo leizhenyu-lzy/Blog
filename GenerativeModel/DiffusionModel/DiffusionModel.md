@@ -52,26 +52,29 @@ $q(x_1 | x_0) = \mathcal{N}(x_0, \beta)$，可以理解为以 $x_0$ 为中心，
 
 Denoising Diffusion Probabilistic Models(DDPM)
 
-反复使用 同一个 denoise model，输入 step (denoise 到第几步)
+最开始，从 高维标准高斯噪声，生成样本，再逐步去噪
+
+反复使用 同一个 denoise model，输入 **step** (denoise 到第几步，noise 的严重程度)
 
 denoise model
-1. <img src="Pics/lhy001.png" width=500>
+1. <img src="Pics/lhy001.png" width=400>
 2. input 有 noise 的图片，预测 noise，减去 noise (可能 predict noise 简单)
 
 
-Forward Process (Diffusion Process)
+**Forward/Diffusion Process** (加噪声)
 1. input image + 从 gaussian distribution 中 sample 的 noise
 2. 对于 noise predictor
-   1. 加入 noise 的 image & step步骤数 是 input (对于 text2image 还需 文字描述)
-   2. noise 是 GroundTruth output
+   1. <img src="Pics/lhy038.png" width=400>
+   2. 加入 noise 的 `image` & `step步骤数` 是 input (对于 text2image 还需 文字描述)
+   3. noise 是 GroundTruth output
 
 
 Text-to-Image
-1. 需要 文字&图片 成对资料
+1. 需要 Text-Image Pair
 2. [LAION-5B: A NEW ERA OF OPEN LARGE-SCALE MULTI-MODAL DATASETS](https://laion.ai/blog/laion-5b)
 3. 在 denoise 的 各个 step 中 input 相同的 text
    1. <img src="Pics/lhy002.png" width=500>
-4. Predictor 中 加入 text
+4. Predictor 中 加入 text(额外输入)
    1. <img src="Pics/lhy003.png" width=500>
 
 ## Stable Diffusion、DALL-E、Imagen 背后共同的套路
@@ -79,21 +82,22 @@ Text-to-Image
 Stable Diffusion、DALL-E、Imagen 背后共同的套路
 1. 结构
    1. <img src="Pics/lhy004.png" width=500>
-   2. Text Encoder (GPT/BERT)
-      1. text encoder 对结果 影响大，很重要，相比之下 diffusion model 的大小 影响小
+   2. **Text Encoder** (GPT/BERT)
+      1. text encoder 对结果 影响大，很重要，相比之下 diffusion model 影响小
       2. 指标
-         1. FID(Fréchet Inception Distance)
+         1. **FID** (Fréchet Inception Distance)
             1. <img src="Pics/lhy008.png" width=600>
-            2. 越小越好，smaller is better
-            3. 使用 CNN 模型 输出的 representation
-            4. 需要 sample 很多 image
-         2. CLIP Score (Contrastive Language-Image Pre-Training)
+            2. 越小越好
+            3. 使用 pre-trained 的 CNN (ImageNet 上预训练的 Inception‑V3 网络) 输出的 latent representation
+            4. 需要 sample 大量 images，对两批图像(生成的、真实的) 分别提取特征
+            5. 假设采样的 2组 representation 符合 多元 gaussian 分布，计算 Fréchet 距离
+         2. **CLIP Score** (Contrastive Language-Image Pre-Training)
             1. Image Encoder & Text Encoder
-   3. Generation Model
-      1. 和 diffusion model 不同，noise 不是加在图片上，而是加在 中间产物上
+   3. **Generation Model**
+      1. 可以和 diffusion model 不同，noise 不是加在图片上，而是加在 中间产物上
       2. 依然是 predict noise
       3. <img src="Pics/lhy010.png" width=600>
-   4. Decoder
+   4. **Decoder** (还原)
       1. 一般不需要 文字 信息
       2. 训练，根据中间产物划分
          1. 小图 : 使用 原图 & down-sampling 作为数据集
@@ -108,6 +112,8 @@ Stable Diffusion、DALL-E、Imagen 背后共同的套路
    3. Imagen
       1. <img src="Pics/lhy007.png" width=700>
 
+
+https://www.youtube.com/watch?v=JbfcAaBT66U&list=PLJV_el3uVTsNi7PgekEUFsyVllAJXRsP-&index=5
 
 ## Diffusion Model 原理剖析
 
