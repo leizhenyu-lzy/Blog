@@ -36,6 +36,9 @@
 2. 用 猜测q 描述 真实情况p 时，会损失多少信息，有多么不相似
 3. 特性
    1. **非负性**，当且仅当 完美猜测(P=Q)，KL散度为0
+      1. Jensen's Inequality : 对于 convex function(开口向上，任意两点连线在函数上)，平均都函数 ≤ 函数的平均，$f(\mathbb{E}[X]) \le \mathbb{E[f(X)]}$，对于 concave，不等号反向
+      2. 设随机变量 $Z(x) = \frac{q(x)}{p(x)}$，$-\log$ 为凸函数，这里 Jensen 看的是随机变量 Z 的分布，不是把 $-\log \frac{q(x)}{p(x)}$ 视作一个关于 x 的函数去考察
+      3. <img src="Pics/kl002.png" width=500>
    2. KL散度越大，差别越大
    3. **对于概率分布敏感**
       1. 高概率区域 差异放大 (P 大 Q 小)
@@ -43,15 +46,16 @@
    4. **可加性**，多维分布的 KL散度 计算可以分解为 各个维度的 累加
    5. **不对称性**，**$D_{KL}(p||q)$(前向散度)** ==不等于== **$D_{KL}(q||p)$(反向散度)**
 4. 公式 (离散 & 连续)
-   1. $$D_{KL}(p||q) = E_p[log\frac{p}{q}] = \sum p \log \frac{p}{q}$$
-   2. $$D_{KL}(p||q) = E_p[log\frac{p}{q}] = \int p \log \frac{p}{q}$$
+   1. $$D_{KL}(p||q) = \mathbb{E}_p[\log\frac{p}{q}] = \sum p \log \frac{p}{q}$$
+   2. $$D_{KL}(p||q) = \mathbb{E}_p[\log\frac{p}{q}] = \int p \log \frac{p}{q}$$
    3. 比值 + 对数 + 期望
 5. 前向散度 用于 监督学习，反向散度 用于 强化学习/变分推断
-   1. 正向KL (模式覆盖 model-covering) - 全面覆盖
+   1. <img src="Pics/kl001.png" width=500>
+   2. 正向KL (模式覆盖 model-covering) - 全面覆盖
       1. 重点惩罚 **P大 Q小** 的位置，不惩罚 **Q大 P小** 的位置
       2. 鼓励 **Q 覆盖所有可能的 P 的区域**
       3. 主要用于生成式模型，得到多样化，反映 真实数据分布的 各种特征和模式
-   2. 反向KL (模式寻找 model-seeking) - 精准聚焦
+   3. 反向KL (模式寻找 model-seeking) - 精准聚焦
       1. 重点惩罚 **Q大 P小** 的位置，不惩罚 **P大 Q小** 的位置
       2. 鼓励 **Q 精确的匹配 P 高概率区域**，不要求覆盖全部
 6. 性质

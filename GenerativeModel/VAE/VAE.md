@@ -6,7 +6,9 @@
   - [Table \& Contents](#table--contents)
 - [Autoencoders](#autoencoders)
 - [VAE (Variational Auto-Encoder)](#vae-variational-auto-encoder)
-  - [ELBO ((Variational) Evidence Lower Bound) 证据下界、变分证据下界、变分下界](#elbo-variational-evidence-lower-bound-证据下界变分证据下界变分下界)
+  - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
+  - [YouTube](#youtube)
+  - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
 
 ---
 
@@ -66,11 +68,40 @@ AE(Auto-Encoder) 自编码器
 
 # VAE (Variational Auto-Encoder)
 
+## Blog (Jeremy Jordan)
+
+[Variational autoencoders - Blog (Jeremy Jordan)](https://www.jeremyjordan.me/variational-autoencoders/)
+
+VAE formulate encoder to **describe a probability distribution** for each latent attribute, rather than AE which **outputs a single value**
+1. <img src="Pics/vae016.png" width=600>
+2. 普通 AE
+   1. <img src="Pics/vae017.png" width=600>
+3. VAE
+   1. <img src="Pics/vae018.png" width=600>
+   2. 别称
+      1. encoder 有时被称为 recognition model
+      2. decoder 有时被称为 generative model
+   3. constructing encoder model to output **a range of possible values(a statistical distribution)** 并喂给 decoder 模型 相当于 enforcing **continuous, smooth latent space representation**
+   4. values which are nearby to one another in latent space should correspond with very similar reconstructions
+      1. 逼迫解码器在邻域内都要工作
+      2. KL 散度
+   5. <img src="Pics/vae019.png" width=600>
+
+数据 x 可以看到，但是 隐变量 z 未知，希望通过 x 推断 z，即计算 $p(z|x) = \frac{p(x|z)p(z)}{p(x)}$，但是计算 $p(x)$ 困难
+
+使用 **Variational Inference**
+
+用 $q(z|x)$ 近似 $p(z|x)$，minimize KL 散度 $\min \text{KL} (q(z|x) || p(z|x))$
+
+相当于最大化
+
+## YouTube
+
 [Variational Autoencoders - YouTube](https://www.youtube.com/watch?v=qJeaCHQ1k2w)
 
 对于一个训练好的 autoencoder，生成新数据的方法是，从 latent space 中采样，并通过解码器解码
 
-但大多数情况，只会产生杂乱的结果，因为 latent space 无规则，大部分区域不会产生有意义的解码图像
+但大多数情况，只会产生杂乱的结果，因为 **latent space 无规则**，**大部分区域不会产生有意义的解码图像**
 
 <img src="Pics/vae003.png" width=500>
 
@@ -86,21 +117,27 @@ AE(Auto-Encoder) 自编码器
 
 从给定的  **Data Distribution** $p_{data}(x)$ 中生成新数据，但是不知道 p 的确切形状和属性，只能通过访问样本
 
-**Latent Distribution** 隐分布 $p(z)$，捕捉数据 core feature
+**Latent Distribution** 隐分布 $p(z)$，维度较低，捕捉数据 core feature
 
 <img src="Pics/vae004.png" width=500>
 
 需要 Mapping 连接 **Data Distribution** 和 **Latent Distribution**
 
-**映射**
-1. **posterior distribution 后验分布** $p(z|x)$ (latent 由 data 生成 的概率，值大 代表 latent 很有可能 来源于 data distribution 生成，重构为图像 能够得到新样本)
-2. **likelihood distribution 似然分布** $p(x|z)$ (从 latent 重建 data 的概率)
+<img src="Pics/vae020.png" width=500>
+
+<img src="Pics/vae021.png" width=500>
+
+**概念**
+1. **prior distribution 先验分布** $p(z) \sim \mathcal{N}(0,1)$，训练前就 人工固定为 **标准正态分布**，给潜空间一个统一、易采样的 "参考坐标"
+2. **posterior distribution 后验分布** $p(z|x)$ (latent 由 data 生成 的概率，值大 代表 latent 很有可能 来源于 data distribution 生成，重构为图像 能够得到新样本)
+3. 近似后验 $q(z|x) \sim \mathcal{N}(0,1)$，编码器输出(预测 $\mu$ & $\sigma$)，KL散度 将其 拉近 先验 $p(z)$ (ELBO)
+4. **likelihood distribution 似然分布** $p(x|z)$ (从 latent 重建 data 的概率)
 
 由于不知道 latent distribution，因此 假设为 **正态分布**，从而可以计算 likelihood
 
-使用 高斯分布 **$q(z|x)$** **近似** 后验**$p(z|x)$**，其中 $\mu$ & $\sigma$ 是可学习参数
+使用 高斯分布 **$q(z|x)$** **近似** 后验 **$p(z|x)$**，其中 $\mu$ & $\sigma$ 是可学习参数
 
-优化过程被称为 变分贝叶斯
+优化过程被称为 **变分贝叶斯**
 
 <img src="Pics/vae006.png" width=500>
 
@@ -108,29 +145,31 @@ AE(Auto-Encoder) 自编码器
 
 先验 $p(z)$，后验 $p(z|x)$，近似后验 $q_{\phi}(z|x)$
 
-训练
-1. 训练目标 **ELBO** (需要 **最大化**)
-   1. $$\mathcal{L}(x)=
-         \underbrace{\mathbb{E}_{q(z|x)}[\log p(x\,|\,z)]}_{\text{Data Consistency}} - \underbrace{\operatorname{KL}[q(z|x)\|p(z)]}_{\text{Regularization}}$$
-   2. 衡量模型 能够从前编码版本 z 重建出 x 的程度
-2. Data Consistency 项 可以简化为 L2 Loss，即 MSE(mean square error)，用 解码器 对 latent vector 重构，并测量与原始图像的 L2 距离
-3. KL散度(Regularization 项)，衡量了 近似后验$q(z|x)$ 和 先验$p(z)$ 的 接近程度，假设 先验服从 正态分布，因此 约束 近似后验 也 呈 正态分布形状
+训练目标 **ELBO** (需要 **最大化**)
+1. $$\mathcal{L}(x)=
+      \underbrace{\mathbb{E}_{q(z|x)}[\log p(x\,|\,z)]}_{\text{Data Consistency}} - \underbrace{\operatorname{KL}[q(z|x)\|p(z)]}_{\text{Regularization}}$$
+2. 重建项 : 让 Decoder 用采样到的 z 能重建 x，**数据一致性**
+   1. 可简化为 L2 Loss，即 MSE(mean square error)，用 解码器 对 latent vector 重构，并测量与原始图像的 L2 距离
+3. 正则项 : Encoder 输出的 $q_{\phi}(z|x)$ 应该和先验基本类似，不要偏离预先顶一顶 标准正态分布太多
+   1. 衡量了 近似后验 $q(z|x)$ 和 先验 $p(z)$ 的 接近程度，假设 先验服从 正态分布，因此 约束 近似后验 也 呈 正态分布形状
 
 相比普通 AutoEncoder，编码器 不是将输入映射到单个点，而是转化为 高斯分布的概率分布(**编码器将数据转化为高斯分布的 $\mu$ & $\sigma$**)
 
 在潜在分布中，随机采样点，解码器将其转换回 高维空间
 
-<img src="Pics/vae007.png" width=400>
+<img src="Pics/vae007.png" width=500>
 
 计算 ELBO 并 反向传播，这里是需要 **最小化**
 
-<img src="Pics/vae008.png" width=400>
+<img src="Pics/vae008.png" width=500>
 
-使用 Reparameterization Trick 重参数化技巧，解决 从近似后验中 采样操作 无法反向传播
+使用 Reparameterization Trick 重参数化技巧，解决 从近似后验中 采样操作 **无法反向传播**
 
 不直接从 近似分布 中 采样，而是 从固定标准正态分布中 采样 $\epsilon$ (requires_grad=False，无需计算梯度，作为常值使用)，$\mu + \sigma · \epsilon$ 相当于 调整回近似分布
 
-<img src="Pics/vae009.png" width=400>
+抽样动作只发生在 $\epsilon$，不含 $\phi$ 无需梯度(requires_grad=False)
+
+<img src="Pics/vae009.png" width=500>
 
 对于 两个 高斯分布，KL散度 有 闭式表达式
 
@@ -151,11 +190,13 @@ $$D_{\mathrm{KL}}\!\bigl(\mathcal N_0 \,\|\, \mathcal N_1\bigr)
 
 
 
-## ELBO ((Variational) Evidence Lower Bound) 证据下界、变分证据下界、变分下界
+## ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界
 
-$\theta$ : 解码器参数(生成模型) $p_{\theta}(x | z)$
+ELBO ((Variational) Evidence Lower Bound)
 
-$\phi$   : 编码器参数(推断模型) $q_{\phi}(z | x)$
+$\theta$ : 解码器 Decoder 参数 (生成网络) $p_{\theta}(x | z)$
+
+$\phi$   : 编码器 Encoder 参数 (推断网络) $q_{\phi}(z | x)$
 
 变分推断(Variational Inference) 将难以直接求解的后验分布 转为 优化问题，在候选分布$q(z|x)$ 中 找到最接近 真实后验$p(z|x)$ 的分布
 
@@ -169,17 +210,19 @@ $$\begin{align}
 & = \mathbb{E}_q (\log p(x | z)) - KL(q(z | x) || {p(z)})
 \end{align}$$
 
-P.S. : $D_{KL}(p||q) = E_p[log\frac{p}{q}] = \sum p \log \frac{p}{q}$
+P.S. : $D_{KL}(p||q) = \mathbb{E}_p[log\frac{p}{q}] = \sum p \log \frac{p}{q}$
 
 <img src="Pics/vae013.png" width=500>
 
 Jensen 不等式 : 若 f 是 凸函数，则 函数的期望 大于等于 期望的函数，若为 凹函数，则不等号方向相反
 
+$\log$ 为 凹函数
+
 <img src="Pics/vae014.png" width=300>
 
 如果要 最大化 evidence，可以最大化 ELBO
 
-可以拆分为两个部分
+拆分联合概率，ELBO 可以拆分为两个部分
 1. 似然函数 在 近似后验分布 的 期望
 2. 后验分布 和 先验分布 间的 KL散度
 

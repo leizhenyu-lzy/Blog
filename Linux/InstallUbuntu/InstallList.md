@@ -78,6 +78,7 @@ apt
 
 
 
+
 冻结 & 解冻
 1. sudo apt-mark hold/unhold package_name
 
@@ -85,6 +86,13 @@ apt
 
 ---
 
+
+
+```
+lzy@legion:~ $ sudo apt list --upgradable
+Listing... Done
+microsoft-edge-stable/stable 138.0.3351.95-1 amd64 [upgradable from: 133.0.3065.92-1]
+```
 
 
 Web
@@ -95,6 +103,7 @@ Web
    4. whatsapp
    5. bilibili - https://github.com/the1812/Bilibili-Evolved
 2. vscode
+   1. 禁用 类似 Typora 渲染 : `Ctrl + Shift + P` -> `"workbench.editorAssociations"` -> 添加 `"*.md": "default",`
 3. qq
 4. ros
 5. wechat
@@ -112,7 +121,7 @@ Web
    8. sudo apt -f install
    9. Fcitx Configuration 中 手动 添加 sogoupinyin，注意 不要 勾选 Only Show Current Language
    10. 简体 & 繁体 转换 : CTRL+SHIFT+F
-9.  eudic & ting_en
+9. eudic & ting_en
 10. miniconda
     1. https://docs.anaconda.com/miniconda/install/
     2. conda config --set auto_activate_base false
@@ -126,17 +135,10 @@ Web
 17. whatsapp 网页栏 添加 到桌面
 18. youtube music 网页栏 添加 到桌面
 19. cursor : https://www.cursor.com/cn
-    ```txt
-      [Desktop Entry]
-      Name=Cursor
-      Comment=Cursor
-      Type=Application
-      Icon=/usr/share/pixmaps/cursor.png
-      Exec=/home/lzy/Tools/Cursor/Cursor.AppImage
-      Terminal=false
-      StartupNotify=true
-      Categories=Application;Development;
-    ```
+    1.  安装脚本可以参考 : [安装 Cursor 脚本](./install_cursor_new.sh)
+    2.  导航栏 改为 vscode 竖向 : `Ctrl + Shift + P` -> Cursor Settings -> Appearance -> Open editor settings -> workbench.activityBar.orientation -> vertical
+    3.  切换 主题为 vscode (Dark Modern / VSCode Icons (插件 vscode-icons)) : File -> Preferences -> Theme
+    4.
 
 ---
 

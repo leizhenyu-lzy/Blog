@@ -80,25 +80,33 @@ Text-to-Image
 ## Stable Diffusion、DALL-E、Imagen 背后共同的套路
 
 Stable Diffusion、DALL-E、Imagen 背后共同的套路
-1. 结构
+1. 结构 (3模块 分开训练 再组合)
    1. <img src="Pics/lhy004.png" width=500>
    2. **Text Encoder** (GPT/BERT)
       1. text encoder 对结果 影响大，很重要，相比之下 diffusion model 影响小
-      2. 指标
+      2. <img src="Pics/lhy039.png" width=500>
+      3. 指标
          1. **FID** (Fréchet Inception Distance)
             1. <img src="Pics/lhy008.png" width=600>
             2. 越小越好
             3. 使用 pre-trained 的 CNN (ImageNet 上预训练的 Inception‑V3 网络) 输出的 latent representation
-            4. 需要 sample 大量 images，对两批图像(生成的、真实的) 分别提取特征
+            4. **需要 sample 大量 images**，对两批图像(生成的、真实的) 分别提取特征
             5. 假设采样的 2组 representation 符合 多元 gaussian 分布，计算 Fréchet 距离
          2. **CLIP Score** (Contrastive Language-Image Pre-Training)
             1. Image Encoder & Text Encoder
+            2. [CLIP - 个人笔记](../../LargeModel/CLIP/CLIP.md)
    3. **Generation Model**
-      1. 可以和 diffusion model 不同，noise 不是加在图片上，而是加在 中间产物上
-      2. 依然是 predict noise
-      3. <img src="Pics/lhy010.png" width=600>
+      1. 需要 image-text pair
+      2. 可以和 diffusion model 不同，noise 不是加在图片上，而是加在 中间产物上，**好处**:
+         1. 计算 & 存储 成本大幅下降 (latent space 空间小)
+         2. 可分模块训练，相互独立
+         3. 表达能力更强，训练更稳定 : 把高频纹理、噪点等难以建模的细节 甩锅 给解码器，扩散模型 只需聚焦语义、布局
+      3. 依然是 predict noise
+      4. <img src="Pics/lhy010.png" width=600>
+      5. <img src="Pics/lhy040.png" width=600>
+      6. 为了可视化方便，可以将每个中间结果(latent representation) 都交给 decoder 进行展示
    4. **Decoder** (还原)
-      1. 一般不需要 文字 信息
+      1. 一般 不需要 文字 信息
       2. 训练，根据中间产物划分
          1. 小图 : 使用 原图 & down-sampling 作为数据集
          2. latent representation(人类看不懂的小图) : 需要 训练 auto-encoder，将 input 转为 latent
@@ -109,11 +117,12 @@ Stable Diffusion、DALL-E、Imagen 背后共同的套路
       1. <img src="Pics/lhy005.png" width=700>
    2. DALL-E (生成模型 : Auto-Regressive / Diffusion)
       1. <img src="Pics/lhy006.png" width=700>
+      2. autoregressive 只适用于 图片的压缩版本
+      3. 完整图片 autoregressive 运算量太大
    3. Imagen
       1. <img src="Pics/lhy007.png" width=700>
 
 
-https://www.youtube.com/watch?v=JbfcAaBT66U&list=PLJV_el3uVTsNi7PgekEUFsyVllAJXRsP-&index=5
 
 ## Diffusion Model 原理剖析
 
@@ -125,54 +134,65 @@ Forward Process (add noise)
 Reverse Process (denoise)
 
 **VAE** vs **Diffusion Model**
+1. <img src="Pics/lhy011.png" width=600>
 
-<img src="Pics/lhy011.png" width=600>
 
 <!-- <img src="Pics/lhy012.png" width=700> -->
 
 **Training**
 1. <img src="Pics/lhy013.png" width=500>
-2. $x_0$ sample clean image
-3. $\epsilon$ sample a noise
-4. weighted sum $\bar{α}_1, ..., \bar{α}_T$
+2. $x_0$ 表示从 数据集里面 sample 一个 没有加噪的图片
+3. t 是从 1 ~ T(扩散/去噪过程 总 离散时间步) 中，随机抽取一个数字
+4. $\epsilon$ 从 高维正态分布中 sample noise
+5. **weighted sum** $\bar{α}_1, ..., \bar{α}_T$ (事先定好的数值)
    1. t 越大 $α$ 越小 (原图比例少，噪声比例大)
-5. 想象中是逐步加入 noise，而实际上 是一步到位，一次加好
+6. **目标** : noise predictor 能预测 先前 sample 的 noise
+7. 想象中是逐步加入 noise，预测混入的 noise，而实际上 是一步到位，一次加好，一次预测
    1. <img src="Pics/lhy014.png" width=500>
 
 
 
-**Sampling**
+**Sampling** (产生图的过程)
 1. sample 一个 全是噪音的 图 $x_T$
-2. <img src="Pics/lhy015.png" width=700>
+2. z 也是从 高维正态分布中采样出来的，把理论上的高斯分布真正落到随机样本上，而非均值，保证生成多样性
+3. <img src="Pics/lhy015.png" width=700>
 
 
 
-图像生成model本质的共同目标
+图像生成model本质的**共同目标**
 1. <img src="Pics/lhy016.png" width=600>
-2. 从 简单的 distribution sample 出 vector (latent variable)
-3. 通过 network $G(z) = x$，可能加入 condition(text 等)
-4. 得到 Image
+2. input处 从 简单的 distribution(知道如何 sample，通常为 Gaussian) sample 出 vector (latent variable)
+3. 通过 network $G(z) = x$，可能加入 condition(文本信息 等)，得到 Image
+4. 生成的图片会组成一个复杂的 distribution (即使是 简单的分部，但是通过 network)
+5. 希望 生成图片的distribution 和 真实图片的distribution 接近
+6. 输入文字，获得一个 distribution
+   1. <img src="Pics/lhy041.png" width=500>
 
 
-Maximum Likelihood Estimation
+Maximum Likelihood Estimation (衡量 distribution 接近程度)
 1. <img src="Pics/lhy017.png" width=600>
 2. Network 参数 为 $\theta$
-3. $P_{\theta}(x)$ : Network $\theta$ 的 distribution
-   1. 具体图像 $x_i$ 的 概率值 $P_{\theta}(x_i)$ 难以计算
+3. $P_{\theta}(x)$ : 通过 network $\theta$ 产生的 distribution
 4. $P_{data}(x)$ : 真实 数据分布 distribution
+5. 真实图像 $x_i$ 通过 $\theta$ 网络 生成的 概率值 $P_{\theta}(x_i)$ **难以计算**，先假设可以计算出来，用此计算 极大似然，求解最合适的 $\theta^*$
 
-Maximum Likelihood 相当于 Minimize KL Divergence
+**Maximum Likelihood** 相当于 **Minimize KL-Divergence**
 1. <img src="Pics/lhy018.png" width=700>
+2. 单调函数 取 log 不影响
+3. 采样足够多 可以 近似 真实图像 分布 的期望 (≈处，省略乘以 $\frac{1}{m}$)
+4. 由于是 负的 KL散度，因此 argmax 转为 argmin
+
 
 
 **VAE** : Compute $P_\theta(x)$
-1. <img src="Pics/lhy019.png" width=600>
-2. 大多数情况很难通过给定的 latent $z$ 得到 与原图 $x_i$(从 dataset 中 sample 出) 完全一致的 输出 $G(x)$
-3. 即 大部分的条件概率 $P_\theta(x|z)$ 的值 都是 0
-4. 解决方案 : $G(z)$ 代表 Mean of Gaussian (联想二维高斯分布)
+1. [VAE - 个人笔记](../VAE/VAE.md)
+2. <img src="Pics/lhy019.png" width=600>
+3. 大多数情况很难通过给定的 latent $z$ 得到 与原图 $x_i$(从 dataset 中 sample 出) 完全一致的 输出 $G(x)$
+4. 即 大部分的条件概率 $P_\theta(x|z)$ 的值 都是 0
+5. 解决方案 : $G(z)$ 代表 Mean of Gaussian (联想二维高斯分布)
    1. $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$$
    2. 显然 正比于 距离的平方
-5. Lower Bound of $\log P(x)$ - 通过 最大化 Lower Bound 来 最大化 原函数
+6. Lower Bound of $\log P(x)$ - 通过 最大化 Lower Bound 来 最大化 原函数
    1. 使用 KL散度 恒非负 性质
    2. <img src="Pics/lhy020.png" width=600>
 
