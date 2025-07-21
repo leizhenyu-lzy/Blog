@@ -16,7 +16,7 @@
 
 # Autoencoders
 
-[Autoencoders | Deep Learning Animated - YouTube](https://www.youtube.com/watch?v=hZ4a4NgM3u0)
+[Autoencoders | Deep Learning Animated - YouTube(Deepia)](https://www.youtube.com/watch?v=hZ4a4NgM3u0)
 
 Gen AI，不处理数据，而是从头创建
 
@@ -65,7 +65,6 @@ AE(Auto-Encoder) 自编码器
 ---
 
 
-
 # VAE (Variational Auto-Encoder)
 
 ## Blog (Jeremy Jordan)
@@ -91,13 +90,14 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 
 使用 **Variational Inference**
 
-用 $q(z|x)$ 近似 $p(z|x)$，minimize KL 散度 $\min \text{KL} (q(z|x) || p(z|x))$
-
-相当于最大化
 
 ## YouTube
 
-[Variational Autoencoders - YouTube](https://www.youtube.com/watch?v=qJeaCHQ1k2w)
+[Variational Autoencoder - YouTube(Deepia)](https://www.youtube.com/watch?v=qJeaCHQ1k2w)
+
+[Variational Autoencoder - Model, ELBO, loss function and maths explained easily! - YouTube(Umar Jamil)](https://www.youtube.com/watch?v=iwEzwTTalbg)
+
+[Understanding Variational Autoencoders (VAEs) | Deep Learning - YouTube(DeepBean)](https://www.youtube.com/watch?v=HBYQvKlaE0A)
 
 对于一个训练好的 autoencoder，生成新数据的方法是，从 latent space 中采样，并通过解码器解码
 
