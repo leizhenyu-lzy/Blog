@@ -100,6 +100,7 @@ Architecture
       2. 使用 `concat` 形成一个大矩阵
       3. 通过 线性层，再和 输入 X 进行 element-wise 相加，得到输出 Y
       4. <img src="Pics/transformer022.png" width=500>
+      5. 没有硬性限制 Multi-Head 必须不同，但 参数随机初始化 + 训练动力学(Dropout、LayerNorm、Mini-Batch) + 输出融合层的梯度需求，会自然驱动它们走向差异化
    7. 原文 n_heads = 8，n_encoders = 6
 5. Decoder
    1. 整体结构和 Encoder 类似，但有**关键区别**

@@ -104,6 +104,13 @@ Web
    5. bilibili - https://github.com/the1812/Bilibili-Evolved
 2. vscode
    1. 禁用 类似 Typora 渲染 : `Ctrl + Shift + P` -> `"workbench.editorAssociations"` -> 添加 `"*.md": "default",`
+   2. 编辑器自动换行 `Alt + Z`
+   3. 单独设置 markdown 自动换行
+      ```json
+      "[markdown]": {
+         "editor.wordWrap": "on"
+      }
+      ```
 3. qq
 4. ros
 5. wechat
@@ -121,7 +128,7 @@ Web
    8. sudo apt -f install
    9. Fcitx Configuration 中 手动 添加 sogoupinyin，注意 不要 勾选 Only Show Current Language
    10. 简体 & 繁体 转换 : CTRL+SHIFT+F
-9. eudic & ting_en
+9.  eudic & ting_en
 10. miniconda
     1. https://docs.anaconda.com/miniconda/install/
     2. conda config --set auto_activate_base false

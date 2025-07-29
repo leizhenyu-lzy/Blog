@@ -890,19 +890,16 @@ BN 完成归一化后，再 **乘 γ** & **加 β** 相当于再进行 一次 �
 
 [什么是层归一化LayerNorm，为什么Transformer使用层归一化 - B站视频](https://www.bilibili.com/video/BV1yCyQY6EnA/?)
 
-**BatchNorm 切 feature 聚合 batch**，**LayerNorm 切 样本 聚合 feature & seq**
+BatchNorm & LayerNorm
+1. **BatchNorm 切 feature 聚合 batch**，**LayerNorm 切 样本 聚合 feature & seq_len**
+2. BatchNorm 依赖整批样本，样本间分布差异越大，统计越不稳定
+3. LayerNorm 不受 batch大小、序列长度、样本分布影响
+4. NLP 常见场景对 BatchNorm 不友好，**batch 中句子长短差别大**，BN 统计容易被极端样本拉偏
+5. Transformer 训练常因显存或模型并行被迫把有效 batch size 压得很小，BN 统计噪声大
+6. BN，**padding token** 也加入统计会污染均值方差；LN 则天然只看自身维度，不受 pad 位影响
+7. BN 需要在训练期间累积 全局移动平均 作推理用，LN 运行时只用当前样本自身统计，训练/推理 公式一致，无需维护额外状态
 
-BatchNorm 依赖整批样本，样本间分布差异越大，统计越不稳定
 
-LayerNorm 不受 batch 大小、序列长度、样本分布影响
-
-NLP 常见场景对 BatchNorm 不友好，一个 batch 中句子长短差别大，BN 统计容易被极端样本拉偏
-
-Transformer 训练常因显存或模型并行被迫把有效 batch size 压得很小，BN 统计噪声大
-
-若用 BN，padding token 也加入统计会污染均值方差；LN 则天然只看自身维度，不受 pad 位影响
-
-BN 需要在训练期间累积 全局移动平均 作推理用，LN 运行时只用当前样本自身统计，训练/推理 公式一致，无需维护额外状态
 
 序列数据 尺寸 $B * Q* D$
 1. B - batch size
