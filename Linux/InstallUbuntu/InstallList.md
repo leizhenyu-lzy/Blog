@@ -142,10 +142,10 @@ Web
 17. whatsapp 网页栏 添加 到桌面
 18. youtube music 网页栏 添加 到桌面
 19. cursor : https://www.cursor.com/cn
-    1.  安装脚本可以参考 : [安装 Cursor 脚本](./install_cursor_new.sh)
-    2.  导航栏 改为 vscode 竖向 : `Ctrl + Shift + P` -> Cursor Settings -> Appearance -> Open editor settings -> workbench.activityBar.orientation -> vertical
-    3.  切换 主题为 vscode (Dark Modern / VSCode Icons (插件 vscode-icons)) : File -> Preferences -> Theme
-    4.
+    1. 安装脚本可以参考 : [安装 Cursor 脚本](./install_cursor_new.sh)
+    2. 导航栏 改为 vscode 竖向 : `Ctrl + Shift + P` -> Cursor Settings -> Appearance -> Open editor settings -> workbench.activityBar.orientation -> vertical
+    3. 切换 主题为 vscode (Dark Modern / VSCode Icons (插件 vscode-icons)) : File -> Preferences -> Theme
+    4. `Ctrl + Shift + P`, `Window: Command Center`, `Window: Custom Title Bar Visibility`(windowed), `Window: Title Bar Style`(custom)
 
 ---
 
