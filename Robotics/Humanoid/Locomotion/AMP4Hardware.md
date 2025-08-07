@@ -110,3 +110,41 @@ trajectories_full : ROOT_POS(3) + ROOT_ROT(4) + JOINT_POS(12) + TAR_TOE_POS(12) 
 
 
 
+
+AMP 查看数据时长
+
+```python
+import json
+import os
+
+total_frames = 0
+total_duration = 0
+
+for file in os.listdir('.'):
+    if file.endswith('.json'):
+        print(f'=== {file} ===')
+        try:
+            with open(file, 'r') as f:
+                data = json.load(f)
+
+            frame_duration = data.get('FrameDuration', 0)
+
+            frames = data.get('Frames', [])
+            num_frames = len(frames)
+
+            duration = num_frames * frame_duration
+
+            print(f"duration({duration}) = num_frames({num_frames}) * frame_duration({frame_duration})")
+
+            total_frames += num_frames
+            total_duration += duration
+
+        except Exception as e:
+            print(f'错误: {e}')
+            print()
+
+print(f'=== Total ===')
+print(f'total_frames    : {total_frames}')
+print(f'total_duration  : {total_duration:.2f}s ({total_duration/60:.2f}分钟)')
+```
+
