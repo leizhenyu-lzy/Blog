@@ -22,6 +22,19 @@ https://www.bilibili.com/video/BV1jH2RYgEDN
 https://www.bilibili.com/video/BV1jh4y1q7ua
 
 
+
+创建时，scheduler 保存了 optimizer 的引用，调用 scheduler.step() 时，scheduler 会直接修改 optimizer 的学习率
+
+patience 机制 : 连续 patience 个 epoch 的 loss 没有下降 才触发
+
+理解
+1. 前期：大学习率快速收敛
+2. 中期：发现卡住了(plateau)，说明步子太大
+3. 后期：小学习率精确收敛到最优解
+
+
+
+
 Adam
 
 AdamW
@@ -43,7 +56,7 @@ AdamW
 scheduler : 学习率调度器
 1. 基于步数
 2. 基于性能
-   1. ``
+   1. `ReduceLROnPlateau`
 3. 周期性
 4. 预热相关
 5. 自适应
