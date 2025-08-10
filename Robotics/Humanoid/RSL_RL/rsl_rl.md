@@ -57,20 +57,27 @@ import
 
 总损失 : `L = surrogate_loss + value_loss_coef * value_loss – entropy_coef * entropy`
 
+PPO 阶段
+1. 采样阶段 : `act()` 随机采样动作 与环境交互，数据写入 `RolloutStorage`
+2. 更新阶段 : 从 `RolloutStorage` 按照 mini-batch 取出数据
+3. 推理阶段 : 使用 `act_inference()` 输出确定动作(mean)
+
+
 
 `PPO` 类
 1. `__init__()`
-   1. desired_kl : 目标 KL 距离，配合 schedule="adaptive"
-   2. schedule : 学习率调度方式
-      1. "fixed" : 始终使用初始 learning_rate
-      2. "adaptive" : 按 KL 距离自适应调整，在 `update()` 函数中，根据 kl_mean 和 `2*desired_kl` / `0.5*desired_kl` 进行 learning rate 的调整
-   3. learning_rate
-   4. PPO components
-      1. actor_critic : `ActorCritic` 类
-      2. storage : `RolloutStorage` 类
+   1. Learning Parameter
+      1. desired_kl : 目标 KL 距离，配合 schedule="adaptive"
+      2. schedule : 学习率调度方式
+         1. "fixed" : 始终使用初始 learning_rate
+         2. "adaptive" : 按 KL 距离自适应调整，在 `update()` 函数中，根据 kl_mean 和 `2*desired_kl` / `0.5*desired_kl` 进行 learning rate 的调整
+      3. learning_rate
+   2. PPO components
+      1. actor_critic : `ActorCritic` 类，会 `.to(device)`
+      2. storage : `RolloutStorage` 类，此处为 None，后续 初始化
       3. optimizer : `optim.Adam(self.actor_critic.parameters(), lr=learning_rate)`
       4. transition : `RolloutStorage.Transition` 类，暂存当前时间步step 环境交互数据，等待存入完整的 trajectory buffer
-   5. PPO parameters
+   3. PPO parameters
       1. clip_param : 裁剪系数，裁剪 重要性采样比值
       2. num_learning_epochs : 每次 rollout 结束后，对 **同一批数据** 做多少个 epoch 的梯度更新
       3. num_mini_batches : 把整批 rollout 数据 拆成几份 mini-batch
@@ -89,7 +96,7 @@ import
    3. `act()` 阶段的主要目标是 采样&收集数据(阶段并不会立刻反向传播)，是先存进 rollout buffer，供稍后做梯度更新时使用
 6. `process_env_step()`
    1. 在每一步 env.step() 之后，把刚拿到的 reward / done 等信息补齐到 transition
-   2. 正式写入 RolloutStorage
+   2. 正式写入 `RolloutStorage`
    3. **==☆==** 判断 是否是 time_out 导致的被迫强制中断，**如果 不是失败 而是 时间用完 这步奖励应当包含后续的预期价值**
       1. 如果把它当成真正终点，会低估后续潜在回报，给价值函数带来偏差
       2. **time-limit bootstrapping**，在超时那一步 用 Critic 的预测值来 补 被截掉的尾巴
@@ -98,7 +105,7 @@ import
    5. 对于 dones 的环境，重置 RNN 隐状态(如果有，对 普通 MLP 无影响)
 7. `compute_returns()`
    1. 调用 actor_critic 的 `evaluate()`，输出 状态价值
-   2. 调用 storage 的 `compute_returns()`，计算 GAE
+   2. 调用 storage 的 `compute_returns()`，计算 **GAE**
 8. `update()` **==☆==**
    1. 调用 `reccurent_mini_batch_generator` / `mini_batch_generator`，得到 batch 生成器 `yield`
       1. 包含以下内容
@@ -109,14 +116,30 @@ import
          4. hid_states_batch
          5. masks_batch
    2. 在 mini-batch 内
-      1. act
-      2. 计算 KL 并 调整学习率，需要有 `desired_kl` & `schedule == 'adaptive'`
+      1. 根据 obs & critic_obs 通过 act
+      2. 计算 KL(新旧 sigma) 并 调整学习率，需要有 `desired_kl` & `schedule == 'adaptive'`
+         1. 使用的是对角高斯分布的 KL散度 闭式解 - TODO
+      3. 计算 PPO Loss (surrogate loss) : actor + critic + entropy
+         1. actor 部分 (surrogate)
+            1. 重要性采样(ratio)
+            2. surrogate(GAE Advantage * ratio)
+            3. surrogate_clipped(限制 Actor 每一次更新的改变量不要过大)
+            4. surrogate_loss
+         2. critic 部分 (value)
+            1. value_clipped(限制 Critic 每一次更新的改变量不要过大)
+            2. value_losses & value_losses_clipped
+            3. 最终 value_loss
+      4. 梯度下降 : optimizer梯度清空 + backward反向传播 + 梯度采集`clip_grad_norm_` + 参数更新
+      5. 累加 surrogate & value loss
+   3. 计算 surrogate & value loss 平均值 并返回 + 清空 storage
 
 
 
 
 
 ## vec_env.py
+
+对外表现为 单个环境，在内部 持有&管理 多份环境实例
 
 `VecEnv` 类 : 继承 `abc.ABC` (Abstract Base Classes)
 1. variable
@@ -129,6 +152,9 @@ import
    6. device : `torch.device`
 2. `@abstractmethod`
    1. `step(actions: torch.Tensor)`
+      1. `obs, privileged_obs, rewards, dones, infos = self.env.step(actions)`
+      2. dones : **tensor**，当前这一步之后，该环境实例是否 结束 episode
+      3. infos : **dict**，包含 `time_outs`，每个元素为 1 表示 本轮结束是因为 时间到(truncation)，0 表示其它原因
    2. `reset(env_ids: Union[list, torch.Tensor])`
    3. `get_observations()`
    4. `get_privileged_observations()`
@@ -148,7 +174,7 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
 
 如果有 `privileged_obs` 则 `critic_obs` 使用 privileged，否则就使用 `obs`
 
-`ActorCriticRecurrent` 类 继承 `ActorCritic` 类 继承 `nn.Module` 类
+`ActorCriticRecurrent` 类 继承 `ActorCritic` 类 继承 `nn.Module` 类 (可以 `.to(device)`)
 1. is_recurrent : 类属性/类变量 (class variable)，而不是实例属性
 2. `__init__()`
    1. activation 使用 后面的 `get_activation()` 获取
@@ -163,8 +189,8 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
          3. 否则 需要 把这个张量显式地 传给优化器，否则仍不会被更新
       2. distributuion : `from torch.distributions import Normal`，但是初始化的时候 不知道均值，所以先设为 None
    7. ==recurrent 特有==
-      1. memory_a : actor
-      2. memory_c : critic
+      1. memory_a : 实例化 `Memory`, actor
+      2. memory_c : 实例化 `Memory`, critic
 3. `init_weights()` : 仅 `orthogonal_` 初始化 nn.Linear 类型的层
    1. `torch.nn.init.orthogonal_()` 把权重矩阵初始化为正交矩阵
    2. input :
@@ -184,21 +210,21 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
    4. 计算的是 **单个时间步的**，不是整条轨迹
    5. 先对每个动作维度算 一维高斯的 对数概率，把 action_dim 的结果相加，得到联合对数概率
    6. obs 已经隐含在 `self.distribution` 里
-6. `act()` : **对应 actor** : 从策略分布中随机采样动作，增强探索
+6. `act()` : **对应 actor** : 从策略分布中 **随机采样动作(增强探索)** 并返回
    1. not recurrent : update_distribution + sample(训练时 增加探索性)
-   2. ==recurrent*= : 先经过 memory_a 的 `forward()`，再经过 not recurrent 的 `act()`，**一套接口，两种运行模式**
-1. `act_inference()` : 推理(确定性动作)，直接输出动作分布的均值 $\mu$，得到确定性动作
+   2. ==recurrent*= : 先经过 memory_a 的 `forward()`，再经过 not recurrent 的 `act()`，**一套接口，两种运行模式**，如果使用 batch_mode 则说明是在 `PPO.update()` 中调用，传入从 mini_batch_generator 中生成的
+7. `act_inference()` : 推理(确定性动作)，直接输出动作分布的均值 $\mu$，得到确定性动作
    1. not recurrent : observations 直接通过 actor 网络，不进行随机采样
    2. ==recurrent== : 先经过 memory_a，由于 mask=None，因此 不是 batch_mode，只用上一步 hidden_states
-2. `evaluate()` : **对应 critic** : critic 输出 状态价值函数
+8. `evaluate()` : **对应 critic** : critic 输出 状态价值函数
    1. not recurrent : critic_observations 直接通过 critic 网络，参与 后续 GAE，输出本来就是确定性的标量，**不需要像 action 那样采样**
    2. ==recurrent== : 先经过 memory_c 的 `forward()`，再经过 not recurrent 的 `act()`，**一套接口，两种运行模式**
-1.  ==recurrent 特有==
+9.  ==recurrent 特有==
    1. `reset()` : 根据 dones 重置 memory_a & memory_c，调用 实例的 `reset()` 函数
    2. `get_hidden_states()` : 同时返回 memory_a & memory_c 的 hidden_states
 
 
-`get_activation()` : 通过 act_name 获取各种激活函数
+`get_activation()` : 通过 act_name 获取各种激活函数 (`nn.ELU`, `nn.SELU`, `nn.SELU`, `nn.LeakyReLU`, `nn.Tanh`, `nn.Sigmoid`)
 
 
 `Memory` 类，继承 `torch.nn.Module` 类
@@ -208,12 +234,13 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
       2. 输出 : output + next_hidden_state
    2. rnn : 根据 `rnn_cls(input_size, hidden_size, num_layers)` 创建
    3. hidden_states : 用于接力 隐状态
-2. `forward()` : 两种运行模式
+2. `forward()` : 两种运行模式，返回的 out 就是 RNN(GRU/LSTM) 对原始观测进行时序建模后的 output，随后会被送进父类 ActorCritic 的多层感知机（MLP）
    1. 是 batch_mode (masks ≠ None) : **批量训练模式，使用完整轨迹进行反向传播，参数更新**，hidden_states 不能为 None，使用 masks
-      1. rnn 输入
+      1. 只有在 `PPO.update()` 里才会触发 `Memory.forward()` 的 batch_mode 分支
+      2. rnn 输入
          1. input : 已 pad 的序列，`[T_max, num_traj, feat]`
          2. hidden_states : 采样阶段保存的首时刻隐状态 $h_0$
-      2. rnn 输出
+      3. rnn 输出
          1. out : 之后用 `unpad_trajectories()` 把补零行删除
          2. _ : 并不关心 返回的 next_hidden，在当前 mini-batch 中不会再用，直接忽略节省显存
    2. 否 batch_mode (masks = None) : **采样推理模式，需要 把当前观测送进 RNN，并把产生的隐藏状态 保存，供下一时间步继续用**，因此每次使用上一步 hidden_states
@@ -221,7 +248,7 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
          1. `input.unsequeeze(0)` : `[num_envs, feat]` -> `[1, num_envs, feat]`，只算一步，开销最小，符合 PyTorch RNN 的输入格式 `(seq_len, batch, feature)`，后续会 `sequeeze(0)`
          2. `self.hidden_states` : 上一步的隐状态，**由类内部维护，自动实现 串行记忆**
       2. rnn 输出
-         1. out :
+         1. out : output / hidden representation
          2. self.hidden_states : **接力保存** hidden_states
 3. `reset()` : 清空 hidden_states
 
@@ -233,9 +260,9 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
 ## on_policy_runner.py
 
 import
-1. PPO
-2. ActorCritic, ActorCriticRecurrent
-3. VecEnv
+1. [PPO](#ppopy)
+2. [ActorCritic, ActorCriticRecurrent](#actor_criticpy--actor_critic_recurrentpy)
+3. [VecEnv](#vec_envpy)
 
 接收来自 Isaac Gym 的环境对象 (必须是 VecEnv 类型)
 
@@ -252,8 +279,9 @@ Surrogate Loss 训练 Actor(策略网络) 的目标
       3. policy_cfg : `train_cfg["policy"]`
    2. device
    3. env: `VecEnv` 实例，维护了 num_envs 条并行仿真
+      1. critic 使用的就是 privileged_obs，如果没有 就使用 obs
    4. actor_critic : 用 `eval()` 获取 actor_critic_class，并创建实例
-   5. alg : 用 `eval()` 获取 alg_class，并创建实例
+   5. alg : 用 `eval()` 获取 alg_class，并创建 `PPO` 实例
    6. num_steps_per_env
    7. save_interval
    8. Log 相关
@@ -264,14 +292,22 @@ Surrogate Loss 训练 Actor(策略网络) 的目标
       5. current_learning_iteration
    9. 直接 `env.reset()`
 2. `learn()` **==☆==**
-   1. lenbuffer, rewardbuffer
+   1. 随机化 episode length : 初始姿态仍然是同一套 reset 状态，让 各并行环境的超时点(timeout) 错开相位
+   2. 获取 observations 并 `.to(device)`，将 actor_critic 切换为 train mode
+   3. lenbuffer, rewardbuffer
       1. 录最近 100个 episode 的奖励和长度，用于可视化和日志打印，滑动平均
       2. 双端队列，超过 100 条元素时会把最早的自动弹出，始终只保留最近 100 次 episode 终止时的回报与长度
       3. 采样过程中，每个并行环境各有一份 `cur_reward_sum` / `cur_episode_length`，都是 一维 tensor，长度 = num_envs
-   2. **外层循环** : 从 `self.current_learning_iteration`(导入模型时，可以得到) 开始，执行 `num_learning_iterations`
-   3. 进行 Rollout 采样，使用 `torch.inference_mode()`
-   4. **内层循环** : 迭代 `num_steps_per_env` 次
-      1. 先 通过 obs 得到 action，再和 环境交互 得到 obs, privileged_obs, rewards, dones, infos
+   4. **外层循环** : 从 `self.current_learning_iteration`(导入模型时，可以得到) 开始，执行 `num_learning_iterations` 次
+   5. 进行 Rollout 采样，使用 `with torch.inference_mode()` 彻底关闭 Autograd
+   6. **内层循环** : 迭代 `num_steps_per_env` 次
+      1. 通过 obs 得到 action
+      2. 和 环境交互 得到 obs, privileged_obs, rewards, dones, infos
+      3. transition 加入 `RolloutStorage`，并加上 timeout bootstrap
+      4. 收集 episode 统计信息
+   7. 计算 GAE & expected returns
+   8. mini-batch 训练
+   9. 日志 & 模型 保存
 3. `log()` : 日志输出，使用 `Tensorboard` 的 `SummaryWriter`
 4. `save()` : 保存模型
    1. `actor_critic.state_dict()` :actor-critic 全部可学习参数(权重、偏置、可训练的 std 等)，key 是层路径，value 是同形状 Tensor
@@ -279,7 +315,7 @@ Surrogate Loss 训练 Actor(策略网络) 的目标
    3. `learning_iter` : 当前已经完成的训练迭代数，保证日志、文件命名、学习率调度等与上次中断时保持连贯
    4. `infos` : 额外信息的占位(环境归一化统计、成绩指标、自定义标记等)
 5. `load()` : 加载模型
-6. `get_inference_policy()` : 先切换 `eval()` 模式，再 `.to(device)`，最后返回 `ActorCritic` 类的 `act_inference()`
+6. `get_inference_policy()` : 先切换 `eval()` 模式，再 `.to(device)`，最后返回 `ActorCritic` 类的 `act_inference()` 函数
 
 
 
@@ -301,16 +337,16 @@ import `utils.py` 中的 `split_and_pad_trajectories()`
    1. core
       1. observations : `[T , N , *obs_shape]`
       2. privileged_observations : `[T , N , *privileged_obs_shape]`
-      3. rewards : `[T, num_envs, 1]`
-      4. actions :  `[T, num_envs, *actions_shape]`
-      5. dones : `[T, num_envs, 1]`
+      3. rewards : `[T, N, 1]`
+      4. actions : `[T, N, *actions_shape]`
+      5. dones : `[T, N, 1]`
    2. PPO
-      1. actions_log_prob : `[T, num_envs, 1]`
-      2. values : `[T, num_envs, 1]`
-      3. returns : `[T, num_envs, 1]`
-      4. advantages : `[T, num_envs, 1]`
-      5. mu
-      6. sigma
+      1. actions_log_prob : `[T, N, 1]`
+      2. values : `[T, N, 1]`
+      3. returns : `[T, N, 1]`
+      4. advantages : `[T, N, 1]`
+      5. mu : `[T, N, *actions_shape]`
+      6. sigma : `[T, N, *actions_shape]`
       7. num_transitions_per_env : 用于 **设定 各个 buffer 尺寸**
       8. num_envs
    3. rnn
@@ -319,7 +355,8 @@ import `utils.py` 中的 `split_and_pad_trajectories()`
       3. 都在 `_save_hidden_states()` 初始化
    4. step : 已经写入的时间步数，作为 pointer 指向存储位置
 1. `add_transitions()` : 传入 `Transition` 类对象
-   1. add 后 更新指针 `self.step += 1`
+   1. 先检查是否超出 step 数量
+   2. add 后 更新指针 `self.step += 1`
 2. `_save_hidden_states()` : 把 每一个时间步 的 RNN 隐状态都存下来，形成一条长度为 T(rollout 步数) 的时间序列
    1. 传入的 hidden_states 是 `(hidden_states_actor , hidden_states_critic)`
    2. 如果是 None，直接跳过
@@ -333,29 +370,20 @@ import `utils.py` 中的 `split_and_pad_trajectories()`
    3. returns 是 PPO的 bootstrap 目标 return = advantage + value
    4. 用 advantages 记录全部的 advantage (先逐个 advantage 加上 values 再统一减去)，再除以 advantages 的 std 归一化
    5. <img src="../../../ReinforcementLearning/PPO/Pics/rethinkfun008.png" width=350><img src="../../../ReinforcementLearning/PPO/Pics/rethinkfun009.png" width=500>
-5. `get_statistics()` : 采样结束后快速得到 ① 每条 episode 的平均长度 & ② 每一步的平均奖励
+5. `get_statistics()` : 采样结束后快速得到  每条 episode 的平均长度 &  每一步的平均奖励
 6. batch_generator : yield 生成器函数
-   1. `mini_batch_generator()`
-   2. `reccurent_mini_batch_generator()` (==recurrent==)
-
-
-某个并行环境在本时间步返回 done=True 时，process_env_step() 里的处理如下
-1. 将 done 标志写入 Transition
-2.
+   1. `mini_batch_generator()` : **没有时序依赖**，完全展平成 `T×N` 条 独立 transition，用 `torch.randperm` 完全打乱索引，再按 mini_batch_size 切块
+   2. `reccurent_mini_batch_generator()` (==recurrent==) : 必须一次送入 **整条序列 + 对应起始隐藏状态**，**保持时间连续性**，先按 done 把 episode 切开 pad (行数 = 最长轨迹步，列数 = 所有被切出来的 traj) 得到 traj & traj_mask，再按 选取若干环境对应的若干条完整轨迹 的方式组 batch - TODO
 
 
 
 ## utils.py
 
-`split_and_pad_trajectories()`
-1. input :
-   1. tensor : observations 或者是 privileged_observations
-   2. dones
-2. output:
-   1. trajectories
-   2. masks
+`split_and_pad_trajectories()` : 将 trajectory 根据 dones 进行切分 episode，并补齐成最长的 episode，并且 输出对应 masks(True 有效，False 无效)
+1. input : `tensor`(obs & privileged_obs) & `dones`，shape 为 `[T, N(envs), aditional dimensions]`
+2. output: `padded_trajectories` & `trajectory_masks`
 
-`unpad_trajectories()` 是 `split_and_pad_trajectories()` 的 反向操作
+`unpad_trajectories()` : `split_and_pad_trajectories()` 的 反向操作
 
 在 `rollout_storage.py` 中的 `reccurent_mini_batch_generator()` 函数 调用
 
