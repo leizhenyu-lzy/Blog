@@ -621,6 +621,12 @@ TODO
 
 [weight decay - ipynb](./OfficialNoteBooks/chapter_multilayer-perceptrons/weight-decay.ipynb)
 
+处理过拟合
+
+控制模型容量
+1. 模型本身比较性
+2. 模型参数值范围比较小 (eg : 权重衰退)
+
 一种 L2 正则化(L2 Regularization) 技术，目的是防止模型过拟合，让神经网络的权重不会变得过大
 
 处理过拟合的方法
@@ -640,6 +646,7 @@ TODO
 参数更新
 1. <img src="Pics/d2l064.png" width=450>
 2. 先将当前权重减小，再按照梯度更新
+3. 主要区别就在于前半部分 $1 - \eta \lambda$，后半部分 就是减去 learning rate 乘以梯度方向
 
 <img src="Pics/d2l065.png" width=500>
 
