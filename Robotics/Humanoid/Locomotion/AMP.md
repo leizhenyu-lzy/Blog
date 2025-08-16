@@ -2,6 +2,7 @@
 
 [AMP (Adversarial Motion Priors) - Website](https://xbpeng.github.io/projects/AMP/index.html)
 
+
 ---
 
 对抗学习 对于 合成问题(image generation) 很有效

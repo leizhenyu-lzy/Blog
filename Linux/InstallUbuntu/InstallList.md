@@ -102,6 +102,7 @@ Web
    3. github
    4. whatsapp
    5. bilibili - https://github.com/the1812/Bilibili-Evolved
+   6. 设置 default profile : `edge://settings/profiles/multiProfileSettings`
 2. vscode
    1. 禁用 类似 Typora 渲染 : `Ctrl + Shift + P` -> `"workbench.editorAssociations"` -> 添加 `"*.md": "default",`
    2. 编辑器自动换行 `Alt + Z`

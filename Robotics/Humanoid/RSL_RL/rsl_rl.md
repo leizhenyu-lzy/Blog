@@ -2,6 +2,23 @@
 
 [RSL_RL - Github](https://github.com/leggedrobotics/rsl_rl)
 
+---
+
+## Table of Contents
+
+- [RSL\_RL](#rsl_rl)
+  - [Table of Contents](#table-of-contents)
+  - [algorithms/ppo.py](#algorithmsppopy)
+  - [env/vec\_env.py](#envvec_envpy)
+  - [modules/actor\_critic.py \& modules/actor\_critic\_recurrent.py](#modulesactor_criticpy--modulesactor_critic_recurrentpy)
+  - [runners/on\_policy\_runner.py](#runnerson_policy_runnerpy)
+  - [storage/rollout\_storage.py](#storagerollout_storagepy)
+  - [utils/utils.py](#utilsutilspy)
+
+
+
+---
+
 PyTorch 的强化学习算法实现
 
 核心是 Proximal Policy Optimization(PPO)
@@ -47,9 +64,25 @@ PyTorch 的强化学习算法实现
 2. 不再保留梯度信息，并且在随后反向传播时 不会回传梯度
 3. 返回一个 新的张量 与 原张量 **共享数据**
 
+`with torch.no_grad()` : 禁用自动求导，但保留其他训练状态，不能 backward
+
+`with torch.inference_mode()` : 最严格的推理模式，完全禁用自动求导系统，不能 backward
+
+`model.eval()` : 切换模型的行为模式 dropout/batchnorm，但不影响梯度计算，可以 backward
+
+`with` 内部的所有操作都受影响
+
+```python
+model.eval()  # 关闭Dropout，固定BatchNorm
+with torch.no_grad():  # 禁用梯度计算
+    predictions = model(test_data)
+```
 
 
-## ppo.py
+
+
+
+## algorithms/ppo.py
 
 import
 1. [ActorCritic](#actor_criticpy--actor_critic_recurrentpy)
@@ -137,7 +170,7 @@ PPO 阶段
 
 
 
-## vec_env.py
+## env/vec_env.py
 
 对外表现为 单个环境，在内部 持有&管理 多份环境实例
 
@@ -166,7 +199,7 @@ PPO 阶段
 
 
 
-## actor_critic.py & actor_critic_recurrent.py
+## modules/actor_critic.py & modules/actor_critic_recurrent.py
 
 ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建模，得到隐向量 $h_t$
 
@@ -211,7 +244,7 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
    5. 先对每个动作维度算 一维高斯的 对数概率，把 action_dim 的结果相加，得到联合对数概率
    6. obs 已经隐含在 `self.distribution` 里
 6. `act()` : **对应 actor** : 从策略分布中 **随机采样动作(增强探索)** 并返回
-   1. not recurrent : update_distribution + sample(训练时 增加探索性)
+   1. not recurrent : update_distribution + sample(训练时 增加探索性)，更新参数 方便后面的 log_prob 计算
    2. ==recurrent*= : 先经过 memory_a 的 `forward()`，再经过 not recurrent 的 `act()`，**一套接口，两种运行模式**，如果使用 batch_mode 则说明是在 `PPO.update()` 中调用，传入从 mini_batch_generator 中生成的
 7. `act_inference()` : 推理(确定性动作)，直接输出动作分布的均值 $\mu$，得到确定性动作
    1. not recurrent : observations 直接通过 actor 网络，不进行随机采样
@@ -257,7 +290,7 @@ ActorCriticRecurrent 先用 Memory(GRU/LSTM) 对原始观测做一步时序建�
 
 
 
-## on_policy_runner.py
+## runners/on_policy_runner.py
 
 import
 1. [PPO](#ppopy)
@@ -299,7 +332,7 @@ Surrogate Loss 训练 Actor(策略网络) 的目标
       2. 双端队列，超过 100 条元素时会把最早的自动弹出，始终只保留最近 100 次 episode 终止时的回报与长度
       3. 采样过程中，每个并行环境各有一份 `cur_reward_sum` / `cur_episode_length`，都是 一维 tensor，长度 = num_envs
    4. **外层循环** : 从 `self.current_learning_iteration`(导入模型时，可以得到) 开始，执行 `num_learning_iterations` 次
-   5. 进行 Rollout 采样，使用 `with torch.inference_mode()` 彻底关闭 Autograd
+   5. 进行 Rollout 采样，使用 `with torch.inference_mode()`
    6. **内层循环** : 迭代 `num_steps_per_env` 次
       1. 通过 obs 得到 action
       2. 和 环境交互 得到 obs, privileged_obs, rewards, dones, infos
@@ -322,7 +355,7 @@ Surrogate Loss 训练 Actor(策略网络) 的目标
 
 
 
-## rollout_storage.py
+## storage/rollout_storage.py
 
 import `utils.py` 中的 `split_and_pad_trajectories()`
 
@@ -377,7 +410,7 @@ import `utils.py` 中的 `split_and_pad_trajectories()`
 
 
 
-## utils.py
+## utils/utils.py
 
 `split_and_pad_trajectories()` : 将 trajectory 根据 dones 进行切分 episode，并补齐成最长的 episode，并且 输出对应 masks(True 有效，False 无效)
 1. input : `tensor`(obs & privileged_obs) & `dones`，shape 为 `[T, N(envs), aditional dimensions]`
