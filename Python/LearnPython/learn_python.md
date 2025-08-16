@@ -115,7 +115,7 @@ def list_file_or_folder(path_name):
 
 ```python
 import os
- 
+
 print( os.path.basename('/root/runoob.txt') )   # 返回文件名
 print( os.path.dirname('/root/runoob.txt') )    # 返回目录路径
 print( os.path.split('/root/runoob.txt') )      # 分割文件名与路径
@@ -171,7 +171,7 @@ print(s)
 <br>
 <br>
 
-## Python Generator Yield
+## Python Generator - Yield
 
 ```python
 # 使用python推导式

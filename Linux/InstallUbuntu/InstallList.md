@@ -10,6 +10,9 @@ bash
    3. sudo hwclock --localtime --systohc # 修改时间机制为localtime，并同步bios硬件时间
 
 
+desktop 刷新 : `Alt+F2` & `r`
+
+
 ---
 
 

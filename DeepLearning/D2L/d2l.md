@@ -631,7 +631,7 @@ TODO
 
 处理过拟合的方法
 
-限制参数值选择范围
+限制参数值选择范围，惩罚过大的权重
 
 硬性限制(不常用)
 1. <img src="Pics/d2l061.png" width=380>
@@ -663,6 +663,9 @@ pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`tor
                   {'params': bias_params, 'weight_decay': 0}
                ], weight_decay=1e-2, lr=1e-2)
    ```
+
+
+
 
 ---
 
