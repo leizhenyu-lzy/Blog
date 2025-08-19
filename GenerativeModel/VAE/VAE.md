@@ -9,6 +9,7 @@
   - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
   - [YouTube](#youtube)
   - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
+- [β-VAE](#β-vae)
 
 ---
 
@@ -148,9 +149,9 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 训练目标 **ELBO** (需要 **最大化**)
 1. $$\mathcal{L}(x)=
       \underbrace{\mathbb{E}_{q(z|x)}[\log p(x\,|\,z)]}_{\text{Data Consistency}} - \underbrace{\operatorname{KL}[q(z|x)\|p(z)]}_{\text{Regularization}}$$
-2. 重建项 : 让 Decoder 用采样到的 z 能重建 x，**数据一致性**
+2. 重建项 : 让 Decoder 用采样到的 z 能重建 x，**数据一致性** (解码器能否从潜在表示还原出原始数据)
    1. 可简化为 L2 Loss，即 MSE(mean square error)，用 解码器 对 latent vector 重构，并测量与原始图像的 L2 距离
-3. 正则项 : Encoder 输出的 $q_{\phi}(z|x)$ 应该和先验基本类似，不要偏离预先顶一顶 标准正态分布太多
+3. 正则项 : Encoder 输出的 $q_{\phi}(z|x)$ 应该和先验基本类似，不要偏离预先定义的 标准正态分布太多
    1. 衡量了 近似后验 $q(z|x)$ 和 先验 $p(z)$ 的 接近程度，假设 先验服从 正态分布，因此 约束 近似后验 也 呈 正态分布形状
 
 相比普通 AutoEncoder，编码器 不是将输入映射到单个点，而是转化为 高斯分布的概率分布(**编码器将数据转化为高斯分布的 $\mu$ & $\sigma$**)
@@ -248,6 +249,36 @@ bottle neck 被分解为两个向量
 
 
 GMM - TODO
+
+
+# β-VAE
+
+[Disentanglement with beta-VAEs | Deep Learning - YouTube(DeepBean)](https://www.youtube.com/watch?v=RNAZA7iytNQ)
+
+beta-VAE 擅长 feature disentanglement
+
+review 普通 VAE
+1. <img src="Pics/beta001.png" width=500>
+2. 对于 binary-valued 的 数据空间，输出分布 是 Bernoulli 分布，对于 real-valued 的 数据空间，输出分布 是 高斯分布
+   1. <img src="Pics/beta002.png" width=500>
+3. Loss Balance/Weight (重建项 & KL项)
+   1. <img src="Pics/beta003.png" width=500>
+   2. <img src="Pics/beta004.png" width=500>
+   3. KL项 weight 太大
+      1. 信息丢失 : 强制潜在空间过于 规整，丢失数据中的重要细节和变化，生成的样本缺乏多样性
+      2. 欠拟合 : 模型过于简化(重合)，无法捕捉数据复杂性，生成质量下降，样本模糊
+      3. 后验坍塌 : 近似后验 过度接近 先验，潜在变量失去表达能力，变成无意义的噪声
+   4. 重建项 weight 太大
+      1. 过度专注于重构，重构效果确实可以，但是忽略了潜在空间的整体结构
+      2. 忽略潜在空间的连续性，生成能力受限，容易产生无意义样本
+      3. 过拟合风险，模型记忆训练数据而非学习通用表示，泛化能力差，对新数据表现不佳
+
+
+
+标准VAE : `loss = reconstruction_loss - kl_loss`
+
+β-VAE : `loss = reconstruction_loss - beta * kl_loss`
+
 
 
 
