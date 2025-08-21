@@ -166,11 +166,14 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 
 使用 Reparameterization Trick 重参数化技巧，解决 从近似后验中 采样操作 **无法反向传播**
 
-不直接从 近似分布 中 采样，而是 从固定标准正态分布中 采样 $\epsilon$ (requires_grad=False，无需计算梯度，作为常值使用)，$\mu + \sigma · \epsilon$ 相当于 调整回近似分布
+不直接从 近似分布 中 采样，而是 从固定标准正态分布中 采样 $\epsilon$ (**辅助独立随机变量**) (requires_grad=False，无需计算梯度，作为常值使用)，$\mu + \sigma · \epsilon$ 相当于 调整回近似分布
 
 抽样动作只发生在 $\epsilon$，不含 $\phi$ 无需梯度(requires_grad=False)
 
 <img src="Pics/vae009.png" width=500>
+
+<img src="Pics/vae022.png" width=500>
+
 
 对于 两个 高斯分布，KL散度 有 闭式表达式
 
@@ -255,7 +258,7 @@ GMM - TODO
 
 [Disentanglement with beta-VAEs | Deep Learning - YouTube(DeepBean)](https://www.youtube.com/watch?v=RNAZA7iytNQ)
 
-beta-VAE 擅长 feature disentanglement
+beta-VAE 擅长 feature disentanglement，特征解耦
 
 review 普通 VAE
 1. <img src="Pics/beta001.png" width=500>
