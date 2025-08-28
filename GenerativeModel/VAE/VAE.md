@@ -10,6 +10,8 @@
   - [YouTube](#youtube)
   - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
 - [β-VAE](#β-vae)
+- [VQ-VAE](#vq-vae)
+- [Denoising Auto-Encoder](#denoising-auto-encoder)
 
 ---
 
@@ -254,6 +256,10 @@ bottle neck 被分解为两个向量
 GMM - TODO
 
 
+
+
+
+
 # β-VAE
 
 [Disentanglement with beta-VAEs | Deep Learning - YouTube(DeepBean)](https://www.youtube.com/watch?v=RNAZA7iytNQ)
@@ -281,6 +287,19 @@ review 普通 VAE
 标准VAE : `loss = reconstruction_loss - kl_loss`
 
 β-VAE : `loss = reconstruction_loss - beta * kl_loss`
+
+
+
+
+# VQ-VAE
+
+
+
+# Denoising Auto-Encoder
+
+[Denoising Autoencoders - YouTube(Deepia)](https://www.youtube.com/watch?v=0V96wE7lY4w)
+
+
 
 
 
