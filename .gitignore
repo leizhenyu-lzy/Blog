@@ -3,6 +3,8 @@
 **/*.token
 **/*.mp4
 
-**/*token*
-
 **/__pycache__
+
+**/*token*
+**/*credential*
+**/*secret*
