@@ -1,11 +1,28 @@
-[Transformers, Simply Explained | Deep Learning -  - YouTube(DeepBean)](https://www.youtube.com/watch?v=UPhaYex4zZk)
+# Transformer
 
-[李沐](https://www.bilibili.com/video/BV1pu411o7BE)
+
+[Transformer论文逐段精读 - 李沐(B站)](https://www.bilibili.com/video/BV1pu411o7BE)
 
 [王树森](https://www.bilibili.com/video/BV1dK411k74q)
 
 [妹子](https://www.bilibili.com/video/BV1xoJwzDESD)
 
+[Transformer 常见问题与回答总结 - 知乎](https://zhuanlan.zhihu.com/p/496012402?)
+
+## Table of Contents
+
+- [Transformer](#transformer)
+  - [Table of Contents](#table-of-contents)
+- [YouTube(DeepBean)](#youtubedeepbean)
+
+
+
+
+---
+
+# YouTube(DeepBean)
+
+[Transformers, Simply Explained | Deep Learning -  - YouTube(DeepBean)](https://www.youtube.com/watch?v=UPhaYex4zZk)
 
 解决 旧架构(eg : RNN) 中的问题
 1. Long-Range : information 难以保持 很多步 timestamps
@@ -54,7 +71,7 @@ Architecture
       3. Token 不必是单词，可以是 words / sub-words / letters(对于非自然语言用途)
       4. Tokenization 使用 **lookup table** 完成
          1. <img src="Pics/transformer005.png" width=500>
-         2. embeding vector 的实际数据是 训练中学习的，不需要 pre-trained embedding
+         2. embedding vector 的实际数据是 训练中学习的，不需要 pre-trained embedding
       5. 特殊 Tokens : `<START>`, `<END>`, `<UNK>`(unknown), `<PAD>`(保证相同序列长度)
 3. Positional Encoding
    1. 对于 RNN，位置信息 隐式提供，token 按顺序输入模型，但是 **transformer 的 token 是 并行输入**
@@ -67,7 +84,7 @@ Architecture
    8. <img src="Pics/transformer008.png" width=500>
    9. <img src="Pics/transformer009.png" width=500>
 4. Encoder (Multi-Head Attention & FeedForward 多组堆叠)
-   1. Self-Attention : Query Sequence = Context Sequence (Query Toekn -> Context Token)
+   1. Self-Attention : Query Sequence = Context Sequence (Query Token -> Context Token)
       1. <img src="Pics/transformer011.png" width=187> <img src="Pics/transformer010.png" width=250>
       2. Attention 可以理解为 Query 通过匹配 Key 访问 Value
       3. <img src="Pics/transformer012.png" width=350>
@@ -134,6 +151,9 @@ Limitation
 2. 若你想在一个下游任务上使用通用语料训练好的 GloVe、word2vec、fastText 向量，也可以把 embedding 矩阵初始化为这些值，然后继续 fine-tune
 3. LLM(GPT、BERT)本身就是 "预训练模型"，早期阶段也把 词向量随机初始化，经过海量语料训练后才成为 预训练词向量，下游再做微调时，这些 embedding 已经带有丰富的语义
 
+
+
 BatchNorm & LayerNorm
+
 
 

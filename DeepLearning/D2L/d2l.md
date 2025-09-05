@@ -14,6 +14,8 @@
 
 [课程论坛讨论](https://discuss.d2l.ai/c/chinese-version/16)
 
+[Gluon Model Zoo](https://cv.gluon.ai/contents.html)
+
 ---
 
 # 目录
@@ -971,17 +973,61 @@ Batch Normalization (BN) 在 CNN 任务中， 对每个通道（Channel）单独
 
 ## 29 残差网络 ResNet
 
-$f$☆ 为 最优值
+层数更多/模型复杂 未必带来好处，可能学的偏离，最好是复杂模型能包含小模型
+1. <img src="Pics/d2l101.png" width=400>
+2. $f$☆ 为 最优值
+3. $F$ 为函数，函数的大小代表函数的复杂程度，能够覆盖的范围
 
-$F$ 为函数，函数的大小代表函数的复杂程度，能够覆盖的范围
+**残差块**
+1. 新加快速通道，即使没有 $g(x)$ 也不影响
+   1. 如果 $g(x)$ 用处不大，那么 back-propagation 得到的 梯度 也会很小，因此不太会变坏
+   2. <img src="Pics/d2l102.png" width=500>
+2. 如果需要变换通道数，可以在 快速通道上 增加 **1×1 卷积**
+   1. <img src="Pics/d2l103.png" width=500>
+3. 可以尝试不同 残差块搭建方式
+   1. <img src="Pics/d2l104.png" width=500>
+
+常见 ResNet 块
+1. <img src="Pics/d2l105.png" width=400>
+
+ResNet 架构 和 VGG/GoogleNet 总体结构类似，但是替换为 ResNet 块
+
+残差使得很深的网络更容易训练
+
+```python
+class Residual(nn.Module):
+   def __init__(self, input_channels, num_channels,
+               use_1x1conv=False, strides=1):
+      super().__init__()
+      self.conv1 = nn.Conv2d(input_channels, num_channels, kernel_size=3, padding=1, stride=strides)  # conv1 可以指定 stride，有 padding 保证 和 conv3 kernel_size 等于 1 的尺寸一致
+      self.conv2 = nn.Conv2d(num_channels, num_channels, kernel_size=3, padding=1)  # conv2 默认 stride = 1
+
+      # conv3 为 旁路
+      if use_1x1conv:
+         self.conv3 = nn.Conv2d(input_channels, num_channels, kernel_size=1, stride=strides)
+      else:
+         self.conv3 = None
+      self.bn1 = nn.BatchNorm2d(num_channels)
+      self.bn2 = nn.BatchNorm2d(num_channels)
+
+   def forward(self, X):
+      Y = F.relu(self.bn1(self.conv1(X)))
+      Y = self.bn2(self.conv2(Y))
+      if self.conv3:
+         X = self.conv3(X)
+      Y += X
+      return F.relu(Y)
+```
+
+
+ResNet 为什么能训练出 1000 层的模型 (如何处理梯度消失)
+1. 乘法变成加法(Residual)，缓解了 梯度消失
+2. **靠近数据端的 weight 比较难训练**
+3. <img src="Pics/d2l106.png" width=400>
 
 
 
 
-
-
-
-### ResNet 为什么能训练出 1000 层的模型
 
 
 
