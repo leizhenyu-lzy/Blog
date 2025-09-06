@@ -9,6 +9,7 @@
   - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
   - [YouTube](#youtube)
   - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
+    - [两种推导](#两种推导)
 - [β-VAE](#β-vae)
 - [VQ-VAE](#vq-vae)
 - [Denoising Auto-Encoder](#denoising-auto-encoder)
@@ -136,9 +137,9 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 3. 近似后验 $q(z|x) \sim \mathcal{N}(0,1)$，编码器输出(预测 $\mu$ & $\sigma$)，KL散度 将其 拉近 先验 $p(z)$ (ELBO)
 4. **likelihood distribution 似然分布** $p(x|z)$ (从 latent 重建 data 的概率)
 
-由于不知道 latent distribution，因此 假设为 **正态分布**，从而可以计算 likelihood
+由于不知道 latent distribution，因此 假设为 **标准正态分布**，从而可以计算 likelihood (**其实可以是任何分布**)
 
-使用 高斯分布 **$q(z|x)$** **近似** 后验 **$p(z|x)$**，其中 $\mu$ & $\sigma$ 是可学习参数
+使用 **另一个** 高斯分布 **$q_{\phi}(z|x)$** **近似** 后验 **$p_{\theta}(z|x)$**，其中 $\mu$ & $\sigma$ 是可学习参数
 
 优化过程被称为 **变分贝叶斯**
 
@@ -179,7 +180,7 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 
 对于 两个 高斯分布，KL散度 有 闭式表达式
 
-$$D_{\mathrm{KL}}\!\bigl(\mathcal N_0 \,\|\, \mathcal N_1\bigr)
+$$D_{\mathrm{KL}}(\mathcal N_0 \,\|\, \mathcal N_1)
 = \log\frac{\sigma_1}{\sigma_0} + \frac{\sigma_0^{2} + (\mu_0 - \mu_1)^{2}}{2\sigma_1^{2}} - \frac{1}{2}$$
 
 <img src="Pics/vae010.png" width=500>
@@ -196,6 +197,8 @@ $$D_{\mathrm{KL}}\!\bigl(\mathcal N_0 \,\|\, \mathcal N_1\bigr)
 
 
 
+
+
 ## ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界
 
 ELBO ((Variational) Evidence Lower Bound)
@@ -206,25 +209,34 @@ $\phi$   : 编码器 Encoder 参数 (推断网络) $q_{\phi}(z | x)$
 
 变分推断(Variational Inference) 将难以直接求解的后验分布 转为 优化问题，在候选分布$q(z|x)$ 中 找到最接近 真实后验$p(z|x)$ 的分布
 
-**需要最大化 ELBO**，实践中 取反然后 最小化
+evidence 就是指 $$
 
-$$\begin{align}
-\mathcal{L}_{\text{ELBO}}(x)
-& = \mathbb{E}_q [\log p(x, z) - \log q(z | x)] \\
-& = \mathbb{E}_q [\log p(x | z) + \log p(z) - \log q(z | x)] \\
-& = \mathbb{E}_q (\log p(x | z)) - \mathbb{E}_q (\log \frac{q(z | x)}{p(z)})  \\
-& = \mathbb{E}_q (\log p(x | z)) - KL(q(z | x) || {p(z)})
-\end{align}$$
+**推导**
+
+$$
+\begin{align*}
+\log p_{\theta}(x)
+&= \log \int p_{\theta}(x,z)\,dz \\
+&= \log \int \frac{q_{\phi}(z \mid x)}{q_{\phi}(z \mid x)} \, p_{\theta}(x,z)\,dz \\
+&= \log \, \mathbb{E}_{q_{\phi}(z \mid x)}\!\left[ \frac{p_{\theta}(x,z)}{q_{\phi}(z \mid x)} \right] \\
+&\ge \mathbb{E}_{q_{\phi}(z \mid x)}\!\left[ \log p_{\theta}(x,z) - \log q_{\phi}(z \mid x) \right]
+\end{align*}
+$$
+
+Jensen 不等式 : 若 f 是 凸函数，则 函数的期望 大于等于 期望的函数，若为 凹函数，则不等号方向相反 ($\log$ 为 凹函数)
+
+**需要最大化 ELBO**，==实践中 取反然后 最小化==
+
+$$
+\begin{align*}
+\mathcal{L}_{\text{ELBO}}(x;\theta,\phi)
+&= \mathbb{E}_{q_{\phi}(z \mid x)}\![\log p_{\theta}(x, z) - \log q_{\phi}(z \mid x)] \\
+&= \mathbb{E}_{q_{\phi}(z \mid x)}\![\log p_{\theta}(x \mid z) + \log p(z) - \log q_{\phi}(z \mid x)] \\
+&= \mathbb{E}_{q_{\phi}(z \mid x)}\![\log p_{\theta}(x \mid z)] - \mathrm{KL}\!(q_{\phi}(z \mid x)\,\|\,p(z))
+\end{align*}
+$$
 
 P.S. : $D_{KL}(p||q) = \mathbb{E}_p[log\frac{p}{q}] = \sum p \log \frac{p}{q}$
-
-<img src="Pics/vae013.png" width=500>
-
-Jensen 不等式 : 若 f 是 凸函数，则 函数的期望 大于等于 期望的函数，若为 凹函数，则不等号方向相反
-
-$\log$ 为 凹函数
-
-<img src="Pics/vae014.png" width=300>
 
 如果要 最大化 evidence，可以最大化 ELBO
 
@@ -232,33 +244,23 @@ $\log$ 为 凹函数
 1. 似然函数 在 近似后验分布 的 期望
 2. 后验分布 和 先验分布 间的 KL散度
 
-<img src="Pics/vae015.png" width=500>
+
+
+### 两种推导
+
+**使用 KL 散度**
+1. <img src="Pics/vae024.png" width=500>
+2. 移项
+3. 由于 KL-Divergece 非负
+4. <img src="Pics/vae025.png" width=500>
+
+
+**使用 Jensen' 不等式**
+4. <img src="Pics/vae026.png" width=500>
+1.
 
 
 ---
-
-variation 就是分布 (将输入映射到一个分布上，而非固定变量)
-
-<img src="Pics/vae001.png" width=600>
-
-bottle neck 被分解为两个向量
-1. 均值向量
-2. 方差向量
-
-损失函数
-1. <img src="Pics/vae002.png" width=500>
-2. 重建损失 : 与 AE 的 Loss 一致
-3. KL 散度 ： 描述 学习的分布 & 高斯分布 的 相似性
-
-与强化学习结合，进行环境的潜在空间表示
-
-
-GMM - TODO
-
-
-
-
-
 
 # β-VAE
 
@@ -281,6 +283,27 @@ review 普通 VAE
       1. 过度专注于重构，重构效果确实可以，但是忽略了潜在空间的整体结构
       2. 忽略潜在空间的连续性，生成能力受限，容易产生无意义样本
       3. 过拟合风险，模型记忆训练数据而非学习通用表示，泛化能力差，对新数据表现不佳
+4. **Side Effect** : 优先考虑 KL-Divergence 项，可以实现 feature disentanglement
+   1. 标准正态分布 每个维度都是独立的
+   2. **强 KL 约束** 迫使 Encoder 学习到的每个隐变量维度 尽可能独立
+   3. 增大 β 相当于 增加 信息瓶颈的强度(标准正态分布的信息容量是有限)，编码器被迫用最少的、最独立的信息来重构输入
+
+
+从 **信息论** 角度理解
+1. VAE 可以被视作 通信设备
+   1. <img src="Pics/beta005.png" width=500>
+   2. encoder & sampler 可以被视为 **communication channel**
+   3. Noise Source 相当于是从 Gaussian 中采样 latent
+2. 信道容量(Channel Capacity) : maximum rate of information transmission，互信的上限(对互信息再取最优)
+3. 互信息
+   1. 相关性越强，互信息越大
+   2. input/output 能够提供关于 output/input 是怎样的信息 的程度
+   3. 互信息是对称的
+   4. $$I(X;Y)=D_{\text{KL}}(P(X,Y) || P(X)P(Y))=I(Y;X)$$
+4. <img src="Pics/beta006.png" width=500>
+5. 增加 KL 权重会降低 容量
+
+Low Capacity 会促进 Disentanglement
 
 
 
