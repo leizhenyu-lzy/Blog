@@ -9,6 +9,7 @@
   - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
   - [YouTube](#youtube)
   - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
+  - [Posterior Collapse - 后验坍塌](#posterior-collapse---后验坍塌)
 - [β-VAE](#β-vae)
 - [VQ-VAE](#vq-vae)
 - [Denoising Auto-Encoder](#denoising-auto-encoder)
@@ -235,36 +236,33 @@ $\log$ 为 凹函数
 <img src="Pics/vae015.png" width=500>
 
 
+
+## Posterior Collapse - 后验坍塌
+
+近似后验分布 $q_\phi(z|x)$ 变得与先验分布 $p(z)$ 几乎相同，编码器失去了从输入数据中提取有用信息的能力
+
+具体表现
+1. 正常情况 : $q(z|x1) ≠ q(z|x2)$，不同输入产生不同后验
+2. 后验坍塌 : $q(z|x1) ≈ q(z|x2) ≈ p(z)$，所有输入都产生相似后验
+3. 潜在变量z变成与输入x无关的噪声
+
+产生原因
+1. KL散度项过强 : 当 β 过大时，模型过度关注让 $q(z|x)$ 接近 $p(z)$，忽略了重构质量
+2. 解码器过于强大 : 解码器能从噪声z生成合理输出，编码器偷懒
+3. 信息瓶颈 : 潜在空间维度不足，无法编码复杂的数据信息
+
+涵盖Scale-VAE放大隐变量
+CR-VAE对比学习增强互信息
+逆Lipschitz约束Decoder
+动态β调度与层次化上下文增强等有效方法
+
 ---
-
-variation 就是分布 (将输入映射到一个分布上，而非固定变量)
-
-<img src="Pics/vae001.png" width=600>
-
-bottle neck 被分解为两个向量
-1. 均值向量
-2. 方差向量
-
-损失函数
-1. <img src="Pics/vae002.png" width=500>
-2. 重建损失 : 与 AE 的 Loss 一致
-3. KL 散度 ： 描述 学习的分布 & 高斯分布 的 相似性
-
-与强化学习结合，进行环境的潜在空间表示
-
-
-GMM - TODO
-
-
-
-
-
 
 # β-VAE
 
 [Disentanglement with beta-VAEs | Deep Learning - YouTube(DeepBean)](https://www.youtube.com/watch?v=RNAZA7iytNQ)
 
-beta-VAE 擅长 feature disentanglement，特征解耦
+beta-VAE 擅长 feature disentanglement，**特征解耦**
 
 review 普通 VAE
 1. <img src="Pics/beta001.png" width=500>
