@@ -13,14 +13,53 @@
 
 - [Transformer](#transformer)
   - [Table of Contents](#table-of-contents)
-- [YouTube(DeepBean)](#youtubedeepbean)
+- [月来客栈 - B站](#月来客栈---b站)
+  - [00 - 传统 注意力机制 \& 归一化](#00---传统-注意力机制--归一化)
+  - [01 - 多头注意力机制原理](#01---多头注意力机制原理)
+  - [02 - 位置编码 \& 编码解码 过程](#02---位置编码--编码解码-过程)
+  - [03 - 网络结构 \& 自注意力 实现](#03---网络结构--自注意力-实现)
+  - [04 - Transformer 实现过程](#04---transformer-实现过程)
+  - [05 - 基于 Transformer 的 翻译模型](#05---基于-transformer-的-翻译模型)
+  - [06 - 基于 Transformer 的 对联生成模型](#06---基于-transformer-的-对联生成模型)
+- [DeepBean - YouTube](#deepbean---youtube)
+
+
+---
+
+# 月来客栈 - B站
+
+[月来客栈 - B站合集](https://space.bilibili.com/392219165/lists/4900590?type=season)
+
+## 00 - 传统 注意力机制 & 归一化
+
+硬注意力 : one-hot 编码
+
+软注意力 : 概率分布
+
+BatchNorm 批量归一化
+1. 靠近 input  的 layer，对应的 **梯度小**，权重更新慢
+2. 靠近 output 的 layer，需要根据 靠近 input 的 layer 的变换，前向传播，重新适应数据分布
+3. 解决方法 : 添加一层归一化层，是的每一层 input 的分布都尽可能接近 标准正太分布
+
+
+## 01 - 多头注意力机制原理
+
+## 02 - 位置编码 & 编码解码 过程
+
+## 03 - 网络结构 & 自注意力 实现
+
+## 04 - Transformer 实现过程
+
+## 05 - 基于 Transformer 的 翻译模型
+
+## 06 - 基于 Transformer 的 对联生成模型
 
 
 
 
 ---
 
-# YouTube(DeepBean)
+# DeepBean - YouTube
 
 [Transformers, Simply Explained | Deep Learning -  - YouTube(DeepBean)](https://www.youtube.com/watch?v=UPhaYex4zZk)
 
