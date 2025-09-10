@@ -115,13 +115,15 @@ Architecture
 3. Positional Encoding
    1. 对于 RNN，位置信息 隐式提供，token 按顺序输入模型，但是 **transformer 的 token 是 并行输入**
    2. <img src="Pics/transformer006.png" width=400>
-   3. `pos` : token 在序列中的位置 (Position index)
-   4. `i`   : 向量维度索引 (Dimension index)
-   5. 位置编码和原始编码 长度一致，直接相加
-   6. 生成 位置编码的函数 可以学习，论文中使用硬编码
-   7. <img src="Pics/transformer007.png" width=400>
-   8. <img src="Pics/transformer008.png" width=500>
-   9. <img src="Pics/transformer009.png" width=500>
+   3. 参数
+      1. `pos` : token 在序列中的位置 (Position index)
+      2. `i`   : 向量维度索引 (Dimension index)
+   4. 位置编码和原始编码 长度一致，直接相加
+   5. 生成 位置编码的函数 可以学习，论文中使用硬编码
+      1. <img src="Pics/transformer007.png" width=400>
+      2. 注意 : 此处的 公式和原文有所出入，以原文为准
+      3. <img src="Pics/transformer008.png" width=500>
+   6. <img src="Pics/transformer009.png" width=500>
 4. Encoder (Multi-Head Attention & FeedForward 多组堆叠)
    1. Self-Attention : Query Sequence = Context Sequence (Query Token -> Context Token)
       1. <img src="Pics/transformer011.png" width=187> <img src="Pics/transformer010.png" width=250>

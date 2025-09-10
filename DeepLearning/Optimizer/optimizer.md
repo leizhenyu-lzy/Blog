@@ -6,7 +6,7 @@
 
 ---
 
-[SGD, Momentum, RMSProp, Adam, AdamW - B站视频(RethinkFun)](https://www.bilibili.com/video/BV1NZ421s75D)
+[SGD, Momentum, RMSProp, Adam, AdamW - B站(RethinkFun)](https://www.bilibili.com/video/BV1NZ421s75D)
 
 指数加权平均
 1. $V_t = \beta V_{t-1} + (1 - \beta) \theta_t$

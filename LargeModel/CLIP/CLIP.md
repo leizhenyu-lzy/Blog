@@ -10,7 +10,7 @@
 
 **multimodal** : vision + language
 
-
+核心 : 学习两个encoder的参数，学习到相同的语义表示空间，实现跨模态理解
 
 结构总览
 1. <img src="Pics/clip002.png">
