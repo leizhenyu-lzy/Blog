@@ -13,6 +13,7 @@
 
 - [Transformer](#transformer)
   - [Table of Contents](#table-of-contents)
+- [RethinkFun - B站](#rethinkfun---b站)
 - [月来客栈 - B站](#月来客栈---b站)
   - [00 - 传统 注意力机制 \& 归一化](#00---传统-注意力机制--归一化)
   - [01 - 多头注意力机制原理](#01---多头注意力机制原理)
@@ -22,6 +23,83 @@
   - [05 - 基于 Transformer 的 翻译模型](#05---基于-transformer-的-翻译模型)
   - [06 - 基于 Transformer 的 对联生成模型](#06---基于-transformer-的-对联生成模型)
 - [DeepBean - YouTube](#deepbean---youtube)
+
+
+---
+
+# RethinkFun - B站
+
+[大模型修炼之道 : Transformer : Attention is all you need - B站](https://www.bilibili.com/video/BV1FH4y157ZC/)
+
+只使用 attention 机制，解决 seq2seq 问题，最早 Google 用于 翻译问题
+
+Tokenize  : 使用 已有字典 对句子 分词
+
+Embedding : 对每个 token 分配一个 **可学习的 参数向量**(高维空间)
+1. 每个维度 代表 某种语义
+2. 向量之间的相对关系(向量相减) 也有一定语义
+3. 问题
+   1. 学习完成后 embedding 固定，不能根据上下文进行调整
+
+Self-Attention
+1. 通过 token 之间 彼此的注意力，让 token 根据上下文，更新自己的 embedding
+2. 每个 token 有初始的 embedding，通过 3个 线性层的映射，得到 3个 向量
+   1. Q : 向其他 token 查询
+   2. K : 对查询应答
+   3. V : 用于更新其他 token embedding
+3. 相似性匹配 Q & K 点积(自己的 Q & K 也会点积)，不同 token 组成 相似度向量，Softmax，加权求和
+
+MultiHead Self-Attention
+1. 类似 CNN 每层 可以指定多个 卷积核
+2. Self-Attention 可以指定多个 Head，多次线性映射，得到多组 Q & K & V，不同组的向量 拼接起来
+3. 通过 矩阵运算，加速计算
+4. 要除以 $\sqrt{d_k}$(特征向量维度)，均值不变，调整方差(保证为1)
+5. 实际上 总特征数不变，平均分给多个 head (相当于头变小了)，再 concat 得到完整的
+6. feature size 必须整除 头的数量
+
+Layer Normalization
+1. 统计每个 Token 的 mean & var(对每个 Token 独立计算)，进行标准化
+2. 加入 很小 $\epsilon$ 防止 ÷0
+3. **每个特征维度** 都有 可学习参数 $\gamma$ & $\beta$
+4. `torch.nn.Parameter` 用来把一个 Tensor 注册成 `nn.Module` 的可学习参数
+5. Layer Norm 位置
+   1. Post-LN(原版) : 先 MHA + Dropout，然后 Residual Add，再 Norm (Add & Norm)
+   2. Pre-LN (常用) : 先 Norm，然后 MHA + Dropout，再 Residual Add
+
+Residual Connection : 避免梯度消失
+
+Feed Forward : linear + relu + dropout + linear
+
+Encoder 输入 & 输出维度一致，可以多个 block 叠加，原文是 6个
+
+Position Encoding
+1. Attention 机制 没有考虑位置关系，只是 weighted-sum (eg : 我打他 ≠ 他打我)
+2. 不能使用 离散的 绝对位置编码，模型没法处理 句子的 token 数 大于 训练时的 句子 token 数
+3. 位置编码维度 和 原始编码维度 一致
+4. 可以将 离散编码 转为 连续编码，周期变换，低维度变化快，高维度变化慢
+   1. 三角函数 sin/cos 可以调整 频率
+   2. 频率高 低维度，频率低 高维度
+   3. <img src="Pics/transformer030.png" width=500>
+   4. 实际上 Transformer 使用的是 sin/cos 交替编码
+   5. <img src="Pics/transformer031.png" width=500>
+   6. 好处 : 仅和 相对位置 有关，和 绝对位置 无关
+
+Decoder 输入有2部分
+1. Decoder 的 embedding
+2. Encoder 更新后的 embedding
+
+Mask Attention
+1. 一次性 对所有位置进行训练
+2. 推理时，还是需要 一个个的 token 进行输出
+3. mask为1的位置，表示可以看到 token，可以进行 attention 计算
+4. 让每个 token 只关注 自己 & 之前的tokens
+5. attention 正常计算，在 softmax 之前，将 mask为0的位置 替换为 **很大的负值**
+
+Cross Attention
+1. `Encoder 的 K & V` + `Decoder 的 Q`
+2. 经过 Linear 将 输出维度 映射到 字典大小，再 Softmax
+
+[Source Code - Github](https://github.com/hkproj/pytorch-transformer/blob/main/model.py)
 
 
 ---

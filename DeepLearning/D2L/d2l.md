@@ -823,6 +823,12 @@ pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`tor
 
 ## 28 批量归一化 Batch Normalization(BN)
 
+[All About Normalizations! - Batch, Layer, Instance and Group Norm - YouTube](https://www.youtube.com/watch?v=1JmZ5idFcVI)
+
+<img src="Pics/d2l107.png" width=750>
+
+蓝色区域 是一次 归一化单元 的 reduce 区域，得到一组 均值 和 方差/标准差
+
 [Batch Normalization - ipynb](./OfficialNoteBooks/chapter_convolutional-modern/batch-norm.ipynb)
 
 Normalization 的作用 把数据拉回标准正态分布，向量经过矩阵运算后值会越来越大，为了网络的稳定性，需要及时把值拉回正态分布
@@ -926,7 +932,7 @@ BatchNorm & LayerNorm
 
 公式 和 Batch Norm 类似，也有两个 可以学习的参数 $\gamma$, $\beta$，用于仿射变化，γ 和 β 的作用是让网络在归一化后仍然能够灵活学习不同的 feature 分布，而不会丢失原始信息，
 
-Transformer 使用 层归一化
+Transformer 使用 层归一化(LayerNorm)
 
 <img src="Pics/d2l080.png" width=600>
 
