@@ -4,7 +4,6 @@
 
 - [VAE(Variational Auto-Encoder) - 变分自编码器](#vaevariational-auto-encoder---变分自编码器)
   - [Table \& Contents](#table--contents)
-- [Autoencoders](#autoencoders)
 - [VAE (Variational Auto-Encoder)](#vae-variational-auto-encoder)
   - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
   - [YouTube](#youtube)
@@ -14,54 +13,6 @@
 - [β-VAE](#β-vae)
 - [VQ-VAE](#vq-vae)
 - [Denoising Auto-Encoder](#denoising-auto-encoder)
-- [MAE](#mae)
-
----
-
-
-
-# Autoencoders
-
-[Autoencoders | Deep Learning Animated - YouTube(Deepia)](https://www.youtube.com/watch?v=hZ4a4NgM3u0)
-
-Gen AI，不处理数据，而是从头创建
-
-一种生成模型，目标是从数据中学习一个潜在的 **压缩表示**(latent representation)，用该 representation 生成类似的数据
-
-AE(Auto-Encoder) 自编码器
-1. 获取数据，压缩compact 成低维表示(latent space)，再进行重建
-2. **自** 表示 自训练
-3. 组成
-   1. Encoder : compress input data
-   2. BottleNeck (Latent Space) : low-dimensional space, capture essential features, **smallest**
-   3. Decoder : reconstruct input data
-4. 训练
-   1. minimize the **difference** between **original** & **reconstructed**
-      1. encoder's ability to compress info and preserve critial information
-      2. decoder's ability to reconstruct from compressed representation
-   2. 衡量 difference
-      1. MSE
-5. 隐藏层 神经元数量少，过滤输入，特征提取，高度压缩
-   1. <img src="Pics/ae001.png" width=300>
-6. 可以配合聚类算法 在 低维空间(latent space) 进行 clustering，不同类型样本应该分离
-   1. <img src="Pics/ae002.png" width=300>
-7. 虽然只需要一个比较好的 latent space，但仍需关心 reconstruct quality
-8. 优势 : Dimensionality Reduction，**非线性**映射降维，可以在 latent space 中进行 聚类
-9. 劣势 : 学习无关特征(噪声敏感)，不支持插值，相比聚类算法不会给出标签/簇中心
-   1.  解决方法 : 对 latent space 进行 **regularize 正则化** (eg : **VAE**)
-
-
-相关改进
-1. Denoising AE : 输入先加噪声，仍要求复原原图，学到对噪声鲁棒的特征
-2. Variational AE (VAE) : 潜变量分布化、加 KL，可随机采样生成新样本，生成模型、数据增强
-3. Sparse AE / β-VAE : 加稀疏或 KL 正则，逼迫每维潜变量独立、**可解释**
-4. VAE-GMM / DEC : 再加聚类损失或混合先验，同时给出簇标签
-5. Conditional AE : 把类别/文本…拼进潜变量，条件生成、风格迁移
-6. Autoencoder + 监督头	: 共享 Encoder 学到的通用特征，预训练 -> 微调
-
-**降维重构** 是 基座 : 确保信息保真
-
-**正则和任务损失** 决定了 能学到什么性质、服务什么下游任务
 
 
 ---
@@ -201,6 +152,7 @@ $$D_{\mathrm{KL}}(\mathcal N_0 \,\|\, \mathcal N_1)
 
 
 
+
 ## ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界
 
 ELBO ((Variational) Evidence Lower Bound)
@@ -282,6 +234,9 @@ P.S. : $D_{KL}(p||q) = \mathbb{E}_p[log\frac{p}{q}] = \sum p \log \frac{p}{q}$
 CR-VAE对比学习增强互信息
 逆Lipschitz约束Decoder
 动态β调度与层次化上下文增强等有效方法
+
+
+
 
 ---
 
@@ -400,18 +355,102 @@ Disentanglement Metrics
 
 
 
-标准VAE : `loss = reconstruction_loss - kl_loss`
-
-β-VAE : `loss = reconstruction_loss - beta * kl_loss`
 
 
-
+---
 
 # VQ-VAE
 
 [Vector-Quantized Variational Autoencoders (VQ-VAEs) - YouTube(DeepBean)](https://www.youtube.com/watch?v=yQvELPjmyn0)
 
+<img src="Pics/vq002.png" width=600>
 
+latent representation 是 离散化的/量化的
+
+没有 无限多的 latent vector，需要从有限的集合(code book) 选取
+
+review 普通 VAE
+1. <img src="Pics/vae027.png" width=600>
+2. <img src="Pics/vae028.png" width=600>
+
+
+整个模型有 3个 可训练 part
+1. Encoder
+2. Decoder
+3. CodeBook : 2个 超参
+   1. D : Latent Space Dimension
+   2. K : Num of Latent Vectors
+
+
+Quantization
+1. Encoding Latent $Z_e$，被 CodeBook 中的 最接近的 替换，得到 Quantized Latent $Z_q$
+2. 接近程度 可以用 L2/欧氏距离 衡量
+
+
+VQ-VAE 针对 VAE 的 component 都进行 调整
+1. <img src="Pics/vq014.png" width=600>
+2. Discrete Latent Encoding
+3. VQ-VAE 前向传播，没有随机采样，而是 确定性的 deterministic (近邻查找 是 确定性的)
+4. 不再使用 Gaussian 作为 先验/后验，而是使用 类别分布(Categorical Distribution)，K 个选择
+   1. VAE 中，预先定义 先验 Prior $p_{\theta}(z)$，然后 尝试将 data space 和 latent space 进行 match
+   2. 由于 KL 散度项 $D_{KL}(q_{\phi}(z|x) || p_{\theta}(z))$，先验分布 会对 latent后验 分布产生 影响
+   3. 都是 Gaussian，因此 最终使得，mean 接近 0，var 接近 1
+   4. VQ-VAE 使用 近邻搜索，后验概率 **posterior** probability $q(e_k | x)$ = 1
+      1. <img src="Pics/vq003.png" width=600>
+   5. 训练时，不希望模型在 选择 索引上产生偏差(防止出现 ELBO 中的 KL 惩罚使用低先验概率的索引)，因此 **prior** 是 均匀类别分布
+      1. <img src="Pics/vq004.png" width=600>
+   6. 即使训练的时候 不希望 bias CodeWord 选择，但是 最终 数据集的 CodeWord 并不会是 均匀分布，CodeWord 之间可能相互影响，真实先验 不一定要与 均匀先验 一致
+      1. <img src="Pics/vq006.png" width=600>
+      2. 类似于 NLP 中，后续 token 依赖于 之前 token
+         1. <img src="Pics/vq007.png" width=250>
+   7. VAE 中的 prior 预定义 & 固定，VQ-VAE 中的 真实 prior 可以在 训练过程中 学习(隐式，并不知道实际是什么)
+   8. Auto-Regressive 模型 来学习 CodeWords，通过 Ancestral Sampling
+      1. <img src="Pics/vq008.png" width=500>
+      2. 逐步 光栅化的 扫描，最终 decoder
+      3. <img src="Pics/vq009.png" width=500>
+      4. 原文使用 PixelCNN + WaveNet for Audio，也可以使用 Transformer
+5. Loss Function
+   1. <img src="Pics/vq013.png" width=500>
+   2. sg : stop-gradient operator
+   3. KL Loss
+      1. 有了 prior & posterior 就 可以计算 KL Loss，基本是个 **constant** $\log K$(仅取决于 CodeBook 大小 K)
+      2. **不会出现在 训练目标 training objective 中**
+      3. <img src="Pics/vq005.png" width=600>
+   4. Reconstruct Loss
+      1. 计算 取决于 全部的 3个 部分
+         1. Encoder 参数是 $\phi$
+         2. Decoder 参数是 $\theta$
+         3. CodeBook $C$
+      2. 不需要 后验 posterior $q(e_k|x)$，因为是 确定的
+      3. Quantization 步骤 不可微，直接复制(Straight-Through Estimation)
+         1. <img src="Pics/vq010.png" width=600>
+      4. 但是 梯度没有 给 CodeBook(随机初始化的)
+   5. CodeBook Loss : 使得 $z_q \approx z_e$
+      1. 每个 vector 和 关联编码向量的 平方距离
+      2. 通过 sg operator 不向 Encoder 提供任何 梯度
+      3. 没有匹配的 CodeWord 就不做任何操作，没有更新
+      4. 算是 sparse loss，只对子集
+   6. Commitment Loss : 用于解决下面的 2个问题
+      1. 可能遇到的问题
+         1. encode vector fluctuate between code vectors，如果 encoder 参数训练的 比 codebook 快很多，导致训练不稳定 & codebook 冗余
+            1. <img src="Pics/vq011.png" width=500>
+            2. z 来回震荡，e 相互靠近
+         2. encoder vector arbitrary growth，导致数值不稳定，产生原因是 codebook loss 不惩罚 encoder，所以只是单方向跟随，而非双向奔赴
+            1. <img src="Pics/vq012.png" width=500>
+            2. e 和 z 同方向 扩大，e 会跟随 z
+
+
+Discrete/Quantization 的好处
+1. discrete representation 是 natural (NLP)
+2. Data Compression (JPG图像压缩)
+   1. <img src="Pics/vq015.png" width=500>
+3. 可用于 Tokenization，CodeBook 是学习出来的，可以学下游任务的 token，也更好使用 Transformer
+
+[](https://www.youtube.com/watch?v=1mi2MSvigcc)
+
+[](https://www.youtube.com/watch?v=1ZHzAOutcnw)
+
+[](https://www.youtube.com/watch?v=ZNRNddl9owI)
 
 
 ---
@@ -425,9 +464,7 @@ Disentanglement Metrics
 
 
 
----
 
-# MAE
 
 
 
