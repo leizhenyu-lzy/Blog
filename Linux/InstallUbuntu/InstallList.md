@@ -79,6 +79,7 @@ apt
 38. sudo apt install ca-certificates apt-transport-https software-properties-common lsb-release -y
 39. sudo apt install blueman bluez*  (蓝牙自启动)
 40. sudo apt install wireplumber
+41. sudo apt install -y bluez blueman libspa-0.2-bluetooth pipewire-pulse wireplumber pavucontrol
 
 
 
