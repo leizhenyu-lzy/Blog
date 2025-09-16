@@ -10,34 +10,104 @@
 - [原理](#原理)
 - [Denoising Diffusion Probabilistic Models(DDPM)](#denoising-diffusion-probabilistic-modelsddpm)
 - [对比](#对比)
-- [Link : 信息量 + 香农熵 + 交叉熵 + KL散度](#link--信息量--香农熵--交叉熵--kl散度)
+
+[信息量 + 香农熵 + 交叉熵 + KL散度 - 个人笔记](../../Math/Entropy&Divergence/EntropyDivergence.md)
 
 
 ---
 
 # Diffusion Model - YouTube
 
-[Diffusion Models: DDPM - YouTube](https://www.youtube.com/watch?v=EhndHhIvWWw)
+[Diffusion Models: DDPM - YouTube(Deepia)](https://www.youtube.com/watch?v=EhndHhIvWWw)
 
 DDPM : Denoising Diffusion Probabilistic Models
 
-$p(x)$ 概率分布，复杂，无法使用单一的表达式完整描述，但仍希望生成芯图像，从分布中抽取新的样本点(从未知分布中，抽取新的样本点)
+思想
+1. <img src="Pics/yt004.png" width=600>
+2. **训练数据** $p(x)$ 概率分布 复杂 无法使用单一的表达式完整描述
+3. 但仍希望生成新图像，从未知分布中，抽取新的样本点，通过 从 图像中去除 Gaussian Noise 解决问题
+4. <img src="Pics/yt001.png" width=600>
+5. 如果模型有效，应该能够从随机噪声(标准正态分布)开始，逐步转化为有意义的图像
+   1. 绝大多数标准形式的扩散模型中(eg: DDPM、Stable Diffusion 等)，用于前向过程(加噪) 和 作为反向过程(去噪) **起点的** 随机噪声，就是从标准正态分布(Standard Normal Distribution，标准高斯分布)中采样的
 
-<img src="Pics/yt001.png" width=600>
 
-如果模型有效，应该能够从随机噪声开始，逐步转化为有意义的图像
+**前向过程** ($q(x_t | x_{t-1})$)
+1. 前向过程，所有参数 fixed
+2. 单步
+   1. <img src="Pics/yt002.png" width=400>
+   2. 原始图像 $x_0$，无 noise
+   3. 使用 条件分布 $q(x_1 | x_0)$ 生成下一个图像
+   4. 添加 高斯噪声 $x_1 = x_0 + \beta · \epsilon$ 得到 $x_1$，标量 $\beta$(控制噪声的量)，**$\epsilon \sim \mathcal{N}(0, 1)$**
+   5. $q(x_1 | x_0) = \mathcal{N}(x_0, \beta)$，可以理解为 从 以 $x_0$ 为中心，方差 为 $\beta$ 的 高斯分布中抽取样本
+3. 两步
+   1. 独立地叠加 $\beta$ 方差，等价于 一次性叠加 $2\beta$ 方差的高斯噪声
+   2. **独立的高斯分布** 相加时，**均值相加，方差相加**
+   3. <img src="Pics/yt003.png" width=600>
+4. 多步
+   1. <img src="Pics/yt005.png" width=600>
+   2. Variance Explode 问题 : 希望 加噪的最终结果 $x_t$ 是 标准正态分布，但是 目前 均值固定是 $x_0$ & 方差是 $t\beta$ 无限变大，扩散过程不会收敛到 标准正态分布
+   3. <img src="Pics/yt006.png" width=600>
 
-原始图像 $x_0$
+需要切实可行的 Diffusion Process，能够让数据转为 标准正态分布
+1. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t$，随着时间增加，均值 -> 0，方差 -> 1
+   1. 实际上 **每次增加不同程度的噪声** (**noise/variance schedule**)，而非使用 固定的 $\beta$
+   2. <img src="Pics/yt008.png" width=400>
+2. <img src="Pics/yt007.png" width=400>
+3. 可以直接 从 输入 **跳步** 任意时间，而无需 依次遍历 所有之前的步骤
+   1. **跳步 只是 保证 概率分布 一样**
+4. ==暂时跳过推导==
 
-使用 条件分布 $q(x_1 | x_0)$ 生成下一个图像
+<img src="Pics/yt009.png" width=600>
 
-添加 高斯噪声 $x_1 = x_0 + \beta · \epsilon$，标量 $\beta$，$\epsilon \sim \mathcal{N}(0, 1)$
+**反向过程** ($p_{\theta}(x_{t-1} | x_t)$)
+1. 反向过程，参数不固定，需要找到最佳参数 $\theta$(网络权重)，需要有效去除噪声(使得 使用 神经网络 从 数据分布中 生成 真实样本 $x_0$ 的可能性最大)
+2. 网络训练 : 利用 Bayesian Statistics 中的，**minimize negative log-likelihood**，最小化负对数似然，**$- \log p_{\theta}(x_0)$**
+3. 负对数 表达式 $$- \log p_{\theta}(x_0) = - \log \int p_{\theta}(x_{0:T}) dx_{1:T}$$ 计算
+   1. 无法直接计算
+      1. 处理联合概率 : 针对其他 变量分布 边缘化(marginalize)
+      2. 此时还不能直接计算，需要对所有能生成 它 的可能路径 进行积分 (**intractable**)
+      3. <img src="Pics/yt011.png" width=300>
+   2. 需要使用技巧 : 同 $× q(x_{1:T} | x_0)$(前向过程) + Jensen's Inequality($- \log$ 是 凸函数，期望的函数值 < 函数的期望值) + ELBO(Evidence Lower BOund)
+      1. <img src="Pics/yt012.png" width=600>
+   3. 化简
+      1. <img src="Pics/yt013.png" width=600>
+      2. 第1项 : 与模型参数 $\theta$ 无关
+      3. 第3项 : 与模型参数 有关，衡量 从 slight noise image($x_1$) 重建 clean image($x_0$) 的可能性，是一个很小的值，没有很多 learning signal
+      4. <img src="Pics/yt014.png" width=600>
+   4. 最终只剩 第2项 : 众多分布之间的 KL散度 之和
+      1. <img src="Pics/yt015.png" width=600>
+      2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散，通常设置为 高斯分布
+      3. $q{(x_{t-1} | x_t, x_0)} = \mathcal{N}(\tilde{\mu_t}, \tilde{\beta_t})$ : **真实后验分布 True Posterior (True Reverse)**
+         1. ==推导省略==
+         2. 有 closed-form expression
+         3. 实际的推理过程是 从 纯噪声 开始 生成 $x_0$
+         4. 训练时候可以使用 $x_0$
+         5. 类似于 Teacher-Student Distillation (除了 teacher 不是训练出来的 network)
+            1. Teacher : 全知的 真实后验概率，有 特权信息 $x_0$
+            2. Student : 正在训练的 对过去一无所知的 network
 
-$q(x_1 | x_0) = \mathcal{N}(x_0, \beta)$，可以理解为以 $x_0$ 为中心，标准差 为 $\beta$ 的 高斯分布中抽取样本
 
-<img src="Pics/yt002.png" width=400>
 
-<img src="Pics/yt003.png" width=600>
+
+
+
+
+
+**符号定义**
+1. <img src="Pics/yt010.png" width=600>
+2. **Complete Forward Process**(联合概率分布)
+   1. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1, x_0) \cdots q(x_T | x_{T - 1}, \cdots, x_0)$$
+      1. 左右 同 $× x_0$
+   2. 前向过程 是 **Markov Chain**，每次的噪声处理仅仅取决于前一步，简化条件概率
+   3. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1) \cdots q(x_T | x_{T - 1})$$
+   4. 化简
+   5. $$q(x_{1:T} | x_0) = \prod_{t=1}^{T} q(x_t | x_{t-1})$$
+3. **Complete Reverse Process**
+   1. $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \prod_{t=1}^{T} p_{\theta}(x_{t-1} | x_t)$$
+   2. 反向过程 不受任何条件限制，从 pure gaussian noise 开始，不带任何 先验知识 (前向过程 需要 输入图形 $x_0$)
+
+
+
 
 
 
@@ -386,13 +456,4 @@ VAE : 训练容易，但是输出模糊
 
 
 
-
-
-
-
----
-
-# Link : 信息量 + 香农熵 + 交叉熵 + KL散度
-
-[信息量 + 香农熵 + 交叉熵 + KL散度 - 个人笔记](../../Math/Entropy&Divergence/EntropyDivergence.md)
 
