@@ -181,7 +181,7 @@ DDPM : Denoising Diffusion Probabilistic Models
 
 相比 VAE，代价是 用更多计算换取更好生成质量
 
-后续有对 DDPM 的改进，只需几次 推理步骤就能实现
+后续有对 DDPM 的改进，只需几次 推理步骤就能实现 DDIM?
 
 [Score-based Diffusion Models | Generative AI Animated - YouTube(Deepia)](https://www.youtube.com/watch?v=lUljxdkolK8&t=10s)
 
