@@ -185,6 +185,8 @@ DDPM : Denoising Diffusion Probabilistic Models
 
 [Score-based Diffusion Models | Generative AI Animated - YouTube(Deepia)](https://www.youtube.com/watch?v=lUljxdkolK8&t=10s)
 
+[Why Does Diffusion Work Better than Auto-Regression?](https://www.youtube.com/watch?v=zc5NTeJbk-k)
+
 ---
 
 # Diffusion Model - 李宏毅
