@@ -53,7 +53,8 @@ DDPM : Denoising Diffusion Probabilistic Models
 需要切实可行的 Diffusion Process，能够让数据转为 标准正态分布
 1. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t$，随着时间增加，均值 -> 0，方差 -> 1
    1. 实际上 **每次增加不同程度的噪声** (**noise/variance schedule**)，而非使用 固定的 $\beta$
-   2. <img src="Pics/yt008.png" width=400>
+   2. 使用不同的 $\beta$ 那么 $\bar{\alpha}_t$ 就变成了 $\prod_{i=1}^t (1 - \beta_i)$
+   3. <img src="Pics/yt008.png" width=400>
 2. <img src="Pics/yt007.png" width=400>
 3. 可以直接 从 输入 **跳步** 任意时间，而无需 依次遍历 所有之前的步骤
    1. **跳步 只是 保证 概率分布 一样**
@@ -87,36 +88,102 @@ DDPM : Denoising Diffusion Probabilistic Models
       3. <img src="Pics/yt011.png" width=300>
    2. 需要使用技巧 : 同 $× q(x_{1:T} | x_0)$(前向过程) + Jensen's Inequality($- \log$ 是 凸函数，期望的函数值 < 函数的期望值) + ELBO(Evidence Lower BOund)
       1. <img src="Pics/yt012.png" width=600>
-   3. 化简
-      1. <img src="Pics/yt013.png" width=600>
-      2. 第1项 : 与模型参数 $\theta$ 无关
-      3. 第3项 : 与模型参数 有关，衡量 从 slight noise image($x_1$) 重建 clean image($x_0$) 的可能性，是一个很小的值，没有很多 learning signal
-      4. <img src="Pics/yt014.png" width=600>
-   4. 最终只剩 第2项 : 众多分布之间的 KL散度 之和
-      1. <img src="Pics/yt015.png" width=600>
-      2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散
-         1. 通常设置为 高斯分布 $p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(\mu_\theta, \sigma_\theta)$
-         2. 原因
-            1. **正向过程是 线性-高斯马尔可夫过程** 且 **初始分布为 高斯** 条件下，时间反向的 马尔可夫链(**反向条件分布**)仍为高斯
-            2. 更加简单，只需要预测 均值$\mu_\theta$ & 方差$\sigma_\theta$
-            3. 为了进一步简化问题，文中将 近似后验分布的 方差 固定为 常数 $\sigma_t$，不进行学习
-      3. $q{(x_{t-1} | x_t, x_0)} = \mathcal{N}(\tilde{\mu_t}, \tilde{\beta_t})$ : **真实后验分布 True Posterior (True Reverse)**
-         1. ==推导省略==
-         2. 有 closed-form expression
-         3. 实际的推理过程是 从 纯噪声 开始 生成 $x_0$
-         4. 训练时候可以使用 $x_0$
-         5. 类似于 Teacher-Student Distillation (除了 teacher 不是训练出来的 network)
-            1. Teacher : 全知的 真实后验概率，有 特权信息 $x_0$
-            2. Student : 正在训练的 对过去一无所知的 network
-      4. 目的就是训练网络 匹配 真实后验概率
+4. 化简
+   1. <img src="Pics/yt013.png" width=600>
+   2. 第1项 : 与模型参数 $\theta$ 无关
+   3. 第3项 : 与模型参数 有关，衡量 从 slight noise image($x_1$) 重建 clean image($x_0$) 的可能性，是一个很小的值，没有很多 learning signal
+   4. <img src="Pics/yt014.png" width=600>
+   5. 最终只剩 第2项 : 众多分布之间的 KL散度 之和
+
+推导 **Final Loss Function**
+1. <img src="Pics/yt015.png" width=600>
+2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散
+   1. 通常设置为 高斯分布 $p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(\mu_\theta, \sigma_\theta)$
+   2. 原因
+      1. **正向过程是 线性-高斯马尔可夫过程** 且 **初始分布为 高斯** 条件下，时间反向的 马尔可夫链(**反向条件分布**)仍为高斯
+      2. 更加简单，只需要预测 **均值$\mu_\theta$** & **方差$\sigma_\theta$**
+      3. 为了进一步简化问题，文中将 近似后验分布的 方差 固定为 **常数 $\sigma_t$**，不进行学习，只学习 **均值$\mu_\theta$**
+3. $q{(x_{t-1} | x_t, x_0)} = \mathcal{N}(\tilde{\mu_t}, \tilde{\beta_t})$ : **真实后验分布 True Posterior (True Reverse)**
+   1. ==推导省略==
+   2. 有 closed-form expression
+   3. 实际的推理过程是 从 纯噪声 开始 生成 $x_0$
+   4. 训练时候可以使用 $x_0$
+   5. 类似于 Teacher-Student Distillation (除了 teacher 不是训练出来的 network)
+      1. Teacher : 全知的 真实后验概率，有 特权信息 $x_0$
+      2. Student : 正在训练的 对过去一无所知的 network
+4. 目的就是训练网络 匹配 真实后验概率，由于简化了问题，只能调整 **均值$\mu_\theta$**，因此 就是让两者的 均值 距离减小
+5. 用于衡量 两个概率分布之间 差异的 KL散度，可以被简化为一个简单的 **均方误差** 损失函数
+   1. <img src="Pics/yt016.png" width=600>
+   2. <img src="Pics/yt017.png" width=600>
+   3. <img src="Pics/yt019.png" width=400>
+6. 进一步 简化 $\tilde{\mu_t}$ & $\mu_\theta$
+   1. 有 $\tilde{\mu_t}$ 的 闭式表达式 (closed-form expression)
+      1. 是 $x_0$ & $x_t$ 的 weighted combination
+      2. <img src="Pics/yt018.png" width=600>
+   2. 使用 重参数化技巧，将 $x_0$ 去除，仅剩 $x_t$ & $\epsilon$
+      1. <img src="Pics/yt020.png" width=600>
+   3. 同样的可以也对 $\mu_\theta$ 化简
+      1. <img src="Pics/yt021.png" width=400>
+7. 将化简结果 带回 Loss(KL -> MSE)，$x_t$ 抵消，得到 **Final Loss Function**
+   1. <img src="Pics/yt022.png" width=600>
+   2. 变成 $\epsilon$ & $\epsilon_\theta$ 的 平方距离
+   3. **$\epsilon_\theta$** 是 网络 对 **为生成 $x_t$ 而 添加到 $x_0$ 的** 噪声的估计值
+   4. 最小化损失，意味着要让这个 预测尽可能 准确
+8. 还可以将 $\sum$ 化简掉，不是 对于每个样本所有时间步求和(很耗费资源)，而是 为每个样本随机选取一个 时间步长 t，由于有大量样本，因此可以趋近最初目标
+   1. <img src="Pics/yt024.png" width=400>
+
+**==Recap==** 如何 推导到最终 **Final Loss Function**
+1. <img src="Pics/yt023.png" width=1000>
+
+实际实现
+1. $\beta$ 初始较小，插值到 最终的 $\beta$ 大值 ($\beta$ 值决定 在每一步正向过程中，向图像中添加的 高斯噪声的方差)
+   1. 逐步且温和 添加噪声
+      1. **初始阶段**( $t$ 小，$\beta_t$ 小 ) : 模型向原始图像中添加的噪声量非常小，保证了在扩散过程的早期，图像的主要结构和细节不会被立即破坏
+      2. **后期阶段**( $t$ 大，$\beta_t$ 大 ) : 随着时间步的增加，图像变得越来越模糊，越来越像纯噪声，添加足够多的噪声，使其在最后一步完全接近一个标准正态分布
+   2. 平衡去噪的难易度
+      1. **早期去噪**(宏观) : 在噪声较少时，去噪任务相对容易
+         1. 图像的信噪比(Signal-to-Noise Ratio, SNR)非常**低**
+         2. 主要任务是学习一个宏观的、大致的去噪操作，不需要处理复杂的细节或纹理
+         3. 只要能将一个高斯噪声分布转化为一个更具结构性的、但仍然模糊的分布即可
+      2. **后期去噪**(微观) : 在噪声较多时，去噪任务变得非常困难
+         1. 已经包含了大部分清晰的结构和细节，只剩下微小的噪声
+         2. 图像的信噪比(Signal-to-Noise Ratio, SNR)非常**高**
+         3. 网络需要预测并去除的噪声，是让图像从一个略带模糊的状态，恢复出精细的纹理和高频细节
+2. 在损失函数中，对 所有步长 分配相等的 权重1，让模型在所有阶段都努力学习去噪，无论是简单的还是复杂的
+3. 训练 Train
+   1. 设定常量
+      1. beta_start, beta_end, timesteps
+      2. betas : 向量，$\beta$ 从 小 插值到 大，可以是 线性插值(DDPM 原文)，也可以是 余弦 schedule
+      3. alphas : 向量，1 - betas
+      4. alphas_cumprod, sqrt_alphas_cumprod,sqrt_one_minus_alphas_cumprod : 各种累乘
+   2. 训练循环
+      1. batch imgs($x_0$) + 同尺寸 noises($\epsilon$)
+      2. 每个 image-noise pair 的 随机 t(时间步)，为了 高效训练
+      3. 根据公式生成带噪声的图像 noised_imgs
+      4. 将带噪图像 noised_imgs 和时间步 t 输入模型，让它预测噪声 estimated_noise，是要 **计算 模型预测的噪声 和 真实噪声 间的均方误差**
+      5. 固定套路
+         1. `optimizer.zero_grad`
+         2. `loss = MSE(estimated_noise, noises)`(化简版本，减少权重系数，$\mathbb{E}_{q, t} [|| \epsilon - \epsilon_\theta(x_t, t)|| ^2]$)
+         3. `loss.backward`
+         4. `optimizer.step`
+4. 推理 Inference (生成新样本)
+   1. 设定常量，**需要 和 Train阶段 保持一致**
+      1. 推理过程 是 训练过程 的逆向重现，从纯噪声开始，一步步反转训练时所用的扩散过程
+      2. 否则 模型学习到的 去噪模式 将无法正确应用，导致生成的图像会完全失败
+   2. `with torch.no_grad()` : 禁用梯度计算，推理时我们不需要反向传播，这能节省内存和计算资源
+   3. 用一个标准的高斯噪声张量初始化 $x$，这就是生成过程的起点
+   4. 反向过程 `for t in reversed(range(timesteps))`
+   5. t_tensor : 为当前批次的所有图像创建一个统一的时间步张量
+   6. 使用 Train 保存的模型得到 predicted_noises
+   7. 在每一步(除了最后一步)，添加一些随机噪声，使得反向过程具有一定的随机性，生成多样的图像，在最后一步 t=0 时，不再添加噪声
+   8. 在经过系数缩放后，去噪操作本身就是逐像素(element-wise)的相减
 
 
+相比 VAE，代价是 用更多计算换取更好生成质量
 
+后续有对 DDPM 的改进，只需几次 推理步骤就能实现
 
-
-
-
-
+[Score-based Diffusion Models | Generative AI Animated - YouTube(Deepia)](https://www.youtube.com/watch?v=lUljxdkolK8&t=10s)
 
 ---
 
