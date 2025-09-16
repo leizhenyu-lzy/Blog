@@ -22,6 +22,7 @@
 
 DDPM : Denoising Diffusion Probabilistic Models
 
+
 思想
 1. <img src="Pics/yt004.png" width=600>
 2. **训练数据** $p(x)$ 概率分布 复杂 无法使用单一的表达式完整描述
@@ -48,6 +49,7 @@ DDPM : Denoising Diffusion Probabilistic Models
    2. Variance Explode 问题 : 希望 加噪的最终结果 $x_t$ 是 标准正态分布，但是 目前 均值固定是 $x_0$ & 方差是 $t\beta$ 无限变大，扩散过程不会收敛到 标准正态分布
    3. <img src="Pics/yt006.png" width=600>
 
+
 需要切实可行的 Diffusion Process，能够让数据转为 标准正态分布
 1. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t$，随着时间增加，均值 -> 0，方差 -> 1
    1. 实际上 **每次增加不同程度的噪声** (**noise/variance schedule**)，而非使用 固定的 $\beta$
@@ -57,7 +59,23 @@ DDPM : Denoising Diffusion Probabilistic Models
    1. **跳步 只是 保证 概率分布 一样**
 4. ==暂时跳过推导==
 
+
 <img src="Pics/yt009.png" width=600>
+
+
+**符号定义**
+1. <img src="Pics/yt010.png" width=600>
+2. **Complete Forward Process**(联合概率分布)
+   1. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1, x_0) \cdots q(x_T | x_{T - 1}, \cdots, x_0)$$
+      1. 左右 同 $× x_0$
+   2. 前向过程 是 **Markov Chain**，每次的噪声处理仅仅取决于前一步，简化条件概率
+   3. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1) \cdots q(x_T | x_{T - 1})$$
+   4. 化简
+   5. $$q(x_{1:T} | x_0) = \prod_{t=1}^{T} q(x_t | x_{t-1})$$
+3. **Complete Reverse Process**
+   1. $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \prod_{t=1}^{T} p_{\theta}(x_{t-1} | x_t)$$
+   2. 反向过程 不受任何条件限制，从 pure gaussian noise 开始，不带任何 先验知识 (前向过程 需要 输入图形 $x_0$)
+
 
 **反向过程** ($p_{\theta}(x_{t-1} | x_t)$)
 1. 反向过程，参数不固定，需要找到最佳参数 $\theta$(网络权重)，需要有效去除噪声(使得 使用 神经网络 从 数据分布中 生成 真实样本 $x_0$ 的可能性最大)
@@ -76,7 +94,12 @@ DDPM : Denoising Diffusion Probabilistic Models
       4. <img src="Pics/yt014.png" width=600>
    4. 最终只剩 第2项 : 众多分布之间的 KL散度 之和
       1. <img src="Pics/yt015.png" width=600>
-      2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散，通常设置为 高斯分布
+      2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散
+         1. 通常设置为 高斯分布 $p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(\mu_\theta, \sigma_\theta)$
+         2. 原因
+            1. **正向过程是 线性-高斯马尔可夫过程** 且 **初始分布为 高斯** 条件下，时间反向的 马尔可夫链(**反向条件分布**)仍为高斯
+            2. 更加简单，只需要预测 均值$\mu_\theta$ & 方差$\sigma_\theta$
+            3. 为了进一步简化问题，文中将 近似后验分布的 方差 固定为 常数 $\sigma_t$，不进行学习
       3. $q{(x_{t-1} | x_t, x_0)} = \mathcal{N}(\tilde{\mu_t}, \tilde{\beta_t})$ : **真实后验分布 True Posterior (True Reverse)**
          1. ==推导省略==
          2. 有 closed-form expression
@@ -85,26 +108,9 @@ DDPM : Denoising Diffusion Probabilistic Models
          5. 类似于 Teacher-Student Distillation (除了 teacher 不是训练出来的 network)
             1. Teacher : 全知的 真实后验概率，有 特权信息 $x_0$
             2. Student : 正在训练的 对过去一无所知的 network
+      4. 目的就是训练网络 匹配 真实后验概率
 
 
-
-
-
-
-
-
-**符号定义**
-1. <img src="Pics/yt010.png" width=600>
-2. **Complete Forward Process**(联合概率分布)
-   1. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1, x_0) \cdots q(x_T | x_{T - 1}, \cdots, x_0)$$
-      1. 左右 同 $× x_0$
-   2. 前向过程 是 **Markov Chain**，每次的噪声处理仅仅取决于前一步，简化条件概率
-   3. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1) \cdots q(x_T | x_{T - 1})$$
-   4. 化简
-   5. $$q(x_{1:T} | x_0) = \prod_{t=1}^{T} q(x_t | x_{t-1})$$
-3. **Complete Reverse Process**
-   1. $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \prod_{t=1}^{T} p_{\theta}(x_{t-1} | x_t)$$
-   2. 反向过程 不受任何条件限制，从 pure gaussian noise 开始，不带任何 先验知识 (前向过程 需要 输入图形 $x_0$)
 
 
 
