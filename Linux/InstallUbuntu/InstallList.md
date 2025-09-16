@@ -169,6 +169,7 @@ Ubuntu Software / Snap
 10. htop (cpu monitor)
 11. steam
 12. xmind
+13. spotify
 
 ---
 
