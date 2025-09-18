@@ -1,12 +1,27 @@
 # Probability
 
-[toc]
+## Table of Contents
+- [Probability](#probability)
+  - [Table of Contents](#table-of-contents)
+- [贝叶斯公式 Bayes Rule](#贝叶斯公式-bayes-rule)
+- [频率派与贝叶斯派](#频率派与贝叶斯派)
+  - [频率派 (点估计)](#频率派-点估计)
+  - [贝叶斯派 (分布估计)](#贝叶斯派-分布估计)
+  - [例子](#例子)
+- [极大似然估计方法 MLE(maximum likelihood estimate)](#极大似然估计方法-mlemaximum-likelihood-estimate)
+- [最大后验概率估计 MAP(maximum A Posteriori)](#最大后验概率估计-mapmaximum-a-posteriori)
+- [Distribution](#distribution)
+  - [Normal/Gaussian Distribution (正态/高斯 分布)](#normalgaussian-distribution-正态高斯-分布)
+
+---
+
+
 
 # 贝叶斯公式 Bayes Rule
 
 **贝叶斯公式** : $$P(B|A) = \frac{P(A|B) \cdot P(B)}{P(A)}$$
 
-[贝叶斯公式-深层理解 张颢](https://www.bilibili.com/video/BV19V411o7Pu/)
+[贝叶斯公式-深层理解 - B站(张颢)](https://www.bilibili.com/video/BV19V411o7Pu/)
 
 刻画学习过程
 1. A代表数据
@@ -23,11 +38,10 @@
 4. 机器学习训练就是在设计似然
 
 
-## 贝叶斯学习 & 贝叶斯分类器
+贝叶斯学习 & 贝叶斯分类器
 
-贝叶斯分类器: 生成式模型，且使用了贝叶斯公式。(有一部分属于贝叶斯学习，也有一部分属于统计学习)
 
-贝叶斯学习: 使用分布估计。任务认为参数本身不是一个客观存在的，是某一种分布产生的观察结果
+---
 
 # 频率派与贝叶斯派
 
@@ -60,13 +74,15 @@
 例如在抛硬币实验中，只进行了三次实验，而这三次实验都是正面。如果根据频率统计的观点，那么正面出现的概率应该是1。但是事实上，如果硬币没有问题的话，正面出现的概率应该是0.5。所以说此时（实验次数少）的情况下，频率统计的结果并不合理。贝叶斯统计解决这种基于已知的知识。比如说，我们可以假设正面出现的概率位于$[0.4,0.6]$的区间内。然后基于这个假设，去估计正面出现的概率。
 
 
+---
+
 # 极大似然估计方法 MLE(maximum likelihood estimate)
 
-频率派，统计学问题，目的是参数估计。容易收到样本不足的影响。
+频率派，统计学问题，目的是参数估计，容易受到样本不足的影响
 
-是求估计的方法之一。用数学方法来解释直觉，计算出使得观测到的事件发生可能性最大的系数。
+是求估计的方法之一，用数学方法来解释直觉，计算出使得观测到的事件发生可能性最大的系数
 
-先写出似然函数(利用乘法原理)，随后取对数，再求导。求出导数为0的点。如果未知参数有多个，则需要用取对数的似然函数对每个参数进行求偏导，使得所有偏导均为0的值，即为该函数的极值点，一般也是其最大似然估计值。
+先写出似然函数(利用乘法原理)，随后取对数，再求导。求出导数为0的点。如果未知参数有多个，则需要用取对数的似然函数对每个参数进行求偏导，使得所有偏导均为0的值，即为该函数的极值点，一般也是其最大似然估计值
 
 $$f(\theta) = P(x_1,\ldots,x_n|\theta) = \prod_{i=1}^{n} P(x_i|\theta)$$
 
@@ -81,7 +97,9 @@ $$
 
 $$\frac{d\ln f(\theta)}{d\theta} = 0$$
 
-机器学习频率派，容易出现统计学习方法中的过拟合。通过正则化，在不增加样本的情况下，解决过拟合。
+机器学习频率派，容易出现统计学习方法中的过拟合。通过正则化，在不增加样本的情况下，解决过拟合
+
+---
 
 # 最大后验概率估计 MAP(maximum A Posteriori)
 
@@ -112,7 +130,32 @@ $$
 
 最大后验估计可以利用经验数据，获得对未观测量的估计。它与极大似然估计方法相近，不同的是它**扩充了优化的目标函数**，其中**融合了预估计量的先验分布信息**，所以**最大后验估计可以看作是正则化（regularized）的极大大似然估计**
 
+---
+
+# Distribution
+
+## Normal/Gaussian Distribution (正态/高斯 分布)
+
+概率密度函数 (PDF)
+1. $$f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
+
+累积分布函数 (CDF)
+1. 概率密度的积分，两种形式
+2. 积分形式 : $$\Phi(x) = \frac{1}{\sigma \sqrt{2\pi}} \int_{-\infty}^{x} e^{-\frac{(t-\mu)^2}{2\sigma^2}} dt$$
+3. 误差函数形式 : $$\Phi(x) = \frac{1}{2} [ 1 + \text{erf} (\frac{x - \mu}{\sigma\sqrt{2}})]$$
+   1. P.S. : $\text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_{0}^{x} e^{-t^2} dt$
+3. 两者等价的推导
+   1. 积分形式
+      1. [积分换元法 - 个人笔记](../Calculus/Calculus.md#integration-by-substitution---积分换元法)
+      2. $$\frac{1}{\sigma \sqrt{2\pi}} \int_{-\infty}^{x} e^{-\frac{(t-\mu)^2}{2\sigma^2}} dt$$
+   2. 误差函数部分
+      1. 1 的 代换 (标准正态分布 对称性，-∞ 到 0 的积分正好一半)
+      2. $$\frac{1}{2} = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^0 e^{-\frac{t^2}{2}}dt = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^0 e^{-(\frac{t}{\sqrt{2}})^2} d \frac{t}{\sqrt{2}} × \sqrt{2} = \frac{1}{\sqrt{\pi}} \int_{-\infty}^0 e^{-m^2} dm$$
 
 
+性质
+1. 2个 服从 正态分布的 随机变量 加减之后 仍然是 正态分布
+   1. $A \sim \mathcal{N}(\mu_1, \sigma_1 ^2)$ & $B \sim \mathcal{N}(\mu_2, \sigma_2 ^2)$，则 $A+B \sim \mathcal{N}(\mu_1 + \mu_2, \sigma_1 ^2 + \sigma_2 ^2 + \text{cov}(A, B))$
+2. 2个 正态分布密度的 乘积 还是 正态分布
 
 

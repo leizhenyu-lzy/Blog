@@ -8,6 +8,9 @@
 
 [SGD, Momentum, RMSProp, Adam, AdamW - B站(RethinkFun)](https://www.bilibili.com/video/BV1NZ421s75D)
 
+[Optimization for Deep Learning (Momentum, RMSprop, AdaGrad, Adam) - YouTube(DeepBean)](https://www.youtube.com/watch?v=NE88eqLngkg)
+
+
 指数加权平均
 1. $V_t = \beta V_{t-1} + (1 - \beta) \theta_t$
 2. $V_t^{\text{correct}} = \frac{V_t}{1 - \beta^t}$ 修正
