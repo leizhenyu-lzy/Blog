@@ -20,6 +20,11 @@
 
 [Diffusion Models: DDPM - YouTube(Deepia)](https://www.youtube.com/watch?v=EhndHhIvWWw)
 
+[DDPM介紹 Diffusion 開山之祖 - YouTube](https://www.youtube.com/watch?v=6qR-BapJn-g)
+
+常用 Generative Model 对比
+1. <img src="Pics/yt025.png" width=300>
+
 DDPM : Denoising Diffusion Probabilistic Models
 
 
@@ -50,18 +55,22 @@ DDPM : Denoising Diffusion Probabilistic Models
    3. <img src="Pics/yt006.png" width=600>
 
 
-需要切实可行的 Diffusion Process，能够让数据转为 标准正态分布
-1. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t$，随着时间增加，均值 -> 0，方差 -> 1
-   1. 实际上 **每次增加不同程度的噪声** (**noise/variance schedule**)，而非使用 固定的 $\beta$
-   2. 使用不同的 $\beta$ 那么 $\bar{\alpha}_t$ 就变成了 $\prod_{i=1}^t (1 - \beta_i)$
-   3. <img src="Pics/yt008.png" width=400>
-2. <img src="Pics/yt007.png" width=400>
-3. 可以直接 从 输入 **跳步** 任意时间，而无需 依次遍历 所有之前的步骤
+需要切实可行的 Diffusion Process，能够让数据最终转为 **标准正态分布**
+1. Objective : $q(x_t|x_0) \xrightarrow[]{t \to \infty} \mathcal{N}(0,1)$
+2. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t$，随着时间增加，均值 -> 0，方差 -> 1
+3. <img src="Pics/yt007.png" width=400>
+4. 最终的效果就是，当 t 趋于无穷大时，分布 $q(x_t|x_0)$ 与初始值 $x_0$ 无关
+5. 实际上 **每次增加不同程度的噪声** (**noise/variance schedule**)，而非使用 固定的 $\beta$
+   1. 使用不同的 $\beta$ 那么 $\bar{\alpha}_t$ 就变成了 $\prod_{i=1}^t (1 - \beta_i)$
+   2. <img src="Pics/yt008.png" width=400>
+6. 可以直接 从 输入 **跳步** 任意时间，而无需 依次遍历 所有之前的步骤
    1. **跳步 只是 保证 概率分布 一样**
-4. ==暂时跳过推导==
+7. ==暂时跳过推导==
 
-
-<img src="Pics/yt009.png" width=600>
+正向过程 所有参数固定，反向过程 目标是找到最佳参数 $\theta$(网络权重)，有效去除噪声
+1. <img src="Pics/yt009.png" width=600>
+2. 正向过程 $q(x_t | x_{t-1})$
+3. 反向过程 $p_\theta(x_{t-1} | x_t)$
 
 
 **符号定义**
@@ -71,11 +80,11 @@ DDPM : Denoising Diffusion Probabilistic Models
       1. 左右 同 $× x_0$
    2. 前向过程 是 **Markov Chain**，每次的噪声处理仅仅取决于前一步，简化条件概率
    3. $$q(x_1, \cdots, x_T | x_0) = q(x_1 | x_0) q(x_2 | x_1) \cdots q(x_T | x_{T - 1})$$
-   4. 化简
-   5. $$q(x_{1:T} | x_0) = \prod_{t=1}^{T} q(x_t | x_{t-1})$$
+   4. $$q(x_{1:T} | x_0) = \prod_{t=1}^{T} q(x_t | x_{t-1})$$
 3. **Complete Reverse Process**
    1. $$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \prod_{t=1}^{T} p_{\theta}(x_{t-1} | x_t)$$
-   2. 反向过程 不受任何条件限制，从 pure gaussian noise 开始，不带任何 先验知识 (前向过程 需要 输入图形 $x_0$)
+   2. 反向过程 **不受任何条件限制**(所以是 无条件生成)，从 pure gaussian noise 开始，不带任何 先验知识
+   3. 前向过程 需要 输入图形 $x_0$
 
 
 **反向过程** ($p_{\theta}(x_{t-1} | x_t)$)
@@ -88,22 +97,22 @@ DDPM : Denoising Diffusion Probabilistic Models
       3. <img src="Pics/yt011.png" width=300>
    2. 需要使用技巧 : 同 $× q(x_{1:T} | x_0)$(前向过程) + Jensen's Inequality($- \log$ 是 凸函数，期望的函数值 < 函数的期望值) + ELBO(Evidence Lower BOund)
       1. <img src="Pics/yt012.png" width=600>
-4. 化简
+4. ELBO 改写 & 化简
    1. <img src="Pics/yt013.png" width=600>
    2. 第1项 : 与模型参数 $\theta$ 无关
-   3. 第3项 : 与模型参数 有关，衡量 从 slight noise image($x_1$) 重建 clean image($x_0$) 的可能性，是一个很小的值，没有很多 learning signal
+   3. 第3项 : 与模型参数 有关，衡量 从 slight noise image($x_1$) 重建 clean image($x_0$) 的可能性，届时没有什么 noise，因此是一个很小的值，没有很多 learning signal
    4. <img src="Pics/yt014.png" width=600>
    5. 最终只剩 第2项 : 众多分布之间的 KL散度 之和
 
 推导 **Final Loss Function**
 1. <img src="Pics/yt015.png" width=600>
-2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散
+2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散 的 **近似后验**
    1. 通常设置为 高斯分布 $p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(\mu_\theta, \sigma_\theta)$
    2. 原因
       1. **正向过程是 线性-高斯马尔可夫过程** 且 **初始分布为 高斯** 条件下，时间反向的 马尔可夫链(**反向条件分布**)仍为高斯
       2. 更加简单，只需要预测 **均值$\mu_\theta$** & **方差$\sigma_\theta$**
       3. 为了进一步简化问题，文中将 近似后验分布的 方差 固定为 **常数 $\sigma_t$**，不进行学习，只学习 **均值$\mu_\theta$**
-3. $q{(x_{t-1} | x_t, x_0)} = \mathcal{N}(\tilde{\mu_t}, \tilde{\beta_t})$ : **真实后验分布 True Posterior (True Reverse)**
+3. $q{(x_{t-1} | x_t, x_0)} = \mathcal{N}(\tilde{\mu_t}, \tilde{\beta_t})$ : **真实后验 True Posterior (True Reverse)**
    1. ==推导省略==
    2. 有 closed-form expression
    3. 实际的推理过程是 从 纯噪声 开始 生成 $x_0$
@@ -181,7 +190,13 @@ DDPM : Denoising Diffusion Probabilistic Models
 
 相比 VAE，代价是 用更多计算换取更好生成质量
 
-后续有对 DDPM 的改进，只需几次 推理步骤就能实现 DDIM?
+后续有对 DDPM 的改进，只需几次 推理步骤就能实现 : DDIM
+
+
+
+
+
+
 
 [Score-based Diffusion Models | Generative AI Animated - YouTube(Deepia)](https://www.youtube.com/watch?v=lUljxdkolK8&t=10s)
 
