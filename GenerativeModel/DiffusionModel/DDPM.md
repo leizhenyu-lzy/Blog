@@ -107,7 +107,7 @@ DDPM : Denoising Diffusion Probabilistic Models
 推导 **Final Loss Function**
 1. <img src="Pics/yt015.png" width=600>
 2. $p_{\theta}(x_{t-1} | x_t)$ : 反向扩散 的 **近似后验**
-   1. 通常设置为 高斯分布 $p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(\mu_\theta, \sigma_\theta)$
+   1. 通常 **假设为 高斯分布** : $p_{\theta}(x_{t-1} | x_t) = \mathcal{N}(\mu_\theta, \sigma_\theta)$
    2. 原因
       1. **正向过程是 线性-高斯马尔可夫过程** 且 **初始分布为 高斯** 条件下，时间反向的 马尔可夫链(**反向条件分布**)仍为高斯
       2. 更加简单，只需要预测 **均值$\mu_\theta$** & **方差$\sigma_\theta$**
@@ -126,14 +126,14 @@ DDPM : Denoising Diffusion Probabilistic Models
    2. <img src="Pics/yt017.png" width=600>
    3. <img src="Pics/yt019.png" width=400>
 6. 进一步 简化 $\tilde{\mu_t}$ & $\mu_\theta$
-   1. 有 $\tilde{\mu_t}$ 的 闭式表达式 (closed-form expression)
+   1. 有 $\tilde{\mu_t}$ 的 闭式表达式 (closed-form expression)，但是比较复杂
       1. 是 $x_0$ & $x_t$ 的 weighted combination
       2. <img src="Pics/yt018.png" width=600>
    2. 使用 重参数化技巧，将 $x_0$ 去除，仅剩 $x_t$ & $\epsilon$
       1. <img src="Pics/yt020.png" width=600>
-   3. 同样的可以也对 $\mu_\theta$ 化简
+   3. 同样的可以也对 $\mu_\theta$ 化简，因为也可以得到 $x_t$，所以也可以同样化简，变为 $\epsilon_\theta$ 的函数
       1. <img src="Pics/yt021.png" width=400>
-7. 将化简结果 带回 Loss(KL -> MSE)，$x_t$ 抵消，得到 **Final Loss Function**
+7. 将化简结果 同时 带回 Loss(KL -> MSE)，$x_t$ 抵消，得到 **Final Loss Function**
    1. <img src="Pics/yt022.png" width=600>
    2. 变成 $\epsilon$ & $\epsilon_\theta$ 的 平方距离
    3. **$\epsilon_\theta$** 是 网络 对 **为生成 $x_t$ 而 添加到 $x_0$ 的** 噪声的估计值
@@ -158,7 +158,8 @@ DDPM : Denoising Diffusion Probabilistic Models
          1. 已经包含了大部分清晰的结构和细节，只剩下微小的噪声
          2. 图像的信噪比(Signal-to-Noise Ratio, SNR)非常**高**
          3. 网络需要预测并去除的噪声，是让图像从一个略带模糊的状态，恢复出精细的纹理和高频细节
-2. 在损失函数中，对 所有步长 分配相等的 权重1，让模型在所有阶段都努力学习去噪，无论是简单的还是复杂的
+2. 在损失函数中，**对 所有步长 分配相等的 权重 1**(抛弃了系数)，让模型在所有阶段都努力学习去噪，无论是简单的还是复杂的
+   1. <img src="Pics/yt027.png" width=400>
 3. 训练 Train
    1. 设定常量
       1. beta_start, beta_end, timesteps
@@ -175,12 +176,13 @@ DDPM : Denoising Diffusion Probabilistic Models
          2. `loss = MSE(estimated_noise, noises)`(化简版本，减少权重系数，$\mathbb{E}_{q, t} [|| \epsilon - \epsilon_\theta(x_t, t)|| ^2]$)
          3. `loss.backward`
          4. `optimizer.step`
+   3. 训练中可以查看效果 : noised image 减去 estimated noise
 4. 推理 Inference (生成新样本)
    1. 设定常量，**需要 和 Train阶段 保持一致**
       1. 推理过程 是 训练过程 的逆向重现，从纯噪声开始，一步步反转训练时所用的扩散过程
       2. 否则 模型学习到的 去噪模式 将无法正确应用，导致生成的图像会完全失败
    2. `with torch.no_grad()` : 禁用梯度计算，推理时我们不需要反向传播，这能节省内存和计算资源
-   3. 用一个标准的高斯噪声张量初始化 $x$，这就是生成过程的起点
+   3. 用一个标准的高斯噪声张量初始化 $x_T$，这就是生成过程的起点
    4. 反向过程 `for t in reversed(range(timesteps))`
    5. t_tensor : 为当前批次的所有图像创建一个统一的时间步张量
    6. 使用 Train 保存的模型得到 predicted_noises
