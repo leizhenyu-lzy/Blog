@@ -2,6 +2,8 @@
 
 [Diffusion Policy: LeRobot Research Presentation #2 by Cheng Chi](https://www.youtube.com/watch?v=M03sZFfW-qU)
 
+[Diffusion Policy 基于扩散模型的机器人动作生成策略 - 知乎](https://zhuanlan.zhihu.com/p/670555655)
+
 [Diffusion Policy - Project](https://diffusion-policy.cs.columbia.edu/#paper)
 
 [Diffusion Policy - Github](https://github.com/real-stanford/diffusion_policy)
@@ -9,11 +11,12 @@
 
 ##
 
+Diffusion Policy 一种新型机器人行为生成方法(Robot Action Generation)
+
+将机器人的视觉动作策略(Visuomotor Policy) 表示为 条件去噪扩散过程(Conditional Denoising Diffusion Process)
 
 
-
-
-
+Action : sequence of 2D end-effector positions
 
 
 
