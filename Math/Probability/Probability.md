@@ -12,6 +12,7 @@
 - [最大后验概率估计 MAP(maximum A Posteriori)](#最大后验概率估计-mapmaximum-a-posteriori)
 - [Distribution](#distribution)
   - [Normal/Gaussian Distribution (正态/高斯 分布)](#normalgaussian-distribution-正态高斯-分布)
+  - [Bernoulli Distribution (伯努利/0-1 分布)](#bernoulli-distribution-伯努利0-1-分布)
 
 ---
 
@@ -134,6 +135,10 @@ $$
 
 # Distribution
 
+**PDF** : 概率密度函数，Probability Density Function
+
+**CDF** : 累积分布函数，Cumulative Distribution Function，PDF 从 $\int_{-\infty}^x$
+
 ## Normal/Gaussian Distribution (正态/高斯 分布)
 
 概率密度函数 (PDF)
@@ -163,5 +168,19 @@ $$
    3. 证明 正态分布是 **不可分解的**，无法被分解成 2个非正态的独立随机变量之和
 4. 如果 $X$ & $Y$ **独立** 且 满足 正态分布 $N(\mu, \sigma^2)$，那么 $X+Y$ & $X−Y$ **独立且同分布**，而 正态分布 是 唯一满足 这一性质的 概率分布
 5. 对于 2个 正态分布 $X$ & $Y$，如果 $X$ & $Y$ **不相关**，则意味 $X$ & $Y$ **独立**，而 正态分布 是 唯一满足 这一性质的 概率分布
+
+
+## Bernoulli Distribution (伯努利/0-1 分布)
+
+离散型概率分布
+
+$$
+f_X(x) = p^x (1-p)^{1-x} =
+\begin{cases}
+   p     & , \text{if } x = 1 \\
+   1 - p & , \text{if } x = 0
+\end{cases}
+$$
+
 
 
