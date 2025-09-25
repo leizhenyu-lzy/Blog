@@ -63,12 +63,28 @@ GAN 工作原理
       2. <img src="Pics/gan012.png" width=500>
    8. **Final Generator Loss**
       1. 目的是 $p_G(x)$ & $p^*(x)$ 对齐，也可以相当于 降低 Discriminator 的 能力 (中间目标)
-      2. 因此 Generator Loss 是 Discriminator Loss 的相反数，并且第一项也可以略去
+      2. 因此 Generator Loss 是 Discriminator Loss 的相反数，并且第一项也可以略去 (不受 Generator 影响)
       3. <img src="Pics/gan013.png" width=500>
 6. Train
    1. 训练 需要使用 mixed real-generated dataset
    2. <img src="Pics/gan011.png" width=500>
    3. 希望 Discriminator 能够学到 表明 input 不是 real 的 features
+   4. 通过 Loss 可以看出，Generator & Discriminator 正在接收 矛盾的训练
+   5. 从 博弈论 Game Theory 中，可以将表达式 视作 Value Function，Training 可以视为 G & D 的 MiniMax Game，玩家的回报 与 另一玩家的 相反，各自希望最大化自己的回报
+      1. <img src="Pics/gan014.png" width=500>
+      2. Generator 希望 minimize Value Function
+      3. Discriminator 希望 maximize Value Function
+   6. 训练 GAN 相当于找到 博弈的 Nash Equilibrium (纳什均衡)，模型参数稳定，任一方在固定对手参数时，都无法单独进一步改进 各自的目标函数值
+      1. 达到均衡的策略
+         1. <img src="Pics/gan015.png" width=500>
+         2. 先 给定 任何 $G$，找到 最优 $D^*$
+         3. 假设 $D=D_G^*$ 始终保持最佳，找到 最优 $G$
+         4. 如果将两个模型都训练到最优，$p_G$ 就会 align $p^*$
+         5. <img src="Pics/gan016.png" width=500>
+         6. <img src="Pics/gan017.png" width=400>
+         7. <img src="Pics/gan018.png" width=500>
+         8. <img src="Pics/gan019.png" width=500>
+         9. TODO
 
 
 
