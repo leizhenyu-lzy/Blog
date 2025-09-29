@@ -1,5 +1,23 @@
 # Imitation Learning
 
+模仿学习(IL) 通过 模仿专家数据 快速学习 policy，没有 奖励函数，依赖高质量演示，收敛快，存在 累积误差、分布偏差 问题，性能被专家的表现所束缚
+
+强化学习(RL) 通过 环境试错 & 奖励 优化策略，泛化 但需要 大量交互，收敛满，前期训练慢(冷启动)，可以引入专家数据加速
+
+exploitation & exploration
+
+连续 : 线性模型，Loss : MSE
+
+离散 : 分类模型，Loss : Cross-Entropy
+
+模仿学习 中，专家策略是 **最优 或 近乎最优**的，用它来定义任务的黄金标准
+
+模仿学习 最终目标是 使模仿差距(Imitation Gap) 趋近于零，$V(\pi^E) - V(\pi) \to 0$
+
+高级的模仿学习方法，如逆向强化学习(IRL)，推断奖励函数，然后使用强化学习来训练策略，允许智能体自己去探索，并可能找到一个比专家策略更好的解决方案
+
+---
+
 ## Table of Contents
 
 - [Imitation Learning](#imitation-learning)
@@ -8,8 +26,10 @@
 - [Introduction to Imitation Learning](#introduction-to-imitation-learning)
   - [01 - What is Imitation Learning](#01---what-is-imitation-learning)
   - [02 - Offline Imitation Learning (Behavioral Cloning)](#02---offline-imitation-learning-behavioral-cloning)
-  - [03 -Imitating Environment](#03--imitating-environment)
+  - [03 -Imitating Environments](#03--imitating-environments)
   - [04 -](#04--)
+- [DAgger : Dataset Aggregation](#dagger--dataset-aggregation)
+- [GAIL](#gail)
 
 ---
 
@@ -35,7 +55,7 @@ eg :
 
 # Introduction to Imitation Learning
 
-[模仿学习分享 - B站视频](https://space.bilibili.com/1557040062/upload/video)
+[模仿学习分享 - B站合集](https://space.bilibili.com/1557040062/upload/video)
 
 ## 01 - What is Imitation Learning
 
@@ -168,13 +188,39 @@ H>1 例子 (Reset Cliff MDP)
 6. 简而言之，就是 $H$ 越大，问题 越困难
 
 
+**分布偏移 会引起 累积误差**
 
 
 
-
-## 03 -Imitating Environment
+## 03 -Imitating Environments
 
 [基于行为克隆的环境模仿 - B站视频](https://www.bilibili.com/video/BV1XT411F7rU/)
+
+模仿学习 不仅可以学习 policy，还能 模仿 **environment transition**
+
+在强化学习中，环境(environment) 被建模为 马尔可夫决策过程(Markov Decision Process, MDP)
+
+2个分支
+1. 行为克隆 : 直接模仿策略(Direct Policy Imitation)
+   1. 从专家数据中学习一个映射函数，将 state s 映射到 action a
+2. 逆向强化学习 : 模仿奖励(Inverse Reinforcement Learning, IRL)
+   1. 不直接学习专家的策略，而是去推断专家行为背后的奖励函数
+
+<img src="Pics/il008.png" width=550>
+
+用 expert policy 和 true transition 交互，数据收集得到 expert trajectories，形式 $(s, a, s')$ (三元组 即可，可以是 shuffle 的，本质上是一个监督学习问题)
+
+用 expert trajectories dataset，学习转移函数 $\hat{P_h}$
+
+不方便直接对比 $P_h$ & $\hat{P_h}$
+
+因此通过和 $\hat{P_h}$ 交互得到 generated trajectories，希望尽量和 expert trajectories 一致
+
+
+
+
+
+
 
 
 
@@ -189,3 +235,56 @@ Semi-Supervised Imitation Learning
 
 
 
+
+
+---
+
+# DAgger : Dataset Aggregation
+
+DAgger (Dataset Aggregation) 是 **在线**模仿学习 算法 (Online Learning)
+
+Behavioral Cloning 的问题
+1. 通过 监督学习 拟合 专家的 state-action 映射关系，像 背标准答案
+2. 协变量偏移 (Covariate Shift) : 模型 自己交互时的 状态 和 训练时的 数据分布 不一样，导致模型在 未知状态 下表现不稳定
+3. 错误无法自我纠正，不会意识到自己做错了
+
+需要一种方法，让模型不仅能模仿，还能在犯错时被及时纠正、从错误中学习
+
+让模型自己上路，然后 专家在 犯错时 及时纠正，并把这些纠正过的数据加入训练集，反复迭代，直到模型足够稳健
+
+与其只用专家的数据来训练，不如在训练过程中，让智能体自己去环境中跑，把它在执行过程中遇到的状态也收集起来，并让专家对这些状态下的最优动作进行标注，然后用新的数据来重新训练模型
+
+不断进行 **环境交互**，从这些交互中 增量地学习 新的数据，修正模型的行为
+
+解决纯粹的 离线模仿学习(行为克隆 BC) 遇到的 **协变量偏移问题**
+
+DAGGER 算法的核心前提，有 能够随时提供最优动作的专家，有能力在任何状态下给出理论上的最优解，即使它在训练时没有明确访问过这个状态
+
+
+训练过程
+1. 用 固定的 数据集(专家数据) 离线训练 初始策略$\pi_0$ (**行为克隆**)
+2. 进入 在线循环，让当前的策略(第一次是 $\pi_0$) 在环境中运行，收集 遇到的 新的状态
+3. 通过 **专家查询**，获取 新状态 $s_{new}$ 下的 正确动作 $a_{expert}$
+4. 数据集聚合，增量地扩展数据集 $D_{k+1} = D_{k} \cup \{(s_{new}, a_{expert})\}$
+5. 用新聚合的数据集 重新**离线**训练策略(**行为克隆**)，完成一轮 **在线** 的更新
+
+让模型主动暴露自己的弱点，而不是被动接受专家演示，在面对复杂、长尾、非典型场景时更具鲁棒性
+
+<img src="Pics/dagger001.png" width=500>
+
+DAGGER 算法中，我们不需要直接拥有专家策略 $\pi^E$ 的代码或数学公式，只需要一个专家接口(Expert Oracle)，或者黑盒(能生成专家轨迹，能对任何状态进行标注)
+
+
+# GAIL
+
+
+
+
+exploring data aggregation
+
+rl coach
+
+
+https://zhuanlan.zhihu.com/p/140348314
+
+https://zhuanlan.zhihu.com/p/140939491
