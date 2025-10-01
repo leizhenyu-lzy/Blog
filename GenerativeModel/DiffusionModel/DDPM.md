@@ -51,15 +51,15 @@ DDPM : Denoising Diffusion Probabilistic Models
    3. <img src="Pics/yt003.png" width=600>
 4. 多步
    1. <img src="Pics/yt005.png" width=600>
-   2. Variance Explode 问题 : 希望 加噪的最终结果 $x_t$ 是 标准正态分布，但是 目前 均值固定是 $x_0$ & 方差是 $t\beta$ 无限变大，扩散过程不会收敛到 标准正态分布
+   2. **Variance Explode 问题** : 希望 加噪的最终结果 $x_t$ 是 标准正态分布，但是 目前 均值固定是 $x_0$ & 方差是 $t\beta$ 无限变大，扩散过程不会收敛到 标准正态分布
    3. <img src="Pics/yt006.png" width=600>
 
 
 需要切实可行的 Diffusion Process，能够让数据最终转为 **标准正态分布**
 1. Objective : $q(x_t|x_0) \xrightarrow[]{t \to \infty} \mathcal{N}(0,1)$
-2. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t$，随着时间增加，均值 -> 0，方差 -> 1
+2. 每个 step 需要改变 mean，加上一个系数 $\sqrt{1 - \beta}$ (for simplicity)，使其减小到 0，$\bar{\alpha}_t = (1 - \beta)^t \to 0$，随着时间增加，均值 趋于 0，方差 趋于 1
 3. <img src="Pics/yt007.png" width=400>
-4. 最终的效果就是，当 t 趋于无穷大时，分布 $q(x_t|x_0)$ 与初始值 $x_0$ 无关
+4. 最终的效果就是，当 t 趋于无穷大时(一直加噪)，分布 $q(x_t|x_0)$ 与初始值 $x_0$ 无关
 5. 实际上 **每次增加不同程度的噪声** (**noise/variance schedule**)，而非使用 固定的 $\beta$
    1. 使用不同的 $\beta$ 那么 $\bar{\alpha}_t$ 就变成了 $\prod_{i=1}^t (1 - \beta_i)$
    2. <img src="Pics/yt008.png" width=400>
@@ -129,7 +129,7 @@ DDPM : Denoising Diffusion Probabilistic Models
    1. 有 $\tilde{\mu_t}$ 的 闭式表达式 (closed-form expression)，但是比较复杂
       1. 是 $x_0$ & $x_t$ 的 weighted combination
       2. <img src="Pics/yt018.png" width=600>
-   2. 使用 重参数化技巧，将 $x_0$ 去除，仅剩 $x_t$ & $\epsilon$
+   2. 使用 **重参数化技巧** (reparameterization trick)，将 $x_0$ 去除，仅剩 $x_t$ & $\epsilon$
       1. <img src="Pics/yt020.png" width=600>
    3. 同样的可以也对 $\mu_\theta$ 化简，因为也可以得到 $x_t$，所以也可以同样化简，变为 $\epsilon_\theta$ 的函数
       1. <img src="Pics/yt021.png" width=400>

@@ -96,6 +96,8 @@ Locomotion & Manipulation
 
 
 
+Diffusion Transformer Policy
+
 
 
 
