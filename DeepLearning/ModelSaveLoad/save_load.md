@@ -18,7 +18,7 @@
 5. `.ckpt` vs `.pt`
    1. 本质上一样，区别只在 习惯与内容约定
    2. `.pt` : 整模型 + 权重/参数
-   3. `.ckpt` :
+   3. `.ckpt` : 常见于 Lightning/自定义约定，通常是包含多项训练状态的字典
 6. 只有权重是不够 完整恢复训练 的，一定要把 `optimizer` / `scheduler` 之类一并存起来，否则 动量、学习率 进度 都会丢
 7. code
    ```python
@@ -71,10 +71,22 @@
       # load
       model_tr = torch.jit.load("xxx.pt")
       ```
+4. 注意
+   1. `trace` 只记录给定样例的前向图，含数据依赖分支/动态形状时优先 `script` 或混合 `script_module.forward = torch.jit.trace(...)`
+   2. 导出前 `model.eval()`，去除 Dropout/BN 的训练行为；若需训练式 TorchScript，需要确保脚本化路径兼容
+   3. 可用 `torch.jit.freeze` 冻结脚本模块以收敛属性并减少运行时开销
+      ```python
+      model.eval()
+      scripted = torch.jit.script(model)
+      scripted = torch.jit.freeze(scripted)
+      scripted.save("xxx.pt")
+      ```
 
 `torch.save(model)` (Pickle 整模型)
 1. 加载回来就是普通 `nn.Module`
 2. 强依赖 PyTorch 版本 / pickle 协议，跨版本、跨框架不可靠，在生产并不推荐
+3. 安全风险：Pickle 反序列化可执行任意代码，仅加载可信来源；一般不建议在部署/分发中使用
+4. 更推荐使用 `state_dict` 或 TorchScript/ONNX 等可移植格式
 
 
 
@@ -83,6 +95,33 @@ ONNX + ONNX Runtime 推理
 1. 一般 只推理
 2. 跨框架可执行的 静态图 + 权重
 3. 可丢给 ORT / TensorRT / OpenVINO 等后端
+4. 导出（PyTorch → ONNX）
+   ```python
+   model.eval()
+   dummy = torch.randn(1, C, H, W)
+   torch.onnx.export(
+       model, dummy, "model.onnx",
+       input_names=["input"], output_names=["output"],
+       opset_version=13,
+       dynamic_axes={"input": {0: "batch"}, "output": {0: "batch"}},
+   )
+   ```
+5. ONNX Runtime 推理
+   ```python
+   import onnxruntime as ort
+   import numpy as np
+
+   sess = ort.InferenceSession(
+       "model.onnx",
+       providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+   )
+   x = np.random.randn(4, C, H, W).astype(np.float32)
+   y, = sess.run([sess.get_outputs()[0].name], {"input": x})
+   ```
+6. 常见注意事项
+   1. 动态形状需设置 `dynamic_axes`；否则可能固定为导出样例形状
+   2. 不支持的算子需替换/重写，或使用更高 `opset_version`；必要时用 `onnx-simplifier` 简化图
+   3. 进一步加速可转 TensorRT（`trtexec --onnx=model.onnx`），注意精度（FP16/INT8）与算子支持
 
 
 

@@ -15,7 +15,11 @@
 # 分布式训练方案
 
 
+
 ## **DDP (Distributed Data Parallel)** - PyTorch 官方
+
+[Distributed Data Parallel in PyTorch Tutorial Series - YouTube](https://www.youtube.com/playlist?list=PL_lsbAsL_o2CSuhUhJIiW0IkdT5C2wGWj)
+
 核心 : **数据并行**
 1. 每张 GPU 保存一份完整模型参数
 2. 每个 rank(GPU 进程) 拿到不同的 mini-batch 切片，独立 前向 + 反向
@@ -30,6 +34,10 @@
 
 ## **FSDP (Fully Sharded Data Parallel)** - PyTorch 官方
 
+[Getting Started with Fully Sharded Data Parallel (FSDP2) - PyTorch Docs](https://docs.pytorch.org/tutorials/intermediate/FSDP_tutorial.html)
+
+FSDP1 已经 deprecated，现在是
+
 比 DDP 新
 
 torch.distributed.fsdp
@@ -40,8 +48,8 @@ torch.distributed.fsdp
 3. 也支持 ZeRO-3 式的梯度 sharding、混合精度、CPU offload 等
 
 优
-✓ 在 PyTorch 原生生态内完成“大模型显存减半/四分之一”而无需接第三方库。
-✓ API 与 DDP 类似，迁移成本相对可控。
+1. 在 PyTorch 原生生态内完成，无需接第三方库
+2. API 与 DDP 类似，迁移成本相对可控
 
 劣
 1. 复杂度比 DDP 高，需要正确 wrap 模型(按层级拆分)、调更多参数
