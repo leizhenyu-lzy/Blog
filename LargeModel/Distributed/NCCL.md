@@ -13,18 +13,34 @@ PyTorch 会调用 底层配置的集合通信后端，在 GPU 环境下，这个
 2. 直接访问 (Direct Access) : 利用 CUDA 和 GPU 硬件特性，允许 GPU 之间直接进行数据传输，减少 CPU 介入，从而显著降低延迟
 
 
-[Collective Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html) - 通信操作合集
-1. **All-Reduce (全局归约/求和)**
-   1. 所有参与者(GPU) 贡献一个数据(梯度)，经过一个运算(eg : 求和、求平均)后，所有参与者都获得 最终的、统一的结果
-   2. 分布式数据并行(eg : PyTorch DDP) 中最常用的操作，用于同步所有 GPU 计算出的梯度，求平均后返回给所有 GPU
-2. **Broadcast (广播)**
-   1. 将一个 GPU 上的数据 发送给所有其他 GPU，只有一个进程提供数据，每个进程都收到完整、相同的数据副本
-   2. 用于初始化，确保所有 GPU 上的 模型副本 拥有 完全相同的**初始权重**
-3. **Reduce-Scatter (分散归约)**
-   1. 所有参与者都贡献一个数据，对这些数据进行归约(eg : 求和)，最终的结果会被分割成片段，分散到各个参与者手中，每个参与者 **只收到结果的部分**
-   2. 需要区分 [`torch.Tensor.scatter_reduce`](https://docs.pytorch.org/docs/stable/generated/torch.Tensor.scatter_reduce_.html#torch.Tensor.scatter_reduce_)，是 张量操作函数，用于单 GPU/单个张量内部的数据处理和聚合
-4. **All-Gather (全收集)**
-   1. 每个参与者 贡献一个片段数据，所有参与者都收到 **完整的张量**(由所有参与者贡献的片段拼接而成)
+[Collective Operations - NVIDIA Docs](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html) - 通信操作合集 (下面的公式类似 **指针**，内存地址偏移量)
+1. **Broadcast (广播)**
+   1. <img src="Pics/nccl002.png">
+   2. 将一个 GPU 上的数据 发送给所有其他 GPU，只有一个进程提供数据，每个进程都收到完整、相同的数据副本
+   3. 用于初始化，确保所有 GPU 上的 模型副本 拥有 完全相同的**初始权重**
+2. **Reduce**
+   1. <img src="Pics/nccl003.png">
+3. **All-Reduce (全局归约)**
+   1. <img src="Pics/nccl001.png">
+   2. 所有参与者(GPU) 贡献一个数据(梯度)，经过一个运算(eg : 求和、求平均)后，所有参与者都获得 最终的、统一的结果
+   3. 分布式数据并行(eg : PyTorch DDP) 中最常用的操作，用于同步所有 GPU 计算出的梯度，求平均后返回给所有 GPU
+4. **Scatter**
+   1. <img src="Pics/nccl008.png">
+5. **Reduce-Scatter (分散归约)**
+   1. <img src="Pics/nccl005.png">
+   2. 所有参与者都贡献一个数据，对这些数据进行归约(eg : 求和)，最终的结果会被分割成片段，分散到各个参与者手中，每个参与者 **只收到结果的部分**
+   3. 需要区分 [`torch.Tensor.scatter_reduce`](https://docs.pytorch.org/docs/stable/generated/torch.Tensor.scatter_reduce_.html#torch.Tensor.scatter_reduce_)，是 张量操作函数，用于单 GPU/单个张量内部的数据处理和聚合
+6. **Gather**
+   1. <img src="Pics/nccl007.png">
+7. **All-Gather (全收集)**
+   1. <img src="Pics/nccl004.png">
+   2. 每个参与者 贡献一个片段数据，所有参与者都收到 **完整的张量**(由所有参与者贡献的片段拼接而成)
+8. **AlltoAll**
+   1. <img src="Pics/nccl006.png">
+
+
+
+
 
 ---
 
