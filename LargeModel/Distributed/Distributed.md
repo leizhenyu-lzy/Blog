@@ -1,3 +1,11 @@
+
+深度学习模型中，模型结构(`nn.Module` 定义) 占用的内存相对于参数(权重) 和 运行时状态(如激活值、梯度)，通常可以忽略不计
+
+单机/多机 主要指的是 物理node 的数量
+
+从进程的角度来看，可以通过配置让一个物理 GPU 运行多个逻辑进程，模拟两个 GPU
+
+
 # Accelerate
 
 `accelerate config` 多gpu分布式训练
@@ -13,7 +21,6 @@
 
 
 # 分布式训练方案
-
 
 
 ## **DDP (Distributed Data Parallel)** - PyTorch 官方

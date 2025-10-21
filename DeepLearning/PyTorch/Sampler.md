@@ -1,7 +1,39 @@
 [`torch.utils.data.Sampler` - PyTorch Docs](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.Sampler)
 
 
+# Sampler & DataLoader & Dataset 之间的关系
 
+Sampler 告诉 DataLoader 要取的 index
+1. `__len__`
+2. `__iter__`
+
+DataLoader 接收 Sampler 生成的 index 序列，告诉 Dataset 取对应 index 的数据
+
+Dataset 根据 index 返回数据，DataLoader 将它们打包成 batch
+1. `__len__`
+2. `__getitem__`
+
+
+DataLoader 有默认的 Sampler
+1. `shuffle = False`，对应 `torch.utils.data.SequentialSampler`
+2. `shuffle = True` (default)，对应 `torch.utils.data.RandomSampler`
+3. 同时将上面的基础 Sampler 封装进 `BatchSampler`
+
+
+自定义
+1. Sampler 继承 `torch.utils.data.Sampler`
+   1. `__len__(self)`
+   2. `__iter__(self)`
+2. Dataset 继承 `torch.utils.data.Dataset`
+   1. `__len__(self)` : 返回数据集中的总样本数
+   2. `__getitem__(self, index)` : 根据给定的整数索引，返回单个数据样本
+3. DataLoader 继承 `torch.utils.data.DataLoader`
+
+
+
+
+
+# Sampler Collection
 
 
 `Sampler`
@@ -42,6 +74,8 @@
 
 
 `DistributedSampler`
+1. 用于 DDP & FSDP
+2. 也会被 `BatchSampler` 包装
 
 
 
@@ -76,5 +110,6 @@ graph LR
     I -->|是| J["下一个 epoch"]
     J --> B
 ```
+
 
 
