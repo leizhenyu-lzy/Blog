@@ -11,13 +11,17 @@ DDP 工作流程
    1. 相同 模型 初始参数
    2. 相同 优化器 随机种子
 3. **改变数据**，从 DataLoader 获取 input batch，使用 `DistributedSampler`，确保每个进程接收不同输入
-4. 每个进行 使用不同的 batch 数据，独立进行 forward & backward，**先不让 optimizer 进行参数优化**，否则会得到不同的模型
-5. DDP 启动 Synchronization 步骤，使用 **Ring All-Reduce**(Reduce-Scatter + All-Gather) 算法
-   1. Ring All-Reduce 算法 本身 不是逐层的
-   2. PyTorch 的 DDP 将模型的所有梯度参数 划分成几个较大的 桶Bucket，而不是对每一个微小的参数都进行一次 All-Reduce (少量大规模通信 代替 大量小规模通信)
-   3. DDP 监听 : DDP 在每个参数上设置了钩子，当某一层的梯度计算完成时，这个梯度就被放入 所属的 桶中，一旦一个桶内所有的梯度都已就绪，DDP 会 立即 & 异步 启动对这个桶的 Ring All-Reduce
-   4. 逐桶 触发机制，使得梯度计算和通信可以同时进行
-6. 此时 每个 模型 copy 都有相同的 gradient 梯度，各自运行优化器 进行 参数更新 就得到相同的更新参数，保持同步，可以进行下一次迭代
+4. 每个进程 使用不同的 batch 数据，独立进行 forward & backward，**在 optimizer 进行参数优化 之前 同步**(`loss.backward()` 过程中(分 bucket)同步)，否则会得到不同的模型
+   1. 每个 GPU 计算 自己的 梯度
+   2. All-Reduce
+   3. **DDP 的 Synchronization 细节**，使用 **Ring All-Reduce** ==(Reduce-Scatter + All-Gather)== 算法
+      1. Ring All-Reduce 算法 本身 不是逐层的
+      2. PyTorch 的 DDP 将模型的所有梯度参数 划分成几个较大的 桶 Bucket，而不是对每一个微小的参数都进行一次 All-Reduce (少量大规模通信 代替 大量小规模通信)
+      3. Bucket 就是 Ring All-Reduce 中 Reduce-Scatter 的单位
+      4. DDP 监听 : DDP 在每个参数上设置了钩子，当某一层的梯度计算完成时，这个梯度就被放入 所属的 桶中，一旦一个桶内所有的梯度都已就绪，DDP 会 立即 & 异步 启动对这个桶的 Ring All-Reduce
+      5. 逐桶 触发机制，使得梯度计算和通信可以同时进行
+      6. DDP 按照参数在模型中的定义顺序 将梯度分配到 bucket，每个 bucket 有大小上限 (default 25MB)，当累积的梯度大小达到上限时，就创建一个新的 bucket
+5. 此时 每个 模型 copy 都有相同的 gradient 梯度，各自运行优化器 进行 参数更新 就得到相同的更新参数，保持同步，可以进行下一次迭代
 
 
 概念
