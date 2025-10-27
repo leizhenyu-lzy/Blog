@@ -1,33 +1,54 @@
-[`torch.utils.data.Sampler` - PyTorch Docs](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.Sampler)
+# Sampler & DataLoader & Dataset
+
+PyTorch Docs
+1. [torch.utils.data.DataLoader](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader)
+2. [torch.utils.data.Dataset](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.Dataset)
+3. [torch.utils.data.Sampler](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.Sampler)
 
 
 # Sampler & DataLoader & Dataset 之间的关系
 
 Sampler 告诉 DataLoader 要取的 index
-1. `__len__`
-2. `__iter__`
 
 DataLoader 接收 Sampler 生成的 index 序列，告诉 Dataset 取对应 index 的数据
 
 Dataset 根据 index 返回数据，DataLoader 将它们打包成 batch
-1. `__len__`
-2. `__getitem__`
-
 
 DataLoader 有默认的 Sampler
 1. `shuffle = False`，对应 `torch.utils.data.SequentialSampler`
 2. `shuffle = True` (default)，对应 `torch.utils.data.RandomSampler`
 3. 同时将上面的基础 Sampler 封装进 `BatchSampler`
 
+# 实现细节
 
-自定义
-1. Sampler 继承 `torch.utils.data.Sampler`
-   1. `__len__(self)`
-   2. `__iter__(self)`
-2. Dataset 继承 `torch.utils.data.Dataset`
-   1. `__len__(self)` : 返回数据集中的总样本数
-   2. `__getitem__(self, index)` : 根据给定的整数索引，返回单个数据样本
-3. DataLoader 继承 `torch.utils.data.DataLoader`
+Sampler 继承 `torch.utils.data.Sampler`
+1. `__len__(self)` : length of the returned iterators
+2. `__iter__(self)` : iterate over indices or lists of indices (batches) of dataset elements，成为 Iterable (Iterator 还需实现 `__next__()`)
+
+Dataset 继承 `torch.utils.data.Dataset`
+1. `__len__(self)` (optional) : 返回数据集中的总样本数
+2. `__getitem__(self, index)` : 根据给定的整数索引，返回单个数据样本
+3. `__getitems__(self, indices)` (optional) : speedup batched samples loading
+
+
+DataLoader 继承 `torch.utils.data.DataLoader`
+1. [dataloader.py 源码 - Github](https://github.com/pytorch/pytorch/blob/main/torch/utils/data/dataloader.py)
+2. **支持 Dataset 类型**
+   1. **Map-style Dataset** (继承 `torch.utils.data.Dataset`) : 预知大小
+      1. 实现 `__len__()` 和 `__getitem__(index)`
+      2. 数据完全可用，可通过索引访问
+   2. **Iterable-style Dataset** (继承 `torch.utils.data.IterableDataset`) : 流式
+      1. 实现 `__iter__()` 方法
+      2. 数据流式生成，大小未知或无限
+3. 支持 single-process & multi-process loading
+4. **Parameters**
+   1. dataset
+   2. batch_size, shuffle, sampler, drop_last
+   3. batch_sampler 与 batch_size, shuffle, drop_last, sampler **互斥**
+   4. num_workers, worker_init_fn(只在 num_workers > 0 时起作用，可用于设置随机种子)
+   5. collate_fn(合并从 Dataset 中取出的 多个独立样本，转为 batch tensors，方便并行处理)
+   6. pin_memory(将数据加载到 锁页内存(Pinned Memory) 区域，GPU 可以直接通过 DMA 读数据，分配过多可能导致系统资源紧张)
+   7. etc
 
 
 

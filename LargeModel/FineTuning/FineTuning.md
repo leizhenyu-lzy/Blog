@@ -86,6 +86,8 @@ Chat Template
 4. 管理多轮对话的上下文 : 完整的对话历史，按照特定的格式，传递给模型
 5. 优化模型性能 : 经过 聊天微调(Chat-Tuned) or 指令微调(Instruction-Tuned) 的模型，期望**特定的模板格式(原厂对话模板) 才能达到 最佳性能**
 
+[Chat Template - HuggingFace Docs](https://huggingface.co/docs/transformers/main/chat_templating)
+
 [Llama 3.1 Prompte Template - Meta Docs](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1/#prompt-template)
 
 例子
