@@ -6,6 +6,7 @@
   - [Table \& Contents](#table--contents)
 - [VAE (Variational Auto-Encoder)](#vae-variational-auto-encoder)
   - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
+  - [RethinkFun](#rethinkfun)
   - [YouTube](#youtube)
   - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
     - [两种推导](#两种推导)
@@ -46,6 +47,38 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 数据 x 可以看到，但是 隐变量 z 未知，希望通过 x 推断 z，即计算 $p(z|x) = \frac{p(x|z)p(z)}{p(x)}$，但是计算 $p(x)$ 困难
 
 使用 **Variational Inference**
+
+## RethinkFun
+
+[VAE算法讲解 - B站(RethinkFun)](https://www.bilibili.com/video/BV1xFxMz1EMS)
+
+原始 AE，latent space 中 大多数区域都是 无意义的点，只有少量确定的点能还原回 原始 输入图片
+
+<img src="Pics/vae030.png" width=600>
+
+生成 正态分布(AE 是生成确定的值)，分散的 正态分布 虽然增加覆盖面积，但仍然不能覆盖 latent space
+
+<img src="Pics/vae029.png" width=600>
+
+VAE，让所有样本，经过 Encoder 生成的多元正态分布 都接近 标准正态分布
+
+**P.S.** : 让 所有样本的集合分布 符合 标准正态分布，但 单个样本的分布 在这个大分布内部 仍然 不同
+
+<img src="Pics/vae031.png" width=600>
+
+VAE 训练时
+
+<img src="Pics/vae032.png" width=600>
+
+符号定义
+1. $x$ : input image
+2. $z$ : 隐变量
+3. $p(z)$ : 隐变量 分布，希望是 多元标准正态分布，生成时从中取样
+4. $q_{\phi}(z|x)$ : encoder 映射 概率密度，以 $\phi$ 为参数
+5. $q_{\theta}(x|z)$ : decoder 映射 概率密度，以 $\theta$ 为参数
+
+
+
 
 
 ## YouTube

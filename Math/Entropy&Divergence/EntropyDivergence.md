@@ -36,8 +36,8 @@
 2. 用 猜测q 描述 真实情况p 时，会损失多少信息，有多么不相似
 3. 特性
    1. **非负性**，当且仅当 完美猜测(P=Q)，KL散度为0
-      1. Jensen's Inequality : 对于 convex function(开口向上，任意两点连线在函数上)，平均都函数 ≤ 函数的平均，$f(\mathbb{E}[X]) \le \mathbb{E[f(X)]}$，对于 concave，不等号反向
-      2. 设随机变量 $Z(x) = \frac{q(x)}{p(x)}$，$-\log$ 为凸函数，这里 Jensen 看的是随机变量 Z 的分布，不是把 $-\log \frac{q(x)}{p(x)}$ 视作一个关于 x 的函数去考察
+      1. 用 Jensen 不等式证明
+      2. 设随机变量 $Z(x) = \frac{q(x)}{p(x)}$，$-\log$ 为凸函数，这里 Jensen 看的是随机变量 Z 的分布，不是把 $-\log \frac{q(x)}{p(x)}$ 整体 视作一个关于 x 的函数去考察
       3. <img src="Pics/kl002.png" width=500>
    2. KL散度越大，差别越大
    3. **对于概率分布敏感**
@@ -66,3 +66,11 @@
 
 交叉熵 & KL 散度(Kullback-Leibler Divergence) 关系
 1. $$D_{KL}(p||q) = H(p, q) - H(p) = \sum_i p_i \log _2(\frac{1}{q_i}) - \sum_i p_i \log _2(\frac{1}{p_i}) = \sum_i p_i \log _2(\frac{p_i}{q_i})$$
+
+
+
+**==Jensen's Inequality==**
+1. 对于 convex function(下凸函数，开口向上，任意两点连线在函数上)
+2. <img src="Pics/convex002.png" width=400>
+3. 平均值的函数 ≤ 函数值的平均
+4. $f(\mathbb{E}[X]) \le \mathbb{E[f(X)]}$，对于 concave，不等号反向

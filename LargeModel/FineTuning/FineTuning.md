@@ -64,18 +64,29 @@ group_text (常用范式)
 
 SFT(Supervised Fine-Tuning)，在预训练之后
 
+指令微调，专门用于提高模型遵循指令和进行多轮对话的能力
+
+指令数据集，每条数据 包含一个 指令(Instruction/Prompt) & 对应的期望输出(Completion/Response)
+
 ### Chat Template - 对话模板
 
 预训练的 大模型 只会根据提供的上文 续写，不一定会直接回答问题
 
-预训练 & 微调
+预训练 & 指令微调
 1. 网络结构 完全一致
 2. 损失函数 基本相同
 3. 训练数据 主要区别
 
 预训练大模型 两个版本 : 预训练 & 指令微调(Chat Template)
 
-和 **原厂的对话模板** 一致，能获得更好的效果
+Chat Template
+1. 为多轮对话(即聊天) 提供一个 预定义的、结构化的 格式，以便模型能够正确地 解释&响应 对话内容
+2. 保持一致的对话结构 : 区分用户的输入、模型的回复，以及系统级别的指令
+3. 确保正确的角色识别 : 使用 特殊的标记或前缀(user, assistant, system) 来清晰地定义对话中不同角色的消息
+4. 管理多轮对话的上下文 : 完整的对话历史，按照特定的格式，传递给模型
+5. 优化模型性能 : 经过 聊天微调(Chat-Tuned) or 指令微调(Instruction-Tuned) 的模型，期望**特定的模板格式(原厂对话模板) 才能达到 最佳性能**
+
+[Llama 3.1 Prompte Template - Meta Docs](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1/#prompt-template)
 
 例子
 1. <img src="Pics/rethink002.png" width=700>
