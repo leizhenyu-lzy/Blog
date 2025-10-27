@@ -4,6 +4,8 @@
 
 [SLURM - Docs](https://slurm.schedmd.com/)
 
+[Slurm简介 - 中科大](https://scc.ustc.edu.cn/hmli/doc/linux/slurm-install/slurm-install.html)
+
 ## Table of Contents
 
 - [SLURM (Simple Linux Utility for Resource Management)](#slurm-simple-linux-utility-for-resource-management)
