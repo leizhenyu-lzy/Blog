@@ -12,7 +12,7 @@ humanoid 控制算法 分3代
 
 分类
 1. UC Berkeley BAIR
-   1. <img src="Pics/../ntwk001.webp" width=1000>
+   1. <img src="Pics/ntwk001.webp" width=1000>
    2. `Pieter Abbeel` - 深度强化学习，吴恩达的第一个博士生
       1. 学生 `Sergey Levine` - PALM-E & RT1 & RT2
          1. 学生 `Chelsea Finn`
