@@ -6,6 +6,14 @@ ACM SIGGRAPH 2018
 
 ---
 
+Current Problem : generalization & directability
+
+RL trial-and-error -> less need for human insight
+
+current RL generated motions' quality lagged behind, severe arfifacts(缺陷)
+
+---
+
 Input
 1. character model
 2. kinematics reference motions : sequence of target poses $\{\hat{q_t}\}$
@@ -20,6 +28,11 @@ Control Policy
    3. $q_t$ : joint angle
 
 Reward
-1. imitation reward : $r^{I} (s_t, a_t)$
-2. task-specific reward : $r^{G} (s_t, a_t, g_t)$
+1. motion imitation objective/reward : $r^{I} (s_t, a_t)$
+2. task-specific objective/reward : $r^{G} (s_t, a_t, g_t)$
+   1. reward : single step
+   2. return : total trajectory
+
+
+
 
