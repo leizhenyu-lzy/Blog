@@ -16,6 +16,10 @@ bottleneck : slow training
 
 FastTD3 : high-performance variant of the Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm
 
+
+
+
+
 optimizations are based on the observations of Parallel Q-Learning (PQL)
 
 Features
