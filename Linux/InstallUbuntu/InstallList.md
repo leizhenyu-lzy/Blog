@@ -1,26 +1,25 @@
-bash
-1. 终端补全忽略大小写
-   1. echo 'set completion-ignore-case on' >> /etc/inputrc
-   2. echo 'set completion-ignore-case on' >> ~/.inputrc
-2. ros
-   1. wget http://fishros.com/install -O fishros && . fishros
-3. time
-   1. sudo apt install ntpdate # 必须要sudo
-   2. sudo ntpdate time.windows.com # 进行时间同步并检查
-   3. sudo hwclock --localtime --systohc # 修改时间机制为localtime，并同步bios硬件时间
+# Ubuntu 装机 列表
 
-
-desktop 刷新 : `Alt+F2` & `r`
-
+**Table of Contents**
+- [Ubuntu 装机 列表](#ubuntu-装机-列表)
+- [Apt](#apt)
+- [Website](#website)
+- [Snap](#snap)
+- [Pip](#pip)
+- [NVIDIA](#nvidia)
+- [Fonts](#fonts)
+- [Tips](#tips)
 
 ---
+
+
+# Apt
 
 
 apt
 1. git
    1. beautify - https://github.com/leizhenyu-lzy/Blog/blob/main/ComputerScience/Git/GitInShell.md
    2. git config --global user.email lzy20190501@gmail.com
-   3. sudo sh cuda_12.4.0_550.54.14_linux.run
 2. pavucontrol
 3. nodejs
 4. dotnet8
@@ -32,6 +31,9 @@ apt
 10. g++
 11. meshlab
 12. flameshot
+    1.  Settings -> View and Customize Shortcuts -> Custom Shortcuts
+    2.  <img src="Pics/flameshot001.png">
+    3.  Shift + Win + S
 13. synaptic : sudo apt install -y synaptic
 14. tree
 15. gnome-sound-recorder
@@ -55,7 +57,7 @@ apt
     3. install position : /home/lzy/.local/share/gnome-shell/extensions
     4. gnome-shell --version (GNOME Shell 42.9)
     5. extension : https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep
-    6. Clipboard Indicator
+    6. Clipboard Indicator (by Tudmotu)
     7. Net Speed
     8. Sound Input & Output Device Chooser
     9. Network Stats
@@ -89,15 +91,7 @@ apt
 
 
 
----
-
-
-
-```
-lzy@legion:~ $ sudo apt list --upgradable
-Listing... Done
-microsoft-edge-stable/stable 138.0.3351.95-1 amd64 [upgradable from: 133.0.3065.92-1]
-```
+# Website
 
 
 Web
@@ -119,21 +113,19 @@ Web
       ```
 3. qq
 4. ros
+   1. wget http://fishros.com/install -O fishros && . fishros
 5. wechat
 6. wps
-7. 向日葵
-   1. https://d.oray.com/sunlogin/doc/%E8%B4%9D%E9%94%90%E5%90%91%E6%97%A5%E8%91%B5IT%E8%BF%90%E7%BB%B4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%AE%89%E5%85%A8%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf
+7. 向日葵 https://sunlogin.oray.com/
 8. sogou
-   1. sudo apt install fcitx
-   2. sudo apt install fcitx-bin
-   3. sudo apt install fcitx-table
-   4. sudo apt install libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2
-   5. sudo apt install libgsettings-qt1
-   6. sudo cp /usr/share/applications/fcitx.desktop /etc/xdg/autostart/
-   7. sudo apt purge ibus
-   8. sudo apt -f install
-   9. Fcitx Configuration 中 手动 添加 sogoupinyin，注意 不要 勾选 Only Show Current Language
-   10. 简体 & 繁体 转换 : CTRL+SHIFT+F
+   1. sudo apt install fcitx fcitx-bin fcitx-table
+   2. sudo apt install libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2
+   3. sudo apt install libgsettings-qt1
+   4. sudo cp /usr/share/applications/fcitx.desktop /etc/xdg/autostart/
+   5. sudo apt purge ibus
+   6. sudo apt -f install
+   7. Fcitx Configuration 中 手动 添加 sogoupinyin，注意 不要 勾选 Only Show Current Language
+   8.  简体 & 繁体 转换 : `CTRL + SHIFT + F`
 9.  eudic & ting_en
 10. miniconda
     1. https://docs.anaconda.com/miniconda/install/
@@ -147,13 +139,14 @@ Web
     1. sign in desktop : https://docs.docker.com/desktop/setup/sign-in/#signing-in-with-docker-desktop-for-linux
 17. whatsapp 网页栏 添加 到桌面
 18. youtube music 网页栏 添加 到桌面
-19. cursor : https://www.cursor.com/cn
+19. cursor : https://www.cursor.com/cn (now have deb package with is simple to install)
     1. 安装脚本可以参考 : [安装 Cursor 脚本](./install_cursor_new.sh)
-    2. 导航栏 改为 vscode 竖向 : `Ctrl + Shift + P` -> Cursor Settings -> Appearance -> Open editor settings -> workbench.activityBar.orientation -> vertical
+    2. 导航栏 改为 vscode 竖向 : `Ctrl + Shift + P` -> Cursor Settings -> Editor Settings -> workbench.activityBar.orientation -> vertical
     3. 切换 主题为 vscode (Dark Modern / VSCode Icons (插件 vscode-icons)) : File -> Preferences -> Theme
-    4. `Ctrl + Shift + P`, `Window: Command Center`, `Window: Custom Title Bar Visibility`(windowed), `Window: Title Bar Style`(custom)
+20. lark
 
----
+
+# Snap
 
 
 Ubuntu Software / Snap
@@ -169,9 +162,9 @@ Ubuntu Software / Snap
 10. htop (cpu monitor)
 11. steam
 12. xmind
-13. spotify
 
----
+
+# Pip
 
 
 pip3
@@ -193,7 +186,7 @@ pip3
 
 
 
-
+# NVIDIA
 
 NVIDIA
 1. Close Secure Boot
@@ -238,6 +231,7 @@ systemctl status gdm / systemctl status display-manager
 sudo update-initramfs -u
 
 
+# Fonts
 
 
 fonts
@@ -245,7 +239,7 @@ fonts
 2. `fc-cache -f -v`
 
 
-desktop
+.desktop
 ```
 [Desktop Entry]
 Type=Application
@@ -255,9 +249,22 @@ Exec=/path/to/executable
 Terminal=false
 ```
 
+# Tips
+
+bash
+1. 终端补全忽略大小写
+   1. echo 'set completion-ignore-case on' >> /etc/inputrc
+   2. echo 'set completion-ignore-case on' >> ~/.inputrc  # useful & enough
+2. time
+   1. sudo apt install ntpdate # 必须要sudo
+   2. sudo ntpdate time.windows.com # 进行时间同步并检查
+   3. sudo hwclock --localtime --systohc # 修改时间机制为localtime，并同步bios硬件时间
 
 
+desktop 刷新 : `Alt+F2` & `r`
 
+
+---
 
 Other
 1. beyond compare 4
