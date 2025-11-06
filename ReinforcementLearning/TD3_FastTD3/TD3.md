@@ -1,6 +1,6 @@
 # TD3 (Twin Delayed Deep Deterministic Policy Gradient)
 
-[](https://github.com/sfujim/TD3)
+[TD3 - Github](https://github.com/sfujim/TD3)
 
 Actor-Critic 架构
 
