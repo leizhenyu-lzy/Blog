@@ -16,8 +16,6 @@
   - [概率/价值](#概率价值)
   - [更新方式](#更新方式)
   - [在线/离线](#在线离线)
-- [Q-Learning](#q-learning)
-- [DQN (Deep Q-Network)](#dqn-deep-q-network)
 - [DDPG (Deep Deterministic Policy Gradient)](#ddpg-deep-deterministic-policy-gradient)
 - [A3C (Asynchronous Advantage Actor-Critic)](#a3c-asynchronous-advantage-actor-critic)
 - [经验回放](#经验回放)
@@ -203,27 +201,7 @@ Monte-Carlo Tree Search (MCTS)
 ---
 
 
-# Q-Learning
 
-Value-based & Model-Free & Off-Policy
-
-潜在奖励 使用 Q表 表示
-
-**$$Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha \left[ r_t + \gamma \max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \right]$$**
-1. 当前 Q 值 = 旧的 Q 值 + 学习步长 × (实际奖励 + 未来最大 Q 值 - 旧的 Q 值)
-2. $\alpha$ : learning rate
-
-R 是 Immediate Reward
-
-Q 是 在状态 s 选择动作 a 后，未来能获得的累积奖励的估计值，不仅仅考虑当前奖励，还考虑未来可能获得的奖励，类似于 **经验分数**
-
-$\epsilon$-greedy : 百分数，表示按照Q表选择动作的概率，其他时候随机选择行为
-
-<img src="Pics/mofan008.png" width=600>
-
-不断扩展，可以看出不断衰减
-
-<img src="Pics/mofan009.png" width=600>
 
 
 
@@ -232,36 +210,6 @@ $\epsilon$-greedy : 百分数，表示按照Q表选择动作的概率，其他�
 
 
 
-# DQN (Deep Q-Network)
-
-由 DeepMind 在 2015 年提出，用于在 Atari(雅达利) 游戏环境中训练 AI 代理
-
-Value-Based
-
-在 Q-Learning 上的改进
-1. 神经网络 Q网络 代替 Q表
-2. Experience Replay : Off-Policy，从经验库中学习
-3. Fixed Q-Targets
-
-Q-Learning 的问题
-1. 状态空间过大，无法用 Q 表存储
-2. Q 值更新不稳定
-
-
-DQN 结构
-1. 输入 : 状态 s
-2. **输出 : 每个动作 a 的 Q 值**
-3. 采用 CNN 处理图像输入（如 Atari 游戏）
-
-DQN 的 更新 公式 和 Q-Learning 一致
-
-<img src="Pics/mofan010.png" width=600>
-
-DQN 采用 两套 Q网络，解决 训练不稳定
-1. 主 Q网络(Online Q-Network) : 用于选择动作并学习 (Q估计)
-   1. 主 Q网络 负责训练，每次更新时，它不会影响 目标 Q网络
-2. 目标 Q网络(Target Q-Network) : 用于计算 固定 Q 目标 (Q显示)
-   1. 它的参数 固定一段时间(隔一定步数同步 主Q网络) 再更新
 
 
 

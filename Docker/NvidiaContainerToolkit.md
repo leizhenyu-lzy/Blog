@@ -47,6 +47,8 @@ CUDA Toolkit 版本 : 独立的软件开发包(SDK)，包含编译器、库和�
 # Step 4 : 安装 NVIDIA Container Toolkit
 
 [Installing the NVIDIA Container Toolkit - NVIDIA Docs](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+1. Installation
+2. Configuration
 
 检测方法 :
 1. `nvidia-ctk --version` & `cat /etc/docker/daemon.json`

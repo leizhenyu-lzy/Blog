@@ -6,19 +6,10 @@
 
 - [强化学习 基础](#强化学习-基础)
   - [Table of Contents](#table-of-contents)
-- [History](#history)
 - [基础](#基础)
+- [贝尔曼最优方程 (Bellman Optimality Equation)](#贝尔曼最优方程-bellman-optimality-equation)
 - [有限马尔可夫决策过程](#有限马尔可夫决策过程)
 - [动态规划](#动态规划)
-
-
----
-
-# History
-
-
-
-
 
 ---
 
@@ -140,6 +131,28 @@ Tic-Tac-Toe 井字棋
    1. <img src="Pics/basic008.png" width=300>
 5. 后果在特定的状态下，和特定的行动是对应的
 6. 有时，状态行动对会有冗余，使用 后果进行代替
+
+---
+
+# 贝尔曼最优方程 (Bellman Optimality Equation)
+
+$\mathbb{E}_{s'\sim P(\cdot\mid s,a)}$ : 对 环境转移的随机性 取 期望
+
+$\gamma$ : 折扣系数(< 1)，**远期回报打折**，保证无限期任务的数学可解性与算法收敛，降低方差，提高学习稳定性
+
+**动作价值 (Q 形式)**
+1. $$Q^{*}(s,a)=\mathbb{E}_{s'\sim P(\cdot\mid s,a)}\Big[\, r(s,a,s') + \gamma \max_{a'} Q^{*}(s',a') \,\Big]$$
+2. 当前 state，做某个 action 的前途如何
+3. 在状态 $s$ 先做动作 $a$，之后照策略 $\pi$ 走，期望累计折扣回报
+
+**状态价值 (V 形式)**
+1. $$V^{*}(s)=\max_{a}\; \mathbb{E}_{s'\sim P(\cdot\mid s,a)}\Big[\, r(s,a,s') + \gamma V^{*}(s') \,\Big]$$
+2. 当前 state 的前途如何
+3. 从状态 $s$ 出发，按策略 $\pi$ 走到底，期望能拿到的累计折扣回报
+4. $\max_{a}$ : 在 当前 state 挑 最优 action
+
+
+
 
 ---
 

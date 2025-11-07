@@ -129,7 +129,7 @@ Web
 9.  eudic & ting_en
 10. miniconda
     1. https://docs.anaconda.com/miniconda/install/
-    2. conda config --set auto_activate_base false
+    2. conda config --set auto_activate false
 11. Docker - TODO
 12. BaiduNetdisk
 13. foxglove : https://foxglove.dev/download
