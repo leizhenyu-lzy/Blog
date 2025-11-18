@@ -1,6 +1,7 @@
 # DDPM : Denoising Diffusion Probabilistic Model
 
 - [DDPM : Denoising Diffusion Probabilistic Model](#ddpm--denoising-diffusion-probabilistic-model)
+- [DDPM - RethinkFun](#ddpm---rethinkfun)
 - [DDPM - YouTube](#ddpm---youtube)
 - [Diffusion Model - 李宏毅](#diffusion-model---李宏毅)
   - [浅谈 生成模型 Diffusion Model 原理](#浅谈-生成模型-diffusion-model-原理)
@@ -12,6 +13,16 @@
 - [对比](#对比)
 
 [信息量 + 香农熵 + 交叉熵 + KL散度 - 个人笔记](../../Math/Entropy&Divergence/EntropyDivergence.md)
+
+
+---
+
+# DDPM - RethinkFun
+
+
+[图像生成 扩散模型 DDPM算法讲解 1 : 直观理解 - B站(RethinkFun)](https://www.bilibili.com/video/BV16ZsPz4ECF)
+
+[图像生成 扩散模型 DDPM算法讲解 2 : 数学推导和代码实现 - B站(RethinkFun)](https://www.bilibili.com/video/BV11KsPzwE2m)
 
 
 ---

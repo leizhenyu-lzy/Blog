@@ -36,10 +36,10 @@
 2. 用 猜测q 描述 真实情况p 时，会损失多少信息，有多么不相似
 3. 特性
    1. **非负性**，当且仅当 完美猜测(P=Q)，KL散度为0
-      1. 用 Jensen 不等式证明
-      2. 设随机变量 $Z(x) = \frac{q(x)}{p(x)}$，$-\log$ 为凸函数，这里 Jensen 看的是随机变量 Z 的分布，不是把 $-\log \frac{q(x)}{p(x)}$ 整体 视作一个关于 x 的函数去考察
+      1. **用 Jensen 不等式证明**
+      2. 设随机变量 $Z(x) = \frac{q(x)}{p(x)}$，$-\log$ 为凸函数，这里 Jensen 看的是随机变量 Z 的分布，把 $\frac{q(x)}{p(x)}$ 视作一个整体
       3. <img src="Pics/kl002.png" width=500>
-   2. KL散度越大，差别越大
+   2. KL散度越大 ↔ 分布差别越大
    3. **对于概率分布敏感**
       1. 高概率区域 差异放大 (P 大 Q 小)
       2. 低概率区域 差异抑制 (P 小 Q 大)
@@ -74,3 +74,9 @@
 2. <img src="Pics/convex002.png" width=400>
 3. 平均值的函数 ≤ 函数值的平均
 4. $f(\mathbb{E}[X]) \le \mathbb{E[f(X)]}$，对于 concave，不等号反向
+5. 使用 **数学归纳法** 证明
+   1. <img src="Pics/jensen001.png" width=700>
+   2. 先提取出 $\frac{1}{1-\lambda_{M+1}}$，方便进行数学归纳 ($\sum \eta_i = 1$)，后面再还原回 $\lambda$
+   3. <img src="Pics/jensen002.png" width=700>
+
+

@@ -6,7 +6,7 @@
   - [Table \& Contents](#table--contents)
 - [VAE (Variational Auto-Encoder)](#vae-variational-auto-encoder)
   - [Blog (Jeremy Jordan)](#blog-jeremy-jordan)
-  - [RethinkFun](#rethinkfun)
+  - [VAE - RethinkFun](#vae---rethinkfun)
   - [YouTube](#youtube)
   - [ELBO(Evidence Lower Bound) - 证据下界、变分证据下界、变分下界](#elboevidence-lower-bound---证据下界变分证据下界变分下界)
     - [两种推导](#两种推导)
@@ -48,38 +48,113 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 
 使用 **Variational Inference**
 
-## RethinkFun
+
+---
+
+## VAE - RethinkFun
 
 [VAE算法讲解 - B站(RethinkFun)](https://www.bilibili.com/video/BV1xFxMz1EMS)
 
-原始 AE，latent space 中 大多数区域都是 无意义的点，只有少量确定的点能还原回 原始 输入图片
+**非隐变量方法** : 图片 每个 pixel 可以看作 随机变量，整个照片是 pixel 随机变量的 联合分布，空间中 几乎所有点都是噪声，但是 难以得到准确的 概率密度函数 $P(x)$，也不方便采样
 
-<img src="Pics/vae030.png" width=600>
+**latent 隐变量方法** : 降低维度，并且让隐变量服从简单的分布，方便采样
 
-生成 正态分布(AE 是生成确定的值)，分散的 正态分布 虽然增加覆盖面积，但仍然不能覆盖 latent space
+**原始 AE** : latent space 中 大多数区域都是 无意义的点，只有 少量 **确定的点** 能还原回 原始 输入图片
+1. <img src="Pics/vae030.png" width=600>
+2. encoder 的 输出 就是 decoder 的 输入
+3. Loss : input/output image 的 MSE Loss，反向传播
 
-<img src="Pics/vae029.png" width=600>
+**改进 AE** : 生成 正态分布(AE 是生成确定的值)，分散的 正态分布 虽然增加覆盖面积，每个样本的 mean 和 variance 都不同，覆盖面积不同，仍然不能覆盖 大多数 latent space
+1. <img src="Pics/vae029.png" width=600>
 
-VAE，让所有样本，经过 Encoder 生成的多元正态分布 都接近 标准正态分布
+**VAE** : 进一步改进，让所有样本，经过 Encoder 生成的 多元正态分布，都接近 **多元标准正态分布**，各个维度相互独立
 
-**P.S.** : 让 所有样本的集合分布 符合 标准正态分布，但 单个样本的分布 在这个大分布内部 仍然 不同
+encoder 只生成 mean & variance 两个 参数
+1. mean 可正可负
+2. variance 必须为正，$e^\alpha = \sigma^2$，即 $\alpha = \log \sigma^2$
 
 <img src="Pics/vae031.png" width=600>
 
-VAE 训练时
-
-<img src="Pics/vae032.png" width=600>
-
-符号定义
-1. $x$ : input image
-2. $z$ : 隐变量
-3. $p(z)$ : 隐变量 分布，希望是 多元标准正态分布，生成时从中取样
-4. $q_{\phi}(z|x)$ : encoder 映射 概率密度，以 $\phi$ 为参数
-5. $q_{\theta}(x|z)$ : decoder 映射 概率密度，以 $\theta$ 为参数
+**VAE 训练后**
+1. 各个样本的分布 都 更靠近 多元标准正态分布，后续采样更方便
+2. <img src="Pics/vae033.png" width=450>
+3. 在 VAE 训练完成之后，进行 重构(Reconstruction) / 评估(Evaluation) 时，没有必要再从正态分布中采样，可以直接使用 Encoder 输出的 均值 $\mu$ 作为隐变量 $\mathbf{z}$ 送入 Decoder
 
 
+**VAE 训练**
+1. <img src="Pics/vae032.png" width=600>
+2. **符号定义**
+   1. $x$ : input image
+   2. $z$ : 隐变量
+   3. $p(z)$ : 隐变量 分布，希望是 多元标准正态分布，生成时从中取样
+   4. $q_{\phi}(z|x)$ : encoder 映射 概率密度，以 $\phi$ 为参数
+   5. $q_{\theta}(x|z)$ : decoder 映射 概率密度，以 $\theta$ 为参数
+3. 训练时，必须使用 **重参数化技巧(Reparameterization Trick)**，从 encoder 输出的 分布中 **采样** (不同于 Inference/Generation)
+   1. 原因
+      1. 引入随机性，使得 Decoder 必须学习 从分布中的任何一个点(不仅 是 均值点)重建原始输入
+      2. 平滑隐空间，使 VAE 具备生成能力
+      3. 避免坍塌，防止退化为 传统AE
+   2. 直接的采样操作 $\mathbf{z} \sim \mathcal{N}(\mu, \Sigma)$ 不可导，无法通过反向传播进行训练
+   3. 每次训练迭代时，从 **标准正态分布** 中采样 **辅助噪声** $\mathbf{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$，不需要学习
+   4. $$\mathbf{z} = \mu + \sigma \odot \epsilon$$
+   5. 辅助噪声 $\epsilon$ **必须** 从标准正态分布 $\mathcal{N}(\mathbf{0}, \mathbf{I})$ 中采样，保证隐变量 $z$ 的分布是可控的(正态分布)，简化 KL 散度计算
+   6. 随机性 存在于 辅助噪声 $\epsilon$ 中
+4. Loss 计算 $L_{VAE}$
+   1. <img src="Pics/vae034.png" width=600>
+   2. **重构损失** $L_{REC}$ : 拉开不同 $\mathbf{x}$ 的 $\mu_{\mathbf{x}}$，确保了可区分性
+   3. **KL 损失** $L_{KL}$ : 推着所有的 $\mu_{\mathbf{x}}$ 靠近中心 $\mathbf{0}$，确保了隐空间的连续性和可采样性
+   4. 两个 loss 相互博弈
+
+**数学推导**
+1. <img src="Pics/vae035.png" width=600>
+2. <img src="Pics/vae036.png" width=450>
+3. 最终结果
+   1. 第一项 : KL Loss
+      1. $\mathbf{p(z)}$ : 理想中的那个标准正态分布
+      2. 希望 通过 encoder，可以将 input 映射到的 latent 分布 和 理想分布 接近
+   2. 第二项 : Reconstruction Loss
+      1. 有个负号，因此 本体越大越好
+      2. $\log$ 不影响单调性，可以转化为 $\mathbb{E}_{q_\phi(z|x)}[p_{\theta}(x|z)]$
+      3. 对于 给定的 x，通过 encoder 网络 得到 分布 z，并且 要让该分布内的任意值 通过 decoder 网络 还原回 x 的概率 最大
+4. Rec Loss 直接使用 MSE 即可
+5. KL  Loss 实际计算
+   1. <img src="Pics/vae037.png" width=450>
+   2. 随机变量 **相互独立** 时，它们的 联合概率密度函数 = $\prod$ 各个边缘概率密度函数
+   3. $d$ 是 空间维度
+   4. <img src="Pics/vae038.png" width=700>
+   5. 将上图结果带入，抵消常数项 + 移项
+   6. <img src="Pics/vae040.png" width=700>
+   7. 分别求解
+      1. 第1项 利用 平方的期望 公式
+         1. <img src="Pics/vae039.png" width=400>
+         2. <img src="Pics/vae041.png" width=700>
+      2. 第2项 常数的期望还是期望
+         1. <img src="Pics/vae042.png" width=700>
+      3. 第3项 累加的积分 = 积分的累加
+         1. <img src="Pics/vae043.png" width=700>
+         2. 随机变量 减去均值 的平方 的期望 就是 方差
+      4. 最后 $\sum$ 求和符号 可以合并
+6. 最终结果
+   1. <img src="Pics/vae044.png" width=600>
+
+模型架构
+1. <img src="Pics/vae045.png" width=600>
+2. encoder 使用 卷积，下采样 长宽减半，通道数翻倍，最后一个特征拉平，全连接层得到 均值 & 方差 (维度 = 隐空间 维度)，在 隐空间的 正态分布 中采样 隐变量
+   1. Conv2d
+   2. ReLU
+   3. BatchNorm
+3. decoder 使用 反卷积(转置卷积)，隐变量 通过 线性层，改变维度，转为 特征图形状
 
 
+
+训练数据 Kaggle地址 : https://www.kaggle.com/datasets/jessicali9530/celeba-dataset
+训练数据百度网盘地址 : https://pan.baidu.com/s/1hT-FUWm_fuVJQiGT5-HvrA?pwd=5rpm
+代码地址 : https://github.com/RethinkFun/VAE/blob/main/vae.py
+
+
+
+
+---
 
 ## YouTube
 

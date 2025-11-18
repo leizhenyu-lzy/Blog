@@ -1153,10 +1153,62 @@ ResNet 为什么能训练出 1000 层的模型 (如何处理梯度消失)
 
 ---
 
-## 47 转置卷积
+## 47 转置卷积 (反卷积)
+
+[ConvTranspose2d - PyTorch Docs](https://docs.pytorch.org/docs/stable/generated/torch.nn.ConvTranspose2d.html)
+
+转置卷积 可用于 增大 输入的 高宽，普通卷积 只能 保持不变/减小
+
+<img src="Pics/d2l108.png" width=450>
+
+input 每个元素 和 kernel 做乘法，保持 kernel 的形状
+
+也有 padding 和 stride
+
+<img src="Pics/d2l109.png" width=450>
+
+例子(只考虑形状，不考虑是否可以还原)
+1. <img src="Pics/d2l110.png" width=800>
+
+普通卷积
+1. stride 决定 output 的尺寸缩小的倍数
+2. padding 用于在 input 周围添加零
+
+转置卷积
+1. stride 决定在 input pixel 中 插入多少 0
+   1. 加 stride 反而 output 变大
+2. padding 的作用相当于 对 output 进行裁剪，直接丢弃 output 周围的 像素边界
+   1. 加 padding 反而 output 变小
+
+卷积 + 转置卷积 类似于 encoder-decoder
+
 
 ### 47.2 转置卷积是一种卷积
 
+<img src="Pics/d2l111.png" width=400>
+
+转置卷积 -> 卷积
+1. 简单情况
+   1. <img src="Pics/d2l112.png" width=300>
+2. 加入 padding
+   1. 如果是 填充p=1 & 步幅s=1，第一步就相当于 没有填充
+   2. <img src="Pics/d2l113.png" width=300>
+3. 加入 stride
+   1. <img src="Pics/d2l114.png" width=300>
+4. 第1步，如果是填充负数，则相当于 **裁剪 Cropping**
+5. 最后1步，进行的普通卷积，填充Padding 总是设置为 0
+
+**形状换算**
+1. <img src="Pics/d2l115.png" width=450>
+2. 卷积调整 $n$ 可能不会使得 $n'$ 变化
+3. 如果卷积选择 最小的 input n，则 大于等于 可以变为 等于，也就可以和 转置卷积 形状计算 一致
+
+DL 中，反卷积 一般就是指 转置卷积，形状是逆运算，值不是
+
+不同于 数学上的 反卷积 (deconvolution)
+1. <img src="Pics/d2l116.png" width=350>
+
+很少用在 深度学习 中
 
 
 
