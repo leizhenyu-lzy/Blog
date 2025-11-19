@@ -2,6 +2,8 @@
 
 - [DDPM : Denoising Diffusion Probabilistic Model](#ddpm--denoising-diffusion-probabilistic-model)
 - [DDPM - RethinkFun](#ddpm---rethinkfun)
+  - [直观理解](#直观理解)
+  - [技术细节](#技术细节)
 - [DDPM - YouTube](#ddpm---youtube)
 - [Diffusion Model - 李宏毅](#diffusion-model---李宏毅)
   - [浅谈 生成模型 Diffusion Model 原理](#浅谈-生成模型-diffusion-model-原理)
@@ -19,10 +21,53 @@
 
 # DDPM - RethinkFun
 
+## 直观理解
 
 [图像生成 扩散模型 DDPM算法讲解 1 : 直观理解 - B站(RethinkFun)](https://www.bilibili.com/video/BV16ZsPz4ECF)
 
+整体过程
+1. <img src="Pics/rethinkfun001.png" width=600>
+2. $x_0$ : 原始&清晰的 图片
+3. $x_T$ : 完全变为噪声的 图片
+4. 希望 网络学习 一步步 去噪声 denoising 过程
+5. 训练好网络后，可以 随机生成 噪声数据，让模型 逐步去噪，生成清晰的图片
+
+正向加噪
+1. <img src="Pics/rethinkfun002.png" width=600>
+2. **目标** : 使得 每个pixel的值 像是从 标准正态分布 中 抽取
+3. ==加噪过程中，每个像素值都是独立的==，生成多维度噪声(形状和图片一致)
+4. **单步加噪**
+   1. 从 标准正态分布中 采样 $\epsilon$，乘以 噪声强度 $\beta$，再加回 $x_0$ 得到 $x_1$，完成加噪过程
+   2. 相当于从 以 $x_0$ 为均值 $\beta$ 为标准差 的正态分布 中 采样
+   3. 可以 继续根据上述步骤 单步加噪
+5. 其实也可以 多步加噪
+6. 目前 加噪过程 存在问题
+   1. <img src="Pics/rethinkfun003.png" width=600>
+   2. 均值一直为 $x_0$，方差一直增大，无法实现最终 $x_T \sim \mathcal{N}(0,1)$
+   3. 后期，图像逐渐杂乱，如果希望达到同样的破坏效果，应该加更大噪声，而现在的噪声强度不变
+7. DDPM 改进
+   1. <img src="Pics/rethinkfun004.png" width=450>
+
+
+
+
+
+## 技术细节
+
 [图像生成 扩散模型 DDPM算法讲解 2 : 数学推导和代码实现 - B站(RethinkFun)](https://www.bilibili.com/video/BV11KsPzwE2m)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ---
