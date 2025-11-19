@@ -361,3 +361,75 @@ $\tau = (s_0, a_0, r_1, s_1, a_1, r_2, \cdots)$
 
 
 
+
+# Known Issues
+
+[LeggedGym Known Issues - Github Readme](https://github.com/leggedrobotics/legged_gym?tab=readme-ov-file#known-issues)
+
+The **contact forces** reported by `net_contact_force_tensor()` are **unreliable** when simulating on **GPU** with a **triangle mesh terrain**.
+
+A solution is to **use force sensors**, but the force are propagated through the sensors of consecutive bodies(consecutive bodies) resulting in an undesirable behavior.
+
+如果 每个link 都加入 force sensor 那就会 沿着 joints 向上传播，位于 chain 上方的传感器 会测量到 下方所有的合力，使得传感器读数变得 混杂，无法轻松提取出单个、干净的接触力
+
+对于腿式机器人，其主要的地面交互点是足部/末端执行器，只在足部放置传感器，排除了 重力等内部力，那么 传感器测量的就是 足部与地面之间的反作用力(Ground Reaction Force)，也就是 **接触力(Contact Force)**
+
+However, for a **legged robot** it is possible to **add sensors to the feet/end effector only** and get the expected results. When using the force sensors **make sure to exclude gravity from the reported forces** with `sensor_options.enable_forward_dynamics_forces`.
+
+
+**IsaacGym Forces**
+1. ==Constraint Solver Forces== 约束求解器产生的力(由 约束方程 共同求解出来的力)
+   1. 接触力 : 足端与地形接触的法向力、摩擦力 & 机器人身体与环境之间的碰撞力
+      1. 接触 不是 施加力 ，而是 **施加约束**
+      2. 脚不能穿透地面 → 用约束方程描述 → 求解器解出满足约束的反作用力
+   2. 关节约束力 : 关节把刚体 绑定 在一起产生的 **反作用力**，关节为了维持其类型而必须施加的内部力
+      1. 数学约束
+      2. hinge 约束 5 个自由度
+      3. prismatic 约束 5 个自由度
+      4. spherical 约束 3 个自由度
+      5. fixed joint 约束 6 个自由度
+2. ==Forward Dynamics Forces== 前向动力学产生的力
+   1. 重力 (Gravity)
+   2. 惯性相关的力 (Inertia)
+      1. 加速度 引起的惯性力
+      2. 科里奥利、离心 等效力
+   3. 电机/驱动 (Actuator) 产生的关节力/力矩的传递 : 关节上施加的 torque 通过连杆传递到装 sensor 的 link 上时的反作用
+   4. 外力 : 通过 API 加在刚体上的 force/torque
+
+
+`class isaacgym.gymapi.ForceSensorProperties()` - 用于配置 **力传感器 Force Sensor** 的属性
+1. `enable_constraint_solver_forces` : receive forces from constraint solver
+2. `enable_forward_dynamics_forces` : receive forces from forward dynamics
+3. `use_world_frame` : receive forces in the world rotation frame, otherwise reported in the sensor’s local frame
+
+
+
+Example:
+
+```python
+sensor_pose = gymapi.Transform()
+for name in feet_names:
+   sensor_options = gymapi.ForceSensorProperties()
+   sensor_options.enable_forward_dynamics_forces = False # for example gravity
+   sensor_options.enable_constraint_solver_forces = True # for example contacts
+   sensor_options.use_world_frame = True # report forces in world frame (easier to get vertical components)
+   index = self.gym.find_asset_rigid_body_index(robot_asset, name)
+   self.gym.create_asset_force_sensor(robot_asset, index, sensor_pose, sensor_options)
+(...)
+
+sensor_tensor = self.gym.acquire_force_sensor_tensor(self.sim)
+self.gym.refresh_force_sensor_tensor(self.sim)
+force_sensor_readings = gymtorch.wrap_tensor(sensor_tensor)
+self.sensor_forces = force_sensor_readings.view(self.num_envs, 4, 6)[..., :3]
+(...)
+
+self.gym.refresh_force_sensor_tensor(self.sim)
+contact = self.sensor_forces[:, :, 2] > 1.
+```
+
+
+
+
+
+
+

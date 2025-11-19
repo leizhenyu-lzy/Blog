@@ -39,6 +39,8 @@ Tool
 1. GMR
 
 
+---
+
 # Agent
 
 # Model
@@ -62,5 +64,9 @@ IsaacGym
 3. `vel` : joint 的 target velocity
 4. `torque` ： joint
 5. `pd_1d` : best for robot only contains 1D revolute joints
+
+---
+
+#
 
 

@@ -64,9 +64,19 @@ PyTorch 的强化学习算法实现
 2. 不再保留梯度信息，并且在随后反向传播时 不会回传梯度
 3. 返回一个 新的张量 与 原张量 **共享数据**
 
-`with torch.no_grad()` : 禁用自动求导，但保留其他训练状态，不能 backward
+`with torch.no_grad()` : 仅禁用梯度计算，但仍然保留 autograd 引擎的部分功能，保留其他训练状态，不能 backward
+1. 可以在内部创建新的张量
+2. 仍然可以与需要梯度的张量进行某些操作
+3. 保留张量的版本追踪
 
-`with torch.inference_mode()` : 最严格的推理模式，完全禁用自动求导系统，不能 backward
+`with torch.inference_mode()` : 最严格的推理模式，完全禁用 autograd 系统，性能更好、内存开销更小，不能 backward
+1. 完全不允许梯度相关的操作
+2. 创建的张量完全脱离 autograd 系统
+3. 不进行版本追踪，速度更快
+4. 纯推理场景(生产环境部署)，确定完全不需要任何梯度计算
+5. PyTorch 1.9+ 才引入
+
+
 
 `model.eval()` : 切换模型的行为模式 dropout/batchnorm，但不影响梯度计算，可以 backward
 
@@ -315,7 +325,7 @@ Surrogate Loss 训练 Actor(策略网络) 的目标
       1. critic 使用的就是 privileged_obs，如果没有 就使用 obs
    4. actor_critic : 用 `eval()` 获取 actor_critic_class，并创建实例
    5. alg : 用 `eval()` 获取 alg_class，并创建 `PPO` 实例
-   6. num_steps_per_env
+   6. num_steps_per_env : 即 num_transitions_per_env(storage buffer 长度)，不用于控制 环境 reset
    7. save_interval
    8. Log 相关
       1. log_dir
