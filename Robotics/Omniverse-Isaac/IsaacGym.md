@@ -38,6 +38,9 @@ gymtorch : gymtorch 是 Isaac Gym 与 PyTorch 的集成模块，用于将仿真�
 
 
 
+
+
+
 ## Tensor API
 
 tensor API is currently only supported for the **PhysX backend**
@@ -143,6 +146,88 @@ set_dof_actuation_force_tensor
     elif dof_type == gymapi.DOF_TRANSLATION:
         dof_type_str = "Translation"
    ```
+
+
+
+
+
+**class** `isaacgym.gymapi.AssetOptions`
+1. Docs Path : Programming -> API Reference -> Python API -> Python Structures
+2. **物理属性 (Physics Properties)**：
+   - `density` : 默认密度参数，单位 $kg/m^3$。当资产文件中没有提供质量和惯性数据时，用于计算物体的质量和惯性张量
+   - `angular_damping` : 刚体的角速度阻尼系数，用于模拟旋转时的能量损失
+   - `linear_damping` : 刚体的线速度阻尼系数，用于模拟平移时的能量损失
+   - `max_angular_velocity` : 刚体的最大角速度限制，单位 $rad/s$
+   - `max_linear_velocity` : 刚体的最大线速度限制，单位 $m/s$
+   - `armature` : 添加到所有刚体/连杆的惯性张量对角线元素上的值，可提高仿真稳定性(类似于数值正则化)
+   - `thickness` : 碰撞形状的厚度。设置物体与该物体表面的静止距离
+3. **关节与驱动 (Joints and Actuation)**：
+   - `default_dof_drive_mode` : 用于驱动 asset 关节的默认模式，参见 `isaacgym.gymapi.DriveModeFlags`，常见模式包括 : 位置控制 (POSITION)、速度控制 (VELOCITY)、力矩控制 (EFFORT)
+   - `tendon_limit_stiffness` : 默认腱限制刚度。由于限制不是隐式求解的，应选择较小的值。通过设置适当的阻尼值来避免振荡
+4. **几何与拓扑 (Geometry and Topology)**：
+   - ==`collapse_fixed_joints`== : 合并由固定关节连接的连杆，可以简化模型并提高性能
+   - ==`fix_base_link`== : 在导入时将资产的基座固定在指定位置（用于固定基座的机器人）
+   - `flip_visual_attachments` : 将网格从 Z-up 左手坐标系转换为 Y-up 右手坐标系
+   - `override_com` : 是否从几何形状计算质心并覆盖原始资产中给定的值
+   - `override_inertia` : 是否从几何形状计算惯性张量并覆盖原始资产中给定的值
+5. **碰撞几何 (Collision Geometry)**：
+   - ==`replace_cylinder_with_capsule`== : 用胶囊体替换圆柱体以获得更好的性能(胶囊体碰撞检测更高效)
+   - `slices_per_cylinder` : 生成的圆柱体网格的面数（不包括顶部和底部）
+   - `vhacd_enabled` : 是否启用凸分解(仅适用于 PhysX)，默认值为 False
+   - `vhacd_params` : 凸分解参数(仅适用于 PhysX)，如果未指定，所有三角网格将使用单个凸包进行近似
+   - `convex_decomposition_from_submeshes` : 是否将网格中的子网格视为网格的凸分解。默认值为 False
+6. **材质与视觉 (Materials and Visuals)**：
+   - `mesh_normal_mode` : 如何加载资产中网格的法线。可选值：
+     - `FROM_ASSET` : 从资产文件加载（默认）
+     - `COMPUTE_PER_VERTEX` : 按顶点计算（如果资产中未完全指定法线，则回退到此模式）
+     - `COMPUTE_PER_FACE` : 按面计算
+   - `use_mesh_materials` : 是否使用从网格文件加载的材质，而不是资产文件中定义的材质。默认值为 False
+7. **物理引擎特定 (Physics Engine Specific)**：
+   - `disable_gravity` : 禁用该资产的重力
+   - `enable_gyroscopic_forces` : 启用陀螺力（仅限 PhysX）
+   - `use_physx_armature` : 使用关节空间 armature，而不是连杆惯性张量修改
+8. **软体与粒子 (Soft Bodies and Particles)**：
+   - `min_particle_mass` : 软体中粒子的最小质量，单位 Kg
+
+**使用示例**：
+```python
+asset_options = gymapi.AssetOptions()
+asset_options.fix_base_link = True           # 固定基座
+asset_options.collapse_fixed_joints = True   # 合并固定关节
+asset_options.disable_gravity = False        # 启用重力
+asset_options.default_dof_drive_mode = gymapi.DOF_MODE_POS  # 位置控制模式
+asset_options.armature = 0.01                # 增加数值稳定性
+robot_asset = gym.load_asset(sim, asset_root, asset_file, asset_options)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 torch_utils
