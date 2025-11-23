@@ -33,71 +33,146 @@
 
 只使用 attention 机制，解决 seq2seq 问题，最早 Google 用于 翻译问题
 
-Tokenize  : 使用 已有字典 对句子 分词
+String -> Token -> Token ID -> Embedding Vectors
 
-Embedding : 对每个 token 分配一个 **可学习的 参数向量**(高维空间)
-1. 每个维度 代表 某种语义
-2. 向量之间的相对关系(向量相减) 也有一定语义
-3. 问题
-   1. 学习完成后 embedding 固定，不能根据上下文进行调整
 
-Self-Attention
+**Tokenize**
+1. 使用 已有字典 对句子 分词 (最长匹配优先)
+   1. 构建字典的时候也会有特殊的方法，考虑 token 的常用程度 和 字典大小
+      1. BPE(Byte Pair Encoding)
+      2. WordPiece
+      3. SentencePiece
+      4. Unigram
+2. 转为 Token ID (lookup table)
+
+
+**Embedding**
+1. 对每个 token 分配一个 **可学习的 参数向量**(高维空间)
+2. 每个维度 代表 某种**语义**
+3. 向量之间的相对关系(向量相减) 也有一定语义
+4. 传统 embedding 问题 : 学习完成后 embedding 固定，不能根据上下文进行调整
+   1. 同一个词不同含义但是 embedding 相同
+   2. <img src="Pics/rethinkfun003.png" width=600>
+5. 不同阶段
+   1. 预训练阶段 : embedding 随机初始化，和模型一起训练
+   2. 微调阶段 : 使用预训练好的 embedding，继续和模型一起微调
+
+**Self-Attention**
 1. 通过 token 之间 彼此的注意力，让 token 根据上下文，更新自己的 embedding
-2. 每个 token 有初始的 embedding，通过 3个 线性层的映射，得到 3个 向量
+2. 每个 token 有初始的 embedding，通过 3个 **线性层** 映射，得到 3个 向量
    1. Q : 向其他 token 查询
    2. K : 对查询应答
-   3. V : 用于更新其他 token embedding
-3. 相似性匹配 Q & K 点积(自己的 Q & K 也会点积)，不同 token 组成 相似度向量，Softmax，加权求和
+   3. V : 更新其他 token embedding
+3. <img src="Pics/rethinkfun004.png" width=600>
+4. **相似性匹配** Q & K 点积(自己的 Q & K 也会点积)，不同 token 组成 相似度向量，Softmax，加权求和
+   1. $V_s = [Q_4 * K_1, Q_4 * K_2, Q_4 * K_3, Q_4 * K_4]$，再 softmax 转为 概率，再和 V向量 进行对应相乘
 
-MultiHead Self-Attention
+
+有时候会为了补齐不同长度的句子，而使用 `<PAD>`，训练的时候，也有对应的 mask 来过滤
+
+
+**MultiHead Self-Attention**
 1. 类似 CNN 每层 可以指定多个 卷积核
-2. Self-Attention 可以指定多个 Head，多次线性映射，得到多组 Q & K & V，不同组的向量 拼接起来
-3. 通过 矩阵运算，加速计算
-4. 要除以 $\sqrt{d_k}$(特征向量维度)，均值不变，调整方差(保证为1)
-5. 实际上 总特征数不变，平均分给多个 head (相当于头变小了)，再 concat 得到完整的
-6. feature size 必须整除 头的数量
+2. Self-Attention 可以指定多个 Head，**多次线性映射**，得到多组 Q & K & V，不同组的向量 拼接起来，通过 矩阵运算 加速计算
+3. **实际上 总特征数不变**，平均分给多个 head (相当于头变小了)，再 **concat** 得到完整的
+4. <img src="Pics/rethinkfun005.png" width=700>
+5. K 转置 就是为了 和 Q 点乘，得到 更新 百分比
+6. 除以 $\sqrt{d_k}$($d_k$ 是 **特征向量维度**)，均值不变，调整方差(保证为1)
+   1. 原始的 Q & K 向量，每个维度都服从 标准正态分布(均值为 0，方差为 1)
+   2. 当2个 独立的 服从标准正态分布的 随机变量 相乘时，积的方差是 1
+   3. 点积(Dot Product) 是将 $d_k$ 个这样的乘积 加在一起
+   4. 只要 不相关/独立，方差是可加的，$d_k$ 个方差为 1 的数加起来，总方差就变成了 $d_k$
+8. feature size 必须整除 头的数量
+9. <img src="Pics/rethinkfun006.png" width=700>
 
-Layer Normalization
+==P.S. : `@` 运算符在 PyTorch 中 只在最后2个维度 进行矩阵乘法，前面的维度作为 batch 维度进行广播==
+
+**Layer Normalization** - [个人笔记](../../DeepLearning/D2L/d2l.md#28-batch-normbn--layer-normln)
 1. 统计每个 Token 的 mean & var(对每个 Token 独立计算)，进行标准化
 2. 加入 很小 $\epsilon$ 防止 ÷0
 3. **每个特征维度** 都有 可学习参数 $\gamma$ & $\beta$
-4. `torch.nn.Parameter` 用来把一个 Tensor 注册成 `nn.Module` 的可学习参数
-5. Layer Norm 位置
+4. <img src="Pics/rethinkfun007.png" width=600>
+5. `torch.nn.Parameter` 用来把一个 Tensor 注册成 `nn.Module` 的可学习参数
+6. Layer Norm 位置
    1. Post-LN(原版) : 先 MHA + Dropout，然后 Residual Add，再 Norm (Add & Norm)
    2. Pre-LN (常用) : 先 Norm，然后 MHA + Dropout，再 Residual Add
 
-Residual Connection : 避免梯度消失
+**Residual Connection** 残差连接 : 避免梯度消失，尤其是网络层数变深
 
-Feed Forward : linear + relu + dropout + linear
+**Feed Forward Network** : linear + relu + dropout + linear
 
-Encoder 输入 & 输出维度一致，可以多个 block 叠加，原文是 6个
+MHA & FFN 都配合一个 Residual 残差连接
 
-Position Encoding
-1. Attention 机制 没有考虑位置关系，只是 weighted-sum (eg : 我打他 ≠ 他打我)
-2. 不能使用 离散的 绝对位置编码，模型没法处理 句子的 token 数 大于 训练时的 句子 token 数
+Encoder **输入 & 输出** 维度一致，可以多个 block 叠加，原文是 6个
+
+**Position Encoding**
+1. Attention 机制 **没有考虑位置关系**，只是 weighted-sum (eg : 我打他 ≠ 他打我)
+2. **不能使用 离散的 绝对位置编码**，模型没法处理 推理句子的 token 数 **>** 训练句子 token 数 的情况
 3. 位置编码维度 和 原始编码维度 一致
-4. 可以将 离散编码 转为 连续编码，周期变换，低维度变化快，高维度变化慢
+4. 可以将 离散编码 转为 **连续编码**，周期变换，低维度变化快，高维度变化慢 (有点类似于 二进制 的连续化版本)
    1. 三角函数 sin/cos 可以调整 频率
-   2. 频率高 低维度，频率低 高维度
-   3. <img src="Pics/transformer030.png" width=500>
-   4. 实际上 Transformer 使用的是 sin/cos 交替编码
-   5. <img src="Pics/transformer031.png" width=500>
-   6. 好处 : 仅和 相对位置 有关，和 绝对位置 无关
+   2. 频率高的 三角函数作为 低维度，频率低的 三角函数作为 高维度
+   3. <img src="Pics/rethinkfun001.png" width=500>
+   4. 实际上 Transformer 使用的是 **==sin/cos 交替编码==**，2个相邻维度$(2i, 2i+1)$ 看为一组，使用同一个频率
+   5. <img src="Pics/rethinkfun002.png" width=500>
+   6. 好处 : 仅和 **相对位置** 有关，和 绝对位置 无关
+5. $sin/cos(\omega t)$ 中，pos 相当于 t，feature 维度 $i$ 控制 角频率 $\omega$
+6. <img src="Pics/rethinkfun008.png" width=600>
+7. 随着维度增加，角频率变小，对应 高维 频率低
 
-Decoder 输入有2部分
-1. Decoder 的 embedding
-2. Encoder 更新后的 embedding
+完整的序列是 : `['<bos>', 'I', 'like', 'to', 'eat', 'apple', '<eos>']`
+1. Decoder Input  : `['<bos>', 'I', 'like', 'to', 'eat', 'apple']`
+2. Decoder Output : `['I', 'like', 'to', 'eat', 'apple', '<eos>']`
 
-Mask Attention
+**Mask Attention**
 1. 一次性 对所有位置进行训练
 2. 推理时，还是需要 一个个的 token 进行输出
-3. mask为1的位置，表示可以看到 token，可以进行 attention 计算
-4. 让每个 token 只关注 自己 & 之前的tokens
-5. attention 正常计算，在 softmax 之前，将 mask为0的位置 替换为 **很大的负值**
+3. mask 为1 的位置，表示可以看到 token，可以进行 attention 计算
+4. 让每个 token 只关注 **自己** & **之前** 的tokens
+5. attention 正常计算，在 **softmax 之前**，将 mask 为0 的位置 替换为 **很大的负值**
+6. Mask 的尺寸
+   1. 随着你 每一批(Batch) 数据的最大长度 $L$ 动态变化的
+   2. Mask 的最大上限 是 模型设计的 最大上下文窗口，也不能超过 Max Position Embeddings 最大位置编码长度
+7. **隐式增广** : 当你把一整句话喂给模型时，模型在内部实际上通过 Causal Mask (因果掩码) 同时学习了所有可能的切分
 
-Cross Attention
+**Cross Attention**
 1. `Encoder 的 K & V` + `Decoder 的 Q`
-2. 经过 Linear 将 输出维度 映射到 字典大小，再 Softmax
+2. Encoder 的输出(Encoder Output) 会被 广播(Broadcast) 给 Decoder 的每一层，Decoder 每一层，使用的是 相同的 Encoder Output
+3. 经过 Linear 将 输出维度 映射到 字典大小，再 Softmax
+
+**单向 & 双向 Attention**
+1. **Encoder** 的 Self-Attention 双向注意力，前面的 token 可以看到后面的 token，所有 token 之间可以相互匹配
+2. **Decoder** 的 Self-Attention 单向注意力，带 Causal/Look-Ahead Mask，前面的 token 不能看到后面的 token，只能看到自己及之前的 token
+
+Encoder & Decoder 不改变数据尺寸
+
+在推理(Inference) 阶段，**Decoder** 中数据的形状(Sequence Length 维度)确实是在不断变化的
+1. Self-Attention : Q、K、V 的长度都会随着生成的词数同步增加
+2. Cross-Attention : Q 的长度会增加，但 K 和 V 的长度永远固定，等于原文长度
+3. 也就是生成长文本越到后面越慢的原因(每次计算的矩阵都变大)
+4. 模型的参数量(Model Parameters) 不变，参数矩阵只负责处理特征维度，不关心序列长度
+
+**Word Selection**
+1. linear / Projection Layer
+   1. 输入尺寸 : `(1, L, d)`
+   2. linear 尺寸 : `(d vocab_size)`
+   3. 输出尺寸 : `(1, L, vocab_size)`
+      1. 包含了过去 10 个位置每一个位置的预测结果，但在推理预测下一个词时，我们只关心最后一个位置
+2. softmax
+
+**Seq Length ($L$) 长度的影响**
+1. Q/K/V 矩阵 : 随着 input 长度 $L$，线性增长 (如果 特征维度 不变)
+2. Attention Score 矩阵 : softmax 是针对 归一化的 $Q K^T$，因此 随着 input 长度 $L$，平方增长
+
+**不同任务**
+1. **自回归生成**(Auto-regressive Generation) - 这里仅考虑 最经典的 Encoder-Decoder 架构，不考虑 Decoder-Only
+   1. Encoder 读全文
+   2. Decoder 给个 `<bos>` 信号开始
+   3. Loop 拿着结果接着续写
+2. **代码补全**(Code Completion)
+   1. 使用 FIM (Fill-In-the-Middle)，把代码切成 Prefix, Middle, Suffix
+   2. 把 Prefix + Suffix 给 Encoder (或作为 Prompt)，让 Decoder 生成 Middle
+
 
 [Source Code - Github](https://github.com/hkproj/pytorch-transformer/blob/main/model.py)
 
@@ -199,7 +274,8 @@ Architecture
    4. 位置编码和原始编码 长度一致，直接相加
    5. 生成 位置编码的函数 可以学习，论文中使用硬编码
       1. <img src="Pics/transformer007.png" width=400>
-      2. 注意 : 此处的 公式和原文有所出入，以原文为准
+      2. 注意 : 上面的 公式和原文有所出入，以原文为准
+         1. <img src="Pics/transformer030.png" width=400>
       3. <img src="Pics/transformer008.png" width=500>
    6. <img src="Pics/transformer009.png" width=500>
 4. Encoder (Multi-Head Attention & FeedForward 多组堆叠)

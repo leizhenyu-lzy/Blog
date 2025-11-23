@@ -553,6 +553,8 @@ Sigmoid $\sigma(x)$
 
 ReLU(Rectified Linear Unit)
 
+GeLU
+
 
 
 
@@ -584,6 +586,74 @@ Softmax 回归 代码实现
 
 
 
+
+## 激活函数
+
+Sigmoid
+1. $$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} +  1}$$
+
+Tanh
+1. $$\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
+
+ReLU(Rectified Linear Units) Family
+1. ReLU
+   1. $$\text{ReLU}(x) = \max(0, x)$$
+   2. 负半区 为 0
+   3. 正半区 导数恒为 1
+   4. Dead ReLU 问题 : 如果某个神经元输入落入负半区，它可能永远不再被激活(权重不再更新)
+2. Leaky ReLU
+   1. $$\text{Leaky ReLU}(x) = \max(\alpha x, x)$$
+      1. $\alpha$ 通常是一个很小的常数（如 0.01）
+   2. 解决 Dead ReLU 问题，给负半区一个微小的梯度
+3. PReLU (Parametric ReLU)
+   1. 同 Leaky ReLU，但 $\alpha$ 是 **可学习的参数** (Learnable Parameter)
+   2. 模型自己决定负半区斜率
+4. ELU (Exponential Linear Unit)
+   1. $$\text{ELU}(x) = \begin{cases} x & \text{,\ if } x > 0 \\ \alpha (e^x - 1) & \text{,\ if } x \le 0 \end{cases}$$
+   2. 负半区是平滑曲线，输出均值更接近 0，对噪声鲁棒性更强，但计算量大
+5. SoftPlus
+   1. $$\text{SoftPlus}(x) = \ln(1 + e^x)$$
+   2. ReLU 的平滑逼近版本(处处可导)
+   3. 是 Sigmoid 函数的原函数 (导数是 Sigmoid)
+
+Maxout
+1. 它本身是一个层(Layer) 而不是单纯的函数
+2. $$\text{Maxout}(x) = \max(w_1^T x + b_1, w_2^T x + b_2, \dots, w_k^T x + b_k)$$
+3. 取 $k$ 个线性函数的最大值
+4. 理论上可以拟合任意凸函数
+5. 缺点 : 参数量翻倍
+
+Mish
+1. $$\text{Mish}(x) = x \cdot \tanh(\text{SoftPlus}(x)) = x \cdot \tanh(\ln(1 + e^x))$$
+2. YOLOv4 中使用的激活函数
+3. 和 GELU/Swish 很像 : 平滑、非单调(Non-monotonic)、允许少量负值
+4. 效果通常优于 ReLU，但计算开销稍大
+
+SiLU (Sigmoid Linear Unit)
+1. $$\text{SiLU}(x) = x \cdot \sigma(x) = \frac{x}{1 + e^{-x}}$$
+
+Swish
+1. $$\text{Swish}(x) = x \cdot \sigma(\beta x) = \frac{x}{1 + e^{-\beta x}}$$
+   1. $\beta$ 是可学习参数或常数
+2. 当 $\beta = 1$ 时，Swish 变为 SiLU
+3. Llama 1/2/3 等现代大模型的 FFN 层都在用 SiLU
+
+**GELU (Gaussian Error Linear Unit)**
+1. <img src="Pics/d2l117.png" width=750>
+2. 数学定义(red) : 输入 $x$ 乘以 标准正态分布的 累积分布函数 $\Phi(x)$
+   1. $$\text{GELU}(x) = x \cdot \Phi(x) = \frac{1}{2} x (1 + \text{erf}( \frac{x}{\sqrt{2}}))$$
+   2. $\text{erf}$ 是高斯误差函数 (Error Function)
+3. 近似公式(blue) : 基本完全重合
+   1. $$\text{GELU}(x) \approx 0.5 x (1 + \tanh [\sqrt{\frac{2}{\pi}} (x + 0.044715 x^3)])$$
+   2. 早期的 BERT 和 GPT 论文及代码实现中(当时的硬件计算 erf 比较慢)，使用下面这个基于 tanh 的近似公式
+   3. 0.044715 是一个拟合系数，纯粹是为了让这个曲线更贴合标准正态分布
+4. ReLU 是 “硬开关”，GELU 是 “软开关”
+
+GLU(Gated Linear Units) Family : 通常用于 Transformer 的 FFN (Feed Forward Network) 层中 - TODO
+1. GLU
+2. ReGLU
+3. SwiGLU
+4. GEGLU
 
 
 
@@ -821,13 +891,26 @@ pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`tor
 
 ---
 
-## 28 批量归一化 Batch Normalization(BN)
+## 28 Batch Norm(BN) & Layer Norm(LN)
 
 [All About Normalizations! - Batch, Layer, Instance and Group Norm - YouTube](https://www.youtube.com/watch?v=1JmZ5idFcVI)
 
 <img src="Pics/d2l107.png" width=750>
 
 蓝色区域 是一次 归一化单元 的 reduce 区域，得到一组 均值 和 方差/标准差
+
+**BatchNorm**
+1. 对于形状为 $(N, C, H, W)$ 的输入，**BatchNorm 会在 $(N, H, W)$ 这三个维度上进行聚合**
+2. 对于第 $k$ 个 Channel，它会把整个 Batch 中 所有图片的该通道 所有位置的像素 都拿来一起算
+3. 因此只有 C 个 Moving Mean/Var，也就对应 C 组 learning parameters ($\gamma, \beta$)
+
+**LayerNorm**
+1. 对于形状为 $(N, C, H, W)$ 的输入，**LayerNorm 会在 $(C, H, W)$ 这三个维度上进行聚合**
+2. **单样本内部** 的归一化
+3. Transformer 的标准实现中，LayerNorm 的参数数量与序列长度 $L$ 无关，只与特征维度 $d$ 有关，是对于 embedding 结果做 Norm
+
+
+---
 
 [Batch Normalization - ipynb](./OfficialNoteBooks/chapter_convolutional-modern/batch-norm.ipynb)
 
@@ -904,7 +987,7 @@ BN 完成归一化后，再 **乘 γ** & **加 β** 相当于再进行 一次 �
 3. 分布式运算 的 数据同步，影响效率
 
 
-## 补 : 层归一化 Layer Normalization(LN)
+---
 
 [什么是层归一化LayerNorm，为什么Transformer使用层归一化 - B站视频](https://www.bilibili.com/video/BV1yCyQY6EnA/?)
 
@@ -957,6 +1040,8 @@ LN 保留了一个样本内不同特征之间的大小关系，一条样本的�
 
 
 ### 例题
+
+[Batch Normalization 和 Layer Normalization 的一些细节可能和你想的并不一样 - B站视频(RethinkFun)](https://www.bilibili.com/video/BV1L2421N7jQ)
 
 对于 PyTorch 里的一个 图片tensor，shape 为 (2, 3, 4, 4)，如果对这个 Tensor 进行 **Batch Normalization**，请问一共会计算 **几个均值/方差**？ 3，通道数 channel
 
