@@ -587,7 +587,7 @@ Softmax 回归 代码实现
 
 
 
-## 激活函数
+## 激活函数汇总
 
 Sigmoid
 1. $$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} +  1}$$
