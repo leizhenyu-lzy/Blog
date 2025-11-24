@@ -589,54 +589,83 @@ Softmax 回归 代码实现
 
 ## 激活函数汇总
 
-Sigmoid
-1. $$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} +  1}$$
+https://blog.csdn.net/beingstrong/article/details/133827619 - TODO
 
-Tanh
-1. $$\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
 
-ReLU(Rectified Linear Units) Family
+**Sigmoid**
+1. $$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} + 1}$$
+2. <img src="Pics/d2l118.png" width=350>
+3. 输出范围 0 ~ 1，对 神经元 output 进行 归一化
+4. 可微
+5. 缺点
+   1. 倾向于 梯度消失
+   2. 不以 0 为中心，会降低权重更新 效率
+      1. 导致在反向传播过程中，同一层神经元的所有权重(weights) 更新方向 被迫保持一致，要么全变大，要么全变小
+   3. 指数运算，计算机运行速度慢
+
+**Tanh**
+1. Tanh 和 Sigmoid 在 数学上 有 直接换算关系
+2. $$\tanh(x) = 2 \cdot \text{sigmoid}(2x) - 1 = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
+3. <img src="Pics/d2l119.png" width=350>
+4. 以 0 为中心，正/0/负 都会被映射为 正/0/负
+
+**ReLU(Rectified Linear Units)** Family
 1. ReLU
    1. $$\text{ReLU}(x) = \max(0, x)$$
-   2. 负半区 为 0
-   3. 正半区 导数恒为 1
-   4. Dead ReLU 问题 : 如果某个神经元输入落入负半区，它可能永远不再被激活(权重不再更新)
+   2. <img src="Pics/d2l120.png" width=350>
+   3. 负半区 为 0
+   4. 正半区 导数恒为 1
+   5. 可以 缓解 梯度消失， 在 $x>0$ 的区域，梯度恒为 1
+   6. 计算速度快
+   7. **Dead ReLU 问题** : 如果在一个 batch 的训练中，某个神经元输入落入负半区(对于数据集中所有可能的输入样本 $x$，结果都变为负数)，它可能永远不再被激活(权重不再更新)
 2. Leaky ReLU
    1. $$\text{Leaky ReLU}(x) = \max(\alpha x, x)$$
-      1. $\alpha$ 通常是一个很小的常数（如 0.01）
-   2. 解决 Dead ReLU 问题，给负半区一个微小的梯度
+      1. $\alpha$ 通常是一个很小的常数 (eg : **0.01**)
+      2. $\alpha$ 小常数原因
+         1. 避免 退化成 线性/近似线性 函数，非线性程度越高
+         2. 保持 稀疏性，在任何时刻，只有少部分相关的神经元是活跃的
+   2. <img src="Pics/d2l121.png" width=350>
+   3. 解决 Dead ReLU 问题，给负半区一个微小的梯度
 3. PReLU (Parametric ReLU)
    1. 同 Leaky ReLU，但 $\alpha$ 是 **可学习的参数** (Learnable Parameter)
    2. 模型自己决定负半区斜率
 4. ELU (Exponential Linear Unit)
    1. $$\text{ELU}(x) = \begin{cases} x & \text{,\ if } x > 0 \\ \alpha (e^x - 1) & \text{,\ if } x \le 0 \end{cases}$$
-   2. 负半区是平滑曲线，输出均值更接近 0，对噪声鲁棒性更强，但计算量大
+   2. <img src="Pics/d2l122.png" width=350>
+   3. 负半区是平滑曲线，输出均值更接近 0，Bias 不需要费劲去纠正数据的中心偏移，可以把精力全花在学习特征
+   4. 对噪声鲁棒性更强，不管**负向噪音**有多大，迅速饱和(Saturate)，也就是趋近于 $-\alpha$
+   5. 计算量大
+   6. 没有 Dead ReLU 问题
 5. SoftPlus
    1. $$\text{SoftPlus}(x) = \ln(1 + e^x)$$
-   2. ReLU 的平滑逼近版本(处处可导)
-   3. 是 Sigmoid 函数的原函数 (导数是 Sigmoid)
+   2. <img src="Pics/d2l123.png" width=450>
+   3. ReLU 的平滑逼近版本(**处处可导**)
+   4. 是 Sigmoid 函数的原函数 (**导数是 Sigmoid**)
 
-Maxout
-1. 它本身是一个层(Layer) 而不是单纯的函数
-2. $$\text{Maxout}(x) = \max(w_1^T x + b_1, w_2^T x + b_2, \dots, w_k^T x + b_k)$$
-3. 取 $k$ 个线性函数的最大值
-4. 理论上可以拟合任意凸函数
-5. 缺点 : 参数量翻倍
 
-Mish
+**MaxOut**
+1. 它本身是一个层(Layer) 而不是单纯的函数，没有固定的形状
+2. $$\text{MaxOut}(x) = \max(w_1^T x + b_1, w_2^T x + b_2, \dots, w_k^T x + b_k)$$
+3. <img src="Pics/d2l126.png" width=350>
+4. 取 $k$ 个线性函数的最大值
+5. 理论上可以拟合任意凸函数
+6. 缺点 : 参数量翻倍
+
+
+**Mish**
 1. $$\text{Mish}(x) = x \cdot \tanh(\text{SoftPlus}(x)) = x \cdot \tanh(\ln(1 + e^x))$$
 2. YOLOv4 中使用的激活函数
 3. 和 GELU/Swish 很像 : 平滑、非单调(Non-monotonic)、允许少量负值
 4. 效果通常优于 ReLU，但计算开销稍大
 
-SiLU (Sigmoid Linear Unit)
-1. $$\text{SiLU}(x) = x \cdot \sigma(x) = \frac{x}{1 + e^{-x}}$$
 
-Swish
-1. $$\text{Swish}(x) = x \cdot \sigma(\beta x) = \frac{x}{1 + e^{-\beta x}}$$
+**Swish / SiLU(Sigmoid Linear Unit)**
+1. $$\text{Swish}(x) = x \cdot \text{sigmoid}(\beta x) = \frac{x}{1 + e^{-\beta x}}$$
    1. $\beta$ 是可学习参数或常数
-2. 当 $\beta = 1$ 时，Swish 变为 SiLU
-3. Llama 1/2/3 等现代大模型的 FFN 层都在用 SiLU
+2. <img src="Pics/d2l125.png" width=350>
+3. 当 $\beta = 1$ 时，Swish 变为 SiLU
+4. $$\text{SiLU}(x) = x \cdot \text{sigmoid}(x) = \frac{x}{1 + e^{-x}}$$
+5. Llama 1/2/3 等现代大模型的 FFN 层都在用 SiLU
 
 **GELU (Gaussian Error Linear Unit)**
 1. <img src="Pics/d2l117.png" width=750>
@@ -649,11 +678,27 @@ Swish
    3. 0.044715 是一个拟合系数，纯粹是为了让这个曲线更贴合标准正态分布
 4. ReLU 是 “硬开关”，GELU 是 “软开关”
 
-GLU(Gated Linear Units) Family : 通常用于 Transformer 的 FFN (Feed Forward Network) 层中 - TODO
-1. GLU
-2. ReGLU
-3. SwiGLU
-4. GEGLU
+**GLU(Gated Linear Units，门控线性单元)** Family
+1. 通常用于 Transformer 的 FFN (Feed Forward Network) 层中
+2. 不仅仅是一个函数，更像是一个 层(Layer)，根据输入数据的特征，动态决定 开大一点 or 关小一点
+3. 由于引入了更多的权重矩阵 $W, V$，通常会对隐藏层的大小做一个缩放，从而保证整体的参数量不变
+4. GLU
+   1. $$\text{GLU}(x) = \underbrace{\sigma(xW + b)}_{\text{门 (Gate)}} \otimes \underbrace{(xV + c)}_{\text{信息 (Value)}}$$
+      1. $\sigma(xW + b)$ : 控制通路(Gate)
+         1. 经过了 Sigmoid ($\sigma$)，所以输出值在 0 到 1 之间
+         2. 负责根据输入的内容，决定 右边的信息 到底保留多少
+      2. $(xV + c)$ : 实际的信息通路，不仅 对输入做 线性变换，还准备往下传
+      3. $\otimes$ : 逐元素相乘
+   2. 形状
+      1. 输入 $x$ 的形状 : (Batch, Seq, Input_Dim)
+      2. 权重矩阵的形状 : (Input_Dim, Feature_Dim)
+      3. 线性投影后形状 : (Batch, Seq, Feature_Dim)
+      4. 激活函数 是 element-wise，不改变形状
+      5. 哈达玛积 (Hadamard Product, $\otimes$)，不改变形状
+5. ReGLU
+6. SwiGLU
+   1. $$\text{SwiGLU}(x) = \text{Swish}(xW + b) \otimes (xV + c)$$
+7. GEGLU
 
 
 
