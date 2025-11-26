@@ -953,6 +953,16 @@ pytorch 中 直接 使用 参数更新公式 在 优化器中 提供选项 (`tor
 1. 对于形状为 $(N, C, H, W)$ 的输入，**LayerNorm 会在 $(C, H, W)$ 这三个维度上进行聚合**
 2. **单样本内部** 的归一化
 3. Transformer 的标准实现中，LayerNorm 的参数数量与序列长度 $L$ 无关，只与特征维度 $d$ 有关，是对于 embedding 结果做 Norm
+4. NLP 里，Sequence Length 是不定的，而且样本之间相互独立很重要，所以 LN 是默认标配，GroupNorm 很少用
+
+**GroupNorm**
+1. 对于形状为 $(N, C, H, W)$ 的输入，引入了一个超参数 $G$ (Group number)，将 $C$ 个通道分成 $G$ 个组，每组包含 $C/G$ 个通道
+2. 归一化是按组算的，但最后的可学习参数(仿射变换 parameters $\gamma$ & $\beta$)，通常还是针对每个 Channel 独立的，即共有 $C$ 组 $\gamma$ & $\beta$，以保持表达能力
+3. 不会像 LayerNorm 那样把所有 Channel 混在一起，也不会像 InstanceNorm 那样把每个 Channel 彻底独立
+4. 特殊情况
+   1. $G = 1$ 变为 LayerNorm
+   2. $G = C$ 变为 InstanceNorm
+5. 在 小 batchsize 的时候 代替 BatchNorm
 
 
 ---

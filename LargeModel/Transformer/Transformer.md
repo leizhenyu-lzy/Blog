@@ -96,6 +96,20 @@ String -> Token -> Token ID -> Embedding Vectors
 6. Layer Norm 位置
    1. Post-LN(原版) : 先 MHA + Dropout，然后 Residual Add，再 Norm (Add & Norm)
    2. Pre-LN (常用) : 先 Norm，然后 MHA + Dropout，再 Residual Add
+7. 原始 Transformer 里，用到 LayerNorm 的地方
+   1. Encoder Layer 中 (每层 2 个)
+      1. Self-Attention 后 : LayerNorm(x + Attention(x))
+      2. FFN 后 : LayerNorm(x + FFN(x))
+   2. Decoder Layer 中 (每层 3 个)
+      1. Masked Self-Attention 后 : LayerNorm(x + MaskedAttn(x))
+      2. Cross-Attention 后 : LayerNorm(x + CrossAttn(x))
+      3. FFN 后 : LayerNorm(x + FFN(x))
+   3.  是否有 最后再整体加一个 LayerNorm ?
+      1. 原始论文 `Attention is All You Need` 里，没有在整个 Encoder/Decoder 输出最后再加一个额外的 LayerNorm
+      2. 很多后来的实现(一些开源库)会在
+         1. 整个 Encoder 堆叠的输出后，再加一层 LayerNorm
+         2. 整个 Decoder 堆叠的输出后，再加一层 LayerNorm
+
 
 **Residual Connection** 残差连接 : 避免梯度消失，尤其是网络层数变深
 
