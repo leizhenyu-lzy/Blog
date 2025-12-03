@@ -1,21 +1,126 @@
-# IsaacGym API Reference
+# IsaacGym API
 
-- [IsaacGym API Reference](#isaacgym-api-reference)
+- [IsaacGym API](#isaacgym-api)
+- [Tensor API](#tensor-api)
+  - [Python Structure](#python-structure)
+    - [`isaacgym.gymtorch`](#isaacgymgymtorch)
 - [Python API](#python-api)
   - [Python Gym API](#python-gym-api)
+    - [`acquire_actor_root_state_tensor()`](#acquire_actor_root_state_tensor)
     - [`add_ground()` \& `add_heightfield()` \& `add_triangle_mesh()`](#add_ground--add_heightfield--add_triangle_mesh)
-    - [`create_actor`](#create_actor)
-  - [Python Structure](#python-structure)
+    - [`create_actor()`](#create_actor)
+    - [`set_actor_root_state_tensor()` \& `set_actor_root_state_tensor_indexed()`](#set_actor_root_state_tensor--set_actor_root_state_tensor_indexed)
+    - [`get_asset_xxx()`](#get_asset_xxx)
+    - [`set_actor_xxx()`](#set_actor_xxx)
+    - [`set_rigid_body_xxx()`](#set_rigid_body_xxx)
+    - [`find_actor_xxx()`](#find_actor_xxx)
+  - [Python Structures](#python-structures)
+    - [class `isaacgym.gymapi.Tensor`](#class-isaacgymgymapitensor)
+    - [class `isaacgym.gymapi.AssetOptions`](#class-isaacgymgymapiassetoptions)
+    - [class `isaacgym.gymapi.PhysXParams`](#class-isaacgymgymapiphysxparams)
+    - [class `isaacgym.gymapi.SimParams`](#class-isaacgymgymapisimparams)
+    - [class `isaacgym.api.` + Quat/Transform/RigidBodyState/RigidBodyProperties/DofState/DofFrame/Velocity/Mat33/Mat44](#class-isaacgymapi--quattransformrigidbodystaterigidbodypropertiesdofstatedofframevelocitymat33mat44)
   - [Python Enums](#python-enums)
     - [`isaacgym.gymapi.DofDriveMode`](#isaacgymgymapidofdrivemode)
   - [Python Constants and Flags](#python-constants-and-flags)
 
 
+---
+
+# Tensor API
+
+## Python Structure
+
+### `isaacgym.gymtorch`
+
+用于在 Gym Tensor Descriptor 和 PyTorch Tensor 之间进行转换
+
+
+
+**`wrap_tensor(gym_tensor: Tensor) → torch.Tensor`**
+1. **功能** : 将 Gym Tensor Descriptor 转换为 PyTorch Tensor
+2. **用途** : 用于**读取**仿真数据，转换为 PyTorch Tensor 后可以进行数值计算
+3. **特点** : 返回的 PyTorch Tensor 与原始 GPU 缓冲区共享内存，零拷贝操作
+4. **示例** :
+   ```python
+   from isaacgym import gymapi, gymtorch
+
+   # 获取 Gym Tensor
+   actor_root_state = gym.acquire_actor_root_state_tensor(sim)
+
+   # 转换为 PyTorch Tensor
+   root_states = gymtorch.wrap_tensor(actor_root_state)
+   # root_states 现在是 torch.Tensor，形状为 (num_actors, 13)
+   ```
+
+**`unwrap_tensor(torch_tensor: torch.Tensor) → Tensor`**
+1. **功能** : 将 PyTorch Tensor 转换为 Gym Tensor Descriptor
+2. **用途** : 用于**设置**仿真数据，将 PyTorch Tensor 转换为 Gym API 可以接受的格式
+3. **要求** : 输入的 PyTorch Tensor 必须在 GPU 上（通常是 `cuda:0`）
+4. **示例** :
+   ```python
+   import torch
+   from isaacgym import gymapi, gymtorch
+
+   # 创建或修改 PyTorch Tensor
+   new_states = torch.zeros(num_actors, 13, device='cuda:0')
+   # ... 修改 new_states 的值 ...
+
+   # 转换为 Gym Tensor Descriptor
+   gym_tensor = gymtorch.unwrap_tensor(new_states)
+
+   # 使用 Gym API 设置数据
+   gym.set_actor_root_state_tensor(sim, gym_tensor)
+   ```
+
+
+| 操作         | 方向          | 函数               | 说明                   |
+|-------------|---------------|-------------------|-----------------------|
+| **读取数据** | Gym → PyTorch | `wrap_tensor()`   | 获取仿真状态，进行数值计算 |
+| **设置数据** | PyTorch → Gym | `unwrap_tensor()` | 将计算结果写回仿真        |
+
+**注意事项**：
+1. `wrap_tensor()` 返回的 PyTorch Tensor 是 **视图**(view)，与原始缓冲区共享内存
+2. 直接修改 `wrap_tensor()` 返回的 Tensor 会影响仿真数据 (除非使用 `.clone()`)
+3. `unwrap_tensor()` 要求输入 Tensor 在 GPU 上，且数据类型和形状必须匹配
+4. 转换操作是零拷贝的，性能开销很小
+
+
+---
 
 # Python API
 
 
 ## Python Gym API
+
+
+### `acquire_actor_root_state_tensor()`
+
+```python
+acquire_actor_root_state_tensor(self: Gym, arg0: Sim) → isaacgym.gymapi.Tensor
+```
+
+获取 **所有 Actor** 的 root state 缓冲区
+
+返回值类型 : `isaacgym.gymapi.Tensor`
+
+
+
+Tensor 形状 : `(num_actors, 13)`，每个 Actor 的根状态包含 13 个值
+1. `[0:3]`     : position        - 3 个值 `(x, y, z)`
+2. `[3:7]`     : rotation        - 4 个值 `(x, y, z, w)`，四元数
+3. `[7:10]`    : linear velocity - 3 个值 `(vx, vy, vz)`
+4. `[10:13]`   : angular velocity- 3 个值 `(wx, wy, wz)`
+
+
+**同时返回所有 Actor 的根状态**，而不是单个 Actor
+
+**Actor 顺序** : 通常按照 **创建顺序** 排列
+
+使用 `gym.get_actor_count()` 和 `gym.get_actor_handle()` 获取特定索引的 Actor 句柄
+
+
+**刷新数据** : Tensor 中的数据在物理仿真步骤之间会自动更新，无需手动刷新，但在读取前，确保已经执行了 `gym.simulate()` 或 `gym.fetch_results()`
 
 
 ### `add_ground()` & `add_heightfield()` & `add_triangle_mesh()`
@@ -25,7 +130,7 @@ IsaacGym 会自动处理它们与所有物体的碰撞
 Actor 才需要设置 碰撞组
 
 
-### `create_actor`
+### `create_actor()`
 
 ```python
 create_actor(self: Gym, env: Env, asset: Asset, pose: Transform,
@@ -96,12 +201,116 @@ create_actor(self: Gym, env: Env, asset: Asset, pose: Transform,
    - 旋转 `r`：`gymapi.Quat(x, y, z, w)` 或使用 `gymapi.Quat.from_euler_zyx()` 从欧拉角创建
 
 
+### `set_actor_root_state_tensor()` & `set_actor_root_state_tensor_indexed()`
+
+**设置** Actor 的root state，与 `acquire_actor_root_state_tensor()` 相对应，用于 读取 & 设置
+
+**`set_actor_root_state_tensor()`**
+1. 设置 **所有 Actor** 的 root state buffer
+2. **参数** :
+   1. **`arg0 (Sim)`** : 仿真句柄（Simulation Handle）
+   2. **`arg1 (isaacgym.gymapi.Tensor)`** : 包含**所有 Actor** 根状态的缓冲区
+      1. 形状必须为 `(num_actors, 13)`
+      2. 必须包含所有 Actor 的状态，即使只想更新部分 Actor
+3. **返回值** : `bool`，操作 成功/失败
+
+**`set_actor_root_state_tensor_indexed()`**
+1. 设置 **指定索引** 的 Actor 的 root state buffer
+2. **重要说明** : 虽然只更新部分 Actor，但 `arg1` 参数仍然需要提供 **完整的** 所有 Actor 的 root state buffer
+3. **参数** :
+   1. **`arg0 (Sim)`** : 仿真句柄（Simulation Handle）
+   2. **`arg1 (isaacgym.gymapi.Tensor)`** : 包含**所有 Actor** 根状态的完整缓冲区
+      1. 形状必须为 `(num_actors, 13)`
+      2. **注意**：即使只想更新部分 Actor，也必须提供完整的缓冲区
+      3. 只有 `arg2` 中指定的索引对应的行会被实际应用
+   3. **`arg2 (isaacgym.gymapi.Tensor)`** : 包含要更新的 Actor **全局索引** 的 缓冲区
+      1. 形状为 `(num_indices,)`，类型通常为 `int32` 或 `int64`
+      2. 全局索引 = 环境索引 × 每环境Actor数 + 环境内Actor索引
+   4. **`arg3 (int)`** : Actor 索引缓冲区的大小（`arg2` 的长度）
+4. **返回值** : `bool`，操作 成功/失败
+
+从 PyTorch Tensor 转换时，必须使用 `gymtorch.unwrap_tensor()` 转换为 Gym Tensor Descriptor
+
+
+### `get_asset_xxx()`
+
+传入 asset handle，得到 特性
+
+
+### `set_actor_xxx()`
+
+dof
+1. dof_properties
+2. dof_states
+3. dof_position_targets
+4. dof_velocity_targets
+
+
+### `set_rigid_body_xxx()`
+
+可以是 color
+
+
+### `find_actor_xxx()`
+
+有时候 需要 传入 `isaacgym.gymapi.IndexDomain`
+
 
 ---
 
-## Python Structure
+## Python Structures
+
+### class `isaacgym.gymapi.Tensor`
+
+`isaacgym.gymapi.Tensor`
+1. 是一个**描述符（Descriptor）**，类似于指针或句柄
+2. 包含元数据(设备、内存地址、数据类型、形状)
+3. 指向 GPU 上的实际数据缓冲区，而不是包含具体数值的对象
+4. 必须通过 `wrap_tensor()` 转换为 PyTorch Tensor 才能访问实际数据
 
 
+**属性说明**：
+
+| 属性             | 类型      | 说明                                                                        |
+|-----------------|-----------|----------------------------------------------------------------------------|
+| `data_address`  | `int`     | **数据地址** : 实际数据在 GPU 内存中的地址，内存地址                              |
+| `data_ptr`      | `pointer` | **数据指针** : 指向数据缓冲区的指针，pointer to buffer                          |
+| `device`        | `str`     | **设备** : 数据所在的计算设备，如 `"cuda:0"`、`"cpu"`                           |
+| `dtype`         | `type`    | **数据类型** : 数据的类型，如 `float32`、`int64`                               |
+| `ndim`          | `int`     | **维度数** : 张量的维度数量，number of dimensions                              |
+| `shape`         | `tuple`   | **形状** : 张量的形状，如 `(num_actors, 13)`                                  |
+| `own_data`      | `bool`    | **所有权标志** : 标识 Tensor 对象是否拥有底层数据缓冲区的所有权，flag for ownership |
+
+
+**关键理解**：
+1. **`data_address` 和 `data_ptr`** : 这两个属性明确表明 Tensor 对象存储的是**指向数据的地址/指针**，而不是数据本身
+2. **`own_data`** : 用于内存管理，标识 Tensor 对象是否负责释放底层数据缓冲区
+3. **元数据 vs 实际数据** : Tensor 对象只包含元数据（设备、形状、类型、地址），实际数值存储在 GPU 内存中
+4. **零拷贝访问** : 通过 `wrap_tensor()` 转换后，PyTorch Tensor 直接使用相同的 GPU 内存地址，实现零拷贝访问
+
+Debug 的时候 `torch.tensor` 使用 `.data_ptr()` 定位
+
+### class `isaacgym.gymapi.AssetOptions`
+
+TODO
+
+### class `isaacgym.gymapi.PhysXParams`
+
+TODO
+
+### class `isaacgym.gymapi.SimParams`
+
+TODO
+
+
+### class `isaacgym.api.` + Quat/Transform/RigidBodyState/RigidBodyProperties/DofState/DofFrame/Velocity/Mat33/Mat44
+
+class `isaacgym.gymapi.Quat`
+1. static `from_axis_angle`
+2. static `from_buffer`
+3. static `from_euler_zyx`
+
+TODO
 
 
 ---

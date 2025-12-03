@@ -1,9 +1,19 @@
-# Isaac Gym
+# IsaacGym
 
-[Isaac Gym - Tensor API](file:///home/lzy/Projects/isaacgym/docs/programming/tensors.html?highlight=wrap_tensor)
+[Isaac Gym - Download Archive](https://developer.nvidia.com/isaac-gym/download)
 
-- [Isaac Gym](#isaac-gym)
-  - [](#)
+直接看 里面的 `docs/index.html` 即可，不需要 下载 [Github repository](https://github.com/NVIDIA-Omniverse/IsaacGymEnvs)
+
+---
+
+# Table of Contents
+
+- [IsaacGym](#isaacgym)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Examples](#examples)
+  - [`franka_cube_ik_osc.py`](#franka_cube_ik_oscpy)
+  - [`kuka_bin.py`](#kuka_binpy)
   - [Simulation Setup](#simulation-setup)
   - [Assets](#assets)
   - [Tensor API](#tensor-api)
@@ -13,11 +23,59 @@
     - [Control Tensors](#control-tensors)
   - [API Reference](#api-reference)
     - [Python API](#python-api)
-  - [Installation](#installation)
+  - [Installation](#installation-1)
+
+---
+
+# Installation
+
+推荐 conda，进入 python 文件夹 `pip install -e .` 又可能 python 版本 不匹配
+
+```bash
+./create_conda_env_rlgpu.sh
+conda activate rlgpu
+```
+
+# Examples
+
+## `franka_cube_ik_osc.py`
+
+2种 控制器
+1. **IK**  : Inverse Kinematics - 逆运动学
+2. **OSC** : Operational Space Control - 操作空间控制
+   1. [Operational Space Control of Constrained and Underactuated Systems - 论文](https://roboticsproceedings.org/rss07/p31.pdf)
+
+
+asset
+1. franka: `gym.load_asset`
+2. table : `gym.create_box`
+3. box   : `gym.create_box`
+
+配置 franka DoF 的 driveMode stiffness damping
+
+franka 的 body & gripper 设置 不同 default_dof_pos，并转为 tensor
+
+配置 多环境布局 grid layout，单个环境的 局部坐标边界
+
+添加 ground plane
+
+for 循环
+1. 创建 env
+2. `create_actor` : table + box + franka
 
 
 
-##
+
+
+## `kuka_bin.py`
+
+
+
+
+---
+
+
+
 
 gymapi : Isaac Gym 的核心接口模块，提供了与底层物理引擎（PhysX）交互的基本功能。它定义了仿真环境、资产（Assets）、角色（Actors）等的创建和管理方法，是构建和控制仿真世界的基础。
 

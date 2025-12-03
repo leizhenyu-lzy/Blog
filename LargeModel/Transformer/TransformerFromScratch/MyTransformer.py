@@ -114,3 +114,9 @@ def make_tgt_mask(tgt, pad_idx):
     return tgt_pad_mask & tgt_causal_mask
 
 https://gemini.google.com/app/ba2f65a24ad1b39b
+tril ？
+
+shape 怎么变？
+
+src / tgt 的 mask 遮什么
+

@@ -29,7 +29,7 @@ CUDA Toolkit 版本 : 独立的软件开发包(SDK)，包含编译器、库和�
 
 ---
 
-# Step 3 : 安装 Docker
+# Step 2 : 安装 Docker
 
 [Install Docker Engine on Ubuntu - Docker Docs](https://docs.docker.com/engine/install/ubuntu/)
 
@@ -44,7 +44,7 @@ CUDA Toolkit 版本 : 独立的软件开发包(SDK)，包含编译器、库和�
 
 ---
 
-# Step 4 : 安装 NVIDIA Container Toolkit
+# Step 3 : 安装 NVIDIA Container Toolkit
 
 [Installing the NVIDIA Container Toolkit - NVIDIA Docs](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 1. Installation
