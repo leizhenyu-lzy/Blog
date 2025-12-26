@@ -62,6 +62,7 @@ franka 的 body & gripper 设置 不同 default_dof_pos，并转为 tensor
 for 循环
 1. 创建 env
 2. `create_actor` : table + box + franka
+3. 获取 各个 rigid_body_index & rigid_body_handle，配合 后续 rigid_body_state
 
 
 

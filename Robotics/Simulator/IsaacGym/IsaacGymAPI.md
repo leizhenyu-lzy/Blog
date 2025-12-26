@@ -10,6 +10,7 @@
     - [`add_ground()` \& `add_heightfield()` \& `add_triangle_mesh()`](#add_ground--add_heightfield--add_triangle_mesh)
     - [`create_actor()`](#create_actor)
     - [`set_actor_root_state_tensor()` \& `set_actor_root_state_tensor_indexed()`](#set_actor_root_state_tensor--set_actor_root_state_tensor_indexed)
+    - [`create_camera_sensor`](#create_camera_sensor)
     - [`get_asset_xxx()`](#get_asset_xxx)
     - [`set_actor_xxx()`](#set_actor_xxx)
     - [`set_rigid_body_xxx()`](#set_rigid_body_xxx)
@@ -231,6 +232,10 @@ create_actor(self: Gym, env: Env, asset: Asset, pose: Transform,
 
 从 PyTorch Tensor 转换时，必须使用 `gymtorch.unwrap_tensor()` 转换为 Gym Tensor Descriptor
 
+
+### `create_camera_sensor`
+
+需要 Environment Handle + `isaacgym.gymapi.CameraProperties`(properties of the camera sensor)
 
 ### `get_asset_xxx()`
 
