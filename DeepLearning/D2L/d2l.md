@@ -589,8 +589,6 @@ Softmax 回归 代码实现
 
 ## 激活函数汇总
 
-https://blog.csdn.net/beingstrong/article/details/133827619 - TODO
-
 
 **Sigmoid**
 1. $$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} + 1}$$
@@ -664,7 +662,7 @@ https://blog.csdn.net/beingstrong/article/details/133827619 - TODO
    1. $\beta$ 是可学习参数或常数
 2. <img src="Pics/d2l125.png" width=350>
 3. 当 $\beta = 1$ 时，Swish 变为 SiLU
-4. $$\text{SiLU}(x) = x \cdot \text{sigmoid}(x) = \frac{x}{1 + e^{-x}}$$
+4. $$\text{SiLU}(x) = x \cdot \text{sigmoid}(x) = \frac{x · e^x}{e^x + 1} = \frac{x}{1 + e^{-x}}$$
 5. Llama 1/2/3 等现代大模型的 FFN 层都在用 SiLU
 
 **GELU (Gaussian Error Linear Unit)**

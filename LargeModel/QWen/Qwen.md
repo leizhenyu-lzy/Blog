@@ -7,6 +7,14 @@
 
 
 
+单纯的 Qwen (纯文本版) : Decoder-only
+Qwen-VL (多模态版) : Vision Encoder(ViT) + Adapter + Decoder-only LLM(Backbone)
+
+
+
+
+
+
 json 格式的 msgs 只是 对话脚本(原材料)，需要将 排版成 Qwen-VL 专属的提示词格式
 
 Qwen-VL 只认 `<|im_start|>{role}\n{content}<|im_end|>` 这种包裹方式，并且最后还要 append  `<im_start>assistant` 才会生成回复 (assistant starts talking now)
@@ -32,3 +40,6 @@ Python 写正则时常用 原始字符串 `r'...'`，让反斜杠 `\` 不先被 
 auto
 1. torch_dtype="auto" : 自动 挑最低安全精度
 2. device_map="auto"  : 自动 把权重切片到可用设备
+
+
+

@@ -59,7 +59,7 @@ String -> Token -> Token ID -> Embedding Vectors
 
 **Self-Attention**
 1. 通过 token 之间 彼此的注意力，让 token 根据上下文，更新自己的 embedding
-2. 每个 token 有初始的 embedding，通过 3个 **线性层** 映射，得到 3个 向量
+2. 每个 token 有初始的 embedding，分别 通过 3个 **线性层**(矩阵 形状为 **dim×dim**) 映射，得到 Q/K/V 向量
    1. Q : 向其他 token 查询
    2. K : 对查询应答
    3. V : 更新其他 token embedding
@@ -88,15 +88,16 @@ String -> Token -> Token ID -> Embedding Vectors
 ==P.S. : `@` 运算符在 PyTorch 中 只在最后2个维度 进行矩阵乘法，前面的维度作为 batch 维度进行广播==
 
 **Layer Normalization** - [个人笔记](../../DeepLearning/D2L/d2l.md#28-batch-normbn--layer-normln)
-1. 统计每个 Token 的 mean & var(对每个 Token 独立计算)，进行标准化
+1. 统计每个 Token 的 mean & var(聚合整个 embedding)，进行标准化
 2. 加入 很小 $\epsilon$ 防止 ÷0
-3. **每个特征维度** 都有 可学习参数 $\gamma$ & $\beta$
-4. <img src="Pics/rethinkfun007.png" width=600>
-5. `torch.nn.Parameter` 用来把一个 Tensor 注册成 `nn.Module` 的可学习参数
-6. Layer Norm 位置
+3. **每个特征维度** 都有 独立的可学习参数 $\gamma$ & $\beta$
+4. 不同序列位置 共享 相同的 $\gamma$ & $\beta$
+5. <img src="Pics/rethinkfun007.png" width=600>
+6. `torch.nn.Parameter` 用来把一个 Tensor 注册成 `nn.Module` 的可学习参数
+7. Layer Norm 位置
    1. Post-LN(原版) : 先 MHA + Dropout，然后 Residual Add，再 Norm (Add & Norm)
    2. Pre-LN (常用) : 先 Norm，然后 MHA + Dropout，再 Residual Add
-7. 原始 Transformer 里，用到 LayerNorm 的地方
+8. 原始 Transformer 里，用到 LayerNorm 的地方
    1. Encoder Layer 中 (每层 2 个)
       1. Self-Attention 后 : LayerNorm(x + Attention(x))
       2. FFN 后 : LayerNorm(x + FFN(x))
@@ -119,31 +120,34 @@ MHA & FFN 都配合一个 Residual 残差连接
 
 Encoder **输入 & 输出** 维度一致，可以多个 block 叠加，原文是 6个
 
-**Position Encoding**
-1. Attention 机制 **没有考虑位置关系**，只是 weighted-sum (eg : 我打他 ≠ 他打我)
+**Position Embedding**
+1. Attention 机制 **没有考虑位置关系**(排列组合)，只是 weighted-sum (eg : 我打他 ≠ 他打我)
 2. **不能使用 离散的 绝对位置编码**，模型没法处理 推理句子的 token 数 **>** 训练句子 token 数 的情况
 3. 位置编码维度 和 原始编码维度 一致
 4. 可以将 离散编码 转为 **连续编码**，周期变换，低维度变化快，高维度变化慢 (有点类似于 二进制 的连续化版本)
    1. 三角函数 sin/cos 可以调整 频率
    2. 频率高的 三角函数作为 低维度，频率低的 三角函数作为 高维度
-   3. <img src="Pics/rethinkfun001.png" width=500>
-   4. 实际上 Transformer 使用的是 **==sin/cos 交替编码==**，2个相邻维度$(2i, 2i+1)$ 看为一组，使用同一个频率
-   5. <img src="Pics/rethinkfun002.png" width=500>
-   6. 好处 : 仅和 **相对位置** 有关，和 绝对位置 无关
-5. $sin/cos(\omega t)$ 中，pos 相当于 t，feature 维度 $i$ 控制 角频率 $\omega$
-6. <img src="Pics/rethinkfun008.png" width=600>
-7. 随着维度增加，角频率变小，对应 高维 频率低
+   3. 随着维度增加，角频率 变小，对应 高维 频率低
+   4. <img src="Pics/rethinkfun001.png" width=500>
+   5. $sin/cos(\omega t)$ 中，**==在 sequence 中的 pos 相当于 t，feature 维度 $i$ 控制 角频率 $\omega$==**
+      1. <img src="Pics/rethinkfun008.png" width=600>
+   6. 实际上 Transformer 使用的是 **==sin/cos 交替编码==**，2个相邻维度$(2i, 2i+1)$ 看为一组，使用同一个频率
+      1. <img src="Pics/rethinkfun009.png" width=600>
+      2. <img src="Pics/rethinkfun002.png" width=500>
+   7. 好处 : 仅和 所处 sequence **相对位置** 有关，和 绝对位置 无关
+5. 其实 **特征维度本身没有固定的顺序**，未必一定要 低维度变化快 高维度变化慢 (纯粹是 convention)，Q / K 的 维度语义 是在 Linear 投影的权重里决定的 (隐式重排/置换 permute)
+
 
 完整的序列是 : `['<bos>', 'I', 'like', 'to', 'eat', 'apple', '<eos>']`
 1. Decoder Input  : `['<bos>', 'I', 'like', 'to', 'eat', 'apple']`
 2. Decoder Output : `['I', 'like', 'to', 'eat', 'apple', '<eos>']`
 
-**Mask Attention**
-1. 一次性 对所有位置进行训练
-2. 推理时，还是需要 一个个的 token 进行输出
-3. mask 为1 的位置，表示可以看到 token，可以进行 attention 计算
+**Mask Self-Attention**
+1. 利用该机制 一次性 对所有位置进行 训练
+2. 推理时 还是需要 一个个的 token 进行输出
+3. mask 为 1 的位置，表示可以看到 token，可以进行 attention 计算
 4. 让每个 token 只关注 **自己** & **之前** 的tokens
-5. attention 正常计算，在 **softmax 之前**，将 mask 为0 的位置 替换为 **很大的负值**
+5. attention 正常计算，在 **softmax 之前**，将 mask 为0 的位置 替换为 **很大的负值**，通过 softmax 后，基本变为 0
 6. Mask 的尺寸
    1. 随着你 每一批(Batch) 数据的最大长度 $L$ 动态变化的
    2. Mask 的最大上限 是 模型设计的 最大上下文窗口，也不能超过 Max Position Embeddings 最大位置编码长度
@@ -153,14 +157,28 @@ Encoder **输入 & 输出** 维度一致，可以多个 block 叠加，原文是
 1. `Encoder 的 K & V` + `Decoder 的 Q`
 2. Encoder 的输出(Encoder Output) 会被 广播(Broadcast) 给 Decoder 的每一层，Decoder 每一层，使用的是 相同的 Encoder Output
 3. 经过 Linear 将 输出维度 映射到 字典大小，再 Softmax
+4. **不需要 mask**，因为 Encoder 的输出是完整已知的输入信息
 
 **单向 & 双向 Attention**
 1. **Encoder** 的 Self-Attention 双向注意力，前面的 token 可以看到后面的 token，所有 token 之间可以相互匹配
 2. **Decoder** 的 Self-Attention 单向注意力，带 Causal/Look-Ahead Mask，前面的 token 不能看到后面的 token，只能看到自己及之前的 token
 
-Encoder & Decoder 不改变数据尺寸
+Encoder & Decoder 不改变数据尺寸，因此可以多个 block 叠加
 
-在推理(Inference) 阶段，**Decoder** 中数据的形状(Sequence Length 维度)确实是在不断变化的
+训练(Training) 阶段
+1. 每个位置都有自己的预测任务，都有一个 vocab_size 大小的概率分布
+2. Loss 是整个序列的 Cross Entropy 聚合
+   1. PyTorch 可选 mean sum none
+   2. 实际训练中，不同句子长度不同，需要 padding，聚合的时候忽略 padding 即可
+   3. 原文使用 mean 但是 使用了 label smoothing
+      1. 正则化技术，防止模型对自己的预测 过度自信 Over-Confident
+      2. 把 One-hot 标签和一个均匀分布 Uniform Distribution 混合在一起
+      3. $$y_{new} = (1 - \epsilon) \times y_{old} + \frac{\epsilon}{K}$$
+         1. $y_{old}$ : 原始的 One-hot 标签（例如 0 或 1）
+         2. $\epsilon$ : 平滑参数，通常设为 0.1
+         3. $K$ : 类别的总数
+
+推理(Inference) 阶段，**Decoder** 中数据的形状(Sequence Length 维度)确实是在不断变化的
 1. Self-Attention : Q、K、V 的长度都会随着生成的词数同步增加
 2. Cross-Attention : Q 的长度会增加，但 K 和 V 的长度永远固定，等于原文长度
 3. 也就是生成长文本越到后面越慢的原因(每次计算的矩阵都变大)
@@ -279,7 +297,7 @@ Architecture
          1. <img src="Pics/transformer005.png" width=500>
          2. embedding vector 的实际数据是 训练中学习的，不需要 pre-trained embedding
       5. 特殊 Tokens : `<START>`, `<END>`, `<UNK>`(unknown), `<PAD>`(保证相同序列长度)
-3. Positional Encoding
+3. Positional Embedding
    1. 对于 RNN，位置信息 隐式提供，token 按顺序输入模型，但是 **transformer 的 token 是 并行输入**
    2. <img src="Pics/transformer006.png" width=400>
    3. 参数

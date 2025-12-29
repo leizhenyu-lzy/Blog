@@ -27,6 +27,21 @@
 
 ---
 
+PPO (Actor + Critic + Reward + Ref)
+1. GPT-4, Llama2
+DPO (Policy + Ref)
+1. Llama3, Qwen 1.5/2
+GRPO (Policy)
+1. DeepSeek-V3/R1
+
+
+SFT
+1. SFT 使用的是 人工(或更强的 AI) 精选的高质量 **指令-回复 pair (Prompt-Response Pairs)**，数据量通常比预训练小得多
+2. 和 预训练 几乎一模一样，都是预测下一个字，关键区别：Loss Masking (损失掩码)，只计算 Answer 部分的 Loss (Prompt 是用户提供的)
+3. 通常 不 全量微调(Full Fine-Tuning)，配合 PEFT (Parameter-Efficient Fine-Tuning) 技术，最常用的就是 **LoRA**
+
+---
+
 # 大模型 微调/强化学习 - B站(RethinkFun)
 
 [大模型 微调/强化学习 - B站(RethinkFun)](https://space.bilibili.com/18235884/lists/3926642)

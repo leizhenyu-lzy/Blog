@@ -29,20 +29,20 @@ class ResidualConnection(nn.Module):  # 对应 Transformer 论文中的 Add & No
         self.layer_norm = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x, sub_layer, post_norm: bool = False):
+    def forward(self, x, sub_layer, pre_norm: bool = True):
         """
         x : (batch_size, seq_len, d_model)
         return : (batch_size, seq_len, d_model)
-        
+
         Post-Norm : SubLayer -> Dropout -> Add -> Norm
         Transformer 论文中使用 Post-Norm
-        
+
         Pre-Norm  : Norm -> SubLayer -> Dropout -> Add
         训练稳定性更高，梯度流动的顺畅性更好(input x 直接 和 output return 连接)
         现在主流使用 Pre-Norm
         """
-        if post_norm:
-            return self.layer_norm(x + self.dropout(sub_layer(x)))
-        else:  # pre-norm
+        if pre_norm:
             return x + self.dropout(sub_layer(self.layer_norm(x)))
+        else:  # post-norm
+            return self.layer_norm(x + self.dropout(sub_layer(x)))
 
