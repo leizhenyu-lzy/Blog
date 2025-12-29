@@ -12,7 +12,114 @@
 
 ---
 
-# Abstract
+## Table of Contents
+
+- [GaussGym](#gaussgym)
+  - [Table of Contents](#table-of-contents)
+- [代码](#代码)
+  - [Installation \& Conda Envs](#installation--conda-envs)
+  - [Config](#config)
+  - [Train](#train)
+  - [Evaluate](#evaluate)
+  - [3D GS](#3d-gs)
+  - [VGGT](#vggt)
+- [论文](#论文)
+  - [Abstract](#abstract)
+  - [Introduction](#introduction)
+  - [Related Work](#related-work)
+    - [Sim2Real RL for Locomotion](#sim2real-rl-for-locomotion)
+    - [Scene Generation](#scene-generation)
+    - [Radiance Fields in Robotics](#radiance-fields-in-robotics)
+  - [GaussGym](#gaussgym-1)
+  - [Results](#results)
+  - [Limitation](#limitation)
+  - [Conclusion](#conclusion)
+
+
+---
+
+# 代码
+
+## Installation & Conda Envs
+
+```bash
+conda env list
+conda info --envs
+
+bash setup_dev.sh  # 在 ~/.gauss_gym_deps 下 创建 gauss_gym conda 环境
+source ~/.gauss_gym_deps/miniconda3/bin/activate gauss_gym  # 激活 gauss_gym
+```
+
+## Config
+
+task 存放位置 `gauss_gym/envs`
+
+task 注册位置 `gauss_gym/envs/__init__.py`
+
+
+
+## Train
+
+```bash
+gauss_train --task=t1_vision --env.num_envs 512
+# gauss_train = "gauss_gym.scripts.train:main"  # 在 pyproject.toml
+```
+
+
+`gauss_gym/scripts/train.py`
+
+```python
+task_class = task_registry.get_task_class(cfg['task'])
+runner = eval(cfg['runner']['class_name'])(env, cfg, device=cfg['rl_device'])
+runner.learn()  # 写在 gauss_gym/rl/runner.py
+```
+
+
+## Evaluate
+
+
+```bash
+gauss_play --runner.load_run=t1_2025-12-08-13-06-48
+# gauss_play = "gauss_gym.scripts.play:main"  # 在 pyproject.toml
+```
+
+`gauss_gym/scripts/play.py`
+
+```python
+cfg = helpers.get_config(load_run_path)  # 从 logs 中 读出 训练时的配置 train_config.yaml
+task_class = task_registry.get_task_class(cfg['task'])
+runner = eval(cfg['runner']['class_name'])(env, cfg, device=cfg['rl_device'])
+runner.play()  # 写在 gauss_gym/rl/runner.py
+```
+
+通过 viser 可视化 服务器 查看，浏览器中打开 : http://localhost:8080
+
+`tensorboard --logdir logs/<log_path>`
+
+
+
+## 3D GS
+
+`gauss_gym/utils/batch_gs_renderer.py`
+1. 调用外部库 `gsplat.rendering.rasterization`，把 Gaussian 参数渲染成 RGB+D
+
+
+`gauss_gym/utils/gaussian_terrain.py`
+1. 物理 用 trimesh 在 IsaacGym 里碰撞，视觉 用 Gaussian Splats 渲染图像
+
+
+## VGGT
+
+
+
+
+
+---
+
+# 论文
+
+
+## Abstract
 
 Renderer : 3D Gaussian Splatting
 
@@ -26,7 +133,7 @@ scalable & generalizable
 
 ---
 
-# Introduction
+## Introduction
 
 Current Problems
 1. sim2real without adaption, can not leverage visual info
@@ -50,9 +157,9 @@ GaussGym
 
 ---
 
-# Related Work
+## Related Work
 
-## Sim2Real RL for Locomotion
+### Sim2Real RL for Locomotion
 
 CPU-based simulator
 1. MuJoCo
@@ -67,7 +174,7 @@ GPU-based simulator
 
 3D GS - implicit learned scene representation
 
-## Scene Generation
+### Scene Generation
 
 original terrain generation : heuristic & handcrafted rules
 1. Pros : effective for defining geometric terrains
@@ -109,7 +216,7 @@ Video Generation
 
 
 
-## Radiance Fields in Robotics
+### Radiance Fields in Robotics
 
 NeRF
 1. representation for high-quality scene reconstruction (from **posed images**)
@@ -140,7 +247,7 @@ Compared with LucidSim
 
 ---
 
-# GaussGym
+## GaussGym
 
 **overall pipeline**
 1. Data
@@ -184,9 +291,9 @@ optimization for high-throughput & realism
    3. improve visual fidelity & robustness
    4. noticeable during sudden jolts / jerky motions (climbing stairs & high-speed movements)
 
+---
 
-
-# Results
+## Results
 
 Visual Locomotion & Navigation
 1. visual stair climbing + visual navigation (diverse visually complex terrains)
@@ -227,7 +334,9 @@ Visual Navigation Results
    2. performance reduce if without regressing on voxel grid or pre-trained DINO encoder
    3. GaussGym's seamless infra to train across multiple scenes
 
-# Limitation
+---
+
+## Limitation
 
 offer platform for developing visual sim2real algos to narrow the gap
 
@@ -258,8 +367,9 @@ vision models
    2. simulate fluids
    3. deformable assets
 
+---
 
-# Conclusion
+## Conclusion
 
 fast, iopen-source photorealistic simulator
 
