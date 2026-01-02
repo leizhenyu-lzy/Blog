@@ -1,23 +1,6 @@
-import numpy as np
+import math
 
-theta = 5
-c = np.cos(theta)
-s = np.sin(theta)
-d = 10
 
-R = np.array([
-    [c,-s, 0, 0],
-    [s, c, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1],
-])
-
-T = np.array([
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, d],
-    [0, 0, 0, 1],
-])
-
-print(R @ T == T @ R)
-
+print(2 * math.atan(120 / 135.21) / math.pi * 180)
+print(2 * math.atan(80 / 135.205) / math.pi * 180)
+print(2 * math.atan(40 / 60 * math.tan(math.radians(83.17864343711821 / 2))) / math.pi * 180)

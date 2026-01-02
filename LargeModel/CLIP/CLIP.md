@@ -2,9 +2,11 @@
 
 [CLIP - Github](https://github.com/openai/CLIP)
 
-[CLIP 解读 - B站](https://www.bilibili.com/video/BV1SL4y1s7LQ)
+[CLIP 论文精度 - B站(李沐 & bryanyzhu)](https://www.bilibili.com/video/BV1SL4y1s7LQ)
 
 [CLIP - OpenCV Bootcamp Slide](./OpenCV-Bootcamp_CLIP_Internals_and_Architecture.pdf)
+
+[CLIP - OpenAI MileStone](https://openai.com/index/clip/)
 
 ---
 

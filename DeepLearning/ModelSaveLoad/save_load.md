@@ -87,6 +87,10 @@
 2. 强依赖 PyTorch 版本 / pickle 协议，跨版本、跨框架不可靠，在生产并不推荐
 3. 安全风险：Pickle 反序列化可执行任意代码，仅加载可信来源；一般不建议在部署/分发中使用
 4. 更推荐使用 `state_dict` 或 TorchScript/ONNX 等可移植格式
+5. pickle 不会把类代码一起存进去，而是记录
+   1. 对象的 模块名 : 比如 "autoencoder.height_encoder_nn"
+   2. 对象的 类名 : 比如 "AutoencoderMLP3EN"
+   3. 对象的参数(state_dict 等)
 
 
 
