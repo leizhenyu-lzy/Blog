@@ -10,6 +10,7 @@
 - [Background Knowledge](#background-knowledge)
 - [Policy Gradient](#policy-gradient)
 - [PPO (Proximal Policy Optimization)](#ppo-proximal-policy-optimization)
+- [TD \& Monte-Carlo \& GAE](#td--monte-carlo--gae)
 
 ---
 
@@ -82,6 +83,7 @@ Monte-Carlo 近似
 认为 下一个状态 完全由 当前状态 & 当前动作 决定，因此 Trajectory 的 概率分布可以由 state & action 表示
 
 $$P_{\theta}(\tau) = P_{\theta}(s_0, a_0, s_1, a_1, \dots, s_{T_n}) = p(s_0) \prod_{t=0}^{T_n-1} \pi_{\theta}(a_t|s_t) p(s_{t+1}|s_t, a_t)$$
+1. 注意 s 比 a 多一个 $s_{T_n}$
 
 下图中 没有写 $p(s_{t+1}|s_t, a_t)$，因为环境转换 不依赖 $\theta$
 
@@ -158,7 +160,7 @@ PPO 可以直接优化连续动作空间 (如机器人关节角度)，相比 DQN
 1. 状态 s 下，采取 动作 a 后，按照当前策略 π 行动，未来能获得的期望累积奖励
 
 **State-Value Function(状态价值函数)**
-1. 在状态 s 下，按照当前策略 π 行动，期望获得的累积奖励
+1. 在状态 s 下，按照当前策略 π 行动，期望获得的(从现在起到未来的)累积奖励
 2. 相当于之前说的 baseline，也就是 **==actor-critic 中的 critic==**
 
 **Advantage Function(优势函数) = 动作价值 - 状态价值**
@@ -179,8 +181,8 @@ Q/V/A Function 解决 问题
 **==PPO 不直接使用 动作价值函数 $Q(s,a)$，而是通过 状态价值函数 $V(s)$，来近似估计 优势函数 $A(s,a)$==**
 
 除了 GAE 可以用更简单 **TD(Temporal Difference，时序差分)**
-1. TD目标 : $r_t + \gamma V(s_{t+1})$
-2. TD误差 : $\delta_t = [r_t + \gamma V(s_{t+1})] - V(s_t)$
+1. TD 目标 : $r_t + \gamma V(s_{t+1})$
+2. TD 误差 : $\delta_t = [r_t + \gamma V(s_{t+1})] - V(s_t)$
 
 GAE(**多步** 混合优势估计) 需要 完整 episode，TD(**单步**) 不需要，GAE 平衡 偏差&方差，更加稳定
 
@@ -189,6 +191,8 @@ GAE(**多步** 混合优势估计) 需要 完整 episode，TD(**单步**) 不需
 <img src="Pics/rethinkfun007.png" width=850>
 
 ≈ 是 因为 采样有不确定性，真正成立的是 **贝尔曼期望公式** $V_\pi(s) = \mathbb{E}[r + \gamma V_\pi(s')]$
+1. 也就是说 **优势函数的期望本身就是 0**
+2. 对于具体的某一次采样(Trajectory)，总会有表现高于平均的动作(GAE > 0)，也总会有表现低于平均的动作(GAE < 0)，正是这种差异推动了策略的更新
 
 相当于 对 后面的 reward 都乘 $\gamma$
 
@@ -209,11 +213,18 @@ GAE(**多步** 混合优势估计) 需要 完整 episode，TD(**单步**) 不需
 1. 给不同采样步数下的 优势函数
 2. 分配不同的权重
 3. <img src="Pics/rethinkfun009.png" width=850>
+4. GAE 是 评价信号
+   1. $A(s, a) > 0$ : 说明动作 $a$ 比当前策略的平均 表现好，应该 增加 这个动作的概率
+   2. $A(s, a) < 0$ : 说明动作 $a$ 比当前策略的平均 表现差，应该 减少 这个动作的概率
+   3. 如果 GAE 趋于 0，意味着所有采样的动作都“和平均水平一样”，策略网络就没有更新的梯度
+5. 什么情况下 GAE 会趋于 0?
+   1. 策略非常确定,策略已经收敛到确定性最优策略(Deterministic Optimal Policy)，每次都只选最优动作，实际回报 $Q(s,a) \approx V(s)$，所以 $A \approx 0$
+   2. Critic 非常完美 : $V(s)$ 准确预测了真实回报
 
 
 公式合集
 1. <img src="Pics/rethinkfun010.png" width=300>
-2. 第 1 个 : advantage function
+2. 第 1 个 : advantage function (**单步 Advantage 等价于 TD error**)
 3. 第 2 个 : GAE
 4. 第 3 个 : 改进的 Policy  Gradient 优化目标
 
@@ -271,17 +282,36 @@ PPO 训练
          1. R : 回报(某个 step 往后所有 r 的加权和)
          2. A = R - v : 优势(用的仍是 rollout 时记录的旧 baseline)
       2. R & A **在接下来的若干个训练 epoch 里保持不变**，不随 Critic 更新而重新计算
-   3. 批量更新(epoch & mini-batch)
+   3. 批量更新(一次 rollout 有 多个 epoch & mini-batch)
       1. 对同一份 batch，同时计算 3项 损失 并 反向传播
       2. $Loss = L_\text{actor} + c_1 * L_\text{value} − c_2 * L_\text{entropy}(π_θ)$
          1. $L_\text{actor}$ : Actor
             1. clip (论文主推，工业界常用)
             2. KL散度 惩罚
             3. 二者可并存
-         2. $L_\text{value}$ : Critic
+         2. $L_\text{value}$ : Critic (value - return)
+            1. 第 0 次 Iteration (刚开始训练的第一瞬间，仍然是 $\pi_{old}$)，Value Loss 等于 GAE 的平方
+            2. 后续 会 更新 policy 重新 通过 新网络 计算 value，而 return 是静止的，不更新(靶子不能动)
          3. $L_\text{entropy}$ : 香农熵奖励，给策略加一点随机性，防止过早收敛到单一动作，熵越大说明越爱探索
             1. 希望让 熵奖励大，也就是让 负熵 做梯度下降
             2. $H(p) = - \sum_i p_i \log(p_i)$
 
 
+# TD & Monte-Carlo & GAE
 
+GAE (Generalized Advantage Estimation) 看作是一个连接 TD (Temporal Difference) 和 MC (Monte Carlo) 的通用框架
+
+`advantage = delta + gamma * lam * next_advantage`
+
+控制旋钮 就是参数 $\lambda$
+1. $\lambda = 0$ : TD Error
+   1. $$A_t = \delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$$
+2. $\lambda = 1$ : Monte Carlo
+   1. $$A_t = \sum_{l=0}^{\infty} \gamma^l \delta_{t+l} = (R_t - V(s_t))$$
+3. $\lambda \approx 0.95$ : GAE
+   1. 利用 $\lambda$ 对未来的 TD Error 进行加权求和(指数衰减)
+   2. 利用 Critic 的预测来减小随机性(像 TD)，又 引入更多真实的未来奖励来纠正 Critic 的偏差(像 MC)
+
+$$\text{TD}(\lambda) \text{ Return} = \text{GAE Advantage} + \text{Value Estimate}$$
+
+$$R^{\lambda}_t = \hat{A}^{GAE}_t + V(s_t)$$

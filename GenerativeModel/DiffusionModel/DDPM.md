@@ -142,27 +142,60 @@
       1. 从 $x_{t-1}$ 加噪到 $x_t$ 部分，补上 $x_0$ 不影响，再加上 贝叶斯公式
    2. <img src="Pics/rethinkfun010.png" width=900>
 4. 化简($\sum \to \prod$ & 重新组合)，最后 得到 3项
-   1. 第1项 没有训练参数 不需要优化
+   1. 第1项 没有训练参数 不需要优化(没法最小化)
    2. 第3项 是 去噪 最后一步 已经清晰了
    3. <img src="Pics/rethinkfun011.png" width=900>
 5. 主要 优化 中间项
-   1. 联合概率 去掉后面式子里 没有的项，期望变为 对 $x_t$ & $x_{t-1}$ 的 积分
-   2. 加上 给定 $x_0$ 时候 $x_t$ & $x_{t-1}$ 的 联合概率值
-   3. 利用条件概率 提出部分 到 外层积分
+   1. 联合概率 去掉后面式子里 没有的项(只有 $x_t$ & $x_{t-1}$ & $x_0$)
+   2. 期望变为积分(补上 给定 $x_0$ 时候 $x_t$ & $x_{t-1}$ 的 联合概率值)
+   3. 利用 条件概率 拆分，把 无关项($q(x_t | x_0)$) 往外提
    4. 内层积分是 KL 散度 表达式，在将外层写成 期望表达形式
-   5. <img src="Pics/rethinkfun012.png" width=900>
-6. KL 散度表示，去噪网络 $p_{\theta}$ 预测的 正态分布的 均值 & 方差，应该等于 $q(x_{t-1} | x_t, x_0)$(参考了正确答案的 去噪) 的 均值 & 方差，现在计算 $q(x_{t-1} | x_t, x_0)$
-   1. 利用 贝叶斯公式 每一项 都满足正态分布
-   2. $$\text{Posterior} = \frac{\text{Likelihood} × \text{Prior}}{\text{Data}}$$
-   3. 另外 **==贝叶斯统计中，如果 先验分布 & 似然函数 都是 高斯分布，后验分布 也是 高斯的==**，数学性质 : 两个高斯函数的乘积，其函数形式必然是另一个高斯函数的形式，`高斯函数 1 × 高斯函数 2 / 常数项 = 新 高斯函数`，常数项是用于 归一化
+   5. 需要 最小化 最终表达式
+   6. <img src="Pics/rethinkfun012.png" width=900>
+6. KL 散度表示，去噪网络 $p_{\theta}$ 预测的 正态分布的 均值 & 方差，应该等于 $q(x_{t-1} | x_t, x_0)$(参考了正确答案 $x_0$ 的 去噪) 的 均值 & 方差
+7. 计算 $q(x_{t-1} | x_t, x_0)$ 的 mean & var (神经网络 $p_\theta$ 需要 拟合)
+   1. 利用 贝叶斯公式，当前 每一项 都满足正态分布
+   2. **==贝叶斯统计中，如果 先验分布 & 似然函数 都是 高斯分布，后验分布 也是 高斯的==** (Conjugate Prior 共轭先验)
+   3. 数学性质 : 两个高斯函数的乘积，其函数形式必然是另一个高斯函数的形式，`高斯函数 1 × 高斯函数 2 / 常数项 = 新 高斯函数`
+      1. 常数项是用于 归一化(解决 乘积 形状是 钟形曲线，但 面积通常 ≠ 1)
+      2. $$\text{后验 (Posterior)} \propto \text{似然 (Likelihood)} \times \text{先验 (Prior)}$$
+      3. 分母 $q(x_t|x_0)$ 正是归一化因子
+      4. $$\underbrace{q(x_{t-1} | x_t, x_0)}_{\text{后验 (Posterior)}} = \frac{\underbrace{q(x_t | x_{t-1}, x_0)}_{\text{似然 (Likelihood)}} \cdot \underbrace{q(x_{t-1} | x_0)}_{\text{先验 (Prior)}}}{\underbrace{q(x_t | x_0)}_{\text{归一化因子 (Evidence)}}}$$
    4. <img src="Pics/rethinkfun013.png" width=900>
-   5. 写成 关于 自变量 $x_{t-1}$ 的多项式 形式，不含有 自变量 $x_{t-1}$ 可以当做 常数项
-   6. <img src="Pics/rethinkfun014.png" width=900>
+   5. 写成 关于 **自变量 $x_{t-1}$** 的多项式 形式，不含有 自变量 $x_{t-1}$ 可以当做 常数项
+   6. 只看指数部分 就能 得到 mean & var (神经网络 需要 拟合的 均值 & 方差)
+   7. <img src="Pics/rethinkfun014.png" width=900>
+   8. 进一步化简
+      1. 将 mean $\mu$ 中的 $x_0$ 用 $x_t$ 表示
+      2. 在 神经网络 视角，只有 $\epsilon$ 是 未知的，$\alpha_t$ & $\bar{\alpha_t}$ & $\bar{\alpha_{t-1}}$ 都是 已知的
+      3. 训练阶段，$\epsilon$ 是 从 标准 正态分布 抽样出来的 噪声(从 $x_0$ 生成 $x_t$ 时候 采样的)，是 **确定值**
+      4. **==神经网络 只需要 预测 $\epsilon$==**，就可以 根据公式 计算出 mean & var
+      5. <img src="Pics/rethinkfun015.png" width=500>
 
+训练过程
+1. 定义 训练使用的 常量
+2. $\epsilon$ 是 和 input image $x_0$ 长、宽、通道数 完全一致的 tensor，从多元标准正态分布中采样
+3. 随机生成 $t$，每个 batch 中的每一张图片，都独立随机生成一个不同的 $t$
+4. 不同时间步，噪声强度 不同，需要同时将 $x_t$ & $t$ 送入 去噪网络
+5. 用 MSE 计算 预测 & 真实 的 $\epsilon$ 之间的 loss，反向传播 更新 去噪网络
+6. <img src="Pics/rethinkfun016.png" width=600>
 
+推理过程(生成过程)
+1. 先从 标准正态分布 采样 噪声 作为 $x_{1000}$($x_T$)
+2. 将 $t=1000$ & $x_{1000}$ 传入 去噪网络，预测 $\epsilon$
+3. 根据 mean & var 公式 计算出 从 1000 到 999 步，采样的 正态分布(采样出来直接是 $x$)，从中采样一个值 为 $x_{999}$
+4. 将其作为 输入，结合 新 时间步，再放入 去噪网络
+5. <img src="Pics/rethinkfun017.png" width=900>
+6. 最后一轮，不需要采样，直接用 正态分布的 mean 作为 输出
 
-
-
+代码实现
+1. 图片需要 normalize & scale 到 $[-1, 1]$，最终生成图片时候，需要 还原
+2. 加噪网络 : 同时返回 加噪后 采样结果 & 噪声(用于后续 计算 pred & real noise 之间的 loss)
+3. 去噪网络 : 基于 PixelCNN++ 改进的一个 U-Net
+   1. 融合了 ResNet(残差网络) & Transformer(注意力机制)
+   2. Backbone : DownBlock + MidBlock + UpBlock
+   3. 时间步 需要 embedding : 通过一个 MLP，被注入到每一个 ResNet Block 里
+4. [CelebFaces Attributes (CelebA) Dataset - Kaggle](https://www.kaggle.com/datasets/jessicali9530/celeba-dataset)
 
 
 
@@ -286,7 +319,7 @@ DDPM : Denoising Diffusion Probabilistic Models
    3. 同样的可以也对 $\mu_\theta$ 化简，因为也可以得到 $x_t$，所以也可以同样化简，变为 $\epsilon_\theta$ 的函数
       1. <img src="Pics/yt021.png" width=400>
 7. 将化简结果 同时 带回 Loss(KL -> MSE)，$x_t$ 抵消，得到 **Final Loss Function**
-   1. <img src="Pics/yt022.png" width=600>
+   1. <img src="Pics/yt022.png" width=400>
    2. 变成 $\epsilon$ & $\epsilon_\theta$ 的 平方距离
    3. **$\epsilon_\theta$** 是 网络 对 **为生成 $x_t$ 而 添加到 $x_0$ 的** 噪声的估计值
    4. 最小化损失，意味着要让这个 预测尽可能 准确
