@@ -1,5 +1,99 @@
 # SSH
 
+---
+
+# ~/.ssh/config
+
+跳板机(Gateway / Bastion Host)
+1. 入口服务器，通常暴露在 公网 / 公司大内网，可以直接连上
+2. **所有数据通信** 都必须经过 跳板机，目标机 没有外网能力 / 被防火墙严密隔离
+3. 跳板机 知道 你要去哪台机器(Hostname 和 Port)，但 不知道 你在那台机器上做了什么(内容是加密的)
+4. 明文传输 (需要 DNS 解析)
+   1. 目标地址 (HostName)
+   2. 目标端口 (Port)
+   3. 你的来源 IP
+   4. 连接时间
+5. 端到端加密
+   1. SSH 的 ProxyJump 建立的是 端到端加密 (End-to-End Encryption) 隧道
+   2. 无法 获取 : 密码/私钥，输入的命令，传输的文件，屏幕输出
+
+
+目标机(Target)
+1. 真正想去工作的机器
+
+多个 目标机 可以使用 同一个 跳板机
+
+验证
+1. 双向
+   1. 服务器 验证 是不是合法用户
+   2. 本机 验证 服务器 是不是真的目标机，而不是中间人的伪造机
+2. 本地电脑(Client) : 持有 私钥 (Private Key)
+3. 目标机(Server) : 持有 本地私钥对应的公钥 (Public Key)，存放在 `~/.ssh/authorized_keys`
+4. 验证步骤
+   1. 本机 验证 目标机
+      1. 目标机 通过 跳板机 传输 主机指纹(Host Fingerprint) / 公钥
+         1. 巨大的风险点 : 第一次连接 (First Contact) : 第一次连接的时候，如果跳板机是坏人，它把它自己的公钥给了我，假装它是目标机
+         2. TOFU (Trust On First Use / 首次使用信任) 机制，SSH 在 第一次 防君子不防小人
+         3. 只要第一次记录下的指纹是对的，以后任何人都无法篡改目标机的身份
+      2. 本机查询 `~/.ssh/known_hosts`
+      3. 跳板机 只是传声筒
+   2. 目标机 验证 本机 - 挑战应答方式(Challenge-Response)
+      1. 连接建立 : 告诉目标机 - 我是 root，我要登录
+      2. 发起挑战 (The Challenge) : 目标机 生成 一串随机乱码，然后用它手里存的 本机上传的公钥 把这串乱码加密，变成 加密包
+      3. 跳板机传递 加密包
+      4. 解密应答 (The Response) : 本机 用本地的 私钥 解密，算 这个结果的 哈希值，发回给目标机
+
+
+```python
+# ------ 公共跳板机 (大门) ------
+Host jump-sh
+    HostName jump.xiaopeng.link
+    User root
+    Port 2222
+    IdentityFile ~/.ssh/id_rsa
+
+# ------ 目标机 1 (办公室 A) ------
+Host my-gpu-01
+    HostName 192.168.1.101      # 内网 IP 或 域名
+    ProxyJump jump-sh           # <--- 指向同一个跳板机
+    Port 22098
+    User root
+    ForwardAgent yes
+    IdentityFile ~/.ssh/id_rsa
+
+# ------ 目标机 2 (办公室 B) ------
+Host my-gpu-02
+    HostName bifrost-2026010902571901-zhiyu-liu-master-0.default.svc.cluster.local      # 另一个内网 IP 或 域名
+    ProxyJump jump-sh           # <--- 也指向同一个跳板机
+    Port 22005
+    User root
+    ForwardAgent yes
+    IdentityFile ~/.ssh/id_rsa
+
+```
+
+
+参数
+1. Host
+   1. 给服务器起的 昵称 (可以改动)
+2. HostName
+   1. 服务器的 真实地址 (不可修改)
+   2. 可能需要经常更新
+   3. 任务重启，或者重新申请了一个新的开发环境，这个名字里的 时间戳 或 哈希值 通常会变
+3. ProxyJump
+   1. 告诉 SSH，不要直接连 HostName，先连上 ProxyJump 指定的那台机器，然后从那台机器转发
+   2. 自动穿透内网
+4. ForwardAgent yes
+   1. 密钥转发
+   2. 目标机器 只信任你的 本地电脑 的公钥，不信任 跳板机 的公钥
+   3. 跳板机会像传声筒一样，把目标机的验证请求传回给你的本地电脑，不需要把私钥复制到跳板机上
+5. Port
+   1. 服务器 SSH 服务监听的端口
+   2. 默认是 22
+
+
+
+
 
 # 保持 SSH 连接不断开
 
@@ -57,7 +151,7 @@ OpenSSH 的客户端是二进制程序 ssh。它在 Linux/Unix 系统的位置�
 
 安装
 ```bash
-sudo apt install openssh-client  # Ubuntu 和 Debian 
+sudo apt install openssh-client  # Ubuntu 和 Debian
 sudo dnf install openssh-clients  # CentOS 和 Fedora
 
 ssh -V  # 查看版本  # OpenSSH_8.9p1 Ubuntu-3ubuntu0.1, OpenSSL 3.0.2 15 Mar 2022
@@ -69,7 +163,7 @@ ssh 最常见的用途就是登录服务器，这要求服务器安装并正在�
 
 ```bash
 # ssh 登录服务器的命令
-ssh hostname 
+ssh hostname
 # hostname是主机名，它可以是域名，也可能是 IP 地址或局域网内部的主机名。不指定用户名的情况下，将使用客户端的当前用户名，作为远程服务器的登录用户名
 
 # 如果要指定用户名，可以采用下面的语法，用户名和主机名写在一起了，之间使用@分隔
@@ -93,7 +187,7 @@ lzy@legion:/etc/ssh$ ssh xxx@xx.xx.xx.xx
 The authenticity of host 'xx.xx.xx.xx (xx.xx.xx.xx)' cant be established.
 ED25519 key fingerprint is SHA256:Fb15i1NtPa+SG7fIKl3xG0+9gIEMn5TtN2vNLaKiSK4.
 This key is not known by any other names
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes  
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 
 # 需要手动输入'yes'， 就可以将当前服务器的指纹也储存在本机~/.ssh/known_hosts文件中，并显示下面的提示。以后再连接的时候，就不会再出现警告了
 Warning: Permanently added 'xx.xx.xx.xx' (ED25519) to the list of known hosts.
@@ -127,7 +221,7 @@ The fingerprint for the RSA key sent by the remote host is
 77:a5:69:81:9b:eb:40:76:7b:13:04:a9:6c:f4:9c:5d.
 Please contact your system administrator.
 Add correct host key in /home/me/.ssh/known_hosts to get rid of this message.
-Offending key in /home/me/.ssh/known_hosts:36 
+Offending key in /home/me/.ssh/known_hosts:36
 ```
 
 文字的意思是，该主机的公钥指纹跟~/.ssh/known_hosts文件储存的不一样，必须处理以后才能连接。这时，你需要确认是什么原因，使得公钥指纹发生变更，到底是恶意劫持，还是管理员变更了 SSH 服务器公钥。
