@@ -1,5 +1,21 @@
 # Git Workflow
 
+---
+
+## Table of Contents
+
+- [Git Workflow](#git-workflow)
+  - [Table of Contents](#table-of-contents)
+- [Git 核心区域](#git-核心区域)
+- [Git 分支](#git-分支)
+- [Git 团队协作 工作流](#git-团队协作-工作流)
+- [Git 命令](#git-命令)
+  - [](#)
+  - [分支合并策略 Merge \& Rebase](#分支合并策略-merge--rebase)
+- [HEAD](#head)
+
+
+---
 
 # Git 核心区域
 
@@ -105,23 +121,133 @@ Best Practice
 
 # Git 团队协作 工作流
 
-集中式工作流
+对比
+1. <img src="Pics/workflow004.png" width=600>
+2. 只有 最合适的 工作流
 
-功能分支流
+
+
+集中式工作流
+1. <img src="Pics/workflow001.png" width=600>
+2. 概念来自于 SVN 等 传统版本 控制系统
+3. 所有代码变工都推送到 main 分支
+4. 频繁冲突(后 push 的人 会遇到冲突)，缺乏并行开发能力
+
+
+==功能分支流==
+1. 每个功能 使用独立分支 开发，避免直接在 main 开发
+2. **并行开发**，在各自分支上提交修改，互不干扰(时间上可以重叠，空间上独立)
+3. **开发是并行的，继承是有序的**
+4. ==Pull Request (PR) 机制== - 保证代码质量
+   1. 名称来源 : 站在 仓库管理员 Maintainer 的角度，程序员 push 代码，请求 管理员 pull 回去
+   2. 功能
+      1. 合并请求
+      2. 代码审查
+      3. 自动化测试
+      4. 团队讨论
+   3. 全部通过后 才能合并到 main 分支
+   4. 后续 PR，需要先 同步(pull) 最新 main 分支，解决潜在冲突后 再合并
+      ```bash
+      # feature branch 上同步最新的 main，将 main 的更新合并到 feature branch
+      git checkout feature_branch
+      git pull origin main  # 或者 git fetch origin main + git merge origin/main
+      # 解决可能的冲突，git add & commit
+      # 将更新后的 feature branch push 到远程
+      git push origin feature_branch
+      ```
+   5. **PR 提交后的维护流程**
+      1. 提交 PR 后，应**定期检查** main 分支是否有更新 (其他 PR 合并后)
+      2. 如果 main 有更新，在 feature branch 上 `git pull origin main`
+      3. 解决可能的冲突后，`git push origin feature_branch`
+      4. **不需要 重新提交 PR**，已有的 PR 会自动更新(显示 新的提交 & 冲突解决)，继续代码审查流程
+   6. **冲突检测与通知**
+      1. 当其他 PR 合并到 main 后，**不会自动通知**其他 PR 的作者
+      2. 但 **CI/CD 系统** 通常会检测到冲突，并在 PR 页面标记为 需要更新 或 有冲突
+         1. **CI/CD** = Continuous Integration / Continuous Deployment (持续集成/持续部署)
+         2. **不是 maintainer**，而是**自动化系统/工具**，由 maintainer 配置
+         3. **功能** : 自动运行测试、检查代码质量、检测冲突、部署 等
+      3. 最佳实践 : 开发者应 **主动定期检查** 自己的 PR 状态，或设置 GitHub/GitLab 通知关注 main 分支的更新
+      4. **即使没有冲突，也应该同步最新的 main**：
+         1. 确保代码基于最新版本，避免后续合并时出现意外问题
+         2. 保持代码库的一致性，可能虽然没有直接冲突，但逻辑上需要适配新的代码
+         3. 让 PR 的 diff 更清晰，审查者可以看到基于最新 main 的改动
+
 
 GitHub Flow
+1. <img src="Pics/workflow002.png" width=600>
+2. 随着 敏捷开发 & DevOps，追求 更快的 交付速度
+3. 在 **Git Flow** 基础上 **极简化处理**
+   1. 相比 Git Flow (main、develop、feature、release、hotfix 多个分支)，GitHub Flow **只有 main & feature & 自动部署**
+   2. 简单发布流程，特性分支 -> PR -> 代码审查 & 自动化测试 -> 合并 & **自动部署到生产环境**
+   3. 没有 develop 分支，所有开发直接基于 main 分支
+   4. 没有 release 分支，不需要专门的发布准备流程
+   5. 没有 hotfix 分支，紧急修复也通过 feature branch + PR 处理
+4. **main 分支 始终可部署**，可发布到生产环境
+6. 依赖
+   1. 自动化测试 : 保证 代码质量
+   2. CI/CD 流水线 : 保证 部署可靠性
+   3. 监控系统 : 保证 生产环境稳定性
+7. 适用于 需要频繁发布的项目，敏捷开发、Web应用、API服务
+
+
 
 Git Flow
+1. <img src="Pics/workflow003.png" width=600>
+2. 最完整 & 最严格 的 分支管理策略
+3. 当 项目变的复杂，需要支持多个版本，有严格发布计划
+4. 每种分支 有明确的 职责 & 生命周期
+5. **双 主分支 架构**
+   1. main **生产发布**
+      1. 只包含 生产就绪的代码
+      2. 只接受 来自 release & hotfix 的合并
+      3. 每个提交 都是一个 发布版本
+   2. develop
+      1. 开发主线，功能开发主体，包含下一个版本的最新功能
+      2. (日常开发集成)
+6. 三类 支撑分支
+   1. feature : **功能开发**，从 **develop** 创建，完成后 合并回 develop
+   2. release : **集成测试，发布准备**，从 **develop** 创建，测试后 同时 合并到 main & develop
+   3. hotfix  : **紧急修复**，从 **main** 创建，修复后 同时 合并到 main & develop
+7. 严格 版本管理 & 明确 发布流程
+8. **main 分支更新频率较低**，只在正式发布时更新
+
+
+**Git Flow vs GitHub Flow** :
+1. **Git Flow** : 有完整的版本管理流程，包含 main、develop、feature、release、hotfix 多个分支
+2. **GitHub Flow** : 在 Git Flow 基础上**极简化**，只有 main 和 feature 分支
+3. **主要区别** :
+   1. **分支结构** : Git Flow 有 5 种分支类型，GitHub Flow 只有 2 种
+   2. **发布流程** : Git Flow 需要 release 分支准备发布，GitHub Flow 合并到 main 就自动部署
+   3. **开发分支** : Git Flow 有 develop 分支用于日常开发集成，GitHub Flow 直接在 main 上开发
+   4. **适用场景** : Git Flow 适合需要严格版本管理的项目，GitHub Flow 适合快速迭代的 Web 应用、API 服务
 
 
 
+**main 分支更新频率说明** :
+1. **功能分支流 & GitHub Flow** : main 分支**可以频繁更新**，每次 PR 合并都会更新，这是正常的开发流程
+2. **Git Flow** : main 分支更新频率较低，主要在正式发布时更新，日常开发在 develop 分支
+3. **频繁更新是正常的**，特别是在敏捷开发中，关键是开发者要及时同步自己的 feature branch
+4. **main频繁更新的权衡**：
+   1. **实际情况** : 如果 main 频繁更新，开发者确实需要频繁同步并解决冲突
+   2. **这是正常的** : 在敏捷开发中，这是并行开发的代价，但带来的好处是：
+      1. 代码始终基于最新版本，减少最终合并时的"大爆炸"式冲突
+      2. 问题可以及早发现和解决，而不是积累到最后
+      3. 团队可以快速迭代，功能可以更快交付
+   3. **减轻负担的最佳实践**：
+      1. **小步快跑** : 保持 PR 小而专注，快速合并，减少需要同步的次数
+      2. **及时同步** : 每天或每次开始工作前同步一次，而不是等到 PR 审查时才同步
+      3. **关注通知** : 设置通知关注 main 分支更新，及时响应
+      4. **团队协调** : 如果多个 PR 可能冲突，团队可以协调合并顺序
 
 
 ---
 
 
-# Git 常用命令
 
+# Git 命令
+
+
+##
 
 `git reset`
 1. 作用对象 : 本地仓库 (Local Repository) 的 HEAD 指针
@@ -133,6 +259,10 @@ Git Flow
    3. `git reset --hard` : 重置 暂存区 和 工作区，**会丢失** 工作区的修改
 
 
+## 分支合并策略 Merge & Rebase
+
+
+---
 
 # HEAD
 
