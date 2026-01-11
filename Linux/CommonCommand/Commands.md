@@ -1,7 +1,10 @@
 # Linux 命令
 
-**Table of Contents**
+---
+
+## Table of Contents
 - [Linux 命令](#linux-命令)
+  - [Table of Contents](#table-of-contents)
 - [进程 Process (`ps` \& `top` \& `htop` \& `kill` \& `pkill` \& `pgrep`)](#进程-process-ps--top--htop--kill--pkill--pgrep)
 - [内存 (`free`)](#内存-free)
 - [存储 (`fdisk / gdisk / parted` \& `mkfs` \& `blkid`)](#存储-fdisk--gdisk--parted--mkfs--blkid)
@@ -206,21 +209,28 @@
 
 # 挂载 (`lsblk` & `mount` & `umount`)
 
-`lsblk` (List Block Devices) : 树状结构列出 所有块设备 及其 分区
-1. `-f` : 显示文件系统信息
-
-`mount` : 将文件系统连接到目录树(挂载)
-1. eg : `sudo mount /dev/sdb1 /mnt/data` (将 /dev/sdb1 挂载到 /mnt/data)
-
-`umount` : 断开文件系统的连接(卸载)
-1. eg : `sudo umount /mnt/data` 或 `sudo umount /dev/sdb1`
-
-
 `df` (Disk Free) : 报告文件系统的磁盘空间使用情况
 1. `-h` : human-readable
+2. 会有 Mounted on 信息
 
 `du` (Disk Usage) : 报告文件或目录的磁盘空间占用大小
 1. `-h` : human-readable
+2. `du -sh` : 常用组合，只显示当前目录的总大小 (summary)
+3. `du -h --max-depth=1` : 查看当前目录下的一级子目录大小
+
+`lsblk` (List Block Devices) : 树状结构列出 所有块设备 及其 分区
+1. `-f` : 显示文件系统信息
+
+`mount` : 将 文件系统 连接到目录树 (挂载)
+1. `mount [设备] [挂载点]`，eg : `sudo mount /dev/sdb1 /mnt/data` (将 /dev/sdb1 挂载到 /mnt/data)
+2. 插入 U 盘时，Linux 内核发现了新设备，Ubuntu 的桌面环境(通常是 GNOME) 通过 `udisks2` 服务接管，自动挂载(类似 `mount`)
+   1. `systemctl status udisks2`
+
+`umount` : 断开 文件系统的连接 (卸载)
+1. `umount [挂载点]`，eg : `sudo umount /mnt/data` 或 `sudo umount /dev/sdb1`
+
+
+
 
 `/etc/fstab`
 
