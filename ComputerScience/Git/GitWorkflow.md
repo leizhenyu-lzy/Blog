@@ -10,8 +10,10 @@
 - [Git 分支](#git-分支)
 - [Git 团队协作 工作流](#git-团队协作-工作流)
 - [Git 命令](#git-命令)
-  - [](#)
-  - [分支合并策略 Merge \& Rebase](#分支合并策略-merge--rebase)
+  - [Push](#push)
+  - [Reset \& Restore \& Revert \& Checkout (回退操作)](#reset--restore--revert--checkout-回退操作)
+  - [Merge \& Rebase (分支合并策略)](#merge--rebase-分支合并策略)
+  - [Cherry-Pick (精准移植 commit)](#cherry-pick-精准移植-commit)
 - [HEAD](#head)
 
 
@@ -247,19 +249,138 @@ Git Flow
 # Git 命令
 
 
-##
+## Push
+
+`git push`
+1. `git push <远程主机名> <本地分支名>:<远程分支名>`
+2. 强制推送
+   1. `--force` (**use with caution**)
+      1. 强行覆盖
+      2. 如果别人推了新的 commit，但是 没有 同步到 本地，该 提交 在远程 丢失(被覆盖)
+      3. 除非 确定 只有一个人 在这个分支上开发，否则慎用
+   2. `--force-with-lease` (**recommended**)
+      1. 强行覆盖，**前提** : 本地的 `origin/xxx`(远程跟踪分支) 和 远程真正的 `xxx` 分支一致
+      2. 一致 说明 没人动过，允许覆盖
+      3. 不一致，拒绝覆盖，并报错提示你先 fetch 一下
+
+
+
+
+## Reset & Restore & Revert & Checkout (回退操作)
+
+[Git Time Machine - 个人笔记 from 码农高天](./GitTimeMachine.md)
+
+<img src="Pics/recover015.png" width=500>
 
 `git reset`
-1. 作用对象 : 本地仓库 (Local Repository) 的 HEAD 指针
+1. 作用对象 : 本地仓库 (Local Repository) 的 **HEAD 指针**
    1. 执行 `git reset <commit>`，Git 首先做的事就是把当前分支的 HEAD 指针(最近的 commit) 强行移动到那个 `<commit>` 上
    2. 修改 本地仓库 的状态
 2. `--soft/mixed/hard`
-   1. `git reset --mixed` (default) : 撤销从 工作区 到 暂存区 的更改，即将文件从暂存区移回工作区
-   2. `git reset --soft` : 仅移动 HEAD 指针，保留 暂存区 & 工作区 的修改，commit (常用于 **合并/压缩 commit**)，code 在，但是 commit 从 git log 的历史树上被摘下
-   3. `git reset --hard` : 重置 暂存区 和 工作区，**会丢失** 工作区的修改
+   1. `git reset --soft` : 仅 移动 HEAD 指针，撤销 commit，保留 暂存区 & 工作区 的修改，commit (常用于 **合并/压缩 commit**)，code 在，但是 commit 从 git log 的历史树上被摘下
+   2. `git reset --mixed` (**default**) : 撤销 commit & 暂存，将文件从 暂存区 移回 工作区，保留 工作区 修改
+   3. `git reset --hard` (**use with caution**) : 重置 暂存区 和 工作区，**会丢失** 工作区的修改
 
 
-## 分支合并策略 Merge & Rebase
+`git restore`
+1. `git restore <file>` (无 `--staged`)
+   1. 用 暂存区(如果为空则用HEAD) 的内容 替换 工作区 的文件
+   2. **会丢失** 工作区未暂存的修改 (不可逆)
+   3. 不同于 `git reset --hard`，只影响指定的文件
+2. ``git restore --staged <file>`
+   1. 仅操作 暂存，修改内容还在
+   2. 不同于 `git reset --mixed`，可以指定具体文件
+
+
+
+`git revert <commit>`
+1. 新的 commit，撤销 问题 commit 的所有更改
+2. 解决问题 & 保留项目完整历史
+3. 更加安全
+
+
+`git checkout` (新版本推荐 restore)
+1. checkout 的 主要功能 其实是 切换分支
+2. `git checkout -- <file>` = `git restore <file>`
+   1. 用 暂存区(如果为空则用HEAD) 的内容 替换 工作区 的文件
+   2. **会丢失** 工作区未暂存的修改 (不可逆)
+   3. `--` : 可以不加，主要为了防止歧义(branch & file)，优先 切换 branch
+3. `git checkout <commit>`
+   1. 临时查看 历史版本
+   2. HEAD 指针指向 对应 commit，进入 **分离 HEAD 状态**
+   3. 可以查看代码，但不建议修改
+   4. 用来 临时查看 / 测试历史版本
+
+
+
+
+## Merge & Rebase (分支合并策略)
+
+**黄金原则**
+1. 公共分支(多人共享的分支) 只能用 Merge，不要 Rebase
+2. 只在 私有分支 Rebase
+3. 永远不要对 已经推送到远程的 提交 进行 rebase
+
+
+`git merge`
+1. <img src="Pics/workflow005.png" width=300>
+2. 合并commit 会有2个 父commit
+3. **Pros** : 完整保留 分支开发的 历史轨迹，易于理解分支结构，团队协作安全
+4. **Cons** : 历史图复杂，合并提交多
+
+
+`git rebase`
+1. <img src="Pics/workflow006.png" width=350>
+2. 不会创建 合并commit
+3. 将 feature branch 的 commit 移动到 主分支 最新位置，**变成全新的提交，有不同的 hash 值**
+4. 详细步骤拆解 (feature rebase main)
+   1. 找 基底 (Base) : Git 会回溯历史，找到 feature 分支是从 main 分支的哪一个 commit 开始分叉出来的，作为 基底
+   2. 存补丁 (Save Temporary Patches) : 从 分叉点 到 现在的所有 feature 分支上的 commit，一个个提取出来，变成 临时补丁
+   3. 切分支 (Reset HEAD) : Git 会把 feature 分支的指针，强行移动到 main 分支的最新位置(最新的 HEAD)，这时候 feature 分支内容和 main 一样
+   4. 打补丁 (Apply patches) : Git 将补丁，按顺序一个个应用在新的基底上
+      1. 关键点 : 在应用每一个补丁时，Git 都会尝试 自动合并
+      2. 没冲突 : 自动生成一个新的 commit，内容一样，但 Hash 值变了
+      3. 有冲突 : 暂停，让你解决冲突
+5. **Pros** : 完全线性的提交历史，项目历史 简洁清晰，便于 代码审查 & 问题追踪
+6. **Cons** : 修改提交历史，多人协作可能产生冲突
+   1. 发生原因举例
+      1. X & Y 都在 开发 feature branch
+      2. X 提交 commit C1
+      3. Y pull，基于 C1 开发 C2
+      4. X rebase main，C1 变为 C1'，并且使用 `git push --force` 强行覆盖了远程
+      5. Y 想要 push C2，Git 说 C1 在远程已经不存在了，远程现在是 C1'，需要手动处理历史
+
+
+## Cherry-Pick (精准移植 commit)
+
+`git cherry-pick`
+1. <img src="Pics/workflow007.png" width=600>
+2. 从一个 branch 中 挑选 特定 commit，应用到 另一个 branch
+3. 公共分支慎用，可能导致 重复提交
+4. 使用场景
+   1. **紧急修复** : develop分支 修复了一个 bug，希望 引用到 生产分支，但不想整个 develop分支 合并
+   2. **功能移植** : 在 实验分支，开发成熟功能，移植到其他分支
+   3. **提交恢复** : 误删 / 需要恢复 历史版本中 特定 commit
+5. 复制 某个 commit 的改动，创建全新的 commit，有独立的 hash 值
+6. 使用步骤
+   1. 找到 目标commit 的 hash 值，`git log <feature_branch>`
+   2. 切换到 目标branch
+   3. 进行 cherry-pick，`git cherry-pick <hash>`
+   4. 如果 遇到冲突
+      1. 手动解决冲突
+      2. `git add` 解决冲突的文件
+      3. `git cherry-pick --continue / --abort`
+7. 高级技巧
+   1. 多个 commits 一次性 cherry-pick，直接写多个 hash 值
+      1. **顺序很重要** : Git 会严格按照你提供的 hash 顺序依次应用。
+      2. Best Practice : **按时间顺序(从旧到新)**排列，否则可能因依赖缺失导致冲突
+   2. 移植连续的 commits (**范围操作**)
+      1. `git cherry-pick A..B` : 移植 A 到 B 之间的所有 commits (不包含 A，包含 B)，即 **左开右闭**
+      2. `git cherry-pick A^..B` : 包含 A 也包含 B
+      3. **优势** : Git 会自动按时间顺序应用，无需手动排序
+   3. 不自动提交，cherry-pick 后 需要手动修改一下
+      1. `git cherry-pick -n <hash>`
+      2. 只会把改动 放在 工作区 & 暂存区
 
 
 ---
