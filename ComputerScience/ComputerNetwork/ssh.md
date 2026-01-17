@@ -1,13 +1,115 @@
-# SSH
+# SSH (Secure Shell)
 
 ---
 
-# ~/.ssh/config
+## Table of Contents
+
+- [SSH (Secure Shell)](#ssh-secure-shell)
+  - [Table of Contents](#table-of-contents)
+- [SSH Basic](#ssh-basic)
+- [SSH 连接 \& 验证 \& 加密](#ssh-连接--验证--加密)
+- [SSH 使用技巧](#ssh-使用技巧)
+  - [SSH 客户端的用户级配置文件 `~/.ssh/config`](#ssh-客户端的用户级配置文件-sshconfig)
+  - [SSH 端口转发(Tunneling)](#ssh-端口转发tunneling)
+  - [SSH 保持连接不断开](#ssh-保持连接不断开)
+    - [SSH 架构](#ssh-架构)
+  - [SSH 客户端](#ssh-客户端)
+    - [简介](#简介)
+    - [基本用法](#基本用法)
+    - [连接流程](#连接流程)
+    - [服务器密钥变更](#服务器密钥变更)
+    - [执行远程命令](#执行远程命令)
+
+
+---
+
+# SSH Basic
+
+[SSH 教程 - 菜鸟教程](https://www.cainiaojc.com/ssh/ssh-index.html)
+
+
+Intro
+1. SSH - Secure Shell
+2. **建立在 TCP 连接 之上的应用层协议**
+3. 用于加密两台计算机之间的通信，保证 远程登录 & 远程通信的安全，任何网络服务都可以用这个协议来加密
+4. 支持各种身份验证机制，能对 操作者 进行 认证(authentication) & 授权(authorization)
+
+`ssh User@IP_ADDR [command]`
+1. `IP_ADDR` 可以是 能被 DNS 解析的
+2. 如果写 `command` 则会 被远程服务器执行，输出后断开连接
+3. 第1次 链接 会 提示 & 询问，可以去 server 控制台确认
+   1. `authenticity of host [IP_ADDR] can't be established.`
+   2. `fingerprint is [hash].`
+   3. `Are you sure you want to continue connecting (yes/no)?`
+   4. **关键点** : 输入 `yes` 意味着你接受了 **TOFU (Trust On First Use)** 策略
+      1. 提示 : `Permanently added '[IP_ADDR]' to the list of known hosts.`
+      2. 相信此刻回应你的就是真正的目标机（而不是中间人）
+      3. SSH 会把这个指纹永久写入 `~/.ssh/known_hosts`
+      4. 以后再连接，如果指纹变了，SSH 就会立刻报警并断开连接
+
+
+ssh 登录方式
+1. 密码
+2. 公钥/私钥
+
+
+
+https://www.bilibili.com/video/BV1nk4y1k742/
+
+
+
+---
+
+# SSH 连接 & 验证 & 加密
+
+双向验证
+1. 服务器(目标机) 验证 是不是合法用户
+2. 本机 验证 服务器(目标机) 是不是真的目标机，而不是中间人的伪造机
+
+==建立安全信道 (Key Exchange) / 传输层握手 (Handshake)==
+1. **目标** : 协商 **会话密钥 (Session Key)**  & 验证服务器身份
+2. **算法** : **非对称算法** (不是加密)
+3. **流程**
+   1. **服务器认证 (本机 验 目标机)**
+      1. 目标机发来公钥/指纹，本机检查 `~/.ssh/known_hosts`
+      2. **TOFU (Trust On First Use 首次使用信任)** : 首次连接记录指纹，防止后续中间人篡改
+         1. 巨大的风险点 : 第一次连接 (First Contact) : 第一次连接的时候，如果跳板机是坏人，会给自己的公钥，假装它是目标机
+         2. SSH 在 第一次 防君子不防小人
+   2. **密钥协商**
+      1. 双方利用 **非对称算法** 算出完全一样的 **会话密钥**
+      2. 最常用的算法是 **Diffie-Hellman (DH)** 密钥交换算法
+         1. [DH 密钥交换算法 - 个人笔记](../Cryptology/crypto.md#diffie-hellman-dh-密钥交换算法)
+4. **注意** : 此后所有通信都由该密钥进行 **对称加密** 保护
+5. 服务器还不知道用户是谁
+
+==用户认证 (User Auth)==
+1. **目标** : **目标机 验证 用户** 是否有权限登录 (在 加密隧道 中进行)
+2. **算法** : **挑战-应答 (Challenge-Response)**
+3. **流程**
+   1. **配置** : 目标机 持有公钥 (`~/.ssh/authorized_keys`)，本机持有私钥
+      1. 该公钥 (authorized_keys) 由用户 上传到 目标服务器
+   2. **挑战** : 目标机 生成 随机乱码，用 **公钥加密** 发给本机
+   3. **应答** : 本机用 **私钥解密**，发回结果
+   4. **验证** : 目标机核对结果，通过则允许登录
+4. 传输层(外层) 使用 会话秘钥 **对称加密**
+5. 认证逻辑(内核) 使用 本机 公钥/私钥 **非对称加密**
+
+==数据传输 (Data Transmit)==
+1. **目标** : 传输 Shell 命令、文件等，使用 **会话密钥 (Session Key)** 进行 **对称加密** 传输(非对称加密 太慢)
+2. **算法** : **对称加密** (Symmetric Encryption)
+3. **原因** : 非对称加密计算消耗大，对称加密速度快
+
+---
+
+# SSH 使用技巧
+
+
+## SSH 客户端的用户级配置文件 `~/.ssh/config`
 
 跳板机(Gateway / Bastion Host)
 1. 入口服务器，通常暴露在 公网 / 公司大内网，可以直接连上
 2. **所有数据通信** 都必须经过 跳板机，目标机 没有外网能力 / 被防火墙严密隔离
-3. 跳板机 知道 你要去哪台机器(Hostname 和 Port)，但 不知道 你在那台机器上做了什么(内容是加密的)
+3. 跳板机 知道 目标机(Hostname 和 Port)，不知道 实际操作(内容是加密的)
 4. 明文传输 (需要 DNS 解析)
    1. 目标地址 (HostName)
    2. 目标端口 (Port)
@@ -23,31 +125,11 @@
 
 多个 目标机 可以使用 同一个 跳板机
 
-验证
-1. 双向
-   1. 服务器 验证 是不是合法用户
-   2. 本机 验证 服务器 是不是真的目标机，而不是中间人的伪造机
-2. 本地电脑(Client) : 持有 私钥 (Private Key)
-3. 目标机(Server) : 持有 本地私钥对应的公钥 (Public Key)，存放在 `~/.ssh/authorized_keys`
-4. 验证步骤
-   1. 本机 验证 目标机
-      1. 目标机 通过 跳板机 传输 主机指纹(Host Fingerprint) / 公钥
-         1. 巨大的风险点 : 第一次连接 (First Contact) : 第一次连接的时候，如果跳板机是坏人，它把它自己的公钥给了我，假装它是目标机
-         2. TOFU (Trust On First Use / 首次使用信任) 机制，SSH 在 第一次 防君子不防小人
-         3. 只要第一次记录下的指纹是对的，以后任何人都无法篡改目标机的身份
-      2. 本机查询 `~/.ssh/known_hosts`
-      3. 跳板机 只是传声筒
-   2. 目标机 验证 本机 - 挑战应答方式(Challenge-Response)
-      1. 连接建立 : 告诉目标机 - 我是 root，我要登录
-      2. 发起挑战 (The Challenge) : 目标机 生成 一串随机乱码，然后用它手里存的 本机上传的公钥 把这串乱码加密，变成 加密包
-      3. 跳板机传递 加密包
-      4. 解密应答 (The Response) : 本机 用本地的 私钥 解密，算 这个结果的 哈希值，发回给目标机
-
 
 ```python
 # ------ 公共跳板机 (大门) ------
 Host jump-sh
-    HostName jump.xiaopeng.link
+    HostName jump.xxx.link
     User root
     Port 2222
     IdentityFile ~/.ssh/id_rsa
@@ -63,15 +145,13 @@ Host my-gpu-01
 
 # ------ 目标机 2 (办公室 B) ------
 Host my-gpu-02
-    HostName bifrost-2026010902571901-zhiyu-liu-master-0.default.svc.cluster.local      # 另一个内网 IP 或 域名
-    ProxyJump jump-sh           # <--- 也指向同一个跳板机
+    HostName bifrost-xxx-master-0.default.svc.cluster.local      # 另一个内网 IP 或 域名
+    ProxyJump jump-sh           # <--- 指向同一个跳板机
     Port 22005
     User root
     ForwardAgent yes
-    IdentityFile ~/.ssh/id_rsa
-
+    IdentityFile ~/.ssh/id_rsa_shared
 ```
-
 
 参数
 1. Host
@@ -88,50 +168,65 @@ Host my-gpu-02
    2. 目标机器 只信任你的 本地电脑 的公钥，不信任 跳板机 的公钥
    3. 跳板机会像传声筒一样，把目标机的验证请求传回给你的本地电脑，不需要把私钥复制到跳板机上
 5. Port
-   1. 服务器 SSH 服务监听的端口
-   2. 默认是 22
+   1. 服务器 SSH 服务监听的端口，默认是 22
+6. IdentityFile
+   1. 电脑上 可能 同时存储 多个 私钥，用于指定 不同 使用场景
+   2. `IdentityFile ~/.ssh/id_rsa_shared` / `IdentityFile ~/.ssh/id_rsa`
+
+
+
+## SSH 端口转发(Tunneling)
+
+
+**本地转发** (Local Port Forwarding) `-L`
+1. 本地端口，远程转发
+2. <img src="Pics/ssh001.png" width=750>
+3. <img src="Pics/ssh002.png" width=750>
+4. 客户端用于访问服务，目标就是服务方
+5. 命令 : `ssh -L [本地IP]:本地Port:目标IP:目标Port 跳板机User@跳板机Server`
+   1. `目标IP` 如果是 host name 则是相对于 转发服务器的
+6. 流程
+   1. 访问 `[本地IP]:本地Port` 时，流量会钻进 SSH 隧道
+   2. 流量从 跳板机 那头钻出来
+   3. 跳板机 把流量 转发给 `目标IP:目标Port`
+
+
+**远程转发** (Remote Port Forwarding) `-R`
+1. 远程端口，本地转发
+2. <img src="Pics/ssh003.png" width=750>
+3. <img src="Pics/ssh004.png" width=750>
+4. 目标外 有一个 跳板机，由 跳板机 发球请求 & 创建隧道，将 私网服务 暴露出来
+5. 命令 : `ssh -R [远程IP]:远程Port:目标IP:目标Port User@Server`
+   1. `User@Server` 是 转发服务器
+
+
+**动态转发**
 
 
 
 
+## SSH 保持连接不断开
 
-# 保持 SSH 连接不断开
+要保持 SSH 连接不断开，可以使用 SSH 的 KeepAlive 机制
 
-要保持 SSH 连接不断开，可以使用 SSH 的 KeepAlive 机制。KeepAlive 机制可以在 SSH 连接保持空闲状态时发送保活消息，防止连接因为长时间没有活动而被服务器断开。
+KeepAlive 机制可以在 SSH 连接保持空闲状态时发送保活消息，防止连接因为长时间没有活动而被服务器断开
 
-## 命令行选项：使用 -o 选项设置 SSH KeepAlive 参数
+2种方法
+1. 命令行选项：使用 -o 选项设置 SSH KeepAlive 参数
+   ```bash
+   ssh -o ServerAliveInterval=60 user@host
 
-```bash
-ssh -o ServerAliveInterval=60 user@host
-
-# 这将在 SSH 连接空闲 60 秒时发送保活消息
-```
-
-
-## SSH 配置文件：在 ~/etc/ssh/ssh_config 文件中添加
-
-```bash
-Host *  #这表示要让所有的ssh连接自动加上此属性，文件本身已经已经存在该字段
-ServerAliveInterval 60  # 该配置将对所有 SSH 主机生效，当 SSH 连接空闲 60 秒时发送保活消息
-```
+   # 这将在 SSH 连接空闲 60 秒时发送保活消息
+   ```
+2. SSH 配置文件：在 ~/etc/ssh/ssh_config 文件中添加
+   ```bash
+   Host *  #这表示要让所有的ssh连接自动加上此属性，文件本身已经已经存在该字段
+   ServerAliveInterval 60  # 该配置将对所有 SSH 主机生效，当 SSH 连接空闲 60 秒时发送保活消息
+   ```
 
 
 
-# SSH 教程 (没看完)
 
-[SSH 教程](https://www.cainiaojc.com/ssh/ssh-index.html)
-
-## SSH 是什么
-
-SSH 是 Linux 系统的登录工具，现在广泛用于服务器登录和各种加密通信。
-
-SSH（Secure Shell 的缩写）是一种网络协议，用于加密两台计算机之间的通信，并且支持各种身份验证机制。
-
-它主要用于保证远程登录和远程通信的安全，任何网络服务都可以用这个协议来加密。
-
-历史上，网络主机之间的通信是不加密的，属于明文通信。这使得通信很不安全，一个典型的例子就是服务器登录。登录远程服务器的时候，需要将用户输入的密码传给服务器，如果这个过程是明文通信，就意味着传递过程中，线路经过的中间计算机都能看到密码，这是很可怕的。
-
-SSH 就是为了解决这个问题而诞生的，它能够加密计算机之间的通信，保证不被窃听或篡改。它还能对操作者进行认证（authentication）和授权（authorization）。明文的网络协议可以套用在它里面，从而实现加密。
 
 ### SSH 架构
 
@@ -140,7 +235,6 @@ SSH 的软件架构是服务器-客户端模式（Server - Client）。在这个
 ```bash
 lzy@legion:/etc/ssh$ ls
 ssh_config  ssh_config.d
-
 ```
 
 ## SSH 客户端

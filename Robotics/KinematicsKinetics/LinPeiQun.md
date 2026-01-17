@@ -10,7 +10,7 @@
   - [03 - Manipulator Inverse Kinematics](#03---manipulator-inverse-kinematics)
   - [](#)
 - [台大机器人学 动力学(Kinetics) - 林沛群](#台大机器人学-动力学kinetics---林沛群)
-  - [05 - Jacobians : Velocities and Static Forces](#05---jacobians--velocities-and-static-forces)
+  - [05 - Jacobian : Velocities and Static Forces](#05---jacobian--velocities-and-static-forces)
 
 
 ---
@@ -263,7 +263,7 @@ Examples
    1. <img src="Pics/lpq040.png" width=500>
 
 
-对同一个轴，旋转 & 平移 顺序 可以颠倒
+对 **同一个轴**，==旋转 & 平移 顺序== 可以 调换
 
 
 Actuator, Joint, Cartesian Space(笛卡尔坐标系,point)
@@ -330,31 +330,56 @@ Subspace
 [台大机器人学之动力学(Kinetics) - 林沛群](https://www.bilibili.com/video/BV1Vt41157jp/)
 
 
-## 05 - Jacobians : Velocities and Static Forces
+## 05 - Jacobian : Velocities and Static Forces
 
-移动
+微分(求导) 是依赖于 参考系的
+
+参考系 : 观察者
+
+坐标系 : 用哪套轴 ($x, y, z$) 表达
+
+
+**移动** Translation
 1. <img src="Pics/lpq045.png" width=500>
-2. <img src="Pics/lpq046.png" width=500>
-3. 注意 是 velocity，不是 position
+2. 观察者 在 Frame $B$ 上，看着点 $Q$ 随时间变化的位置
+3. $^B V_Q$ 是 **点 $Q$ 相对于 $B$ 的速度** & **表达在 Frame $B$ 中**
+4. 坐标系原点 对于 universe frame 的速度 有 简写
+5. 例子
+   1. <img src="Pics/lpq046.png" width=500>
+   2. $^C_T R = ^C_U R · ^U_T R$
+   3. PPT在这里做了一个隐含的假设 : 假设 Frame T & U（世界）的坐标轴方向 此时此刻是平行的
+   4. C 的 Origin 相对于 T，也就是 向量 从 T 指向 C，因为 指向 被减向量，因此 相对速度中 $^U T_C$ 是 被减向量
+6. 一般情况 需要 : 先 转到 World Frame 进行运算，再 转回 目标 Frame
+7. 注意 是 velocity，不是 position
+8. 必须 **上标一致(参考系 & 表达坐标系 一致)** 才能 直接进行加减运算
 
-转动
-1. $^A \Omega _B$ frameB 相对于 frameA 的 角速度向量，表达在 frameA 中
+**转动** Rotation
+1. $^A \Omega _B$ frameB 相对于 frameA 的 角速度**向量**，表达在 frameA 中
 2. <img src="Pics/lpq047.png" width=500>
+3. 相对于 universe frame 的 角速度 有 简写
 
 **Rigid Body Motion**
 1. 暂时不用使用旋转矩阵将 {B} frame下的向量 转到 {U} frame，先进行微分
-   1. <img src="Pics/lpq048.png" width=500>
-2. 注意 : 相对 {U}，{B} 本身也在运动，所以 "**导正正导**" 需要同时考虑
+   1. **正体** $\mathrm{x y I J r}$ 是在 universe frame
+   2. **斜体** $x y i j r$ 是在 中间 frame
+   3. 真正相加的时候 需要在 同一 frame，要将 $ij$ 转到 {U} frame
+   4. <img src="Pics/lpq048.png" width=500>
+2. ==注意== : 相对 {U}，{B} 本身也在运动，所以 **导正正导**，需要同时考虑 系数 & $ij$ 的微分，$\mathrm{I J}$ 是固定的(微分为0)
 3. 补 : 坐标轴位置向量微分(速度向量)
-   1. <img src="Pics/lpq049.png" width=450>
-   2. 当 $x$ 很小时，$x$ $\sin x$ 是等价无穷小
+   1. <img src="Pics/lpq049.png" width=550>
+   2. 当 $d \theta$ 很小，$d \hat{e}$ 基本上等于 弧长，因此长度等于 **弧 × 半径**
+   3. magnitude : 两边同时除以 dt，就变为 微分
+   4. direction : dt 很小 的时候，$d \hat{e}$ & $\hat{e}$ 基本垂直
+   5. 当 $x$ 很小时，$x$ & $\sin x$ 是等价无穷小
+   6. 叉乘 ($\times$) 也 必须在相同 Frame 下才能进行，此处都表达在 动参考系 更好
 4. 带入，并将 {B} 替换为 {U}
    1. <img src="Pics/lpq050.png" width=500>
    2. <img src="Pics/lpq051.png" width=500>
-   3. 由于 $\vec{\omega}$ 是在 {U} 下的，需要将 {B} 中的 坐标轴转到 {U}
+   3. 由于 $\vec{\omega}$ 是在 {U} 下的，需要将 {B} 中的 向量转到 {U}
 5. 最终
    1. <img src="Pics/lpq052.png" width=550>
-   2. 分量
+   2. 公式里都是 对于 universe frame
+   3. 分量
       1. 新坐标系原点 相对于 世界坐标系原点 速度
       2. 新坐标系中 点 本身的运动速度(转回 世界坐标系)
       3. 新坐标系 旋转 在 点 产生的速度(向量先转回世界坐标系，因为旋转向量定义在世界坐标系)

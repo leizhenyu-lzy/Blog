@@ -375,7 +375,7 @@ Git Flow
       1. **顺序很重要** : Git 会严格按照你提供的 hash 顺序依次应用。
       2. Best Practice : **按时间顺序(从旧到新)**排列，否则可能因依赖缺失导致冲突
    2. 移植连续的 commits (**范围操作**)
-      1. `git cherry-pick A..B` : 移植 A 到 B 之间的所有 commits (不包含 A，包含 B)，即 **左开右闭**
+      1. `git cherry-pick A..B` : 移植 A 到 B 之间的所有 commits (不包含 A，包含 B)，即 **==左开右闭==**
       2. `git cherry-pick A^..B` : 包含 A 也包含 B
       3. **优势** : Git 会自动按时间顺序应用，无需手动排序
    3. 不自动提交，cherry-pick 后 需要手动修改一下

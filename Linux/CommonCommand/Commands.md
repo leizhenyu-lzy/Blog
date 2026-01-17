@@ -209,9 +209,15 @@
 
 # 挂载 (`lsblk` & `mount` & `umount`)
 
+**一切皆文件**，设备文件
+
+要访问存储设备中的文件，必须将文件所在分区挂载到已经存在的目录，通过访问目录来访问存储设备
+1. **挂载点** : 就是一个普通的目录，通常是空的
+2. **覆盖机制** : 如果挂载点目录不为空，挂载后，原目录下的文件会被**临时隐藏**(不会丢失，卸载后恢复)，你看到的将是新设备里的内容
+
 `df` (Disk Free) : 报告文件系统的磁盘空间使用情况
 1. `-h` : human-readable
-2. 会有 Mounted on 信息
+2. 会有 **Mounted on** 信息
 
 `du` (Disk Usage) : 报告文件或目录的磁盘空间占用大小
 1. `-h` : human-readable
@@ -222,7 +228,12 @@
 1. `-f` : 显示文件系统信息
 
 `mount` : 将 文件系统 连接到目录树 (挂载)
-1. `mount [设备] [挂载点]`，eg : `sudo mount /dev/sdb1 /mnt/data` (将 /dev/sdb1 挂载到 /mnt/data)
+1. `mount [设备] [挂载点]`
+   1. eg : `sudo mount /dev/sdb1 /mnt/data` (将 /dev/sdb1 挂载到 /mnt/data)
+   2. **为什么不能直接访问 /dev/sdb1 ?**
+      1. `/dev/sdb1` 是 **raw data 块设备文件**，代表 是硬盘分区本身
+      2. 不是目录，不能 `cd` 进去，如果 `cat` 是乱码(在读取物理扇区)
+      3. 只提供原始数据的访问入口，必须通过 `mount` 让 操作系统 解析其中的 文件系统，才能以文件形式访问 (类似于 光盘 插入 光驱 中)
 2. 插入 U 盘时，Linux 内核发现了新设备，Ubuntu 的桌面环境(通常是 GNOME) 通过 `udisks2` 服务接管，自动挂载(类似 `mount`)
    1. `systemctl status udisks2`
 
