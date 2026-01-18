@@ -116,6 +116,13 @@ Rigid Body 状态描述
    1. Euler Angles & Fixed Angles 各有 $3×2×2 = 12$(1、3转轴可以一样，相邻转轴不能一样) 种顺序可能
    2. <img src="Pics/lpq016.png" width=500>
 
+**==☆==** : Fixed Frame & Euler Angle
+1. 旋转角度 都是 绕 x轴 转 $\gamma$，绕 y轴 转 $\beta$，绕 z轴 转 $\alpha$
+2. 矩阵乘法 都是 $\text{Mat}_\text{Z} × \text{Mat}_\text{Y} × \text{Mat}_\text{X}$
+3. Fixed Frame 顺序是 X-Y-Z
+4. Euler Angle 顺序是 Z-Y-X
+
+
 **Gimbal Lock - 万向节死锁**
 1. [Gimbal Lock - Wikipedia](https://en.wikipedia.org/wiki/Gimbal_lock)
    1. <img src="Pics/Gimbal_Lock_Plane.gif">

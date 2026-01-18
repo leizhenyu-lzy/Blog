@@ -4,14 +4,15 @@
 
 - [Interpolation 插值](#interpolation-插值)
   - [Table of Contents](#table-of-contents)
-- [lerp (Linear Interpolation, 线性插值)](#lerp-linear-interpolation-线性插值)
-- [slerp (Spherical Linear Interpolation, 球面线性插值)](#slerp-spherical-linear-interpolation-球面线性插值)
+- [lerp (Linear Interpolation，线性插值)](#lerp-linear-interpolation线性插值)
+- [nlerp (Normalized Linear Interpolation，归一化线性插值)](#nlerp-normalized-linear-interpolation归一化线性插值)
+- [slerp (Spherical Linear Interpolation，球面线性插值)](#slerp-spherical-linear-interpolation球面线性插值)
 - [适用情况](#适用情况)
 - [机器人中的插值](#机器人中的插值)
 
 ---
 
-# lerp (Linear Interpolation, 线性插值)
+# lerp (Linear Interpolation，线性插值)
 
 两个点之间沿直线 进行 平滑过渡
 
@@ -22,9 +23,28 @@
 
 如果对 rotation matrix 进行 lerp，会破坏 正交性，因此 旋转 使用 单位四元数 的 slerp
 
+
 ---
 
-# slerp (Spherical Linear Interpolation, 球面线性插值)
+# nlerp (Normalized Linear Interpolation，归一化线性插值)
+
+公式 (普通的 lerp + normalize 归一化 (强制 拉回到球面上))
+1. 设 $q_1, q_2$ 为单位四元数
+2. $$q_{lerp} = (1-t)q_1 + t q_2$$
+3. $$\text{nlerp}(q_1, q_2, t) = \frac{q_{lerp}}{\|q_{lerp}\|}$$
+
+nlerp 特性(相比 slerp)
+1. 计算开销 小 (仅加法、乘法、开方，不用 三角函数)
+2. 几何路径 与 slerp 一样
+3. **nlerp 角速度 不恒定**(中间快 两头慢，小角度时 误差可忽略)，slerp 角速度 恒定
+
+lerp & nlerp
+1. <img src="Pics/nlerp001.png" width=400>
+
+
+---
+
+# slerp (Spherical Linear Interpolation，球面线性插值)
 
 在球面上 **沿 最短圆弧** 进行 插值，保证 插值过程中 **角速度恒定**
 
@@ -32,7 +52,7 @@
 
 推导
 1. 已知条件
-   1. <img src="Pics/slerp001.png" width=450>
+   1. <img src="Pics/slerp001.png" width=400>
    2. **$p$** & **$q$** 是 单位四元数 / 单位向量，它们之间的夹角为 $\theta$
    3. **$r$** 是插值结果，位于 $p$ 和 $q$ 构成的平面上，**$t$** 是插值比例 ($0 \le t \le 1$)
    4. $r$ 与 $p$ 的夹角为 $t\theta$
@@ -53,6 +73,7 @@
    2. 解决方案 : 角度很小时，球面近似于平面，直接改用 线性插值(Lerp)
 2. 最短路径(Shortest Path)
    1. **四元数特性** : $q$ 和 $-q$ 代表 完全相同的 旋转姿态
+      1. [四元数 - 个人笔记](../Quaternion/quaternion.md#四元数和三维转动---3blue1brown--ben-eater)
    2. 现象
       1. <img src="Pics/slerp002.png" width=250>
    3. 解决方案 : 如果点积是负数，把其中一个向量取反(不会改变 代表的旋转姿态)
