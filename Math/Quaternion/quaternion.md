@@ -10,6 +10,9 @@
 
 [3Blue1Brown Visualizing quaternions --- An explorable video series](https://eater.net/quaternions)
 
+[Quaternion(Krasjet) - Github](https://github.com/Krasjet/quaternion)
+
+[利用四元数计算三维旋转的几何意义 - Qiita(日文 blog)](https://qiita.com/HMMNRST/items/0a4ab86ed053c770ff6a)
 
 ---
 
@@ -36,7 +39,6 @@
 描述 三维旋转、量子力学(quantum mechanics)
 
 爱尔兰 数学家 **William Rowan Hamilton**，四维复数
-1. <img src="Pics/quaternion000.png" width=150>
 
 用 3个 虚维度 描述空间，实数是 第4个 维度，垂直于 全部 3个 虚数轴
 1. <img src="Pics/quaternion001.png" width=450>
@@ -325,3 +327,4 @@ Axis-Angle 表示方式
    1. [slerp - 个人笔记](../Interpolation/interpolation.md#slerp-spherical-linear-interpolation球面线性插值)
 
 
+<img src="Pics/quaternion000.avif" width=750>

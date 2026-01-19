@@ -1,4 +1,19 @@
-# 信息量 + 香农熵 + 交叉熵 + KL散度
+# Entropy & Divergence
+
+## Table of Contents
+
+- [Entropy \& Divergence](#entropy--divergence)
+  - [Table of Contents](#table-of-contents)
+- [信息量](#信息量)
+- [香农熵](#香农熵)
+- [交叉熵](#交叉熵)
+- [KL散度](#kl散度)
+- [Jensen不等式](#jensen不等式)
+
+---
+
+
+# 信息量
 
 **信息量 (Amount of Information)**
 1. 小概率事件，信息量大 | 大概率事件，信息量小
@@ -6,6 +21,8 @@
 3. $$I(x) = \log _2 (\frac{1}{p(x)}) = - \log _2 (p(x))$$
 
 ---
+
+# 香农熵
 
 **香农熵 (Shannon Entropy)** - 对于单个分布
 1. 概率分布的期望信息量
@@ -16,6 +33,8 @@
 交叉熵 和 KL散度 都是用来测量两个概率分布
 
 ---
+
+# 交叉熵
 
 **交叉熵 (Cross-Entropy)** - 对于两个分布 求差异
 1. p **真实分布** & q **预测/拟合分布**
@@ -30,6 +49,8 @@
    1. 对于 $\sum_i p_i \log _2(\frac{1}{q_i})$，显然，当 $p_i$ 大 时，需要 $q_i$ 同时也大(分布接近)，否则 $\log _2(\frac{1}{q_i})$ 将会较大，使得 大概率 × 大信息量
 
 ---
+
+# KL散度
 
 **KL 散度 (KL Divergence)** - $D_{KL}(p||q)$ - 相对熵
 1. p **真实/数据 分布** & q **预测/拟合/近似 分布**，用 log 衡量 在 x处 两个分布($P(x) \ Q(x)$) 的 偏离程度
@@ -67,7 +88,7 @@
 交叉熵 & KL 散度(Kullback-Leibler Divergence) 关系
 1. $$D_{KL}(p||q) = H(p, q) - H(p) = \sum_i p_i \log _2(\frac{1}{q_i}) - \sum_i p_i \log _2(\frac{1}{p_i}) = \sum_i p_i \log _2(\frac{p_i}{q_i})$$
 
-
+# Jensen不等式
 
 **==Jensen's Inequality==**
 1. 对于 convex function(下凸函数，开口向上，任意两点连线在函数上)

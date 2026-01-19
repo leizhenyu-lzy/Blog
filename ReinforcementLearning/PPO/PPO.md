@@ -256,7 +256,7 @@ PPO 有两种实现方式
 
 surrogate(替代的，代理的)
 
-这里两张图 都是 surrogate_loss，没有包括 rsl_rl 中 实现的 value_loss & entropy_loss
+这里两张图 都是 surrogate_loss，没有包括 rsl_rl 中 实现的 value_loss(价值函数损失) & entropy_loss(鼓励探索的熵正则)
 
 PPO 只是为了稳定性，在一个 rollout 数据上多做几次更新，用 importance sampling 纠正轻微的策略偏移，但它本质仍是 依赖新数据 的
 
