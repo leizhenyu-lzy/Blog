@@ -5,6 +5,17 @@ ACM SIGGRAPH 2021
 [AMP - Project Website](https://xbpeng.github.io/projects/AMP/index.html)
 
 
+
+---
+
+Gradient Penalty Loss 目的
+1. 希望 $\| \nabla D(x_{expert}) \| \to 0$
+2. 在 expert 轨迹附近，让 $D(x)$ 尽量平坦，一整片邻域都判成差不多的高分
+3. 可能是借鉴了 W-GAN-GP，但是设计目标不同，不是要 整体平滑
+
+
+
+
 ---
 
 对抗学习 对于 合成问题(image generation) 很有效

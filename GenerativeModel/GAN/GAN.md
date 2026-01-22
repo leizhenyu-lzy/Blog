@@ -1,7 +1,23 @@
-# GAN - Generative Adversarial Network
+# GAN - Generative Adversarial Network - 生成式对抗网
+
+---
+
+## Table of Contents
+
+- [GAN - Generative Adversarial Network - 生成式对抗网](#gan---generative-adversarial-network---生成式对抗网)
+  - [Table of Contents](#table-of-contents)
+- [Understanding GANs - YouTube(DeepBean)](#understanding-gans---youtubedeepbean)
+- [W-GAN](#w-gan)
+- [Gradient Penalty (梯度惩罚)](#gradient-penalty-梯度惩罚)
+  - [$K$-Lipschitz Continuity](#k-lipschitz-continuity)
+
+
+
+---
+
+# Understanding GANs - YouTube(DeepBean)
 
 [Understanding GANs (Generative Adversarial Networks) - YouTube(DeepBean)](https://www.youtube.com/watch?v=RAa55G-oEuk)
-
 
 类似 counterfeiter(伪造文件的人) & police(警察)
 1. 前者 : Generative Model
@@ -87,8 +103,70 @@ GAN 工作原理
          9. TODO
 
 
+---
+
+# W-GAN
+
+W-GAN (Wasserstein GAN) 的目标函数基于 Wasserstein 距离(也称 Earth-Mover 距离)
+
+与 原始 GAN 的 Jensen-Shannon (JS) 散度目标函数有显著不同
+
+W-GAN 的核心在于它不再将 判别器(Discriminator) 视为 二分类器，而是将其视为 评论家(Critic)，输出 标量分数 衡量样本的 真实程度
+
+W-GAN 的 Min-Max 目标函数
+1. $$\min_G \max_{D \in \mathcal{L}_1} \underset{x \sim \mathbb{P}_r}{\mathbb{E}}[D(x)] - \underset{\tilde{x} \sim \mathbb{P}_g}{\mathbb{E}}[D(\tilde{x})]$$
+
+
+$$w^* = \argmin_w \mathbb{E}_{x\sim p_r(x)} [ f_w(x) ] - \mathbb{E}_{x\sim p_g(x)} [ f_w(x) ]$$
+1. 第1项 $\mathbb{E}_{x\sim p_r(x)} [ f_w(x) ]$ : 判别器(Critic) 给 真实样本 (Real Data) 打分的平均值
+2. 第2项 $\mathbb{E}_{x\sim p_g(x)} [ f_w(x) ]$ : 判别器(Critic) 给 生成样本 (Fake Data) 打分的平均值
 
 
 
 
+
+---
+
+# Gradient Penalty (梯度惩罚)
+
+对 原始 W-GAN(Wasserstein GAN) 的一种改进方案
+
+原始 W-GAN 使用 **权重剪裁(Weight Clipping)** 来满足 数学上的 **Lipschitz 连续性约束**，但会导致 **训练不稳定**
+
+W-GAN-GP 提出了用 Gradient Penalty 来替代剪裁，效果更好
+
+要求 判别器函数 $f_w(x)$ 的变化不能太剧烈
+
+Gradient Penalty 实现
+1. W-GAN 中的 Lipschitz 条件 只是要求 **函数的梯度有界**，具体多少 其实无所谓
+2. 整个 Loss 由 原始 W-GAN 损失 & 梯度惩罚(GP) 共同构成
+3. **单侧惩罚**
+   1. $$w^* = \argmin_w \mathbb{E}_{x\sim p_r(x)} [ f_w(x) ] - \mathbb{E}_{x\sim p_g(x)} [ f_w(x) ] + \lambda \max(\|\nabla_x f_w(x)\|, 1)$$
+   2. $\|\nabla_x f_w(x)\| > 1$ 就惩罚，将梯度限制在 1 之内
+      1. $\|\nabla_x f_w(x)\| \ge 1$ 时，惩罚项 为 常数项 $\lambda$，求 $\argmin$ 时 可忽略
+      2. $\|\nabla_x f_w(x)\| < 1$   时，惩罚项 为 $\lambda · \|\nabla_x f_w(x)\|$，求 $\argmin$ 时 梯度越大 惩罚越大
+4. **双侧惩罚** (标准 W-GAN-GP)
+   1. $$w^* = \argmin_w \mathbb{E}_{x\sim p_r(x)} [ f_w(x) ] - \mathbb{E}_{x\sim p_g(x)} [ f_w(x) ] + \lambda (\|\nabla_x f_w(x)\| - 1)^2$$
+   2. $\|\nabla_x f_w(x)\| \ne 1$ 就惩罚，且 距离 1 越远 惩罚越大
+5. 单侧惩罚项中 的 $\max$ **不可微**，所以 双侧惩罚 更加合理
+
+具体实现
+1. **Lipschitz 连续性约束** 要求 函数 在任意位置的 $\hat{x}$ 梯度范数 不能超过一个定值，即要求处处成立
+2. 实际上 很难 遍历 无穷多点，只有 有限的 样本点
+3. $\hat{x}$ 取自 训练小批次(mini-batch)中 全部 $x_{gen}$ & $x_{real}$ 的 随机混合 $\hat{x} = \epsilon x_{real} + (1-\epsilon)x_{gen}$，$\epsilon \sim \mathcal{U}(0, 1)$
+4. <img src="Pics/wgan001.png" width=500>
+
+
+## $K$-Lipschitz Continuity
+
+衡量函数 平滑程度/变化速度，给函数的变化率(斜率/梯度)设了一个上限
+
+数学公式
+1. 如果一个函数 $f(x)$ 满足 **$K$**-Lipschitz 连续，那么 对于 **定义域内** 任意 2点 $x_1$ & $x_2$，必须满足
+   1. $$|f(x_1) - f(x_2)| \le K \cdot ||x_1 - x_2||$$
+   2. $$\frac{|f(x_1) - f(x_2)|}{||x_1 - x_2||} \le K$$
+2. 对于 **可导函数**(eg : 神经网络中常用的函数)，==Lipschitz 连续性== **等价于** ==梯度的范数 有上界==
+   1. $$||\nabla_x f(x)|| \le K$$
+   2. 梯度的 L2 范数 : 求 output($y = D(x)$) 对 input($x$) 每一位 的 偏导数(partial derivative)，平方，求和，开根号
+      1. $$||\nabla_x D(x)||_2 = \sqrt{ \sum_{i=1}^{n} \left( \frac{\partial D(x)}{\partial x_i} \right)^2 }$$
 
