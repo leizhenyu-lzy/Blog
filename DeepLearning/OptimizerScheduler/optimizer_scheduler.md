@@ -80,8 +80,8 @@
 6. 每个参数都需要 **保存2个额外的值** $V$ & $S$，显存占用更大
 
 **L2 Regularization ≠ Weight Decay**
-1. 权重衰退 不改变 Loss 函数 $L = L_{\text{error}}$ 本身，只是在计算完梯度，更新参数时候，减去小值
-2. L2 Regularization 影响 Loss 函数 $L = L_{\text{error}} + \frac{\lambda}{2} ||w||^2$，从而影响后续 梯度计算
+1. **L2 Regularization** : 影响 Loss 函数 $L = L_{\text{error}} + \frac{\lambda}{2} ||w||^2$，从而影响后续 梯度计算
+2. **Weight Decay 权重衰退** : 不改变 Loss 函数 $L = L_{\text{error}}$ 本身，只是在计算完梯度，更新参数时，减去值
 3. 更新参数 会有不同
 
 

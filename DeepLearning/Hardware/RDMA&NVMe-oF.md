@@ -12,7 +12,7 @@ RDMA 是实现 NVMe-oF 的一种常见传输协议
 
 - [RDMA \& NVMe-oF](#rdma--nvme-of)
   - [Table of Contents](#table-of-contents)
-- [RDMA](#rdma)
+- [RDMA (Remote Direct Memory Access)](#rdma-remote-direct-memory-access)
 - [NVMe-oF (Non-Volatile Memory Express over Fabrics)](#nvme-of-non-volatile-memory-express-over-fabrics)
   - [FC (Fibre Channel 光纤通道)](#fc-fibre-channel-光纤通道)
   - [NVMe (Non-Volatile Memory Express)](#nvme-non-volatile-memory-express)
@@ -22,7 +22,7 @@ RDMA 是实现 NVMe-oF 的一种常见传输协议
 
 ---
 
-# RDMA
+# RDMA (Remote Direct Memory Access)
 
 传统 TCP/IP 网络通讯 CPU多次介入，有毫秒级延迟(内存复制和处理)
 1. 数据从应用缓存拷贝到Kernel中的TCP协议栈缓存

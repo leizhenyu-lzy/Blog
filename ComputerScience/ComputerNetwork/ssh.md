@@ -171,6 +171,7 @@ Host my-gpu-02
    1. 服务器 SSH 服务监听的端口，默认是 22
 6. IdentityFile
    1. 电脑上 可能 同时存储 多个 私钥，用于指定 不同 使用场景
+      1. eg : 使用从 其他电脑 复制的 私钥
    2. `IdentityFile ~/.ssh/id_rsa_shared` / `IdentityFile ~/.ssh/id_rsa`
 
 

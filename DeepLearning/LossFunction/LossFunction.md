@@ -10,6 +10,8 @@
 - [VIF (Visual Information Fidelity)](#vif-visual-information-fidelity)
 - [UQI](#uqi)
 - [FSIM (Feature Similarity Index) 特征相似性指数](#fsim-feature-similarity-index-特征相似性指数)
+- [BCE (Binary Cross Entropy)](#bce-binary-cross-entropy)
+- [Dice Loss](#dice-loss)
 
 
 
@@ -29,6 +31,13 @@ $Loss_{charbonnier}(x, y) = \sqrt{(x - y)^2 + \epsilon^2}$
 2. $y$ : 真实值
 3. $\epsilon$ : 很小的常数，保证函数的连续可微性，$10^{-6} \sim 10^{-3}$
 
+结合 L1 Loss 的 鲁棒性 & L2 Loss 的 平滑性
+
+零点处可导，不像 L1 Loss
+
+收敛时，误差 $x$ 非常小时，函数行为近似于 L2 Loss 抛物线底，随着误差减小而逐渐趋向于 0
+
+---
 
 # PSNR (Peak Signal-to-Noise Ratio) 峰值信噪比
 
@@ -92,3 +101,27 @@ $$\text{SSIM}(x,y) = [l(x,y)]^\alpha · [c(x,y)]^\beta · [s(x,y)]^\gamma$$
 # UQI
 
 # FSIM (Feature Similarity Index) 特征相似性指数
+
+
+
+---
+
+# BCE (Binary Cross Entropy)
+
+逐像素 (Pixel-wise)
+
+无法应对类别不平衡 (Class Imbalance)
+
+
+---
+
+# Dice Loss
+
+区域级 (Region-level) / 集合重叠度
+
+无视类别不平衡
+
+公式核心
+1. $$1 - \frac{2 \times (A \cap B)}{A + B}$$
+2. A 是 pred，B 是 GroundTruth
+

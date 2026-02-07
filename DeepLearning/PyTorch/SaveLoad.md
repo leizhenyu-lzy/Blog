@@ -5,12 +5,20 @@
 
 ---
 
-parameters & state_dict & register_buffer
+`parameters` & `state_dict` & `register_buffer`
 1. ==下面的 方法返回的 Tensor 都是引用 (Reference)==，需要按需使用 `copy.deepcopy()`，如果直接序列化保存了则不需要
 2. `model.state_dict()` : 返回 **字典 dict**，包含 需要 back-propagation 的 & register_buffer
 3. `model.parameters()` : 返回 **迭代器 iterator**，仅 Parameter (权重)，只包含 Tensor 对象本身
 4. `model.named_parameters()` : 返回 **迭代器 iterator**，仅 Parameter (权重) + 名字，(name, tensor) 元组
 5. `model.named_buffers()` : 返回 **迭代器 iterator**，仅 register_buffer (非梯度状态) + 名字，(name, tensor) 元组
+
+普通 Tensor 变成 模型的可训练参数 (Model Parameter)，需要把它包装成 `nn.Parameter` 并 注册，否则优化器 (optimizer) 即使看到它有梯度也不会去更新它
+
+Parameter & Tensor(requires_grad_)
+1. `x.requires_grad_(True)` : 只用于求导
+   1. 能求导，但 `optimizer.step()` 不会更新它，因为 不在 `model.parameters()` 里
+2. `self.w = nn.Parameter(...)` : 作为权重训练
+   1. 包装成 `Parameter`，自动注册到 `parameters()`
 
 ---
 
