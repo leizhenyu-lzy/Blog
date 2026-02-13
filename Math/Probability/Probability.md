@@ -13,6 +13,7 @@
 - [Distribution](#distribution)
   - [Normal/Gaussian Distribution (正态/高斯 分布)](#normalgaussian-distribution-正态高斯-分布)
   - [Bernoulli Distribution (伯努利/0-1 分布)](#bernoulli-distribution-伯努利0-1-分布)
+- [Chan’s Algorithm (Running Mean \& Variance)](#chans-algorithm-running-mean--variance)
 
 ---
 
@@ -185,6 +186,52 @@ f_X(x) = p^x (1-p)^{1-x} =
    1 - p & , \text{if } x = 0
 \end{cases}
 $$
+
+---
+
+# Chan’s Algorithm (Running Mean & Variance)
+
+平方和误差 (SSD, Sum of Squared Differences)
+
+符号定义 (Notation)
+1. 历史数据 (Set A)
+   1. 数量 : $n_A$
+   2. 均值 : $\mu_A$
+   3. 方差 : $\sigma_A^2$
+   4. 平方和误差 : $M_{2,A} = \sum_{x \in A} (x - \mu_A)^2$
+2. 新Batch数据 (Set B)
+   1. 数量 : $n_B$ (batch_count)
+   2. 均值 : $\mu_B$ (batch_mean)
+   3. 方差 : $\sigma_B^2$ (batch_var)
+   4. 平方和误差 : $M_{2,B} = \sum_{x \in B} (x - \mu_B)^2$
+
+合并后的数据 (Set X = A + B)
+1. 总数量 : $n_X = n_A + n_B$
+
+要求 新的均值 $\mu_X$ & 新的方差 $\sigma_X^2$
+
+令 $\delta = \mu_B - \mu_A$
+
+
+new 均值 (Mean) 推导
+1. 两个群体的加权平均
+2. $$n_X \mu_X = n_A \mu_A + n_B \mu_B$$
+3. $$\mu_X = \frac{n_A \mu_A + n_B \mu_B}{n_A + n_B}$$
+4. $$\mu_X = \mu_A + \delta \cdot \frac{n_B}{n_A + n_B}$$
+
+
+new 方差 (Variance) 推导
+1. 方差更新的核心在于更新 平方和误差 (SSD, 即 $M_2$)
+2. $$M_{2,X} = M_{2,A} + M_{2,B} + \text{CorrectionTerm}$$
+3. 直观理解
+   1. 如果 Set A 的均值是 0，Set B 的均值是 100
+   2. 各自的方差都很小，合并后的 Set X 方差会非常大，因为数据被拉开了
+   3. 这个 被拉开 的程度就由均值差 $\delta$ 决定
+4. 根据 Chan's Algorithm 的推导结论 : 合并后的 SSD 为
+   1. $$M_{2,X} = M_{2,A} + M_{2,B} + \frac{n_A n_B}{n_A + n_B} (\mu_B - \mu_A)^2$$
+5. 最后除以样本总数 $n_X = n_A + n_B$ 即可
+
+PyTorch 的 var() 默认是 unbiased=True (即除以 $N-1$)
 
 
 

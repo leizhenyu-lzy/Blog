@@ -36,10 +36,19 @@ Exempt(豁免) Individual
 
 
 Federal Tax (联邦税)
-1. 用 Treaty 减免 应税收入
+1. NRA 没有 Standard Deduction
+2. 用 Treaty 减免 应税收入
+3. SALT & Treaty 可叠加
 
 State Tax (州税)
 1. 部分州 不承认 Treaty
+2. 但是有 Standard Deduction
+
+SALT(State and Local Tax Deduction)
+1. 是 Itemized Deduction 的一种
+2. 用来抵扣 **联邦税** 的 应税收入(Taxable Income)，而 不是 直接抵扣 联邦税金
+3. 对于  RA : 有 IRS 的 Standard Deduction，$15,000，**SALT & Standard 二选一，不能叠加**
+
 
 
 W-2
@@ -92,11 +101,6 @@ Form 3520
 7. 单独 邮寄到 Ogden, UT
 
 
-SALT(State and Local Tax Deduction)
-1. 是 Itemized Deduction 的一种
-2. 用来抵扣 **联邦税** 的 应税收入(Taxable Income)，而 不是 直接抵扣 联邦税金
-3. 对于  RA : 有 IRS 的 Standard Deduction，$15,000，**SALT & Standard 二选一，不能叠加**
-4. 对于 NRA : 没有 Standard Deduction，**Treaty 和 SALT 可以叠加**
 
 
 SDI(State Disability Insurance)
@@ -126,3 +130,10 @@ W-8BEN
 W-9
 
 护照、I-20、I-94、SSN、W-2
+
+
+# App
+
+https://www.glaciertax.com/login
+
+
