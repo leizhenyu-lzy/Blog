@@ -6,6 +6,7 @@ IRS(Internal Revenue Service) : 美国国内收入署(美国国税局)
 EIN(Employer Identification No)
 1. UIUC : 376000511
 2. XPENG : 823160099
+3. RobinHood : 464364776
 
 
 RA & NRA
@@ -42,7 +43,10 @@ Federal Tax (联邦税)
 
 State Tax (州税)
 1. 部分州 不承认 Treaty
-2. 但是有 Standard Deduction
+2. 但是有 Standard Deduction (2025 Tax Year)
+   1. Single / Married Filing Separately : **$5,706**
+   2. Married Filing Jointly / Head of Household : **$11,412**
+   3. *加州的 Standard Deduction 远低于联邦 (Federal 2025 Single 是 $15,000)*
 
 SALT(State and Local Tax Deduction)
 1. 是 Itemized Deduction 的一种
@@ -64,6 +68,11 @@ Form 1099
 2. 1099-B   : 记录 卖股票赚的钱 (**Capital Gains**)
 3. 1099-DIV : 记录 拿分红赚的钱 (**Dividends**)
 4. 当做 原始数据(赚的钱)
+5. 交税
+   1. 1099-INT (利息 $119.82 - 免税 NRA)
+   2. 1099-DIV (分红 $0.24 - 10% 税率 Treaty)
+   3. 1099-B (股票利润 $34.13 - 30% 税率)
+   4. 1099-MISC (奖励 $5.00 - 30% 税率)
 
 Form 1042-S
 1. 银行/券商(Robinhood) 发给 NRA
@@ -114,7 +123,23 @@ Robinhood
 1. NR
    1. Cash Sweep (属于 Interest Income / 利息) : 0% (免税)
    2. 股票分红 (Dividends) : 10% (如果你用了 Treaty)
-   3. 股票买卖差价 (Capital Gains / 资本利得) : 30%
+   3. 股票买卖差价 (Capital Gains / 资本利得) : 30% (注意：F-1 的 Exempt 身份 **不豁免** 资本利得税的 183天规则。如果你当年在美超过 183天，通常需交 30% 联邦税，除非利用中美 Tax Treaty Article 13 豁免至 0%)
+   4. **Federal vs CA Capital Gains 对比**
+      1. **联邦税 (Federal)**
+         1. **NRA (F-1 < 5年)** :
+            1. 在美 < 183天 : 0%
+            2. 在美 >= 183天 : **30%** (Flat Rate)
+            3. **Treaty 特例** : 中国留学生若填报 W-8BEN 并主张 Treaty Article 13 (Capital Gains)，可免除这 30% 税 (变为 0%)，但需券商支持或报税时退回。
+         2. **RA (F-1 > 5年 / 绿卡 / 公民)** :
+            1. 短期 (< 1年) : 按普通收入税率 (10% - 37%)
+            2. 长期 (> 1年) : 优惠税率 (0% / 15% / 20%)
+      2. **加州州税 (California State Tax)**
+         1. **加州没有 Capital Gains 优惠税率**，全部按 **普通收入 (Ordinary Income)** 征税。
+         2. **税率** : 1% - 13.3% (累进税率，取决于总收入)。
+         3. **NRA (Non-Resident) 特殊情况** :
+            1. 如果你被视为 **加州非居民 (Non-Resident)** (填 540NR 表) : 股票收益通常被视为 "Intangible Income"，来源地 (Source) 是你的居住地 (Domicile)。如果你的 Domicile 是中国，则 **加州税为 0%**。
+            2. 如果你被视为 **加州居民 (Resident)** (填 540 表) : 全球收入征税，股票收益需交加州税。
+            3. *注：F-1 学生在加州居住超过 9个月通常被推定为 Resident，但可主张是为了学业的 Temporary Purpose 从而保持 Non-Resident 身份 (需具体分析)。*
 
 
 https://www.dealmoon.com/guide/935542

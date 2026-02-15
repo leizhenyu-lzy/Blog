@@ -15,6 +15,7 @@
   - [Merge \& Rebase (分支合并策略)](#merge--rebase-分支合并策略)
   - [Cherry-Pick (精准移植 commit)](#cherry-pick-精准移植-commit)
 - [HEAD](#head)
+- [Git AutoMerge](#git-automerge)
 
 
 ---
@@ -351,6 +352,16 @@ Git Flow
       5. Y 想要 push C2，Git 说 C1 在远程已经不存在了，远程现在是 C1'，需要手动处理历史
 
 
+`merge` & `rebase` 的 Current & Incoming 恰恰相反
+1. merge
+   1. Current : 当前所在的分支
+   2. Incoming : 想要合并进来的分支
+2. rebase
+   1. Current : 要去的那个分支(一般是 main)
+   2. Incoming : 当前所在的分支
+
+
+
 ## Cherry-Pick (精准移植 commit)
 
 `git cherry-pick`
@@ -403,5 +414,27 @@ HEAD : 最近一次的 commit
 3. `^` (脱字符) 表示 第几个父提交 (Parent number)
    1. `HEAD^1` : 第一个 父提交(等同于 `HEAD~1`)
    2. `HEAD^2` : 第二个 父提交(通常是你合并进来的那个分支，如 feature)
+
+
+---
+
+# Git AutoMerge
+
+核心原理建立在一个称为 三路合并(3-Way Merge) 的算法基础
+
+找到 这2个分支 共同的 parent commit(**Merge Base**)，以此作为基准 判断该保留谁的修改
+
+概念
+1. Base : 共同祖先提交
+2. Current : 你当前所在的分支
+3. Incoming: 你想要合并进来的分支
+
+找到 Base 后，Git 会同时对比 `Base vs Current` 和 `Base vs Incoming` 的变化
+
+可能情况
+1. 只有 Incoming 修改 : 自动采纳 Incoming 的修改
+2. 只有 Current 修改 : 保留 Current 的修改
+3. 双方都修改，但改得一模一样 : 自动合并，不冲突
+4. **双方修改 同一处，且内容不同** : Git 无法自动决定，报冲突
 
 
