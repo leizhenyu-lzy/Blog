@@ -14,6 +14,7 @@
   - [runners/on\_policy\_runner.py](#runnerson_policy_runnerpy)
   - [storage/rollout\_storage.py](#storagerollout_storagepy)
   - [utils/utils.py](#utilsutilspy)
+- [FAQ](#faq)
 
 
 
@@ -431,4 +432,24 @@ import `utils.py` 中的 `split_and_pad_trajectories()`
 在 `rollout_storage.py` 中的 `reccurent_mini_batch_generator()` 函数 调用
 
 
+
+
+
+# FAQ
+
+一次 Iteration = 收集数据 + 训练更新
+1. 每个环境跑 num_steps_per_env 个 steps
+2. 总共收集的数据量是 num_envs * num_steps_per_env
+
+rewbuffer
+1. 记录的是 所有 env 产生的 rollouts 里面 最新的 100 个(全局共享的队列)，K 值 = mean(rewbuffer)
+2. extend 到 deque 的时机
+   1. 摔倒 (Done) -> 加入 rewbuffer，Reset
+   2. Timeout (达到 max_episode_length) -> 加入 rewbuffer，Reset
+   3. 仅仅达到 num_steps_per_env -> 不会加入 rewbuffer，环境状态保留，奖励继续累加 (cur_reward_sum 不清零)，在下一个 Iteration 继续跑
+3. extend 内容
+   1. cur_reward_sum 就是当前正在进行的 Episode 的累积奖励，一旦 Episode 结束（摔倒或超时），这个累积值就变成了该 Episode 的最终 Return
+   2. 如果机器人一直不摔，它就能跑满 max_episode_length，跑满全程的分数会远大于摔倒的分数
+3. 不管有没有摔倒，这 max_episode_length 步产生的 (State, Action, Reward, Next_State) 都会被存入 PPO 的训练缓冲区(Buffer) 里用于梯度下降
+4. 在训练后期(完美策略)，K 值会稳定在 满分 附近，一直 没摔倒，只会在每次 timeout 的时候 更新 rewbuffer
 

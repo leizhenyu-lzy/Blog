@@ -6,6 +6,7 @@
 
 - [Physics](#physics)
   - [Table of Contents](#table-of-contents)
+- [冲量(Impulse) / 角冲量(Angular Impulse)](#冲量impulse--角冲量angular-impulse)
 - [动量 \& 角动量](#动量--角动量)
 - [进动(precession) \& 章动(nutation)](#进动precession--章动nutation)
 - [惯性张量](#惯性张量)
@@ -13,6 +14,18 @@
   - [材料力学](#材料力学)
 
 
+
+---
+
+# 冲量(Impulse) / 角冲量(Angular Impulse)
+
+描述 力 对时间的 累积效应
+1. $$I = F \cdot \Delta t$$
+2. $$I = \int_{t_1}^{t_2} F(t) dt$$
+
+冲量的单位 : 牛顿·秒(`N·s`) 等效于 千克·米/秒(`kg·m/s`)
+
+冲量是一个矢量(积分的时候可能需要 分解到 xyz 方向)
 
 ---
 
@@ -42,9 +55,13 @@
 3. **方向** : 动量的方向和速度的方向一致
 
 
-
 **动量定理** (不考虑 m 变化)
-1. $$\frac{d \vec{P}}{dt} = \frac{m d\vec{v}}{dt} = m \vec{a} = \vec{F}$$
+1. 冲量与动量 的联系 : 物体所受合外力的 冲量，等于该物体 动量的变化量
+2. $$I = \Delta P = m \cdot v_{final} - m \cdot v_{initial}$$
+3. $$\frac{d \vec{P}}{dt} = \frac{m d\vec{v}}{dt} = m \vec{a} = \vec{F}$$
+4. 冲量 & 动量
+   1. 冲量 : 外力的过程量，由外力带来的
+   2. 动量 : 物体的状态量，物体本身拥有
 
 **角动量定理**
 1. $$\frac{d \vec{L}}{dt} = \frac{d (\vec{r} × \vec{P})}{dt} = \frac{d \vec{r}}{dt} × (m \vec{v}) + \vec{r} × \frac{d \vec{P}}{dt} = \vec{r} × \vec{F} = \vec{\tau}$$

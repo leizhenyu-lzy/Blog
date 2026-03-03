@@ -333,12 +333,12 @@ Git Flow
 `git rebase`
 1. <img src="Pics/workflow006.png" width=350>
 2. 不会创建 合并commit
-3. 将 feature branch 的 commit 移动到 主分支 最新位置，**变成全新的提交，有不同的 hash 值**
+3. 将 feature branch 的 commits 逐个 移动到 主分支 最新位置，**变成全新的提交，有不同的 hash 值**
 4. 详细步骤拆解 (feature rebase main)
    1. 找 基底 (Base) : Git 会回溯历史，找到 feature 分支是从 main 分支的哪一个 commit 开始分叉出来的，作为 基底
-   2. 存补丁 (Save Temporary Patches) : 从 分叉点 到 现在的所有 feature 分支上的 commit，一个个提取出来，变成 临时补丁
+   2. 存补丁 (Save Temporary Patches) : 从 分叉点 到 现在的所有 feature 分支上的 commits，一个个提取出来，变成 临时补丁
    3. 切分支 (Reset HEAD) : Git 会把 feature 分支的指针，强行移动到 main 分支的最新位置(最新的 HEAD)，这时候 feature 分支内容和 main 一样
-   4. 打补丁 (Apply patches) : Git 将补丁，按顺序一个个应用在新的基底上
+   4. 打补丁 (Apply patches) : Git 将补丁，按顺序一个个应用在新的基底上(每个 commit 都有可能触发一次冲突)
       1. 关键点 : 在应用每一个补丁时，Git 都会尝试 自动合并
       2. 没冲突 : 自动生成一个新的 commit，内容一样，但 Hash 值变了
       3. 有冲突 : 暂停，让你解决冲突
