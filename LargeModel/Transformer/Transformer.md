@@ -56,6 +56,17 @@ String -> Token -> Token ID -> Embedding Vectors
 5. 不同阶段
    1. 预训练阶段 : embedding 随机初始化，和模型一起训练
    2. 微调阶段 : 使用预训练好的 embedding，继续和模型一起微调
+6. **==离散 & 连续==**
+   1. 离散 : 输入 一个索引，查表 Look-up Table，模型维护 一个 可学习的 大矩阵 Embedding Table
+      1. 梯度 通过 索引 反向 路由 回对应的行
+      2. Look-up Table 的操作在数学上等同于用一个 One-hot 向量 乘以 权重矩阵
+      3. **稀疏更新**，仅更新被选中的那一行
+   2. 连续 : 输入 实数向量，大矩阵乘法 Linear Projection，原始向量 与 一个可学习的 权重矩阵 $W$ 相乘
+      1. 梯度 通过 标准的 **矩阵乘法 链式法则** 传播
+      2. **稠密更新**，整个权重矩阵 $W$ 都会获得梯度并更新
+
+
+
 
 **Self-Attention**
 1. 通过 token 之间 彼此的注意力，让 token 根据上下文，更新自己的 embedding
@@ -74,16 +85,17 @@ String -> Token -> Token ID -> Embedding Vectors
 **MultiHead Self-Attention**
 1. 类似 CNN 每层 可以指定多个 卷积核
 2. Self-Attention 可以指定多个 Head，**多次线性映射**，得到多组 Q & K & V，不同组的向量 拼接起来，通过 矩阵运算 加速计算
+   1. 先切分成多个头，各自独立执行 $\text{Softmax}$(**非线性**)
 3. **实际上 总特征数不变**，平均分给多个 head (相当于头变小了)，再 **concat** 得到完整的
 4. <img src="Pics/rethinkfun005.png" width=700>
 5. K 转置 就是为了 和 Q 点乘，得到 更新 百分比
-6. 除以 $\sqrt{d_k}$($d_k$ 是 **特征向量维度**)，均值不变，调整方差(保证为1)
+6. 除以 $\sqrt{d_k}$($d_k$ 是 **特征向量维度**)，均值不变，调整点积的方差(保证为1)，**防止 softmax 饱和**，导致梯度消失
    1. 原始的 Q & K 向量，每个维度都服从 标准正态分布(均值为 0，方差为 1)
    2. 当2个 独立的 服从标准正态分布的 随机变量 相乘时，积的方差是 1
    3. 点积(Dot Product) 是将 $d_k$ 个这样的乘积 加在一起
    4. 只要 不相关/独立，方差是可加的，$d_k$ 个方差为 1 的数加起来，总方差就变成了 $d_k$
-8. feature size 必须整除 头的数量
-9. <img src="Pics/rethinkfun006.png" width=700>
+7. feature size 必须整除 头的数量
+8. <img src="Pics/rethinkfun006.png" width=700>
 
 ==P.S. : `@` 运算符在 PyTorch 中 只在最后2个维度 进行矩阵乘法，前面的维度作为 batch 维度进行广播==
 

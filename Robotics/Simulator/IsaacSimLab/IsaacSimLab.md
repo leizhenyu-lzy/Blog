@@ -26,8 +26,11 @@
   - [Installation](#installation-1)
   - [Container/Cloud Deployment](#containercloud-deployment)
   - [Architecture](#architecture)
-  - [Actuators](#actuators)
-  - [Sensors](#sensors)
+  - [Core Concepts](#core-concepts)
+    - [Actuators](#actuators)
+    - [Sensors](#sensors)
+  - [Reinforcement Learning](#reinforcement-learning)
+  - [Imitation Learning](#imitation-learning)
 - [Unitree\_RL\_Lab](#unitree_rl_lab)
 
 ---
@@ -325,6 +328,7 @@ Asset Caching
 1. <img src="Pics/isaac-lab-ra-dark.svg">
 2. **Asset Input**
    1. URDF / MJCF XML / USD
+   2. URDF 导入后，每个 link 都会变成一个 Xform(变换节点) 或 Rigid Body(刚体节点)
 3. **Configuration**
    1. Assets
       1. robot & environment objects & sensors(data streams)
@@ -408,13 +412,12 @@ Asset Caching
 
 
 
+## Core Concepts
 
 
+### Actuators
 
-
-## Actuators
-
-关节化系统(articulated system) 由 受控关节(actuated joints) 组成，也称为 DoF
+关节化系统(articulated system) 由 受控关节(actuated joints) 组成
 
 active/passive components 会引入 **non-linear 特性** : 延迟、最大速度限制、最大扭矩限制
 
@@ -449,16 +452,22 @@ IsaacLab 中的 DoF
    3. 力控(**torque**) 的 Controller
       1. command 就是 joint efforts
 3. Actuator Models
-   1. Implicit 隐式 : PhysX 物理引擎 计算 (理想的 mechanism)
-      1. PhysX 在进行物理积分求解时，会 隐式地 求解 PD 公式
-      2. 把 PD 力作为约束的一部分，与碰撞、关节约束一起求解
-      3. 在 物理步进 内部求解的
+   1. ==Implicit 隐式== : PhysX 物理引擎 计算 (理想的 mechanism)
+      1. 直接在 PhysX 物理引擎的 约束求解器(Solver)中计算
+      3. 作为约束的一部分，与碰撞、关节约束一起，**在 物理步进(step)内 求解**
       4. 不灵活，没法轻易修改控制逻辑(非线性)
       5. PhysX 不直接告诉你它到底施加了多少力矩，Isaac Lab 只能通过公式反推 近似值
-   2. Explicit 显式 : 用户实现的 ==external drive models==
+   2. ==Explicit 显式== : 用户实现的 ==external drive models==
       1. 在 `compute()` 函数中 计算 desired torques
       2. 根据 motor capacity 对 desired torques 进行 **clipping**
       3. 提供 `isaaclab.actuators.IdealPDActuator` 基类，可以进一步修改控制率 for sim2real
+      4. **没有添加 弹簧阻尼约束(Spring-Damper Constraint)** 到 PhysX
+      5. 关节是松的，所有的力矩都由你的 Python 代码计算出来，然后作为纯外力(Effort) 施加
+         1. 传入的 stiffness & damping 都是 0.0
+      6. 更灵活，但是容易产生 **numerical instability** 数值不稳定，可以使用 `armature`(电机的转子转动惯量) 参数解决，**抑制 Dampen**关节的剧烈反应
+4. `Actuator` 类，本身不知道自己具体在控制哪一个关节，只负责 input & output，是 `Articulation` 类 在 管理机器人具体关节
+
+
 
 
 IsaacGym 中的 command
@@ -473,9 +482,91 @@ IsaacGym 中的 command
 
 
 
-## Sensors
+### Sensors
 
-Ray-Caster
+
+**Camera**
+1. [Camera - IsaacLab Docs](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/sensors/camera.html#tiled-rendering)
+2. **Tiled Rendering** (平铺渲染)
+   1. 图像渲染 需要 大带宽(bandwidth)，推荐 在 RTX4090 跑 512 cameras
+   2. 向量化接口(vectorized interface)，并行化加速数据收集
+   3. 预分配大块buffer + 批量填充(零拷贝思想) + 单次同步
+3. `TiledCamera` 的 config 是 `TiledCameraCfg`
+   1. `prim_path` : 和 RayCaster 不同，不是写到 parent link 就结束，要 额外 起名字，作为独立的 摄像机实体 存在
+   2. `offset` : `TiledCameraCfg.OffsetCf`
+   3. `data_types` : 要渲染的数据类型
+   4. `spawn` : 如果路径下没有节点，请按照该 物理/光学 属性 添加一个
+      1. `PinholeCameraCfg` : focal_length(焦距 mm) & horizontal_aperture(光圈宽度 mm) & focus_distance(对焦距离) & clipping_range(裁剪范围 防穿模)
+      2. `FisheyeCameraCfg`
+   5. `width & height` : 摄像头的分辨率(output 图像 尺寸)
+4. Create Cam : `tiled_camera = TiledCamera(cfg.tiled_camera)`
+5. Retrieve Data : `data = tiled_camera.data.output[data_type]  # data_type="rgb"`
+6. Isaac Lab 默认是不开启摄像头渲染的，**启动环境的时候 带上 `--enable_cameras`**，系统才会真正启动渲染管线
+7. Annotator(注解器) : 写在 `data_types` 的列表里
+   1. color : rgb & rgba(alpha) : `uint8`，除以 255 变为 `float32`
+   2. depth & distances
+      1. distance_to_camera : 像素点 到 **相机光心**的 **欧式距离(放射状距离)**
+      2. distance_to_image_plane / depth : 像素点 到 **相机平面**的 **垂直距离**
+   3. normals : 表面法线(surface normal vectors)
+   4. motion vectors : 运动矢量(**光流**)，位移量(左右 & 上下)，常用 backward motion vectors (当前位置 - 上一帧位置)
+   5. Segmentation(`colorize` 控制返回 彩图 / 类别矩阵)
+      1. semantic segmentation : 语义分割
+      2. instance segmentation : 实例分割，根据 Semantic Labels 分组
+      3. instance ID segmentation : 实例ID分割，最彻底的区分，追溯到 叶子节点(Leaf Prim)，**最底层的几何体**
+
+
+**Contact**
+1.
+
+
+
+
+**RayCaster**
+1. [RayCaster - IsaacLab Docs](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/sensors/ray_caster.html)
+2. <img src="Pics/raycaster_patterns.jpg" width=600>
+3. `pattern_cfg`
+4. ==Lidar== Pattern (激光雷达模式) : `pattern_cfg=patterns.LidarPatternCfg`
+   1. `channels` : 纵向的通道数(16/32/64 线)，在 vertical_fov_range 内 均匀分布
+   2. `vertical_fov_range` : 垂直视场角，决定了扫描的上下范围，**闭区间，左右边界都会取到**
+   3. `horizontal_fov_range` : 水平视场角，决定了扫描的左右宽度，**闭区间，左右边界都会取到**
+   4. `horizontal_res` : 水平分辨率，Horizontal FOV 内，相邻两条射线之间的夹角
+5. ==Grid== Pattern (网格模式) : `pattern_cfg=patterns.GridPatternCfg`
+   1. `resolution` : 分辨率(网格间距)
+   2. `size` : 定义了网格的长和宽(感知区域的大小，通常是以传感器中心为基准对称分布的)，横向 & 纵向 分辨率 相同
+   3. `direction` : 射线的投影方向
+6. 公共参数
+   1. `prim_path` : 传感器挂载的位置
+   2. `update_period` : 传感器更新频率 (sec)
+   3. `offset` : 传感器相对于父节点的位姿偏移 `RayCasterCfg.OffsetCfg`
+   4. `mesh_prim_paths` : 射线只跟这些路径下的物体进行碰撞检测
+      1. `["/World/Ground", "/World/Obstacles"]`
+      2. `["{ENV_REGEX_NS}/Robot/.*", "{ENV_REGEX_NS}/Objects/box_.*"]`
+      3. **`{ENV_REGEX_NS}`** 是 Isaac Lab 预留的占位符，会自动匹配所有的环境命名空间
+   5. `ray_alignment` : 传感器坐标系 如何与 父节点坐标系 同步
+      1. base : 完全锁定，和机器人翻滚
+      2. yaw  : 只跟随机器人的水平转动 Yaw，但忽略 Pitch 和 Roll
+      3. world : 永远保持世界坐标系方向
+   6. `debug_vis` : 在 GUI 中显示 射线点
+
+
+
+---
+
+## Reinforcement Learning
+
+支持的 RL framework
+1. RL-Games
+2. RSL-RL
+3. SKRL
+4. Stable-Baselines3
+
+
+
+
+
+---
+
+## Imitation Learning
 
 
 
@@ -516,10 +607,16 @@ Ray-Caster
 5. 生成第一个 prim : 利用 `func` 函数，并且配置 visible & semantic_tags & activate_contact_sensors
 6. 克隆剩余 : 不再重新加载 USD 文件，直接使用 Isaac Sim 的 Cloner API，克隆第一个生成的资产
 
+
+`AssetBase`
+
+
+
 `AssetBaseCfg` (Asset 一般指 整个 机器人)
 1. 包含
-   1. `class_type: type[AssetBase]` ： 当前 cfg 所对应关联的 asset class (必须是 `AssetBase` 或其 子类)
-   2. `prim_path` : 资产在 USD Stage 中的路径
+   1. `class_type: type[AssetBase]` ： 当前 cfg 所对应关联的 asset class
+      1. 中括号 `[]` 表示 泛型函数(Generic Argument)，必须是 `AssetBase` 或 其子类
+   2. `prim_path` : 资产在 USD Stage 中的 **绝对路径**
    3. `spawn: SpawnerCfg` : 仿真开始时 自动在 `prim_path` 指定的位置创建这个资产，None 表示 已经存在 在 scene 中
    4. `init_state: InitialStateCfg` :
       1. pos : root pos in **world frame**
@@ -531,21 +628,38 @@ Ray-Caster
    6. `debug_vis: bool` : 可视化开关
 
 
-`ArticulationCfg` 关节体
-1. 位于(`source/isaaclab/isaaclab/assets/articulation/articulation_cfg.py`)
+`ArticulationCfg` 关节体(attach property 到 joint，)
+1. 位于 `source/isaaclab/isaaclab/assets/articulation/articulation_cfg.py`
 2. 继承 `AssetBaseCfg`
 3. 包含
-   1. `InitialStateCfg`，除了 `AssetBaseCfg.InitialStateCfg` 的 pos & rot 额外增加
+   1. `InitialStateCfg`，相比 `AssetBaseCfg.InitialStateCfg` 中的 **pos** & **rot** 额外增加
       1. lin_vel : root linear  velocity in **world frame**
       2. ang_vel : root angular velocity in **world frame**
       3. joint_pos : `dict[str, float]`
       4. joint_vel : `dict[str, float]`
-   2.
+   2. `class_type: type = Articulation`
+   3. `articulation_root_prim_path` : 相对于 `prim_path` 的相对路径
+   4. `init_state: InitialStateCfg` : 新定义的
+   5. `soft_joint_pos_limit_factor: float = 1.0`
+   6. `actuators: dict[str, ActuatorBaseCfg]`
+   7. `actuator_value_resolution_debug_print` : actuator 的参数在 USD & cfg 定义不一致(cfg 覆盖 usd)，打印信息
+4. 可以在 同一个 关节体 里 配置多种不同的电机，`joint_names_expr` & `prim_path`
+   1. Isaac Lab 会根据 `ArticulationCfg.prim_path` 找到这个机器人在 USD stage 上的根节点
+   2. 获取这个根节点下所有的 关节(Joints) 列表
+   3. `joint_names_expr` 字符串 正则匹配 关节名字
 
 
-`UnitreeArticulationCfg` 额外增加了 两个属性
-1. `joint_sdk_names` : 列表，存储关节名称，定义关节顺序，simulator中的顺序 可能和 真机的控制指令的顺序 不同
-2. `soft_joint_pos_limit_factor` : 软限位因子，将实际可用的关节范围限制在物理范围的 factor 以内
+
+
+`Articulation`
+1. 位于 `source/isaaclab/isaaclab/assets/articulation/articulation.py`
+2. 继承 `AssetBase`
+3. `_process_actuators_cfg()`
+
+
+
+
+
 
 
 `UsdFileCfg` & `UrdfFileCfg` & `MjcfFileCfg`
@@ -567,27 +681,213 @@ Ray-Caster
 
 
 
+`ManagerTermBaseCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 包含
+   1. `func: Callable | ManagerTermBase` : 核心逻辑函数
+   2. `params` : 传递给上述 func 的额外参数字典
+
+
+
+
+`RecorderTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 包含
+   1. `class_type: type[ActionTerm]`
+
+
+`ActionTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 包含
+   1. `class_type: type[ActionTerm]`
+   2. `asset_name`
+   3. `debug_vis`
+   4. `clip: dict[str, tuple]` : 字典，key 是关节名称(正则)，value 是 `(min, max)`
+
+`CommandTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 包含
+   1. `class_type: type[CommandTerm]`
+   2. `resampling_time_range`
+   3. `debug_vis`
+
+`CurriculumTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 包含
+   1. `func: Callable[..., float | dict[str, float] | None]`
+
+
+`ObservationTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 继承 `ManagerTermBaseCfg`
+3. 包含
+   1. `func: Callable[..., torch.Tensor]` : 用于计算观测值
+   2. `modifiers: list[ModifierCfg]` : 数据修改器列表，按顺序对数据进行一系列复杂的变换
+   3. `noise: NoiseCfg | NoiseModelCfg | None` : 在原始数据上叠加噪声，模拟真实传感器的不完美
+   4. `clip: tuple[float, float] | None` : 限幅范围
+   5. `scale: tuple[float, ...] | float | None` : 缩放因子，通常是先 Clip 再 Scale
+   6. `history_length` : 历史长度(过去 N帧)
+   7. `flatten_history_dim` : 是否展平历史维度
+      1. True  : 输出形状为 `(N, (H+1)*D)`，把时间维度和特征维度拼在一起，适合 MLP 网络
+      2. False : 输出形状为 `(N, H+1, D)` ，保留时间维度，适合 Transformer 或 RNN 网络
+
+
+`ObservationGroupCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 包含
+   1. `concatenate_terms` : 是否拼接
+   2. `concatenate_dim` : 拼接维度，默认 -1 (最后一个维度)
+   3. `enable_corruption` : 噪声总开关
+   4. `history_length` : 组级别的历史长度 override
+   5. `flatten_history_dim` : 组级别的展平设置 override
+3. 一般是 写一个类 继承 `ObservationGroupCfg`，并且里面增加一些 `ObservationTermCfg` 作为 类属性
+
+
+
+`EventTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 继承 `ManagerTermBaseCfg`
+3. 包含
+   1. `func: Callable[..., None]` : 执行事件的函数，直接修改环境的状态
+   2. `mode` : 触发模式
+      1. startup  : 仅在初始化时触发一次
+      2. reset    : 每次环境重置触发
+      3. interval : 每隔一段时间触发(周期性的外力扰动)
+   3. `interval_range_s: tuple[float, float] | None` : 仅配合 **interval** 触发模式
+   4. `is_global_time` : 仅配合 **interval** 触发模式
+      1. True  : 所有环境 共享同一个 计时器，同时触发事件
+      2. False : 每个环境有自己的计时器，独立触发
+   5. `min_step_count_between_reset` : 重置之间的最小步数，防止事件触发得太频繁
+
+
+
+`RewardTermCfg`
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 继承 `ManagerTermBaseCfg`
+3. 包含
+   1. `func: Callable[..., torch.Tensor]` : 返回奖励信号，float tensor shape `(num_envs,)`
+   2. `weight`
+
+
+`TerminationTermCfg` : 可以在 `TerminationsCfg` 中 配置 多个，然后 逻辑OR 所有的终止信号
+1. 位于 `source/isaaclab/isaaclab/managers/manager_term_cfg.py`
+2. 继承 `ManagerTermBaseCfg`
+3. 包含
+   1. `func: Callable[..., torch.Tensor]` : 返回终止信号，bool tensor shape `(num_envs,)`
+   2. `time_out` : 用于 有固定时间限制 的任务
+
 
 ---
 
 # Unitree_RL_Lab
+
+也同样使用了 自动导入魔法
+1. 在 `source/unitree_rl_lab/unitree_rl_lab/tasks/__init__.py` 调用了 `import_packages`
+2. 会在 `scripts/rsl_rl/train.py` 执行 `import unitree_rl_lab.tasks`
 
 
 `unitree_rl_lab.sh`
 1. `-i|--install`
    1. 初始化 Git Large File Storage (LFS)
    2. 可编辑模式安装 `pip install -e` (`-e`，editable mode)，任何修改都会立即生效，不需要重新运行安装命令
-   3. `_ut_setup_conda_env` : 配置 Conda 环境的自动启动脚本
-   4. `activate-global-python-argcomplete` : 启用 Python 命令行参数自动补全功能
+   3. 使用 **source** 目录，强制你必须通过 `pip install -e .` 来 安装包 才能 import，确保了开发环境和最终用户环境的一致性
+      1. pip 会先看 `pyproject.toml` 知道要用 setuptools，然后 setuptools 会执行 `setup.py` 来完成具体的安装工作
+      2. 生成 `.egg-info` 包含了包的 元数据(Metadata)，eg : 依赖列表、安装路径映射、入口点
+   4. `_ut_setup_conda_env` : 配置 Conda 环境的自动启动脚本
+   5. `activate-global-python-argcomplete` : 启用 Python 命令行参数自动补全功能
 2. `-l|--list`  : `scripts/list_envs.py`
 3. `-p|--play`  : `scripts/rsl_rl/play.py`
 4. `-t|--train` : `scripts/rsl_rl/train.py`
 5. `$@` : 传递给当前脚本的所有参数列表 (`shift` 所有参数向左移一位，丢弃原来的 `$1`)
 
 
-articulation cfg : `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`
+
+
 
 register 到 gymnasium : `source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/__init__.py`
 1. 训练/推理 环境配置 velocity_env_cfg : `source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py`
 2. 算法配置 rsl_rl_ppo_cfg : `source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/agents/rsl_rl_ppo_cfg.py`
+
+
+
+机器人资产配置 `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`
+1. 定义 `UnitreeArticulationCfg`，在 `ArticulationCfg` 基础上 额外增加了 两个属性
+   1. `joint_sdk_names` : 列表，存储关节名称，定义关节顺序，simulator中的顺序 可能和 真机的控制指令的顺序 不同
+   2. `soft_joint_pos_limit_factor` : 软限位因子，将实际可用的关节范围限制在物理范围的 factor 以内
+
+
+`UnitreeActuatorCfg`
+1. 继承 `DelayedPDActuatorCfg`
+2. 包含
+   1. `class_type: type = UnitreeActuator`
+      1. X1 : 额定最大转速，rad/s，全扭矩下的最大速度，拐点，在这个速度之前，电机可以输出最大扭矩 Y1
+      2. X2 : 空载最大转速，rad/s，空载速度
+      3. Y1 : N·m，同向 峰值扭矩
+      4. Y2 : N·m，反向 峰值扭矩，反向扭矩通常比同向扭矩更高
+      5. Fs : 库仑摩擦力矩
+      6. Fd : 粘滞阻尼系数
+      7. Va : rad/s，摩擦完全激活的速度阈值
+         1. 速度远小于 Va，摩擦力近似线性增长
+         2. 速度远大于 Va，摩擦力趋近于常数 Fs
+   2. 曲线图
+      ```
+               Torque Limit, N·m
+                  ^
+      Y2──────────|
+                  |──────────────Y1
+                  |              │\
+                  |              │ \
+                  |              │  \
+                  |              |   \
+      ------------+--------------|------> velocity: rad/s
+                  0             X1   X2
+      ```
+   3. 摩擦损耗公式
+      1. $\tau_f = \tau_c \cdot \text{sgn}(\dot{q}) + b\dot{q}$
+         1. 库伦摩擦项 : $\tau_c \cdot \text{sgn}(\dot{q})$，与速度无关，只取决于方向，大小是常数，在速度为 0 时发生不连续跳变
+         2. 粘滞阻尼项 : $b\dot{q}$，随速度线性增加
+      2. $\tau_f \approx F_s \cdot \tanh\left(\frac{\dot{q}}{V_a}\right) + F_d \cdot \dot{q}$
+         1. $F_s$ : static friction，对应理论公式中的 库伦摩擦力矩 $\tau_c$
+         2. $F_d$ : dynamic friction，对应理论公式中的 粘滞阻尼系数 $b$
+         3. $V_a$ : 激活速度，activation velocity，**越小越阶跃，越大越平滑**
+
+
+
+
+
+
+Manager-Based Env
+1. **SceneManager** (RobotSceneCfg)
+   1. terrain
+   2. robots
+   3. sensors
+      1. RayCaster
+         1. 指定了传感器挂载的父级 `Prim`
+         2. `RobotEnvCfg.__post_init__` 中，设置了它的更新频率
+         3. `ObservationsCfg.CriticCfg` 观测中，被注释
+      2. ContactSensor :
+   4. lights
+2. **ObservationManager** (ObservationsCfg)
+3. **ActionManager** (ActionsCfg)
+4. **EventManager** (EventCfg)
+5. **RewardManager** (RewardsCfg)
+6. **TerminationManager** (TerminationsCfg)
+   1. time_out 超时
+   2. base_height 基座高度过低(摔倒)
+   3. bad_orientation 姿态异常
+
+
+那么
+
+CommandsCfg
+
+CurriculumCfg
+1. terrain_levels 地形难度
+   1. 来自于 Isaac Lab 的官方库 : `isaaclab_tasks.manager_based.locomotion.velocity.mdp`
+2. lin_vel_cmd_levels 线速度指令
+   1. 在 `source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/curriculums.py` 文件中
+
+RobotEnvCfg
+
+
 

@@ -14,3 +14,11 @@ Skill 和 MCP 分工
 
 **以文档定义能力**
 
+
+
+# Cursor Skills
+
+`.cursor/rules`
+
+
+

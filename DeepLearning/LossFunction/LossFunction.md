@@ -4,6 +4,7 @@
 
 - [Loss Function](#loss-function)
   - [Table of Contents](#table-of-contents)
+- [Huber Loss](#huber-loss)
 - [Charbonnier Loss](#charbonnier-loss)
 - [PSNR (Peak Signal-to-Noise Ratio) 峰值信噪比](#psnr-peak-signal-to-noise-ratio-峰值信噪比)
 - [SSIM (Structural Similarity Index Measure) 结构相似性指数](#ssim-structural-similarity-index-measure-结构相似性指数)
@@ -17,19 +18,32 @@
 
 ---
 
+# Huber Loss
 
+$$L_{\text{Huber}}(x) =
+\begin{cases}
+   \frac{1}{2}x^2                   & ,\text{if } |a| \leq \delta \\
+   \delta |x| - \frac{1}{2}\delta^2  & ,\text{if } |a| > \delta
+\end{cases}$$
+
+在误差较小时 表现得像 **MSE**，在误差较大时 表现得像 **MAE**
+
+<img src="Pics/lf002.png" width=500>
+
+
+---
 
 
 # Charbonnier Loss
 
-用 Charbonnier Loss来近似 L1 Loss
-
-<img src="Pics/lf001.png" width=500>
-
-$Loss_{charbonnier}(x, y) = \sqrt{(x - y)^2 + \epsilon^2}$
+$$L_{\text{Charbonnier}}(x, y) = \sqrt{(x - y)^2 + \epsilon^2}$$
 1. $x$ : 预测值
 2. $y$ : 真实值
 3. $\epsilon$ : 很小的常数，保证函数的连续可微性，$10^{-6} \sim 10^{-3}$
+
+用 Charbonnier Loss来近似 L1 Loss
+
+<img src="Pics/lf001.png" width=500>
 
 结合 L1 Loss 的 鲁棒性 & L2 Loss 的 平滑性
 
