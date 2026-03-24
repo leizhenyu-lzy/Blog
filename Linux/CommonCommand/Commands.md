@@ -9,6 +9,7 @@
 - [内存 (`free`)](#内存-free)
 - [存储 (`fdisk / gdisk / parted` \& `mkfs` \& `blkid`)](#存储-fdisk--gdisk--parted--mkfs--blkid)
 - [挂载 (`lsblk` \& `mount` \& `umount`)](#挂载-lsblk--mount--umount)
+- [文件同步与传输 (`cp` \& `scp` \& `rsync`)](#文件同步与传输-cp--scp--rsync)
 - [权限修改 (`chmod` \& `chown`)](#权限修改-chmod--chown)
 
 ---
@@ -245,6 +246,32 @@
 
 `/etc/fstab`
 
+
+---
+
+# 文件同步与传输 (`cp` & `scp` & `rsync`)
+
+`rsync` (Remote Sync) : 高效同步 文件 / 目录，默认只传输差异部分，常用于 本地备份 / 目录镜像 / 远程传输
+1. **核心特点**
+   1. 增量同步 : 只传输变化的部分，通常比 `cp` / `scp` 更高效
+   2. 可保留元数据 : 权限 / 时间戳 / 符号链接 / 所有者 / 组
+   3. 本地 和 远程 都能用 : 既能同步本机目录，也能通过 SSH 同步到远程主机
+2. **常用选项**
+   1. `-a` : archive，归档模式，常用组合，等价于 `-rlptgoD`，递归并尽量保留文件属性
+   2. `-v` : verbose，显示详细过程
+   3. `-h` : human-readable，以易读方式显示大小
+   4. `-n` / `--dry-run` : 试运行 / 预览，只显示将要执行的操作，不真正修改文件
+   5. `--progress` : 显示传输进度
+   6. `--delete` : 让目标目录删除 源目录中已不存在的文件，保持镜像一致
+   7. `-z` : compress，传输时压缩数据，适合远程传输或低带宽网络
+3. **`rsync` 对于 路径末尾 `/` 很敏感**，`cp` 通常没有这个区别
+   1. `rsync -av src/ dst/` : 同步 `src` 目录中的内容 到 `dst/`，不会多一级 `src` 目录
+   2. `rsync -av src dst/`  : 会把 `src` 这个目录本身 复制到 `dst/` 中 (多一级 `src` 目录)
+   3. `rsync -av src/ dst`  : 无论 `dst` 存不存在，都是 把 `src` 里面的内容放进 dst 里，不会多一级 src 目录，`dst` 存在就直接放，不存在就先创建再放
+   4. `rsync -av src dst`   : 如果 `dst` 不存在，就创建 `dst` 作为 `src` 的拷贝；如果 `dst` 已存在，则结果类似 `dst/src/`
+4. **使用建议**
+   1. 删除类同步前，优先先跑一次 `--dry-run`
+   2. 如果是跨机器传输，通常优先用 `rsync over SSH`，比裸 `scp` 更适合同步场景
 
 ---
 

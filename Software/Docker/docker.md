@@ -6,23 +6,30 @@
 
 [Docker - Docs](https://docs.docker.com/)
 
-Products
-1. Docker Desktop
-   1. Docker 引擎
-   2. Docker CLI - 命令行工具，用于与 Docker 交互
-   3. Docker Compose
-   4. Kubernetes
-2. Docker Hub
-   1. 公共镜像库，包含了官方镜像和社区贡献的镜像
-   2. 允许用户创建和管理私有镜像库
-   3. 提供镜像的版本控制和访问控制
-3. Docker Scout
-   1. 分析和可视化工具
-4. Docker Build Cloud
-   1. 云端的构建服务，用于在云环境中构建 Docker 镜像
-
-
 ![](Pics/docker022.png)
+
+## 核心组件一览 (Engine / Compose / Swarm / K8s)
+
+**Docker Engine**
+1. 单机上的容器运行时（含 `dockerd`），负责拉镜像、起停容器、管网络与卷；`docker` 命令最终由它执行
+2. 典型场景 : 本机开发、单容器跑应用
+
+**Docker Compose**
+1. 用一份 YAML 描述**多台容器**（服务、网络、卷），一条命令起/停**整套**应用栈
+2. 典型场景 : 本地多服务联调、单机一键部署
+
+**Docker Swarm**
+1. Docker 自带的**多机集群**编排：把多台宿主机组成 Swarm，在集群里部署、扩缩服务
+2. 典型场景 : 中小规模集群、想沿用 Docker CLI 心智时
+
+**Kubernetes (K8s)**
+1. 业界主流的**大规模**容器编排：跨节点调度、自愈、滚动发布、服务发现与负载均衡等
+2. 典型场景 : 生产环境、云原生、复杂微服务
+
+**关系**
+1. Engine 是「能跑容器」的底座
+2. Compose 多在**单节点**上编排多容
+3. Swarm / K8s 解决**多节点集群**上的编排与运维 (K8s 生态与采用面更广)
 
 ---
 
@@ -30,7 +37,9 @@ Products
 
 
 - [Docker](#docker)
+  - [核心组件一览 (Engine / Compose / Swarm / K8s)](#核心组件一览-engine--compose--swarm--k8s)
   - [Table of Contents](#table-of-contents)
+- [Docker CheatSheet](#docker-cheatsheet)
 - [Docker 入门](#docker-入门)
   - [00. Docker 简介](#00-docker-简介)
   - [01. Docker 和 虚拟机 的区别](#01-docker-和-虚拟机-的区别)
@@ -64,6 +73,21 @@ Products
   - [Docker Hub nvidia/cuda Images](#docker-hub-nvidiacuda-images)
   - [Running a Sample Workload](#running-a-sample-workload)
 - [Docker 三大版本](#docker-三大版本)
+
+---
+
+# Docker CheatSheet
+
+FROM   : 指定 基础镜像，新镜像从这里开始叠层
+AS     : 跟在 FROM 后面，给当前阶段起名(多阶段构建)
+ARG    : **构建时变量**，只在 docker build 时有效，可 `--build-arg` 传入
+ENV    : 镜像/容器里的 **环境变量**，运行时一般还在
+RUN    : 执行一条 shell 命令(装包、编译等)，每层 产生 新镜像层
+COPY   : 把 构建上下文里的文件 拷进 镜像
+WORKDIR: 设置后面 RUN/CMD 等命令的当前工作目录(类似 `cd`)
+USER   : 后面指令用哪个 用户运行
+SHELL  : 指定 RUN 用什么 shell 执行 (eg : `["/bin/bash", "-c"]`)
+
 
 ---
 
@@ -124,7 +148,7 @@ Products
 
 **容器 与 宿主机的操作系统内核 共享**，因此不能直接在 Ubuntu 宿主机上运行为 Windows 操作系统设计的 Docker 镜像
 
-Ubuntu 镜像**包含了独立于宿主机的 Ubuntu 操作系统的用户空间**，但**并不包含操作系统内核**。包含内容如下:
+Ubuntu 镜像**包含了独立于宿主机的 Ubuntu 操作系统的 用户空间**，但**并不包含操作 系统内核**。包含内容如下:
 1. 文件系统 - `/bin`, `/lib`, `/etc`, `/usr`
 2. 命令行工具 - `bash`, `ls`, `cp`, `mv`, `grep`
 3. 系统库 - GNU C 库(glibc) 等
@@ -340,6 +364,13 @@ docker-compose.yaml 配置文件 将容器组合，形成项目
 ```bash
 docker compose up
 ```
+
+`x-` : Compose 约定为 extension field (扩展字段)
+
+`&` : (Anchor : 给后面一段内容起个名字)
+
+`*` : (Alias : 引用之前用 `&` 存好的)
+
 
 ## 08. VPS & ECS
 

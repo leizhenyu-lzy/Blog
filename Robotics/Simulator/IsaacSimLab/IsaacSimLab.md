@@ -29,8 +29,13 @@
   - [Core Concepts](#core-concepts)
     - [Actuators](#actuators)
     - [Sensors](#sensors)
+    - [Managers](#managers)
+    - [Markers](#markers)
+    - [Scene](#scene)
+    - [Terrains](#terrains)
   - [Reinforcement Learning](#reinforcement-learning)
   - [Imitation Learning](#imitation-learning)
+  - [修饰器 Decorator](#修饰器-decorator)
 - [Unitree\_RL\_Lab](#unitree_rl_lab)
 
 ---
@@ -144,7 +149,7 @@ Deprecated
 ### Workstation Installation
 
 workstation & docker 区别
-1. docker 版本 不含 Nucleus，默认直接从云端拉取资产
+1. docker 版本 不含 Nucleus，默认直接从云端拉取资产 (RL 训练也不需要)
 2. 推荐 root folder
    1. workstation package : `~/isaacsim` / `C:\isaacsim`
    2. docker container    : `/isaac-sim`
@@ -207,7 +212,6 @@ docker run --name isaac-sim \  # --name 给 container 起名
     -v ~/docker/isaac-sim/pkg                : /isaac-sim/.local/share/ov/pkg      :rw \ #
     # 指定容器内以 ID 为 1234 的 用户(User) & 组(Group) 身份运行，对应之前的 sudo chown -R 1234:1234 ~/docker/
     -u 1234:1234 \ #
-    isaac-sim
     nvcr.io/nvidia/isaac-sim:5.1.0  # image 地址
 
 # Check Compatibility
@@ -319,8 +323,60 @@ Asset Caching
 1. [Hub Workstation Cache](https://docs.omniverse.nvidia.com/utilities/latest/cache/hub-workstation.html)
 2. Nucleus : **Deprecated**
 
+---
+
 ## Container/Cloud Deployment
 
+[Container Deployment](https://isaac-sim.github.io/IsaacLab/main/source/deployment/index.html)
+
+个人笔记
+1. Container Setup (Prerequisites) 参考 [NvidiaContainerToolkit 安装 - 个人笔记](../../../Software/Docker/NvidiaContainerToolkit.md)
+2. Docker 相关说明 [Docker 个人笔记](../../../Software/Docker/docker.md)
+
+
+查看 **Docker Engine** & **Docker Compose**(管理多容器协作) 版本 : `docker version` & `docker compose version`
+
+docker 文件夹
+1. `Dockerfile.base`
+   1. 定义 IsaacLab 基础镜像 如何从 NVIDIA IsaacSim 官方镜像 一层层 RUN 出来
+2. `docker-compose.yaml`
+   1. 定义 services / 构建镜像方法 / 容器配置参数(volumes / 环境变量 / GPU / network_mode 等)
+      1. 通过 mount，把 宿主机源码 映射到 容器内，允许 直接 在宿主机(Host) 修改 Isaac Lab 代码 并 立即生效
+   2. 其中 `services` 中的 `build/dockerfile` 指定 `Dockerfile.base`
+   3. 其中 `services` 中的 `env_file` 指定 `.env.base`
+   4. **services** : `isaac-lab-base` & `isaac-lab-ros2`
+   5. `x-` : Compose 约定为 extension field (扩展字段)
+   6. `&` : (Anchor : 给后面一段内容起个名字)
+   7. `*` : (Alias : 引用之前用 `&` 存好的)
+3. `.env.base` : 给 Compose 提供 默认环境变量
+4. `container.py` : 命令行封装，调 `utils` 中的工具 配置 & 构建 镜像，启动 & 交互 容器
+5. `container.sh` : **Deprecated**，薄包装 调用同目录下的 `container.py`，参数直接转发
+6. `x11.yaml`
+7. `utils` 文件夹
+   1. `docker/utils/container_interface.py`
+      1. `container.py` 各个功能的 具体实现
+      2. 定义 `ContainerInterface` 类
+   2. `x11_utils.py`
+      1. 在 `container.py` 里，根据 `build/start / enter / stop` 按需 调用
+   3. `state_file.py`
+8. `cluster` 文件夹 : 把 Isaac Lab 从本机 Docker 工作流接到集群 - TODO
+
+
+
+IsaacLab 提供工具 `docker/container.py`
+1. 功能
+   1. `build`  : 仅 构建镜像，不会 启动容器
+   2. `start`  : 构建镜像 & 启动容器(后台中，detached mode)
+   3. `enter`  : 进入 已有 容器的 bash，退出不会 关闭容器
+   4. `stop`   : 关闭 & 删除 容器
+   5. `copy`   : 提取数据，`logs` & `data_storage` & `docs/_build`，拷贝到宿主机的 `docker/artifacts` 目录
+   6. `config` : 检查配置，输出最终生成的 `compose.yaml`文件
+
+
+
+
+
+---
 
 ## Architecture
 
@@ -329,6 +385,8 @@ Asset Caching
 2. **Asset Input**
    1. URDF / MJCF XML / USD
    2. URDF 导入后，每个 link 都会变成一个 Xform(变换节点) 或 Rigid Body(刚体节点)
+      1. Xform 是 USD 的 Prim Type，只有 Transform 没有 Geometry，可以作为一个大层级的 root，整体平移一份场景
+      2. <img src="Pics/sim003.png" width=400>
 3. **Configuration**
    1. Assets
       1. robot & environment objects & sensors(data streams)
@@ -387,7 +445,7 @@ Asset Caching
 
 ---
 
-自动导入魔法
+自动导入 Magic
 1. `source/isaaclab_tasks/isaaclab_tasks/__init__.py`
    1. `import_packages()` 递归地遍历当前包下的所有子目录和文件，并自动导入它们
    2. input
@@ -484,6 +542,35 @@ IsaacGym 中的 command
 
 ### Sensors
 
+Sensor 的 `update_period` (多久标记为 `_is_outdated`)
+1. `=0` : 每个物理步 都允许更新，仍受 lazy 影响
+2. `>0` : 累积时间到了 才标记为 `outdated`，才需要重算
+
+InteractiveScene 的 `lazy_sensor_update` (决定 `_is_outdated` 后，是 `scene.update()` 时更新，还是 `sensor.data()` 时更新)
+
+
+sensor_base_cfg.py
+
+sensor_base.py
+
+
+
+在 `InteractiveScene` 的 `update()` 中 配置了 `force_recompute = not self.cfg.lazy_sensor_update`
+
+
+timestep
+1. `_timestamp` : 各个 envs 整体时间戳
+2. `_timestamp_last_update` : 上次更新时间戳
+
+`SensorBase`
+1. 成员函数
+   1. `data()` : 读取 data，显式 `_update_outdated_buffers()`，更新频率不会高于 `update_period`，因为不是直接调用 `_update_buffers_impl()`，而是调用 `_update_outdated_buffers()` 兜底，只有 `outdated_env_ids` 才会更新
+   2. `update()` : **步进** `_timestamp`，根据 `_timestamp` & `_timestamp_last_update` & `update_period` 判断 `_is_outdated`，如果 `force_recompute = not self.cfg.lazy_sensor_update` 就 调用 `_update_outdated_buffers()` (否则只会在 `data()` 调用)
+   3. `_update_outdated_buffers()` : 根据 `_is_outdated` 计算 `outdated_env_ids`，调用 ==☆==`_update_buffers_impl()`，调整 `_timestamp_last_update` & `_is_outdated`
+   4. `_update_buffers_impl()` : **==☆== 真正 负责 读取/计算 数据 & 更新 buffer**，不考虑 outdated
+
+
+
 
 **Camera**
 1. [Camera - IsaacLab Docs](https://isaac-sim.github.io/IsaacLab/main/source/overview/core-concepts/sensors/camera.html#tiled-rendering)
@@ -549,6 +636,138 @@ IsaacGym 中的 command
    6. `debug_vis` : 在 GUI 中显示 射线点
 
 
+**FrameTransformer**
+
+
+**IMU**
+
+
+---
+
+### Managers
+
+位于 `source/isaaclab/isaaclab/managers`
+
+Scene Entity
+
+Manager Base
+
+Observation Manager
+
+Action Manager
+
+Event Manager
+
+Command Manager
+
+Reward Manager
+
+Termination Manager
+
+Curriculum Manager
+
+Recorder Manager
+
+
+---
+
+### Markers
+
+
+
+
+---
+
+### Scene
+
+scene : 实体的集合(terrain, articulations, sensors, lights, etc.)，能统一管理场景实体，并且支持按 num_envs 去 clone
+
+位于 `source/isaaclab/isaaclab/scene` (目前只有 `InteractiveScene` & `InteractiveSceneCfg`)，用户需要 继承 `InteractiveSceneCfg`
+
+
+`InteractiveScene`
+1. 核心功能
+   1. Config Parsing : 解析 用户继承(inherit) 的 `InteractiveSceneCfg`
+   2. Entities Cloning : 基于 num_envs
+      1. Terrain类 不会 clone，放在 `InteractiveScene` 里面管理，计算出 robot 出生点 origins，配合 sensors，传递 物理属性
+   3. Entities Grouping : 按照 type 把 实体 分组到不同 categories
+   4. Unified Operation : 提供方法 统一操作 各个环境的 entities (eg : reset buffer, write buffer, update buffer from sim)
+2. 不同 modules 有 不同 managers 对 scene 做不同操作 (compute obs based on state, randomization, apply action)
+3. 成员函数
+   1. `__init__()`
+      1. 校验 `InteractiveSceneCfg` (调用 `@configclass` 的 `validate()`)
+      2. 绑定 stage & `SimulationContext`
+         1. `SimulationContext.instance()` : SimulationContext 是 **单例(singleton)**，`instance` 返回全局唯一的仿真上下文
+      3. 创建 `isaacsim.core.cloner` 中的 `GridCloner`，生成 路径，创建 源环境 `Xform`
+      4. 调用 `_add_entities_from_cfg()` & `clone_environments()` & `filter_collisions()`
+   2. `clone_environments()` : 以 `/World/envs/env_0` 为模板，clone 其余
+   3. `filter_collisions()` : 处理 fallback 情况，调用 cloner 的 `filter_collisions()`
+      1. fallback 后，才能 在 IsaacSim GUI 中 看到
+      2. <img src="Pics/sim002.png" width=400>
+      3. fallback 情况
+         1. GPU + replicate_physics=False + filter_collisions=True
+         2. CPU
+      4. `replicate_physics` 会 `enable_env_ids`
+   4. `reset()` : 调用 各个 assets & sensors 的 `reset(env_ids)`，清内部缓冲、计数
+   5. `write_data_to_sim()` : 调用 各个 assets 的 `write_data_to_sim()`
+   6. `update()` : 对 assets(articulation) & sensors 调用 `update(dt)`，sensor 有 `force_compute` 特殊处理
+   7. `reset_to()` : 用 `get_state` 同结构 的 dict，把场景设到指定状态，不负责 sensor，调用一次 `write_data_to_sim()`
+   8. `get_state()` : 从 sim 读当前 state (articulation + deformable_object + rigid_object + gripper 的 **部分属性**)，不负责 sensor，组成一个 dict，有 `is_relative` 控制 相对位置
+   9. `keys()` : return 场景里 所有可访问实体名的 list (terrain / _articulations / _sensors / etc)
+   10. `_is_scene_setup_from_cfg()` : 判断 cfg 除了 `InteractiveSceneCfg` 自带字段 外，是否 还有用户定义的实体配置
+   11. `_add_entities_from_cfg()` : 遍历 cfg 的属性，把 `{ENV_REGEX_NS}` 填进带 prim_path 的配置，按类型创建 Terrain / Assets / Sensors / Extras，收集 `collision_group == -1` 的 路径到 `_global_prim_paths`
+
+
+
+`InteractiveSceneCfg`
+1. 包含
+   1. `num_envs` & `env_spacing`
+   2. `lazy_sensor_update` : 真正访问 sensor 数据时才更新
+   3. `replicate_physics` : env 的 物理结构 复用/复制 同样的 physics schema
+   4. `filter_collisions` : 不同并行环境彼此不会碰撞，跨 env 会影响 Contact Sensor，不会影响 RayCast Sensor (不靠 PhysX)
+   5. `clone_in_fabric` : 用 Fabric 方式克隆(更高效)，需要配合 replicated_physics
+
+
+
+
+
+
+---
+
+### Terrains
+
+位于 `source/isaaclab/isaaclab/terrains`
+
+terrain 在 IsaacLab 里还有一个额外职责，是帮 scene 计算 envs 的 origins
+
+**Terrain Generator** : 根据 sub-terrain 的 config 创建 **trimesh** object，并且包含 origins
+1. `TerrainGenerator`
+2. `TerrainGeneratorCfg`
+
+
+**Terrain Importer**  : 以 prim object 方式 加载地形 到 simulator
+1. `TerrainImporter`
+   1. 可以 脱离 `InteractiveScene` 单独使用，就需要 `TerrainImporterCfg` 有自己的 num_envs & env_spacing
+2. `TerrainImporterCfg`
+   1. 包含
+      1. `class_type` & `prim_path` & `debug_vis`
+      2. `collision_group: int = -1` : 地面 / 公用障碍物 设为 -1 (Global)
+      3. `num_envs` : 需要为多少个环境准备 origin，会被 `InteractiveSceneCfg.num_envs` 覆盖
+      4. `env_spacing` : env 原点间距，不同 env 的 robot 不要挨太近、互相重叠，会被 `InteractiveSceneCfg.env_spacing` 覆盖
+      5. `terrain_type: Literal["generator", "plane", "usd"] = "generator"` :
+      6. `terrain_generator: TerrainGeneratorCfg` : 配合 terrain_type = generator
+      7. `use_terrain_origins` : 使用 生成地形时自带的子地形 origin 来给各个环境放置出生点，配合 terrain_type = generator
+      8. `visual_material` & `physics_material` : 视觉 & 物理 材料
+      9. `max_init_terrain_level`
+   2. 对于 `class InteractiveScene`，在 `_add_entities_from_cfg` 中，有 对于 `TerrainImporterCfg` 的 num_envs & env_spacing 的 override
+   3.
+
+
+
+
+
+
+
 
 ---
 
@@ -588,12 +807,15 @@ IsaacGym 中的 command
 
 
 
+## 修饰器 Decorator
+
 `@configclass`
 1. 实现在 `source/isaaclab/isaaclab/utils/configclass.py`
 2. 功能
    1. 自动生成 `__init__` 等方法，类似 `@dataclass`
    2. 字典 转换/加载 `to_dict` & `from_dict`
    3. 递归处理
+3. `validate() / _validate()` : 递归检查整个配置对象里是否还有 未填的必填项
 
 
 `@clone`
@@ -606,6 +828,23 @@ IsaacGym 中的 command
    2. 可能需要 先用 `GridCloner` 之类的工具把坑位 占好
 5. 生成第一个 prim : 利用 `func` 函数，并且配置 visible & semantic_tags & activate_contact_sensors
 6. 克隆剩余 : 不再重新加载 USD 文件，直接使用 Isaac Sim 的 Cloner API，克隆第一个生成的资产
+
+
+
+`@hydra_task_config`
+1. 位于 `source/isaaclab_tasks/isaaclab_tasks/utils/hydra.py`
+2.
+
+
+
+
+
+
+
+
+
+
+
 
 
 `AssetBase`
@@ -625,6 +864,7 @@ IsaacGym 中的 command
       1. `0`  : **local**  (和 同一个 env 的 其他 assets 碰撞)，RL 训练中最常用的设置，防止环境 A 的机器人撞到环境 B 的墙
       2. `-1` : **global** (和 scene 中的 全部 assets 碰撞)，通常只用于静态的公共物体，比如地面
       3. **P.S.** : Sensor 的可见性 & Collision 的隔离性 保持一致
+      4. `Literal` : Python 类型注解里的 字面量类型，只支持几个约定好的取值，不要求 必须是 同一种类型
    6. `debug_vis: bool` : 可视化开关
 
 
