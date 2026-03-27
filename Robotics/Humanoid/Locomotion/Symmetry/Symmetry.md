@@ -28,6 +28,8 @@ integrate symmetry **inductive bias(归纳偏置)**
 3. PHASE (Phase Mirroring) : 相位镜像法，将步态周期 分为两半，前半周 学习原始策略，后半周 直接使用镜像后的策略
 4. NET (Symmetric Network) : 对称网络法，通过 网络结构设计，使 模型 在数学上 保证 对于镜像输入 产生镜像输出
 
+
+
 ## 02 - Related Work
 
 
