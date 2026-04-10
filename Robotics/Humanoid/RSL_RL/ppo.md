@@ -61,25 +61,29 @@ PyTorch 的强化学习算法实现
 2. 如果子类漏掉实现 会抛 `TypeError: Can't instantiate abstract class`
 
 `.detach()`
-1. 切断 张量 & 计算图(computational graph) 之间的关联
-2. 不再保留梯度信息，并且在随后反向传播时 不会回传梯度
-3. 返回一个 新的张量 与 原张量 **共享数据**
-
-`with torch.no_grad()` : 仅禁用梯度计算，但仍然保留 autograd 引擎的部分功能，保留其他训练状态，不能 backward
-1. 可以在内部创建新的张量
-2. 仍然可以与需要梯度的张量进行某些操作
-3. 保留张量的版本追踪
-
-`with torch.inference_mode()` : 最严格的推理模式，完全禁用 autograd 系统，性能更好、内存开销更小，不能 backward
-1. 完全不允许梯度相关的操作
-2. 创建的张量完全脱离 autograd 系统
-3. 不进行版本追踪，速度更快
-4. 纯推理场景(生产环境部署)，确定完全不需要任何梯度计算
-5. PyTorch 1.9+ 才引入
+1. 返回 一个 **共享数据** 但没有 **grad_fn** 的新 tensor
+2. 切断 张量 & 计算图(computational graph) 之间的关联
+3. 不再保留梯度信息，并且在随后反向传播时 不会回传梯度
 
 
+`requires_grad = False` : 告诉 PyTorch 这些参数永远不需要梯度，可以作为输入 后续参与梯度计算
 
-`model.eval()` : 切换模型的行为模式 dropout/batchnorm，但不影响梯度计算，可以 backward
+`with torch.no_grad()` : 仅禁用梯度计算(临时)，但仍然保留 autograd 引擎的部分功能，保留其他训练状态，不能 backward
+1. 不构建计算图
+2. 返回的 tensor 是 普通 tensor，可以后续参与梯度计算
+3. 没有 grad_fn，自身不能反向传播，但 能 作为输入 参与梯度计算
+
+`with torch.inference_mode()` : 最严格的推理模式(临时)，完全禁用 autograd 系统，性能更好、内存开销更小，不能 backward
+1. 不构建计算图
+2. 返回的 tensor 标记为 **inference tensor**，不能再参与梯度计算(甚至 不能 作为输入 参与梯度计算)
+3. 纯 推理/采集数据，确定完全不需要任何梯度计算
+
+
+
+
+
+`model.eval()` : 切换模型的行为模式 (如 Dropout 停用、BatchNorm 用统计值而非当前 batch)，但不影响梯度计算，eval 模式下 forward 仍然会构建计算图，可以 backward
+
 
 `with` 内部的所有操作都受影响
 
@@ -453,3 +457,11 @@ rewbuffer
 3. 不管有没有摔倒，这 max_episode_length 步产生的 (State, Action, Reward, Next_State) 都会被存入 PPO 的训练缓冲区(Buffer) 里用于梯度下降
 4. 在训练后期(完美策略)，K 值会稳定在 满分 附近，一直 没摔倒，只会在每次 timeout 的时候 更新 rewbuffer
 
+
+
+
+
+Distribution 作用
+1. 采样动作 + 计算 log_prob(surrogate loss 核心(重要性采样))
+2. KL 散度自适应学习率
+3. 熵正则化，鼓励探索

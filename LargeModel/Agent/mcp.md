@@ -1,4 +1,4 @@
-MCP (Model Context Protocol)
+# MCP (Model Context Protocol)
 
 Anthropic 推出
 
@@ -32,3 +32,10 @@ MCP 的表现形式通常是一段 JSON 配置 或 轻量级的可执行程序
 1. 在 `config.json` 里加几行代码，指定 MCP Server 的路径
 
 todo
+
+
+
+
+
+
+

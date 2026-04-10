@@ -24,7 +24,9 @@
          3. loss 累计 若干 batch 的 loss 一起 backward，可以有 对于 grad_norm 的 clip，然后 清零 loss
          4. mean_behavior_loss 统计日志数值 不参与反向传播
       3. 清空 storage
-   5. `compute_returns()` : distill 不需要
+   5. `compute_returns()` : distill 不需要，直接 跳过
+      1. PPO : `rollout -> reward -> value -> returns/advantages -> policy/value loss -> update`
+      2. Distillation : `rollout -> teacher action labels -> behavior loss -> update`
    6. `construct_algorithm()`
       1. 根据 obs(`TensorDict`) & env(`VecEnv`) & 训练配置 cfg，把整个 `Distillation` 算法对象组装出来
       2. cfg 中 会配置 obs_groups，指定 需要的 observation sets (default 是 teacher & student)
@@ -32,6 +34,9 @@
       4. initialize teacher/student policy
          1. `init` 初始化 teacher & student model 时候，传入 `cfg["obs_groups"]` & `teacher/student`
          2. `get_latent()` 中 进行 **实际拼接**
+
+
+
 
 
 
@@ -63,6 +68,31 @@
 RND : Random Network Distillation，只在 PPO 里面用，distill 不用
 
 
-不兼容 RND & Symmetry(`ppo.py`)
+distill 不兼容 RND & Symmetry(`ppo.py`)
 
 
+
+`on_policy_runner.py` & `distill.py / ppo.py`(统称为 `alg.py`)
+1. runner 中的 `learn()`
+   1. 先 收集 第一次 初始 obs
+   2. 循环 num_learning_iterations 个 iters，每个 iteration
+      1. rollout 循环 num_steps_per_env 个 steps
+         1. 传入 obs，调用 `alg.act()` 得到 actions
+         2. 传入 actions，给环境 调用 `env.step()` 得到 obs & rewards & dones & extras
+         3. 传入 obs & rewards & dones & extras，调用 `alg.process_env_step()` 进行收尾，transition -> storage
+      2. rollout 后传入 obs(最新的)，调用 `alg.compute_returns()`
+   3. 调用 `alg.update()`
+   4. 记录 log & 保存 model
+2. alg 中的 `act()` : 记录关键信息 到 transition 中
+   1. actions : actor 网络 结果 + `stochastic_output=True`
+   2. values : critic 网络 结果
+   3. actions_log_prob : 当前 采样出来的动作，在 旧策略分布 下的对数概率，后续用于 **重要性采样**
+   4. distribution_params : 当前 actor 输出的动作分布参数 (`mean` & `std / log_std`)，不直接输出 action，而是先输出 动作分布的参数，再从分布采样 action
+3. alg 中的 `compute_returns()`
+   1. 在 rollout 结束后，计算 returns & advantage(GAE)，根据
+      1. storage 中的 rewards & dones & values
+      2. 最后一个时刻的 **value bootstrap** (最新 obs 送入 critic 网络)
+   2. GAE 会根据 dones 自动截断
+4. alg 中的 `update()`
+   1. epoch & batch : 通过 num_learning_epochs & num_mini_batches 控制，给 **generator** (就没有 epoch / batch 的概念了)
+   2. P.S. 第一个 batch 算的 actions_log_prob 和之前 transition->storage 的 old_actions_log_prob 一样，没有 `optimizer.step()` 过
