@@ -94,10 +94,12 @@
 1. 对于 convex function(下凸函数，开口向上，任意两点连线在函数上)
 2. <img src="Pics/convex002.png" width=400>
 3. 平均值的函数 ≤ 函数值的平均
-4. $f(\mathbb{E}[X]) \le \mathbb{E[f(X)]}$，对于 concave，不等号反向
-5. 使用 **数学归纳法** 证明
-   1. <img src="Pics/jensen001.png" width=700>
-   2. 先提取出 $\frac{1}{1-\lambda_{M+1}}$，方便进行数学归纳 ($\sum \eta_i = 1$)，后面再还原回 $\lambda$
-   3. <img src="Pics/jensen002.png" width=700>
+4. 期望的函数 ≤ 函数值的期望
+5. $f(\mathbb{E}[X]) \le \mathbb{E[f(X)]}$，对于 concave，不等号反向
+6. 使用 **数学归纳法** 证明
+   1. M = 1 显然成立，M = 2 由 下凸函数 定义 也成立
+   2. <img src="Pics/jensen001.png" width=700>
+   3. 先提取出 $\frac{1}{1-\lambda_{M+1}}$，方便进行数学归纳 ($\sum \eta_i = 1$)，后面再还原回 $\lambda$
+   4. <img src="Pics/jensen002.png" width=700>
 
 

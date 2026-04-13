@@ -3,7 +3,7 @@
 - [DDPM : Denoising Diffusion Probabilistic Model](#ddpm--denoising-diffusion-probabilistic-model)
 - [DDPM - RethinkFun](#ddpm---rethinkfun)
   - [直观理解](#直观理解)
-  - [技术细节](#技术细节)
+  - [技术细节(数学推导)](#技术细节数学推导)
 - [DDPM - YouTube](#ddpm---youtube)
 - [Diffusion Model - 李宏毅](#diffusion-model---李宏毅)
   - [浅谈 生成模型 Diffusion Model 原理](#浅谈-生成模型-diffusion-model-原理)
@@ -32,22 +32,24 @@
 4. 希望 网络学习 一步步 去噪声 denoising 过程
 5. 训练好网络后，随机生成 噪声数据，让模型 逐步去噪，生成清晰的图片
 
+==P.S.== : **两个 独立 高斯分布 随机变量之和 仍服从 高斯分布，均值 & 方差 等于 原来两个 高斯分布 均值 & 方差 之和**
+1. 两个 独立 随机变量 相加时，它们的方差直接相加 (标准差$\sigma$ 不能 直接相加)
+2. 独立的 高斯分布 具有 分布的可加性 (分布族对卷积运算是闭包)
+
 正向加噪
-1. <img src="Pics/rethinkfun002.png" width=600>
+1. ==加噪过程中，每个像素值都是独立的==，生成多维度噪声(形状和图片一致)
 2. **目标** : 使得 每个pixel的值 像是从 标准正态分布 中 采样 (简化反向过程的起点)
-   1. **==$q(x_T|x_0) \sim \mathcal{N}(0, I)$==**
-      1. 意味着最终的噪声 $x_T$ 几乎完全忘记了它最初来自的图像 $x_0$ 的信息，分布里已经没有 $x_0$ 的参数了，几乎与 $x_0$ 独立
-      2. 对于每一张 $x_0$，只要加噪步数 $T$ 跑完，其结果 $x_T$ 都会忘记自
-      3. 己的出身，统一变成标准正态分布的噪声
-      4. 由 全概率公式 可以得到 $q(x_T) = \mathcal{N}(x_T; 0, I)$
-         1. $$q(x_T) = \int \underbrace{q(x_T|x_0)}_{\text{条件概率}} \cdot \underbrace{q(x_0)}_{\text{原图分布}} \, dx_0$$
-         2. $\mathcal{N}(0, I)$ 里面没有 $x_0$，是常数项，提到积分号外面
-         3. $$q(x_T) = \mathcal{N}(x_T; 0, I) \cdot \underbrace{\int q(x_0) \, dx_0}_{=1}$$
-         4. 也就是 **==$x_T \sim \mathcal{N}(0,I)$==**
-   2. $q(x_0)$ : 世界上所有可能存在的真实图片的分布，$x_0$ 代表 **整个随机变量空间**
-   3. $q(x_T)$ : $q(x_0)$ 经过 $T$ 步加噪后的整体分布
-   4. $q(x_T|x_0)$ : 给定一张具体的图片 $x_0$，它在 $T$ 步之后变成什么样，$x_0$ 代表 **一个具体的值**
-3. ==加噪过程中，每个像素值都是独立的==，生成多维度噪声(形状和图片一致)
+   1. **终极目标** 其实是 $q(x_T) \sim \mathcal{N}(0, I)$，通过 在数学上 设定 $q(x_T|x_0) \sim \mathcal{N}(0, I)$ 来实现
+   2. $q(x_T)$ : 整个数据集经过 $T$ 步加噪后的 **整体分布**(边缘分布)
+   3. $q(x_T|x_0)$ : 给定一张具体的图片 $x_0$ 时，在第 $T$ 步的状态分布
+      1. 最终的噪声 $x_T$ 几乎完全忘记了它最初来自的图像 $x_0$ 的信息，分布里已经没有 $x_0$ 的参数了，几乎与 $x_0$ 独立
+   4. 桥梁 : 全概率公式(Law of Total Probability)
+      1. $$q(x_T) = \int q(x_T | x_0) q(x_0) dx_0$$
+      2. 如果 对于任意的 $x_0$，都有 $q(x_T|x_0) \approx \mathcal{N}(0, I)$
+      3. $$q(x_T) \approx \int \mathcal{N}(0, I) q(x_0) dx_0$$
+      4. 由于 $\mathcal{N}(0, I)$ 不包含任何关于 $x_0$ 的变量了，可以被提到积分号外面
+      5. $$q(x_T) \approx \mathcal{N}(0, I)$$
+3. <img src="Pics/rethinkfun002.png" width=600>
 4. **单步加噪**
    1. 从 标准正态分布中 采样 $\epsilon$，乘以 噪声强度 $\beta$，再加回 $x_0$ 得到 $x_1$，完成加噪过程
    2. 相当于从 以 $x_0$ 为均值 & $\beta$ 为标准差 的正态分布 中 采样
@@ -58,7 +60,7 @@
    1. <img src="Pics/rethinkfun003.png" width=600>
    2. 均值一直为 $x_0$，方差一直增大，无法实现最终 $x_T \sim \mathcal{N}(0,I)$
    3. **后期**，图像逐渐杂乱，如果希望达到同样的破坏效果，**应该加更大噪声**，而现在的噪声强度不变
-7. **DDPM 改进**
+7. **==DDPM 改进==**
    1. <img src="Pics/rethinkfun004.png" width=450>
    2. **人为定义不同噪声强度**，$\beta_1, \cdots, \beta_T$，并且用 $\alpha$ 替换，方便后续表示
       1. 其实 **加噪系数可以有不同的设置**，只要 $t \to \infty$ 时 $x_T \sim \mathcal{N}(0,I)$
@@ -71,18 +73,20 @@
 从 加噪过程 中 学习 去噪
 1. 正向加噪 完全通过 **计算 + 随机采样** 完成，**不需要模型参与**
 2. 反向去噪 需要 **神经网络** 学习
-3. 前向加噪 & 反向去噪 都是 **概率采样**
+3. 前向加噪 & 反向去噪 都是 **==概率采样==**
    1. 前向加噪过程 是 **马尔可夫链**，将数据 $x_{t-1}$ 转化为 $x_t$，每一步的转换都是一个有参数的高斯概率采样
       1. $$\underbrace{q(x_t|x_{t-1})}_{\text{条件概率}} = \mathcal{N}(x_t; \underbrace{\sqrt{\alpha_t}x_{t-1}}_{\text{均值}}, \underbrace{(1-\alpha_t)I}_{\text{方差}})$$
    2. 反向去噪过程 模型学习
-      1. 对 模糊的图片，可以去掉的噪声有很多可能(对应着多个可能的清晰版本)，多对多的关系，不同噪声的概率不同，随机选取一个噪声去除
-      2. 去噪有随机性，因此 DDPM 生成的图片 有 多样性
+      1. 对 模糊的图片，可去掉的噪声有很多可能(对应着多个可能的清晰版本)，**多对多的关系**，不同噪声的概率不同，随机选取一个噪声去除
+      2. 去噪 有随机性，因此 DDPM 生成的图片 有 **多样性**
       3. 从已知的 $\mathcal{N}(0, I)$ 采样 $x_T$ 作为起点，然后迭代地执行概率采样，每次都是从 正态分布 中 采样 更清晰的 去噪图片
       4. $$x_{t-1} \sim p_\theta(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t))$$
-4. 贝叶斯公式
-   1. <img src="Pics/rethinkfun006.png" width=800>
-   2. 无法直接使用，因为 无法计算 $q(x_t)$ & $q(x_{t-1})$ 的 边缘概率密度函数 (**所有可能的原始图片下**，通过 n 步加噪，达到它的概率)
-   3. 条件贝叶斯定理(**Conditional Bayes' Theorem**) : $$ P(A|B, C) = \frac{P(B|A, C) P(A|C)}{P(B|C)}$$
+4. **贝叶斯公式**(连接 加噪 & 去噪)
+   1. 希望得到 去噪概率密度函数 $q(x_{t-1} | x_t)$
+   2. <img src="Pics/rethinkfun006.png" width=800>
+   3. 无法直接使用，因为 无法计算 $q(x_t)$ & $q(x_{t-1})$ 的 **边缘概率密度函数** (**所有可能的原始图片下**，通过 n 步加噪，达到它的概率)
+   4. 只能处理 **有 确定图片 $x_0$ 的情况**
+   5. 条件贝叶斯定理(**Conditional Bayes' Theorem**) : $$ P(A|B, C) = \frac{P(B|A, C) P(A|C)}{P(B|C)}$$
       1. **将 $x_0$ 加入 条件**，$x_0$ 在 $q(x_{t-1}|x_t, x_0)$ 中充当 条件贝叶斯定理 中 固定 & 已知的 条件 $C$
       2. $$q(x_{t-1}|x_t, x_0) = \frac{q(x_t|x_{t-1}, x_0) \cdot q(x_{t-1}|x_0)}{q(x_t|x_0)}$$
       3. 应用 **马尔可夫性质** $q(x_t|x_{t-1}, x_0) = q(x_t|x_{t-1})$
@@ -90,11 +94,11 @@
       4. 引入 $x_0$ 后，所有的项 都是 正向过程的 条件概率，都具有高斯分布的解析形式
 5. $$q(x_{t-1}|x_t, x_0) = \frac{q(x_t|x_{t-1}) \cdot q(x_{t-1}|x_0)}{q(x_t|x_0)}$$
    1. 当前公式 **需要知道 答案 $x_0$** 才能生成
-   2. 用 神经网络 **$p_{\theta}(x_{t-1} | x_t)$**，拟合 $x_t$ 降噪到 $x_{t-1}$ 的正态分布 **$q(x_{t-1}|x_t, x_0)$**，也就是 **拟合 均值 & 方差**
+   2. 用 神经网络 **$p_{\theta}(x_{t-1} | x_t)$**，拟合 给定 $x_0$ 时 $x_t$ 降噪到 $x_{t-1}$ 的正态分布 **$q(x_{t-1}|x_t, x_0)$**，也就是 **拟合 均值 & 方差**
 6. $p_{\theta}$ 需要拟合 **不同的 原始图片 $x_0$** 从 $x_t$ 降噪到 $x_{t-1}$ 的均值 & 方差
    1. 通过不同图片，学到的是 通用的、泛化的、不依赖于具体 $x_0$ 的 去噪函数，一种 模式(Pattern)
-   2. **训练** 时，**$x_T \sim \mathcal{N}(0,I)$**，使用可解析计算的项 $q(x_{t-1}|x_t, x_0)$ 作为模型 GroundTruth
-   3. **生成**(推理) 时，**不需要 $x_0$，没有答案**
+   2. **训练** 时，**$x_T \sim \mathcal{N}(0,I)$**，使用 贝叶斯公式，计算 $q(x_{t-1}|x_t, x_0)$ 作为模型 GroundTruth
+   3. **生成**(推理) 时，用 神经网络 **不需要 $x_0$，没有答案**
 
 总结
 1. 给图片加噪声容易，从噪声中恢复图片难
@@ -102,91 +106,123 @@
 3. 给图片加噪和去噪都是从一个正态分布中采样
 4. 前向过程是确定性采样，反向过程是用 神经网络 预测出正态分布的均值和方差，然后采样
 5. 训练时通过贝叶斯公式计算出 $q(x_{t-1}|x_t, x_0)$ 的 均值 & 方差，然后用 神经网络 $p_{\theta}(x_{t-1}|x_t)$ 去拟合 该 **均值 & 方差**
-6. 训练得到 $p_{\theta}$ 后，就可以通过对一个完全随机的噪声经过逐步去噪生成一个图片
+6. 训练得到 $p_{\theta}$ 后，就可以通过对一个完全随机的噪声经过 **逐步去噪** 生成一个图片
 
 **==DDPM 的去噪 需要 一步步来，不像 加噪 一步到位==**，只有 微小 & 逐步的 去噪，才能保证 模型可以稳定地 用 高斯分布(单峰) 来 学习 & 预测，否则需要处理 **多峰分布**
 
 ---
 
-## 技术细节
+## 技术细节(数学推导)
 
 [图像生成 扩散模型 DDPM算法讲解 2 : 数学推导和代码实现 - B站(RethinkFun)](https://www.bilibili.com/video/BV11KsPzwE2m)
 
 **训练目标**
 1. 让神经网络 生成 用来训练的 图片的 可能性 尽可能大
-2. 对样本 $x^1, x^2, \dots, x^i, \dots, x^n$，得到能让 $\prod p_{\theta}(x^i)$(联合概率) 尽可能大的 $\theta$
+2. 对 **样本** $x^1, x^2, \dots, x^i, \dots, x^n$，得到能让 $\prod p_{\theta}(x^i)$(联合概率) 尽可能大的 $\theta$ (上标)
 3. 加上 $\log$，连乘 变为 连加 $\sum \log p_{\theta}(x^i)$，希望其最大化
 4. 加上 负号，变为 Loss 函数，找到 令其 最小的 $\theta$
+5. 使用 联合概率
+   1. 神经网络 $p_\theta(x_{t-1}|x_t)$ 是在学习每一步的 局部去噪
+   2. 为了让模型学会去噪， 需要 拉近 前向加噪的整条路径 & 反向去噪的整条路径 之间的距离
 
 正向扩散 & 反向去噪
-1. <img src="Pics/rethinkfun007.png" width=500>
+1. 对于 单个样本
+   1. <img src="Pics/rethinkfun007.png" width=500>
 2. 前向 & 反向 都 利用了 **马尔可夫** 假设
-3. 反向去噪 不依赖于 任何值，初始状态 $p(x_T)$ 是从 标准正态分布 中产生的，后续概率的连乘 是 由 神经网络 决定的
+3. 反向去噪 不依赖于 任何值，**初始状态 $p(x_T)$ 是从 标准正态分布 中产生的**，后续概率的连乘 是 由 神经网络 决定的
 4. $$p(x_0, x_1, \dots, x_T) = p(x_T) \cdot p(x_{T-1}|x_T) \cdot p(x_{T-2}|x_{T-1}, x_T) \cdots p(x_0|x_1, \dots, x_T)$$
-   1. 另 $x_{0:T} = \{x_0, x_1, \dots, x_T\}$
+   1. 令 $x_{0:T} = \{x_0, x_1, \dots, x_T\}$
    2. $x_0$ 表示 原始清晰的图片
 5. $$p(x_{0:T}) = p(x_T) \prod_{t=1}^T p(x_{t-1}|x_t, x_{t+1}, \dots, x_T)= p(x_T) \prod_{t=1}^T p_{\theta}(x_{t-1}|x_t)$$
 
 最小化 损失函数 $-\log p_{\theta}(x_0)$
 1. 目标
    1. <img src="Pics/rethinkfun008.png" width=900>
-2. 对 $1 : T$ 积分，引入 前向加噪过程 的概率，改写为 数学期望 形式，结合 Jensen 不等式
-   1. 考虑所有可能的生成路径 + 利用边缘概率公式 : $x_1$ 的各种可能性，$x_2$ 的各种可能性，$\cdots$，$x_T$ 的各种可能性
-   2. 引入 q 分布，再 转换为 **期望**
+2. ==对 $1 : T$ 积分==，引入 前向加噪过程 的概率，改写为 数学期望 形式，结合 Jensen 不等式
+   1. 考虑 **所有可能的生成路径** + 利用边缘概率公式 : $x_1$ 的各种可能性，$x_2$ 的各种可能性，$\cdots$，$x_T$ 的各种可能性
+   2. 引入 前向加噪 过程 $q$ 分布，再 转换为 **期望**
    3. 期望 $\mathbb{E}_{q(x_{1:T}|x_0)}$ 依然包含了对 $x_1$ 到 $x_T$ 每一个随机变量的积分
-   4. $$\mathbb{E}_{q(x_{1:T}|x_0)} [\circledcirc] == \underbrace{\int \int \cdots \int}_{T \text{ 个积分号}} [\circledcirc] \cdot \underbrace{q(x_1, x_2, \cdots, x_T | x_0)}_{\text{联合概率分布}} \cdot \underbrace{dx_1 dx_2 \cdots dx_T}_{\text{所有变量的微分}}$$
-   5. 再结合 Jensen's Inequality
-   6. <img src="Pics/rethinkfun009.png" width=400>
-3. 带入 正向 & 反向 过程 的 概率公式
+      1. $$\mathbb{E}_{q(x_{1:T}|x_0)} [\circledcirc] == \underbrace{\int \int \cdots \int}_{T \text{ 个积分号}} [\circledcirc] \cdot \underbrace{q(x_1, x_2, \cdots, x_T | x_0)}_{\text{联合概率分布}} \cdot \underbrace{dx_1 dx_2 \cdots dx_T}_{\text{所有变量的微分}}$$
+   4. 结合 ==Jensen's Inequality==
+   5. <img src="Pics/rethinkfun009.png" width=400>
+3. **带入** 正向 & 反向 过程 的 概率公式
    1. 单独 提取 $t=1$ 的 情况，其他可以使用 蓝框公式
-      1. 从 $x_{t-1}$ 加噪到 $x_t$ 部分，补上 $x_0$ 不影响，再加上 贝叶斯公式
-   2. <img src="Pics/rethinkfun010.png" width=900>
+   2. $t \ge 2$，从 $x_{t-1}$ 加噪到 $x_t$ 部分，补上 $x_0$ 不影响，再加上 贝叶斯公式
+   3. <img src="Pics/rethinkfun010.png" width=900>
 4. 化简($\sum \to \prod$ & 重新组合)，最后 得到 3项
    1. 第1项 没有训练参数 不需要优化(没法最小化)
-   2. 第3项 是 去噪 最后一步 已经清晰了
+   2. 第3项 是 去噪 最后一步 已经基本上清晰了
    3. <img src="Pics/rethinkfun011.png" width=900>
-5. 主要 优化 中间项
+5. 主要 优化 **中间项**
    1. 联合概率 去掉后面式子里 没有的项(只有 $x_t$ & $x_{t-1}$ & $x_0$)
    2. 期望变为积分(补上 给定 $x_0$ 时候 $x_t$ & $x_{t-1}$ 的 联合概率值)
-   3. 利用 条件概率 拆分，把 无关项($q(x_t | x_0)$) 往外提
+   3. 利用 条件概率 拆分，把 无关项($q(x_t | x_0)$) 往外提，提到 外层 积分
    4. 内层积分是 KL 散度 表达式，在将外层写成 期望表达形式
    5. 需要 最小化 最终表达式
    6. <img src="Pics/rethinkfun012.png" width=900>
-6. KL 散度表示，去噪网络 $p_{\theta}$ 预测的 正态分布的 均值 & 方差，应该等于 $q(x_{t-1} | x_t, x_0)$(参考了正确答案 $x_0$ 的 去噪) 的 均值 & 方差
-7. 计算 $q(x_{t-1} | x_t, x_0)$ 的 mean & var (神经网络 $p_\theta$ 需要 拟合)
-   1. 利用 贝叶斯公式，当前 每一项 都满足正态分布
+6. KL 散度表示，去噪网络 $p_{\theta}$ 预测的 正态分布的 **均值 & 方差**，应该等于 $q(x_{t-1} | x_t, x_0)$(参考了正确答案 $x_0$ 的 去噪) 的 **均值 & 方差** (都是 高斯分布)
+7. 计算 $q(x_{t-1} | x_t, x_0)$ 的 mean & var (**神经网络 $p_\theta$ 需要 拟合**)
+   1. 利用 贝叶斯公式(连接 加噪 & 去噪)，当前 每一项 都满足正态分布
    2. **==贝叶斯统计中，如果 先验分布 & 似然函数 都是 高斯分布，后验分布 也是 高斯的==** (Conjugate Prior 共轭先验)
    3. 数学性质 : 两个高斯函数的乘积，其函数形式必然是另一个高斯函数的形式，`高斯函数 1 × 高斯函数 2 / 常数项 = 新 高斯函数`
       1. 常数项是用于 归一化(解决 乘积 形状是 钟形曲线，但 面积通常 ≠ 1)
-      2. $$\text{后验 (Posterior)} \propto \text{似然 (Likelihood)} \times \text{先验 (Prior)}$$
+      2. 后验 (Posterior) $\propto$ 似然 (Likelihood) × 先验 (Prior)
       3. 分母 $q(x_t|x_0)$ 正是归一化因子
+         1. $x_t$ 和 $x_0$ 是 已知量
+         2. ==$x_{t-1}$ 是 自变量==
       4. $$\underbrace{q(x_{t-1} | x_t, x_0)}_{\text{后验 (Posterior)}} = \frac{\underbrace{q(x_t | x_{t-1}, x_0)}_{\text{似然 (Likelihood)}} \cdot \underbrace{q(x_{t-1} | x_0)}_{\text{先验 (Prior)}}}{\underbrace{q(x_t | x_0)}_{\text{归一化因子 (Evidence)}}}$$
    4. <img src="Pics/rethinkfun013.png" width=900>
-   5. 写成 关于 **自变量 $x_{t-1}$** 的多项式 形式，不含有 自变量 $x_{t-1}$ 可以当做 常数项
+   5. 写成 关于 **==自变量 $x_{t-1}$==** 的多项式 形式，不含有 ==自变量 $x_{t-1}$== 的可以当做 常数项，其实 $q(x_t | x_0)$ 就是 常数(归一化因子)
    6. 只看指数部分 就能 得到 mean & var (神经网络 需要 拟合的 均值 & 方差)
    7. <img src="Pics/rethinkfun014.png" width=900>
    8. 进一步化简
-      1. 将 mean $\mu$ 中的 $x_0$ 用 $x_t$ 表示
+      1. 将 均值 $\mu$ 中的 $x_0$ 用 $x_t$ 表示
       2. 在 神经网络 视角，只有 $\epsilon$ 是 未知的，$\alpha_t$ & $\bar{\alpha_t}$ & $\bar{\alpha_{t-1}}$ 都是 已知的
-      3. 训练阶段，$\epsilon$ 是 从 标准 正态分布 抽样出来的 噪声(从 $x_0$ 生成 $x_t$ 时候 采样的)，是 **确定值**
-      4. **==神经网络 只需要 预测 $\epsilon$==**，就可以 根据公式 计算出 mean & var
+      3. 训练阶段，**==$\epsilon$==** 是 **从 标准 正态分布 抽样出来的 噪声**(从 $x_0$ 生成 $x_t$ 时候 采样的)，是 **==确定值==**
+      4. **==神经网络 只需要 预测 $\epsilon_\theta$==**，就可以 根据公式 计算出 mean & var
       5. <img src="Pics/rethinkfun015.png" width=500>
+      6. 前向 & 反向 noise 的 方差不同，前向 noise 方差更大
+         1. $\beta_t$ : 前向加噪时，是 闭着眼睛 往 $x_{t-1}$ 里加噪声，所以不确定性大
+         2. $\tilde{\beta}_t$ : 反向推导时，条件 多了一个 $x_0$(最终的清晰原图)，因为已经知道 目的地，对去噪的 不确定性 自然就小
+         3. $$\tilde{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} \beta_t$$
+         4. 数学上有差异，但 最终生成的图像质量 差不多(直接用前向的方差 & 反向算出的方差)，除了在最后快要生成清晰图片的时候 有差异，其他时间基本一致
+8. ==KL 散度 替换为 noise 的 MSE Loss==
+   1. 如果 让 神经网络 预测 协方差矩阵 $\Sigma_\theta$，训练极其不稳定
+   2. 因此 ==强行规定 $p_\theta$ 的 方差就是 固定的对角矩阵 $\sigma_t^2 \mathbf{I}$==
+      1. 至于 $\sigma_t^2$ 到底取 前向过程的 $\beta_t$ 还是 去噪过程真实的 $\tilde{\beta}_t$，作者都尝试过 生成出来的图片一样好看(数值基本一致)
+   3. ==高斯分布 的 KL Divergence 公式==
+      1. $$D_{KL}(q || p) = \frac{1}{2} \left[ \log \frac{|\Sigma_p|}{|\Sigma_q|} - k + \text{tr}(\Sigma_p^{-1} \Sigma_q) + (\mu_p - \mu_q)^T \Sigma_p^{-1} (\mu_p - \mu_q) \right]$$
+         1. $\frac{|\Sigma_p|}{|\Sigma_q|}$ : 协方差矩阵 行列式之比
+         2. $k$ : 图像空间的维度
+         3. $\text{tr}(...)$ : 矩阵的迹
+         4. $(\mu_p - \mu_q)^T ... (\mu_p - \mu_q)$：均值差异的马氏距离（Mahalanobis distance）
+      2. **如果 两个高斯分布的 方差 完全相等，那么它们之间的 KL 散度公式 会 变成一个极其简单的形式** : ==均值之差 的 L2 距离==
+         1. $\log \frac{|\Sigma_p|}{|\Sigma_q|} = \log(1) = \mathbf{0}$
+         2. $\text{tr}(\Sigma_p^{-1} \Sigma_q) = \text{tr}(\mathbf{I}) = \mathbf{k}$
+         3. $\Sigma_p^{-1}$ 其实就是 $\frac{1}{\sigma^2} \mathbf{I}$(每个像素相互独立)，$(\mu_p - \mu_q)^T (\frac{1}{\sigma^2} \mathbf{I}) (\mu_p - \mu_q) = \mathbf{\frac{1}{\sigma^2} ||\mu_p - \mu_q||^2}$
+   4. $$D_{KL} = \frac{1}{2\sigma_t^2} || \underbrace{\tilde{\mu}_t(x_t, x_0)}_{\text{真实的均值}} - \underbrace{\mu_\theta(x_t, t)}_{\text{网络预测的均值}} ||^2 + \text{常数}$$
+      1. $$\mu_q = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \cdot \epsilon )$$
+      2. $$\mu_{p_{\theta}} = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \cdot \epsilon_\theta )$$
+      3. 相减 $x_t$ 抵消
+      4. $$\mu_q - \mu_p = -\frac{1-\alpha_t}{\sqrt{\alpha_t}\sqrt{1-\bar{\alpha}_t}} \cdot (\mathbf{\epsilon} - \mathbf{\epsilon_\theta})$$
+   5. 给定了 $x_t$ 的前提下，$x_{t-1}$ 的概率分布， 完全等价于 噪声 $\epsilon$ 的概率分布
 
-训练过程
-1. 定义 训练使用的 常量
-2. $\epsilon$ 是 和 input image $x_0$ 长、宽、通道数 完全一致的 tensor，从多元标准正态分布中采样
-3. 随机生成 $t$，每个 batch 中的每一张图片，都独立随机生成一个不同的 $t$
-4. 不同时间步，噪声强度 不同，需要同时将 $x_t$ & $t$ 送入 去噪网络
-5. 用 MSE 计算 预测 & 真实 的 $\epsilon$ 之间的 loss，反向传播 更新 去噪网络
+**训练过程**
+1. 先 定义 训练使用的 常量
+2. $\epsilon$ 是 和 input image $x_0$ 长、宽、通道数 完全一致的 tensor，从 多元标准正态分布 中 **采样**
+3. **随机生成 $t$**，每个 batch 中的每一张图片，都独立随机生成一个不同的 $t$ (一键加噪)
+4. 不同时间步，噪声强度 不同，需要同时将 $x_t$ & $t$ 送入 去噪网络，得到 $\epsilon_\theta$
+5. 训练的时候 不用 采样 $x_{t-1}$，不关心 mean / var，用 MSE 计算 预测 & 真实 的 $\epsilon$ 之间的 loss，反向传播 更新 去噪网络
 6. <img src="Pics/rethinkfun016.png" width=600>
 
-推理过程(生成过程)
+**推理过程(生成过程)**
 1. 先从 标准正态分布 采样 噪声 作为 $x_{1000}$($x_T$)
 2. 将 $t=1000$ & $x_{1000}$ 传入 去噪网络，预测 $\epsilon$
 3. 根据 mean & var 公式 计算出 从 1000 到 999 步，采样的 正态分布(采样出来直接是 $x$)，从中采样一个值 为 $x_{999}$
+   1. $$x_{t-1} = \underbrace{\frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \cdot \epsilon_\theta(x_t, t) \right)}_{\text{第一部分：由预测噪声算出的 均值 } \mu_\theta} + \underbrace{\sigma_t \cdot \mathbf{z}}_{\text{第二部分：预先算好的方差 } \times \text{ 随机噪声}}$$
 4. 将其作为 输入，结合 新 时间步，再放入 去噪网络
 5. <img src="Pics/rethinkfun017.png" width=900>
-6. 最后一轮，不需要采样，直接用 正态分布的 mean 作为 输出
+6. **特殊情况** 最后一轮，不需要采样，直接用 正态分布的 mean 作为 输出，避免 **输出带有噪点**
 
 代码实现
 1. 图片需要 normalize & scale 到 $[-1, 1]$，最终生成图片时候，需要 还原

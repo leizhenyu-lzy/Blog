@@ -65,13 +65,20 @@ VAE formulate encoder to **describe a probability distribution** for each latent
 **改进 AE** : 生成 正态分布(AE 是生成确定的值)，分散的 正态分布 虽然增加覆盖面积，每个样本的 mean 和 variance 都不同，覆盖面积不同，仍然不能覆盖 大多数 latent space
 1. <img src="Pics/vae029.png" width=600>
 
-**VAE** : 进一步改进，让所有样本，经过 Encoder 生成的 多元正态分布，都接近 **多元标准正态分布**，各个维度相互独立
+**VAE** : 进一步改进，让所有样本，经过 Encoder 生成的 多元正态分布，都接近 **多元==标准==正态分布**，各个维度 相互独立
+1. ==P.S.== : 只是被 拉向 标准正态分布，并没有完全变成 一模一样的 标准正态分布，不同的样本依然在 潜空间 占据着不同的 地盘
+2. 两股力量的博弈(Trade-Off)
+   1. **Reconstruction Loss** : 为了不认错，希望 Encoder 把 不同样本 映射到 距离远的地方，并且每个样本的方差越小越好
+   2. **KL Divergence** : 强迫每个样本的分布 $q(z|x)$ 都尽量去拟合标准正态分布 $\mathcal{N}(0, I)$
+
+<img src="Pics/vae031.png" width=600>
 
 encoder 只生成 mean & variance 两个 参数
 1. mean 可正可负
 2. variance 必须为正，$e^\alpha = \sigma^2$，即 $\alpha = \log \sigma^2$
 
-<img src="Pics/vae031.png" width=600>
+decoder 只输出 mean
+
 
 **VAE 训练后**
 1. 各个样本的分布 都 更靠近 多元标准正态分布，后续采样更方便
@@ -86,44 +93,47 @@ encoder 只生成 mean & variance 两个 参数
    2. $z$ : 隐变量
    3. $p(z)$ : 隐变量 分布，希望是 多元标准正态分布，生成时从中取样
    4. $q_{\phi}(z|x)$ : encoder 映射 概率密度，以 $\phi$ 为参数
-   5. $q_{\theta}(x|z)$ : decoder 映射 概率密度，以 $\theta$ 为参数
-3. 训练时，必须使用 **重参数化技巧(Reparameterization Trick)**，从 encoder 输出的 分布中 **采样** (不同于 Inference/Generation)
+   5. $p_{\theta}(x|z)$ : decoder 映射 概率密度，以 $\theta$ 为参数
+3. 训练时，必须使用 **==重参数化技巧(Reparameterization Trick)==**，从 encoder 输出的 分布中 **采样** (不同于 Inference/Generation)
    1. 原因
       1. 引入随机性，使得 Decoder 必须学习 从分布中的任何一个点(不仅 是 均值点)重建原始输入
       2. 平滑隐空间，使 VAE 具备生成能力
       3. 避免坍塌，防止退化为 传统AE
-   2. 直接的采样操作 $\mathbf{z} \sim \mathcal{N}(\mu, \Sigma)$ 不可导，无法通过反向传播进行训练
+   2. 直接的采样操作 $\mathbf{z} \sim \mathcal{N}(\mu, \Sigma)$ **不可导**，无法 反向传播 训练
    3. 每次训练迭代时，从 **标准正态分布** 中采样 **辅助噪声** $\mathbf{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$，不需要学习
    4. $$\mathbf{z} = \mu + \sigma \odot \epsilon$$
    5. 辅助噪声 $\epsilon$ **必须** 从标准正态分布 $\mathcal{N}(\mathbf{0}, \mathbf{I})$ 中采样，保证隐变量 $z$ 的分布是可控的(正态分布)，简化 KL 散度计算
    6. 随机性 存在于 辅助噪声 $\epsilon$ 中
-4. Loss 计算 $L_{VAE}$
+4. Loss($L_{VAE}$) 计算
    1. <img src="Pics/vae034.png" width=600>
    2. **重构损失** $L_{REC}$ : 拉开不同 $\mathbf{x}$ 的 $\mu_{\mathbf{x}}$，确保了可区分性
    3. **KL 损失** $L_{KL}$ : 推着所有的 $\mu_{\mathbf{x}}$ 靠近中心 $\mathbf{0}$，确保了隐空间的连续性和可采样性
    4. 两个 loss 相互博弈
 
-**数学推导**
-1. <img src="Pics/vae035.png" width=600>
-2. <img src="Pics/vae036.png" width=450>
+**==数学推导==**
+1. 优化目标
+   1. <img src="Pics/vae035.png" width=600>
+2. **单个样本** Loss
+   1. <img src="Pics/vae036.png" width=450>
 3. 最终结果
    1. 第一项 : KL Loss
-      1. $\mathbf{p(z)}$ : 理想中的那个标准正态分布
-      2. 希望 通过 encoder，可以将 input 映射到的 latent 分布 和 理想分布 接近
+      1. $\mathbf{p(z)}$ : 理想中的 标准正态分布
+      2. 含义 : 希望 通过 encoder，可以将 input 映射到的 latent 分布 和 理想分布 接近
    2. 第二项 : Reconstruction Loss
-      1. 有个负号，因此 本体越大越好
+      1. 有个负号，因此 主体越大越好
       2. $\log$ 不影响单调性，可以转化为 $\mathbb{E}_{q_\phi(z|x)}[p_{\theta}(x|z)]$
-      3. 对于 给定的 x，通过 encoder 网络 得到 分布 z，并且 要让该分布内的任意值 通过 decoder 网络 还原回 x 的概率 最大
-4. Rec Loss 直接使用 MSE 即可
+      3. 含义 : 对于 给定的 x，通过 encoder 网络 得到 分布 z，并且 要让该分布内的任意值 通过 decoder 网络 还原回 x 的概率 最大
+4. Rec Loss 直接使用 MSE Loss 即可
 5. KL  Loss 实际计算
-   1. <img src="Pics/vae037.png" width=450>
-   2. 随机变量 **相互独立** 时，它们的 联合概率密度函数 = $\prod$ 各个边缘概率密度函数
+   1. 随机变量 **相互独立** 时，它们的 联合概率密度函数 = $\prod$ 各个边缘概率密度函数
+   2. <img src="Pics/vae037.png" width=450>
    3. $d$ 是 空间维度
-   4. <img src="Pics/vae038.png" width=700>
+   4. 分别 求解两项
+      1. <img src="Pics/vae038.png" width=700>
    5. 将上图结果带入，抵消常数项 + 移项
    6. <img src="Pics/vae040.png" width=700>
    7. 分别求解
-      1. 第1项 利用 平方的期望 公式
+      1. 第1项 利用 平方的期望 公式 & 累加的积分 = 积分的累加
          1. <img src="Pics/vae039.png" width=400>
          2. <img src="Pics/vae041.png" width=700>
       2. 第2项 常数的期望还是期望
@@ -134,11 +144,17 @@ encoder 只生成 mean & variance 两个 参数
       4. 最后 $\sum$ 求和符号 可以合并
 6. 最终结果
    1. <img src="Pics/vae044.png" width=600>
+   2. $\sigma$ & $\mu$ 编码器网络输出的 latent space 的分布
 
 模型架构
 1. <img src="Pics/vae045.png" width=600>
 2. encoder 使用 卷积，下采样 长宽减半，通道数翻倍，最后一个特征拉平，全连接层得到 均值 & 方差 (维度 = 隐空间 维度)，在 隐空间的 正态分布 中采样 隐变量
-   1. Conv2d
+   1. Conv2d : 4-2-1 卷积
+      1. kernel_size=4, stride=2, padding=1 的组合
+      2. 使用原因
+         1. 被著名的 DCGAN (Deep Convolutional GAN) 带火的
+         2. 完美、平滑 将 特征图的 长宽 精确减半
+         3. 配合 Decoder 消除 **棋盘效应**(Checkerboard Artifacts) : 奇数卷积核 转置卷积时，覆盖的次数是不均匀的
    2. ReLU
    3. BatchNorm
 3. decoder 使用 反卷积(转置卷积)，隐变量 通过 线性层，改变维度，转为 特征图形状
@@ -269,7 +285,6 @@ $\phi$   : 编码器 Encoder 参数 (推断网络) $q_{\phi}(z | x)$
 
 变分推断(Variational Inference) 将难以直接求解的后验分布 转为 优化问题，在候选分布$q(z|x)$ 中 找到最接近 真实后验$p(z|x)$ 的分布
 
-evidence 就是指 $$
 
 **推导**
 
