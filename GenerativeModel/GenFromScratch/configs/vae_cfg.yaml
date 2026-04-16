@@ -1,0 +1,27 @@
+# ============================================================
+#  VAE 训练配置
+#  用法: python3 scripts/train_vae.py --config configs/vae_cfg.yaml
+# ============================================================
+
+# --- 数据 ---
+data_root: /home/lzy/Datasets/CelebFacesAttributesDataset
+image_size: 64
+batch_size: 2048
+num_workers: 4
+
+# --- 模型 ---
+latent_dim: 128
+encoder_hidden_channels: [32, 64, 128, 256]   # 逐层翻倍, 4 层 = 下采样 4 次 (64 -> 4)
+decoder_hidden_channels: [256, 128, 64, 32]    # encoder 的镜像
+
+# --- 训练 ---
+epochs: 50
+lr: 1.0e-4
+kl_weight: 1.0       # beta-VAE 的 beta, 1.0 = 标准 VAE
+
+# --- 日志 & 保存 ---
+output_dir: outputs/vae
+log_every: 100        # 每 N 个 batch 写一次 TensorBoard scalar
+save_every: 5         # 每 N 个 epoch 保存 checkpoint + TensorBoard 图片
+n_fixed_samples: 8    # 固定几张图片做重建对比
+n_fixed_latent: 64         # 固定多少个 z 做生成可视化
