@@ -42,7 +42,8 @@ class Encoder(nn.Module):
             layers.append(
                 nn.Conv2d(channels[i], channels[i + 1], kernel_size=4, stride=2, padding=1)
             )
-            layers.append(nn.BatchNorm2d(channels[i + 1]))
+            if i > 0:  # 第一层不加 BN (DCGAN 惯例: 输入已 normalize, BN 会破坏输入分布信息)
+                layers.append(nn.BatchNorm2d(channels[i + 1]))
             layers.append(nn.ReLU(inplace=True))
 
         self.conv = nn.Sequential(*layers)

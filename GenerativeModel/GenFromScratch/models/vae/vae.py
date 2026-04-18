@@ -74,7 +74,7 @@ class VAE(nn.Module):
 
         Rec Loss: MSE(x, x_hat), 衡量重建质量
         KL  Loss: -0.5 * sum(1 + log_var - mu^2 - exp(log_var))
-                  衡量 q(z|x) 与 先验 N(0,I) 的距离
+                  衡量 q(z|x) 与 先验 p(z) = N(0,I) 的距离
 
         两者博弈:
             - Rec Loss 希望不同样本映射到距离远的地方, 方差越小越好
@@ -87,13 +87,13 @@ class VAE(nn.Module):
                    beta-VAE 论文用 beta=4~10 来学习解耦的隐表示
             过大   导致后验坍塌 (posterior collapse): q(z|x) ≈ p(z), encoder 失效
         """
-        rec_loss = F.mse_loss(x_hat, x, reduction='mean')
+        rec_loss = F.mse_loss(x_hat, x, reduction='mean')  # per-pixel 平均
 
         # KL 闭式解 (两个高斯分布, 其中一个是标准正态)
-        # 对 latent_dim 求和, 对 batch 求平均
-        kl_loss = -0.5 * torch.mean(
-            torch.sum(1 + log_var - mu.pow(2) - log_var.exp(), dim=1)
-        )
+        # per-dimension 平均: 对 latent_dim 求 mean, 对 batch 也求 mean
+        # 这样 rec_loss 和 kl_loss 都是 per-element 级别的, kl_weight 的语义更清晰
+        kl_loss = -0.5 * torch.mean(1 + log_var - mu.pow(2) - log_var.exp())
+        # 原来的 sum 会导致，KL 项对参数的更新力度远大于 Rec 项，模型被过度推向 N(0,I)，重建质量被牺牲
 
         loss = rec_loss + kl_weight * kl_loss
 

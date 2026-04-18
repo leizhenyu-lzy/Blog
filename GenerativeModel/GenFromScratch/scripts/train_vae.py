@@ -8,6 +8,8 @@ VAE 训练脚本
 import argparse
 import sys
 import os
+from datetime import datetime
+import shutil
 
 import yaml
 import torch
@@ -35,8 +37,11 @@ def train():
     args = parser.parse_args()
     cfg = load_config(args.config)
 
-    output_dir = cfg["output_dir"]
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_dir = f"{cfg['output_dir_prefix']}_{timestamp}"
     os.makedirs(output_dir, exist_ok=True)
+
+    shutil.copy2(args.config, os.path.join(output_dir, os.path.basename(args.config)))  # copy the config yaml to logs dir
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
