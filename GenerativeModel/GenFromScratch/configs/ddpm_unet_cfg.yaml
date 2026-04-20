@@ -1,6 +1,6 @@
 # ============================================================
 #  DDPM 训练配置
-#  用法: python3 scripts/train_ddpm_unet.py --config configs/ddpm_cfg.yaml
+#  用法: python3 scripts/train_ddpm_unet.py --config configs/ddpm_unet_cfg.yaml
 #  (DiT 骨干会有独立的 train_ddpm_dit.py, 可能共享本 cfg 也可能分 ddpm_dit_cfg.yaml)
 # ============================================================
 
@@ -37,6 +37,6 @@ ema_decay: 0.9999     # EMA 权重衰减, 采样时用 EMA 权重
 n_sample: 64          # 采样多少张图做可视化
 
 # --- 日志 & 保存 ---
-output_dir_prefix: logs/ddpm
+output_dir_prefix: logs/ddpm/unet
 log_every: 100        # 每 N 个 batch 写一次 TensorBoard scalar
 save_every: 5         # 每 N 个 epoch 保存 checkpoint + 采样图片

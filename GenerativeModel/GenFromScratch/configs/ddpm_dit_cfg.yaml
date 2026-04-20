@@ -1,0 +1,44 @@
+# ============================================================
+#  DDPM + DiT 训练配置 (tiny version)
+#  用法: python3 scripts/train_ddpm_dit.py --config configs/ddpm_dit_cfg.yaml
+#  (train_ddpm_dit.py 待实现, 结构与 train_ddpm_unet.py 几乎相同)
+# ============================================================
+
+# --- 数据 ---
+data_root: /home/lzy/Datasets/CelebFacesAttributesDataset
+image_size: 64
+image_channels: 3
+batch_size: 128
+num_workers: 4
+
+# --- 扩散过程 (对应 GaussianDiffusion, 与 UNet 版完全一致) ---
+diffusion:
+  T: 1000
+  beta_start: 1.0e-4
+  beta_end: 2.0e-2
+
+# --- DiT backbone (tiny) ---
+# 注意: 这里的 DiT 输出通道数 = image_channels (只预测噪声),
+# 用的是 "固定方差" 版本 DDPM (Ho 2020), 与 UNet 对齐, 便于纯骨干对比.
+# DiT 论文实际用的是 Improved DDPM 的 "可学习方差" (网络输出 2*image_channels,
+# 另外半用来插值方差), 暂不实现 —— FID 影响很小, 代码侵入大.
+dit:
+  patch_size: 4        # 64/4 = 16, num_patches = 16*16 = 256 tokens
+  hidden_size: 256     # Transformer 维度 D
+  depth: 8             # DiTBlock 个数
+  num_heads: 4         # self-attention 头数, 必须整除 hidden_size (head_dim=64)
+  mlp_ratio: 4.0       # FFN 扩展比例, 隐藏层 = 256 * 4 = 1024
+
+# --- 训练 ---
+epochs: 100
+lr: 2.0e-4
+grad_clip: 1.0
+ema_decay: 0.9999
+
+# --- 采样 ---
+n_sample: 64
+
+# --- 日志 & 保存 ---
+output_dir_prefix: logs/ddpm/dit
+log_every: 100
+save_every: 5

@@ -5,11 +5,11 @@ DDPM + UNet 训练脚本
 而不是在一个脚本里用 --backbone flag 切换.
 
 用法:
-    python3 scripts/train_ddpm_unet.py --config configs/ddpm_cfg.yaml
+    python3 scripts/train_ddpm_unet.py --config configs/ddpm_unet_cfg.yaml
 
 产出 (在 logs/ddpm_<时间戳>/ 目录下):
     - tb_logs/            TensorBoard scalar + image
-    - ddpm_cfg.yaml       本次训练的配置快照
+    - ddpm_unet_cfg.yaml       本次训练的配置快照
     - samples_epoch###.png  每 save_every 个 epoch 的采样 (EMA 权重)
     - checkpoint_epoch###.pt  包含 model / ema / optimizer / epoch / config
 
@@ -90,7 +90,7 @@ def train():
     parser.add_argument(
         "--config",
         type=str,
-        default=os.path.join(PROJECT_ROOT, "configs", "ddpm_cfg.yaml"),
+        default=os.path.join(PROJECT_ROOT, "configs", "ddpm_unet_cfg.yaml"),
     )
     parser.add_argument(
         "--resume",
