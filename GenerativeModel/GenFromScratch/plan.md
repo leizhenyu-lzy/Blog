@@ -33,8 +33,10 @@ GenFromScratch/
 │       └── __init__.py
 │
 ├── train_vae.py
-├── train_ddpm.py              # --backbone unet/dit 切换
-├── sample.py
+├── train_ddpm_unet.py         # DDPM + UNet backbone
+├── train_ddpm_dit.py          # DDPM + DiT backbone (未来)
+├── sample_ddpm_unet.py
+├── sample_ddpm_dit.py         # (未来)
 │
 └── utils/
     ├── __init__.py
@@ -111,7 +113,7 @@ GenFromScratch/
 
 ### Step 7: DDPM 训练 + 采样 `[ ]`
 
-`train_ddpm.py` + `sample.py` + `utils/ema.py`
+`train_ddpm_unet.py` + `sample_ddpm_unet.py` + `utils/ema.py`
 
 验证点: 训练 loss 下降，采样出的人脸逐渐清晰。
 
@@ -119,7 +121,7 @@ GenFromScratch/
 
 `models/ddpm/dit.py` — Patchify (4x4 -> 256 tokens) + Transformer blocks (AdaLN-Zero 注入 time) + Unpatchify。
 
-验证点: 替换 UNet，`train_ddpm.py --backbone dit` 能正常训练，对比 UNet 的生成质量。
+验证点: 新建独立的 `train_ddpm_dit.py` / `sample_ddpm_dit.py` (复用 `GaussianDiffusion` / `EMA` / data loader)，对比 UNet 的生成质量。
 
 ### Step 9: Flow Matching (预留) `[ ]`
 
