@@ -1,15 +1,17 @@
 # ============================================================
-#  DDPM 训练配置
-#  用法: python3 scripts/train_ddpm_unet.py --config configs/ddpm_unet_cfg.yaml
-#  (DiT 骨干会有独立的 train_ddpm_dit.py, 可能共享本 cfg 也可能分 ddpm_dit_cfg.yaml)
+#  DDPM + UNet 训练配置
+#  用法: python3 scripts/train_ddpm.py --config configs/ddpm_unet_cfg.yaml
 # ============================================================
+
+# --- Backbone 选择 (unet / dit), 决定 train_ddpm.py 装配哪个网络 ---
+backbone: unet
 
 # --- 数据 ---
 data_root: /home/lzy/Datasets/CelebFacesAttributesDataset
 image_size: 64
 image_channels: 3     # RGB; UNet 的 in_channels / out_channels 都等于这个
 batch_size: 128
-num_workers: 4
+num_workers: 8
 
 # --- 扩散过程 (对应 GaussianDiffusion) ---
 diffusion:
@@ -19,11 +21,11 @@ diffusion:
 
 # --- UNet backbone (tiny) ---
 unet:
-  base_channels: 32                 # 第一层通道数, 后续按 channel_mult 缩放
+  base_channels: 64                 # 第一层通道数, 后续按 channel_mult 缩放
   channel_mult: [1, 2, 2, 2]        # 每个 stage 的通道倍率 -> 32, 64, 64, 64
   num_res_blocks: 2                 # 每个分辨率下的 ResBlock 数量
   attn_resolutions: [16, 8]         # 在这些空间分辨率下插入 self-attention
-  time_emb_dim: 128                 # 时间嵌入维度 (通常 = base_channels * 4)
+  time_emb_dim: 256                 # 时间嵌入维度 (通常 = base_channels * 4)
   num_heads: 4                      # self-attention 头数
   dropout: 0.1
 
@@ -39,4 +41,4 @@ n_sample: 64          # 采样多少张图做可视化
 # --- 日志 & 保存 ---
 output_dir_prefix: logs/ddpm/unet
 log_every: 100        # 每 N 个 batch 写一次 TensorBoard scalar
-save_every: 5         # 每 N 个 epoch 保存 checkpoint + 采样图片
+save_every: 20         # 每 N 个 epoch 保存 checkpoint + 采样图片

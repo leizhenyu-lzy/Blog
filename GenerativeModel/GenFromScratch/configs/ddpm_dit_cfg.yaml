@@ -1,8 +1,10 @@
 # ============================================================
 #  DDPM + DiT 训练配置 (tiny version)
-#  用法: python3 scripts/train_ddpm_dit.py --config configs/ddpm_dit_cfg.yaml
-#  (train_ddpm_dit.py 待实现, 结构与 train_ddpm_unet.py 几乎相同)
+#  用法: python3 scripts/train_ddpm.py --config configs/ddpm_dit_cfg.yaml
 # ============================================================
+
+# --- Backbone 选择 (unet / dit), 决定 train_ddpm.py 装配哪个网络 ---
+backbone: dit
 
 # --- 数据 ---
 data_root: /home/lzy/Datasets/CelebFacesAttributesDataset

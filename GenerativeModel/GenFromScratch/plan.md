@@ -33,10 +33,8 @@ GenFromScratch/
 │       └── __init__.py
 │
 ├── train_vae.py
-├── train_ddpm_unet.py         # DDPM + UNet backbone
-├── train_ddpm_dit.py          # DDPM + DiT backbone (未来)
-├── sample_ddpm_unet.py
-├── sample_ddpm_dit.py         # (未来)
+├── train_ddpm.py              # DDPM 统一训练脚本 (backbone 由 config["backbone"] 决定)
+├── sample_ddpm.py             # DDPM 统一采样脚本 (未来)
 │
 └── utils/
     ├── __init__.py
@@ -113,7 +111,7 @@ GenFromScratch/
 
 ### Step 7: DDPM 训练 + 采样 `[ ]`
 
-`train_ddpm_unet.py` + `sample_ddpm_unet.py` + `utils/ema.py`
+`train_ddpm.py` (backbone=unet) + `sample_ddpm.py` + `utils/ema.py`
 
 验证点: 训练 loss 下降，采样出的人脸逐渐清晰。
 
@@ -121,11 +119,83 @@ GenFromScratch/
 
 `models/ddpm/dit.py` — Patchify (4x4 -> 256 tokens) + Transformer blocks (AdaLN-Zero 注入 time) + Unpatchify。
 
-验证点: 新建独立的 `train_ddpm_dit.py` / `sample_ddpm_dit.py` (复用 `GaussianDiffusion` / `EMA` / data loader)，对比 UNet 的生成质量。
+验证点: 复用 `train_ddpm.py`, 切 `backbone: dit` + 独立的 `ddpm_dit_cfg.yaml`, 与 UNet 对比生成质量。
 
 ### Step 9: Flow Matching (预留) `[ ]`
 
 预留 `models/flow_matching/`，待学完理论后实现。与 VAE/DDPM 共享 `datasets/` 和 `utils/`。
+
+## 后续扩展 (低优先级, 按推荐顺序排列) `[ ]`
+
+> 所有扩展共享已有的 `GaussianDiffusion` / `EMA` / `datasets` / `utils`。除非特别注明，训练不用从头重来。
+
+### Ext 1: DDIM 采样加速 `[ ]`  难度 ⭐⭐
+
+不改模型权重, 只加一个新的采样函数.
+
+- `models/ddpm/diffusion.py` 加 `ddim_sample(model, shape, num_steps=50)` 方法
+- 确定性 ODE solver, 支持任意跳步 (20/50/100 步)
+- 直接复用已训练好的 UNet / DiT ckpt
+- 新增 `scripts/sample_ddpm.py` 统一采样脚本 (支持 DDPM / DDIM 切换, 接收 `--ckpt` 路径)
+
+验证点: DDIM 50 步的采样质量接近 DDPM 1000 步, 单次采样耗时从 ~80s 降到 ~4s.
+
+### Ext 2: SDEdit (img2img) `[ ]`  难度 ⭐
+
+不改模型权重、不改训练, 只在采样循环里换起点.
+
+- `sample_ddpm.py` 加 `--mode sdedit --ref <image>` + `--t_start <int>` 选项
+- 前向加噪 `q_sample(x_ref, t_start)` 作为去噪起点, 从 `t_start` 往 0 跑 `p_sample_loop`
+- 可视化 `t_start ∈ {100, 300, 500, 800}` 的不同改动幅度
+
+验证点: `t_start=500` 生成的人脸保留原图结构但换表情/风格.
+
+### Ext 3: Inpainting `[ ]`  难度 ⭐
+
+同样只改采样.
+
+- 加 `--mode inpaint --ref <image> --mask <image>` 选项
+- 每步 `p_sample` 后把已知区域重置成 `q_sample(x_ref, t-1)` 再进下一步
+- 评估边界协调度, 若不好再上 RePaint 的 resampling trick
+
+验证点: 给一张人脸遮住嘴巴, 能生成合理的嘴型, 其它部位保持不变.
+
+### Ext 4: Class-Conditional 生成 `[ ]`  难度 ⭐⭐  *需要重训模型*
+
+- `datasets/celeba.py` 扩展: 读 `list_attr_celeba.csv`, `__getitem__` 返回 `(x, y)`
+  - 简化起见, 选 1-3 个高区分度属性 (eg. `Smiling`, `Male`, `Eyeglasses`), 组合成单一离散类别 (2-8 类)
+- UNet / DiT 加 `nn.Embedding(num_classes + 1, emb_dim)`, forward 多吃 `y`
+  - `y_emb` 与 `t_emb` 同路注入 (UNet 的 ResBlock time_mlp / DiT 的 AdaLN-Zero)
+- 训练时 `y_emb` 直接用真实标签 (暂不做 CFG dropout, 下一步加)
+- 新增 `configs/ddpm_unet_cond_cfg.yaml` / `ddpm_dit_cond_cfg.yaml`
+
+验证点: 指定 `y = Smiling_yes` 生成微笑脸, `y = Smiling_no` 生成不笑, 肉眼可辨差异.
+
+### Ext 5: Classifier-Free Guidance (CFG) `[ ]`  难度 ⭐⭐⭐  *依赖 Ext 4*
+
+在 Ext 4 的基础上加两处:
+
+- **训练**: `compute_loss` 以 `p_uncond = 0.1` 概率把 `y` 替换为 `NULL_ID` (= `num_classes`)
+- **采样**: 新增 `cfg_sample_loop(model, shape, y, w)`, 每步两次 forward (或 batch 翻倍一次 forward):
+    ε̃ = (1+w) · ε(x, y) - w · ε(x, null)
+
+验证点: 对比 `w ∈ {0, 1, 3, 7.5}` 的生成效果, `w` 增大时条件匹配度提升, 多样性下降. 同一个 `(x_T, y)`  seed 下, `w` 滑块能给出 "从无条件到强条件" 的连续变化序列.
+
+### Ext 6: DPM-Solver (进阶采样) `[ ]`  难度 ⭐⭐
+
+DDIM 的 2-3 阶 ODE solver 版本, 10-20 步达到 DDIM 50 步质量.
+
+- `models/ddpm/diffusion.py` 加 `dpm_solver_sample` (或者直接 copy diffusers 的实现)
+- 前置依赖: Ext 1 (DDIM) 已有
+
+验证点: 20 步采样质量不输 DDIM 50 步, 对部署场景更友好.
+
+### Ext 7: Text-Conditional (Stable Diffusion 风) `[ ]`  难度 ⭐⭐⭐⭐⭐  *性价比低*
+
+CelebA 本身没文本描述, 需要外部配对数据 (COCO / LAION 子集).
+- 集成预训练文本 encoder (CLIP text / T5-small), 冻结权重
+- UNet 加 cross-attention 层 (或 DiT 换成 MMDiT 把 text token 和 image token concat)
+- 训练数据、模型规模、硬件需求都远超前面几项, 不作为本项目目标, 仅留作概念记录.
 
 ## 关键设计决策
 
