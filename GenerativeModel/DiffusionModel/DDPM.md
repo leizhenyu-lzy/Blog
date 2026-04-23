@@ -16,6 +16,7 @@
 
 [信息量 + 香农熵 + 交叉熵 + KL散度 - 个人笔记](../../Math/Entropy&Divergence/EntropyDivergence.md)
 
+pixel level，没有使用 ViT
 
 ---
 
@@ -24,6 +25,7 @@
 ## 直观理解
 
 [图像生成 扩散模型 DDPM算法讲解 1 : 直观理解 - B站(RethinkFun)](https://www.bilibili.com/video/BV16ZsPz4ECF)
+
 
 整体过程
 1. <img src="Pics/rethinkfun001.png" width=600>
@@ -163,7 +165,7 @@
    6. <img src="Pics/rethinkfun012.png" width=900>
    7. 数学推导 和 之前的 直观理解 一致
 6. KL 散度表示，去噪网络 $p_{\theta}$ 预测的 正态分布的 **均值 & 方差**，应该等于 $q(x_{t-1} | x_t, x_0)$(参考了正确答案 $x_0$ 的 去噪) 的 **均值 & 方差** (都是 高斯分布)
-7. 计算 $q(x_{t-1} | x_t, x_0)$ 的 mean & var (**神经网络 $p_\theta$ 需要 拟合**)
+7. 计算 ==$q(x_{t-1} | x_t, x_0)$== 的 mean & var (**神经网络 $p_\theta$ 需要 拟合**)
    1. 利用 贝叶斯公式(连接 加噪 & 去噪)，当前 每一项 都满足正态分布
    2. **==贝叶斯统计中，如果 先验分布 & 似然函数 都是 高斯分布，后验分布 也是 高斯的==** (Conjugate Prior 共轭先验)
    3. 数学性质 : 两个高斯函数的乘积，其函数形式必然是另一个高斯函数的形式，`高斯函数 1 × 高斯函数 2 / 常数项 = 新 高斯函数`
@@ -181,13 +183,15 @@
       1. 将 均值 $\mu$ 中的 $x_0$ 用 $x_t$ 表示
       2. 在 神经网络 视角，只有 $\epsilon$ 是 未知的，$\alpha_t$ & $\bar{\alpha_t}$ & $\bar{\alpha_{t-1}}$ 都是 已知的
       3. 训练阶段，**==$\epsilon$==** 是 **从 标准 正态分布 抽样出来的 噪声**(从 $x_0$ 生成 $x_t$ 时候 采样的)，是 **==确定值==**
-      4. **==神经网络 只需要 预测 $\epsilon_\theta$==**，就可以 根据公式 计算出 mean & var
+      4. **==神经网络 $p_\theta$ 只需要 预测 $\epsilon_\theta$==**，就可以 根据公式 计算出 mean & var
       5. <img src="Pics/rethinkfun015.png" width=500>
       6. 前向 & 反向 noise 的 方差不同，前向 noise 方差更大
          1. $\beta_t$ : 前向加噪时，是 闭着眼睛 往 $x_{t-1}$ 里加噪声，所以不确定性大
          2. $\tilde{\beta}_t$ : 反向推导时，条件 多了一个 $x_0$(最终的清晰原图)，因为已经知道 目的地，对去噪的 不确定性 自然就小
          3. $$\tilde{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} \beta_t = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} (1 - \alpha_t)$$
          4. 数学上有差异，但 最终生成的图像质量 差不多(直接用前向的方差 & 反向算出的方差)，除了在最后快要生成清晰图片的时候 有差异，其他时间基本一致
+         5. 训练阶段，Loss 已经简化为 MSE，不需要关心 方差
+         6. 采样阶段，需要需要加噪，否则每步都是确定性的，质量会变差
 8. **==KL 散度 替换为 noise 的 MSE Loss==**
    1. 如果 让 神经网络 预测 协方差矩阵 $\Sigma_\theta$，训练极其不稳定
    2. **==☆==**==强行规定 $q(x_{t-1}|x_t, x_0)$ & $p_\theta(x_{t-1}|x_t)$ 的 方差就是 固定的对角矩阵 $\sigma_t^2 \mathbf{I}$==
