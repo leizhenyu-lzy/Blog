@@ -4,7 +4,6 @@
 - [KV Cache (键值缓存)](#kv-cache-键值缓存)
   - [Table of Contents](#table-of-contents)
 - [基础原理](#基础原理)
-- [MHA \& MQA(Multi-Query) \& GQA(Grouped Query)](#mha--mqamulti-query--gqagrouped-query)
 - [Flash Attention](#flash-attention)
 - [Residual Attention](#residual-attention)
 
@@ -49,11 +48,12 @@ KV Cache 大小的计算 : 2(K & V) * layer * batch_size * seq_len * head_num * 
 4. 元素字节数 : float32 是 4 字节，通过 量化 可以减少 显存占用(INT4 / FP8)
 
 
-K Cache & V Cache 是分开存放的 (K 需要转置 而 V 不需要)
+K Cache & V Cache 是**分开存放**的 (K 需要转置 而 V 不需要)
 
+==KV Cache 必须为模型的 每个Layer 分别存储一份 独立的缓存==
 
+显存带宽问题 : KV Cache 存放在 GPU 显存中，计算时 需要 移动至 计算单元(CUDA kernel)，KV Cache 越大，移动数据的时间成本 越高
 
-# MHA & MQA(Multi-Query) & GQA(Grouped Query)
 
 
 # Flash Attention
