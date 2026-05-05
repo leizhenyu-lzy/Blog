@@ -111,6 +111,7 @@ FFN 上，继续保留 MoE 架构
 
 Attention 上，提出 MLA (Multi-head Latent Attention)
 
+<img src="Pics/mla001.png" width=700>
 
 **Low-Rank Compression** (注 : 下面的公式 使用 ==column vector==，和平时 row vector 不同)
 1. KV Joint 压缩
@@ -137,11 +138,37 @@ Attention 上，提出 MLA (Multi-head Latent Attention)
    2. Q 压缩 可以适当放松，给 Representation 留更多空间
 
 
+<img src="Pics/mla002.png" width=700>
+
 **Decoupled RoPE(Rotary Position Embedding)**
-1. RoPE
+1. [RoPE - 个人笔记](../Llama/RoPE.md)
+2. RoPE 和 Low-Rank Compression 不兼容，无法进行 权重吸收
+   1. $q_i R_i (k_j R_j)^T = h_i W^Q R_i (c_j^{KV} W^{UK} R_j)^T = h_i W^Q R_i R_j^T {W^{UK}}^T {c_j^{KV}}^T $
+3. 解决方案 : 给 Q & K 额外增加维度，表示 位置信息
+   1. Query
+      1. $\mathbf{q}_t^R = \text{RoPE}(W^{QR} \mathbf{c}_t^Q)$
+      2. 生成带有位置信息的向量，$W^{QR}$ 把 $\mathbf{c}_t^Q$ 映射出狭窄的维度，然后 应用 RoPE
+      3. ==不同 head 间 不共享==
+      4. **再和 $\mathbf{q}_t^C$ 拼接起来**，组成完整的 Query
+   2. Key
+      1. $\mathbf{k}_t^R = \text{RoPE}(W^{KR} \mathbf{h}_t)$
+         1. **==不同 head 间 shared(共享的)==**
+         2. **==注意用的 不是 latent $\mathbf{c}_t^{KV}$，而是 未被压缩的 hidden state $\mathbf{h}_t$==**
+            1. KV 的 latent 被 极致压缩了
+   3. Trade-Off
+      1. 内容通道(大部队) 可以被 权重融合(KV Cache 变小，只保存 latent)
+      2. 位置通道 无法权重融合，只需要 Cache 少量 key 的 位置信息
+4. 关于 共享/不共享 & 基于hidden/基于latent
+   1. 最好的方法 肯定是 基于 Hidden State 向量直接计算 并且 不共享，但是 增加显存 & 降低计算效率
+   2. Query
+      1. 基于 latent : 每次都要计算，需要 减少参数量 & 增加计算效率
+      2. 不共享 : 保证 representation 能力
+   3. Key
+      1. 基于 hidden : 会被缓存，不用每次计算
+      2. 共享 : 减少显存占用
+         1. 只要 Q 是 不共享的，即使 K 是 共享的，算出来的点积(匹配分数) 依然是 多头的
+         2. 之前的 绝对正余弦位置编码 不需要考虑 是因为 input hidden 本身就包含了 位置信息
 
-
-生成并应用 RoPE 到解耦的 Query 和 Key 上：$$[\mathbf{q}_{t,1}^R; \mathbf{q}_{t,2}^R; ...; \mathbf{q}_{t,n_h}^R] = \mathbf{q}_t^R = \text{RoPE}(W^{QR} \mathbf{c}_t^Q) \quad (14)$$$$\mathbf{k}_t^R = \text{RoPE}(W^{KR} \mathbf{h}_t) \quad (15)$$将内容特征 ($C$) 与位置特征 ($R$) 进行拼接：$$\mathbf{q}_{t,i} = [\mathbf{q}_{t,i}^C; \mathbf{q}_{t,i}^R] \quad (16)$$$$\mathbf{k}_{t,i} = [\mathbf{k}_{t,i}^C; \mathbf{k}_t^R] \quad (17)$$计算最终的 Attention 分数并求和得到输出（注意分母加上了位置维度的缩放因子 $d_h^R$）：$$\mathbf{o}_{t,i} = \sum_{j=1}^t \text{Softmax}_j \left( \frac{\mathbf{q}_{t,i}^T \mathbf{k}_{j,i}}{\sqrt{d_h + d_h^R}} \right) \mathbf{v}_{j,i}^C \quad (18)$$最后通过 $W^O$ 输出矩阵得到最终结果：$$\mathbf{u}_t = W^O [\mathbf{o}_{t,1}; \mathbf{o}_{t,2}; ...; \mathbf{o}_{t,n_h}] \quad (19)$$
 
 
 
@@ -159,11 +186,11 @@ MLA 流程
 
 **权重吸收 (Weight Absorption)**
 
-$K$ 是由压缩包 $c_t$ 乘以解压矩阵 $W_{UK}$ 得到的，即 $K = c_t \times W_{UK}$
+$K$ 是由压缩包 $c_t$ 乘以解压矩阵 $W_{UK}$ 得到的，即 $K = c_t × W_{UK}$
 
-$$\text{分数} = Q \times (c_t \times W_{UK})^T = Q \times W_{UK}^T \times c_t^T$$
+$$\text{分数} = Q × (c_t × W_{UK})^T = Q × W_{UK}^T × c_t^T$$
 
-矩阵乘法满足结合律，让 $(Q \times W_{UK}^T)$ 先算
+矩阵乘法满足结合律，让 $(Q × W_{UK}^T)$ 先算
 
 $Q$ 是当前正在生成的 Token，无需 Cache
 
