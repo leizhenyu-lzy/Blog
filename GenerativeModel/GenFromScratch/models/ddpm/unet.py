@@ -230,6 +230,11 @@ class UNet(nn.Module):
 
         self.num_stages = len(channel_mult)  # 每个 stage 处理一种分辨率，stage 之间通过 Downsample 缩 2×
         self.num_res_blocks = num_res_blocks  # 每个 stage 的 ResBlock 数量
+        downsample_factor = 2 ** max(0, self.num_stages - 1)
+        assert image_size % downsample_factor == 0, (
+            f"image_size ({image_size}) must be divisible by 2^(num_stages-1) "
+            f"({downsample_factor}) for {self.num_stages} UNet stages"
+        )
 
         # stage i 操作的通道数 & 分辨率
         stage_channels = [base_channels * m for m in channel_mult]

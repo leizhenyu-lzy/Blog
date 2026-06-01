@@ -51,6 +51,11 @@ class Encoder(nn.Module):
         # 每层 4-2-1 卷积将空间尺寸减半
         # 例: image_size=64, n_downsample=4 -> end_size=4, 即卷积后变成 4x4
         n_downsample = len(hidden_channels)
+        downsample_factor = 2 ** n_downsample
+        assert image_size % downsample_factor == 0, (
+            f"image_size ({image_size}) must be divisible by 2^{n_downsample} "
+            f"({downsample_factor}) for {n_downsample} stride-2 conv layers"
+        )
         end_size = image_size // (2 ** n_downsample)
         self.flatten_dim = channels[-1] * end_size * end_size
 

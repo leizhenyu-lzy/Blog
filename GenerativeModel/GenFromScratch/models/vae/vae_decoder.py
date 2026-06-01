@@ -40,6 +40,11 @@ class Decoder(nn.Module):
         n_upsample = len(hidden_channels)
         # Decoder 起始特征图的空间尺寸，上采样 n 次后还原到 image_size
         # 例: image_size=64, n_upsample=4 -> start_size=4, 即从 4x4 开始上采样
+        upsample_factor = 2 ** n_upsample
+        assert image_size % upsample_factor == 0, (
+            f"image_size ({image_size}) must be divisible by 2^{n_upsample} "
+            f"({upsample_factor}) for {n_upsample} stride-2 deconv layers"
+        )
         self.start_size = image_size // (2 ** n_upsample)
         self.start_channels = hidden_channels[0]
         self.fc_from_latent = nn.Linear(latent_dim, self.start_channels * self.start_size * self.start_size)

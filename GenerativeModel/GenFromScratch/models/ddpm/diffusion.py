@@ -22,6 +22,7 @@ import torch.nn.functional as F
 class GaussianDiffusion(nn.Module):
     """
     高斯扩散过程
+    负责训练目标和采样过程，但不关心 backbone 是 UNet 还是 DiT
 
     前向过程 q(x_t | x_0):
         x_t = sqrt(ᾱ_t) * x_0 + sqrt(1 - ᾱ_t) * ε,  ε ~ N(0, I)

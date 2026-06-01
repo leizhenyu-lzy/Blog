@@ -98,6 +98,7 @@ def sample_with_ema(
     base_model: nn.Module,
     diffusion: GaussianDiffusion,
     n: int,
+    image_channels: int,
     image_size: int,
     device: torch.device,
 ) -> torch.Tensor:
@@ -105,7 +106,7 @@ def sample_with_ema(
     用 EMA 权重独立采样 n 张图. 不会影响 base_model 的原始权重, 方便训练继续
     """
     sampling_model = ema.clone_model(base_model).to(device)
-    shape = (n, 3, image_size, image_size)
+    shape = (n, image_channels, image_size, image_size)
     samples = diffusion.p_sample_loop(sampling_model, shape)
     return samples.clamp(-1.0, 1.0)
 
@@ -233,6 +234,7 @@ def train():
                 base_model=model,
                 diffusion=diffusion,
                 n=cfg["n_sample"],
+                image_channels=cfg["image_channels"],
                 image_size=cfg["image_size"],
                 device=device,
             )

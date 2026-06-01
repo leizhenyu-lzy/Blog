@@ -1,0 +1,43 @@
+# ============================================================
+#  Rectified Flow + UNet 训练配置
+#  用法: python3 scripts/train_flow_matching.py --config configs/fm_unet_cfg.yaml
+# ============================================================
+
+# --- Backbone 选择 (unet / dit), 决定 train_flow_matching.py 装配哪个网络 ---
+backbone: unet
+
+# --- 数据 ---
+data_root: /home/lzy/Datasets/CelebFacesAttributesDataset
+image_size: 64
+image_channels: 3
+batch_size: 128
+num_workers: 8
+
+# --- Flow Matching 过程 ---
+flow:
+  time_scale: 1000.0   # 连续 t in [0,1] 映射到 DDPM backbone 熟悉的 timestep 尺度
+
+# --- UNet backbone (tiny) ---
+unet:
+  base_channels: 64
+  channel_mult: [1, 2, 2, 2]
+  num_res_blocks: 2
+  attn_resolutions: [16, 8]
+  time_emb_dim: 256
+  num_heads: 4
+  dropout: 0.1
+
+# --- 训练 ---
+epochs: 100
+lr: 2.0e-4
+grad_clip: 1.0
+ema_decay: 0.9999
+
+# --- 采样 ---
+n_sample: 64
+sample_steps: 50      # Euler ODE steps, 可尝试 10/20/50/100
+
+# --- 日志 & 保存 ---
+output_dir_prefix: logs/flow_matching/unet
+log_every: 100
+save_every: 20

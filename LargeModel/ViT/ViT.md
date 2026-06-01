@@ -35,7 +35,7 @@
    1. 在 大规模 text corpus pre-train
    2. 在 小规模 task-specific 数据集 fine-tuning
 3. 在 mid-sized dataset 中，没有 strong regularization
-4. CNN 特有的 **inductive bias** 归纳偏置(先验知识)
+4. CNN 特有的 **inductive bias** 归纳偏置(先验知识)，ViT 需要更多 的数据来学习到
    1. locality : 相邻位置 特征相似
    2. 2-dimensional neighborhood structure
    3. translation equivariance : 卷积 & 平移 先后顺序 不改变结果
@@ -48,7 +48,9 @@
 1. pre-training task
    1. BERT : denoising self-supervised (完形填空)
    2. GPT  : language modeling (next word prediction)
-2. 不能 像素层面，图片每个 pixel 都作为一个 元素，否则 sequence 长度 n 过大 (平方复杂度，attention score 尺寸)，BERT 序列长度才 512
+2. 不能 像素层面，图片每个 pixel 都作为一个 元素
+   1. 否则 sequence 长度 n 过大 (平方复杂度，attention score 尺寸)，BERT 序列长度才 512
+   2. 另外，给 pixel 的 RGB 三个值 embed 到高维，浪费
 
 
 **Method**
@@ -61,12 +63,12 @@
    3. 后续有尝试过 positional embedding 的 ablation test
 4. 图片顺序颠倒就不是原来的图片了，因此 需要 **position embedding**
    1. 也是 2D 矩阵，每一行代表 对应位置 的 位置向量(维度 768)
-5. 使用 extra learnable class embedding : **CLS** `[class]`，encoder结构 可以看到 全部信息，可以从 其他 embedding 获取信息
+5. 使用 extra learnable class embedding : **CLS** `[class]`，encoder结构 可以看到 全部信息，可以从 其他 embedding 获取信息 (参考 **BERT**)
    1. 整体 进入 transformer 的 序列长度 : 14×14+1=197
    2. 只用 CLS 的 output 作为 image representation
    3. 除了 CLS token 也可以使用 GAP(global average pooling)
 6. transformer encoder 和 BERT 一致
-   1. KQV 尺寸都是 197×768
+   1. QKV 尺寸都是 197×768
    2. multi-head 768=12×64
    3. MLP 中间会 先把特征放大4倍 再缩回去，197×768 -> 197×3072 -> 197×768
 7. classification head
@@ -83,7 +85,7 @@
    4. ViT 的 fine-tuning 局限性
 
 
-**Additional Analyses**
+**Additional Analyses (Ablation)**
 1. Optimizer (Adam / SGD)
 2. Transformer Shape
 3. Positional Embedding

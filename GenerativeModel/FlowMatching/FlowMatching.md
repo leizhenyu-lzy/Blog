@@ -1,5 +1,8 @@
 # Flow Matching for Generative Modeling
 
+[MIT 6.S184 : Generative AI with Stochastic Differential Equations](https://diffusion.csail.mit.edu/2026/index.html)
+
+
 ---
 
 # Flow Matching - RethinkFun
@@ -153,10 +156,21 @@
 
 生成/推理 Inference
 1. 步数$n$ (远少于 DDPM)，时间间隔 $h = \frac{1}{n}$，边缘向量场 $u_t^\theta$
-2. 从 $p_\text{data}$ 采样一个样本 $x_0$
+2. 从 $p_\text{init}$ 采样一个样本 $x_0$
 3. 循环 迭代 $n$ 步
    1. 计算 $t = t + h$
    2. 根据 边缘向量场，计算 $x_{t+h} = x_t + h u_t^\theta(x_t)$
+4. 注意
+   1. 理想中，如果模型学到的是 完美速度场，并且路径真的是直线，一步就够了
+   2. 现实中，模型学的是 **边缘速度场**，而不是每个 noise-data pair 的真实私有速度，而且 网络也不可能完美拟合
+   3. 所以采样多走几步有几个好处
+      1. 每一步都让模型在 当前中间状态 重新估计速度，纠正之前的误差，逐步逼近目标分布
+      2. 允许模型学到一个 **近似的** 向量场(弯一点、学歪一点)，仍然能得到高质量样本
+      3. 适当增加步数，可以提升生成质量，尤其是对于复杂数据分布
+
+
+
+
 
 
 ---
