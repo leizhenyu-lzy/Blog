@@ -25,3 +25,6 @@ https://cvpr2022-tutorial-diffusion-models.github.io/
 FID(Frechet Inception Distance) : 衡量生成图像与真实图像分布之间的距离，数值越小表示生成图像质量越高
 
 
+https://www.bilibili.com/video/BV1ce46ziEJr/?spm_id_from=333.337.search-card.all.click&vd_source=d5863bac06474ffc8562eab966db3af7
+
+
