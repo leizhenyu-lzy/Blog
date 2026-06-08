@@ -41,10 +41,13 @@ latent 是 VAE 的输出
    2. 迭代去噪 : 反复将当前 $z_t$ 输入 DiT，预测噪声，并通过 sampler 更新到 $z_{t-1}$，直到得到生成的 latent $z_0$
    3. 图像解码 : 将生成的 $z_0$ 输入 frozen VAE Decoder，还原为图像
 
+Patch Size($p$) 会让处理的 Token 数量成倍增加，从而导致计算量(GFLOPs) & 显存(VRAM) 爆炸，但几乎不会改变模型的参数量(Model Size)
 
 <img src="Pics/DiT001.png" width="1000">
 
 额外信息 timestep($t$) & label($y$) 经过 Embedding 输入 DiT
+
+DiT 论文中，condition_embedding = time_embedding + label_embedding
 
 文章 尝试的 Conditioning 方式
 1. **In-Context**
@@ -61,7 +64,7 @@ latent 是 VAE 的输出
       2. Scale & Shift : normalize 会破坏 representation 能力，通过 : 乘以 缩放系数$\gamma$，加上平移系数$\beta$，恢复特征的表达能力
       3.  $\gamma$ 和 $\beta$ 是全局可学习的固定参数，与输入(图片/条件)无关
    2. adaLN
-      1. 把 时间步$t$ & 标签$y$ 的 Embedding 拼接起来，送进 MLP，直接输出 LayerNorm 的 $\gamma$ & $\beta$
+      1. 把 时间步$t$ & 标签$y$ 的 Embedding 送进 MLP，直接输出 LayerNorm 的 $\gamma$ & $\beta$
    3. adaLN-Zero
       1. MLP 不仅输出了 LayerNorm 的 $\gamma$ 和 $\beta$，还输出 2个额外参数 $\alpha_1$ 和 $\alpha_2$
       2. $\alpha_1$ 和 $\alpha_2$ 被乘在 注意力机制 & 前馈网络的 **残差连接** 处
@@ -70,9 +73,19 @@ latent 是 VAE 的输出
          2. attention block & FFN 的 输出 直接被乘以 0
          3. DiT Block 内部的那些复杂计算全被无效化了，输入$x$ 顺着最外面的残差旁路传递
          4. 在训练最开始的时候，每一个 DiT Block 都变成 恒等映射(Identity Map)
+      4. 具体细节
+         1. timestep : $t$ → Sinusoidal公式(256) → MLP(含有 **SiLU**) → 得到 Time_Vector(维度 $d$ 1152)
+         2. label : $y$ → 查表 → 得到 Label_Vector(维度 $d$)
+         3. 融合 : Condition = Time_Vector + Label_Vector (维度依然是 $d$)
+         4. Condition 向量，会被直接广播(Broadcast) 到 每一个 DiT Block 中
+         5. 每个 Block 内部，有一个专属的 **独立 MLP**，接收 $d$ 维的 Condition 向量，输出 维度为 $6d$ 的向量
+         6. 用 `chunk(6)` 函数，把这个 $6d$ 的向量等分成 6 份，$\gamma_1, \beta_1, \alpha_1$(Attention) & $\gamma_2, \beta_2, \alpha_2$(FFN)
+
+后续主流转向 In-Context，因为 adaLN 处理不了复杂的自然语言
+
+还是保留 adaLN-Zero 的思想，模型还是会提取 文本的 全局概括向量(Pooled Text Embedding) ，加上当前的时间步 $t$，送入 MLP 生成 $\gamma, \beta, \alpha$
 
 
-Patch Size($p$) 会让处理的 Token 数量成倍增加，从而导致计算量(GFLOPs) & 显存(VRAM) 爆炸，但几乎不会改变模型的参数量(Model Size)
 
 
 ---
