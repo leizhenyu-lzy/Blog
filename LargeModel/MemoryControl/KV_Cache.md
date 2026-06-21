@@ -35,8 +35,9 @@ KV Cache 针对 Decoder 侧
 1. 只需要 最新的 Q & 所有的 K & V，而 旧的 K V 已经在上一轮 计算过，可以直接复用
 2. 后续 只需要 计算 最新的 Q K V，把 新的 K V 和 旧的 K V 拼接起来，得到 完整的 K V
 
-注意点
+**注意点**
 1. 位置编码 : 通过 KV Cache 缓存的 token 数量，得到正确的 位置编码
+2. ==每层 attention layer 都有自己独立的 KV Cache==
 
 KV Cache 大小的计算 : 2(K & V) * layer * batch_size * seq_len * head_num * head_dim * element_bytes
 1. 层数 : decoder blocks
