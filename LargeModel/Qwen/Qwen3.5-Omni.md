@@ -73,10 +73,28 @@ Hybrid Attention MoE(Mixture-of-Expert)
       3. 相当于在 while 循环内，不断切换 thinker & talker 的调用
 
 
-Encoder
 
 **Audio Transformer (AuT)**
-1. 把高频的 连续波形(24k Hz) 压成 低频的特征向量
+1. 从头训练，trained from scratch
+2. <img src="Pics/omni002.png" width=450>
+3. 前端特征输入
+   1. 输入的音频信号 统一重采样至 16 kHz
+   2. 使用 25ms 的窗口大小(window size) & 10ms 的步长(hop size)
+      1. 10ms 步长 对应 100Hz
+   3. 转换成 128-channel 的 Mel-Spectrogram，即 Filter Bank(FBank，滤波器组)
+4. Encoder
+   1. 下采样 : 通过 4个 2D卷积块(Conv2D blocks) 将 FBank特征 在时间维度上下采样 16($2^4$)倍
+      1. 100Hz 下采样 16倍 得到 6.25Hz，即 模型每秒钟只需要处理 6.25 个音频 Token
+   2. Self-Attention : 随后进入 32层 自注意力层，提取出 6.25Hz 速率的 音频Token(AuT Hidden)
+5. Decoder
+   1. Self-Attention & Cross-Attention
+      1. 各8层 interleave 交叉排布
+      2. text input 作为 Q，AuT Hidden 作为 K/V
+   2. 核心目的 : 通过语音转文字(ASR, Automatic Speech Recognition)任务，强迫 Encoder 学会将复杂的物理音频信号 提取并映射到 包含语义的 text representation space
+   3. AuT 自身预训练完成后，Decoder **被完全丢弃**
+
+
+
 
 
 
