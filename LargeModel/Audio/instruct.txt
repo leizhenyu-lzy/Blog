@@ -1,0 +1,16 @@
+Qwen-Omni大概看一下模型结构，主要了解一下encoder decoder用了什么就行，他们也没细说 https://arxiv.org/pdf/2604.15804
+
+Audio Codec的奠基作：
+https://arxiv.org/pdf/2107.03312
+https://arxiv.org/pdf/2210.13438 这两篇大概了解原理就够了
+https://arxiv.org/pdf/2306.06546 这篇DAC是我现在代码的base，他们加了很多trick让学出来的Codec效果更好
+
+关于VQ方法，有个review paper，里面列举了VQ方法：
+https://arxiv.org/pdf/2506.10274#page=5.75
+大部分不需要论文，让Claude讲一下原理就行。
+FSQ可以看一眼：https://arxiv.org/pdf/2309.15505
+
+最后关于为什么要用离散的audio codec，可以从这篇了解一下原理/动机，让Claude总结就行： https://arxiv.org/pdf/2410.00037#page=9.51
+
+
+

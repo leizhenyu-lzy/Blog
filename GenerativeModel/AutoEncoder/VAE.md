@@ -110,6 +110,21 @@ decoder 只输出 mean
    3. **KL 损失** $L_{KL}$ : 推着所有的 $\mu_{\mathbf{x}}$ 靠近中心 $\mathbf{0}$，确保了隐空间的连续性和可采样性
    4. 两个 loss 相互博弈
 
+
+**训练 / 推理 是否需要 采样辅助噪声 $\epsilon$**(reparameterization trick)
+1. 关键区分 : $\mu$、$\sigma$ 只是 **描述分布形状**，真正的 **采样(掷骰子)** 由 $\epsilon$ 提供，$\mathbf{z} = \mu + \sigma \odot \epsilon$
+2. **训练(Training)** : ==必须加== $\epsilon$
+   1. 引入随机性，逼 Decoder 学会从分布内 **任意点** 重建，而非只认 均值点
+   2. 需要梯度回传，直接采样不可导，$\epsilon$ 外置 才能让梯度穿过采样回到 Encoder (重参数化)
+3. **推理-生成(Generation)** : ==要加== $\epsilon$
+   1. 通常 **跳过 Encoder**，直接从 先验 $p(z) \sim \mathcal{N}(0, I)$ 采样 (等价于 $\mu=0, \sigma=1$)
+   2. 随机性 正是 生成 多样样本 的来源，不加 就只剩一个固定输出
+4. **推理-重建 / 取特征(Reconstruction / Evaluation)** : ==一般不加== $\epsilon$
+   1. 直接取 $\mathbf{z} = \mu$ (丢掉 $\sigma \odot \epsilon$)，见前文 "VAE 训练后"
+   2. 要的是 确定、稳定 的输出，$\mu$ 就是 分布的 期望 / 最可能值，加噪只会让 重建变差
+5. 一句话 : **训练必加；推理时 "生成" 就加、"重建 / 取特征" 就只用 $\mu$**
+
+
 **==数学推导==**
 1. 优化目标
    1. <img src="Pics/vae035.png" width=600>
