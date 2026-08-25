@@ -75,6 +75,18 @@
 - 视觉编码器与策略**联合微调**
 - 用 **DAgger** 而非 BC:监督发生在**学生自己的输入分布**上,而不是只覆盖 teacher 分布
 
+#### 代码实查:ResNet finetune / auxiliary loss
+
+实查本地开源仓库 `/home/lzy/Projects/motion_rl/tmp/GR00T-VisualSim2Real`:
+
+- DoorMan student config 指向 `type: ResNet`, `resnet_type: resnet18`, `pretrained: true`, `trainable: true` → **ImageNet 预训练 ResNet18,不冻结,端到端训练**。
+- ResNet builder 用 `torchvision.models.resnet18(pretrained=pretrained)`,去掉 `avgpool/fc`,接 `AdaptiveAvgPool2d + Flatten + Linear` 投到 `vision_feature_dim=128`。
+- student loss 主项是 **DAgger BC loss**:`policy_results["action_mean"]` 对 teacher `gt_actions` 做 L2/L1(默认 L2),`dagger_bc_loss_coef=1.0`。
+- 代码里确实有一个 **object-position prediction auxiliary head**:`obj_pred_mlp` 预测 3D object position,trainer 会把 `obj_pred_loss` 加到总 loss;但 DoorMan student yaml 里 `obj_pred_loss_coef: 0.0` → **公开默认 recipe 中这个 auxiliary loss 权重为 0,不参与优化**。
+- ⚠️ 证据边界:这只能说明**公开 repo / 默认 config 没启用** object prediction auxiliary loss,不能证明作者做过消融并发现它没用;也不能排除内部训练/其他实验曾开过。若要严格说,应表述为“released config disables it”,而不是“auxiliary loss is useless/unused in all experiments”。
+
+> 结论:公开代码对应的 ResNet finetune 信号主要是 **Phase 2 的 teacher-action imitation loss**,不是 DINO-style 自监督/contrastive/seg/depth auxiliary;Phase 3 论文说再用 GRPO 任务回报微调,但当前 release 里未搜到 `GRPO` 命名实现。
+
 ### 关键辨析:DAgger 是 BC 还是 RL?
 
 **都不是 —— DAgger 是"交互式模仿学习",本质仍是监督,但比纯 BC 强。** RL 只在 Phase 3 GRPO 才出现。
