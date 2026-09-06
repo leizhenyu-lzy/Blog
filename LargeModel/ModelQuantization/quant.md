@@ -1,4 +1,6 @@
-# 量化
+# 模型量化（Model Quantization）
+
+将模型权重和激活从高精度表示转换为低精度表示，以降低存储、显存和计算成本。数值类型与浮点格式是基础知识；这里的量化区别于 Tokenizer 中用于生成离散 token 的 VQ / FSQ。
 
 [模型量化 - B站合集](https://space.bilibili.com/18235884/lists/2887562?type=season)
 
@@ -172,4 +174,3 @@ FP16 / BF16
 
 
 [Practical Quantization in PyTorch](https://pytorch.org/blog/quantization-in-practice/)
-
