@@ -131,3 +131,6 @@ Harness = 围绕这个 loop 补的 **所有工程**
 Links
 1. [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)
 2. [dsh-plugin](https://github.com/topics/dsh-plugin)
+
+# Codex Harness
+
